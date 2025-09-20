@@ -1,0 +1,4 @@
+nom fichier gif;diamètre du puit (µm);diamètre de la buse (µm);shift buse en x (µm);shift buse en z (µm);Viscosité de l'encre (Pa.s);angle de contact paroi gauche (°);angle de contact paroi droite (°);angle de contact EG gauche (°);angle de contact or (°)
+gif_1.gif;800;100;0;0;10;45;45;30;60
+gif_2.gif;1000;150;50;0;20;45;45;30;60
+gif_3.gif;1200;200;100;0;30;45;45;30;60
