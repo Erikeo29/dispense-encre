@@ -1,4 +1,4 @@
-# Modélisation de la dispense d'encre Ag/AgCl dans un puit
+# Modélisation de la dispense d'encre dans un puit
 ## Approche par simulation diphasique en domaine microfluidique
 
 ---
@@ -41,7 +41,7 @@
 |--------|--------------|
 | 0 | Valeur au repos ou initiale |
 | ∞ | Valeur à cisaillement infini |
-| 1 | Phase 1 (encre Ag/AgCl) |
+| 1 | Phase 1 (encre) |
 | 2 | Phase 2 (air) |
 | σ | Relatif à la tension de surface |
 
@@ -60,10 +60,10 @@
 ### 1.1 Système étudié
 
 Le système considéré est un écoulement diphasique incompressible dans un domaine microfluidique, comprenant :
-- **Phase 1** : Encre conductrice Ag/AgCl (fluide non-Newtonien)
+- **Phase 1** : Encre Ag/AgCl (fluide non-Newtonien)
 - **Phase 2** : Air ambiant (fluide Newtonien)
-- **Domaine** : Puit cylindrique de diamètre D_w = 0.8 mm et hauteur h_w = 0.128 mm
-- **Source** : Seringue de diamètre D_s = 0.2 mm positionnée à Δz = 30 μm au-dessus du puit
+- **Domaine** : Puit cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
+- **Source** : Seringue de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 0 μm au-dessus du puit
 
 ### 1.2 Hypothèses fondamentales
 
@@ -120,7 +120,7 @@ La viscosité de l'encre Ag/AgCl suit le modèle de Carreau :
 $$\eta_1(\dot{\gamma}) = \eta_{\infty} + (\eta_0 - \eta_{\infty})\left[1 + (\lambda\dot{\gamma})^2\right]^{\frac{n-1}{2}}$$
 
 avec les paramètres :
-- η₀ = 1.5 Pa·s : viscosité au repos (cisaillement nul)
+- η₀ = 0.5 à 5 Pa·s : viscosité au repos (cisaillement nul)
 - η_∞ = 0.05 Pa·s : viscosité à cisaillement infini
 - λ = 0.15 s : temps de relaxation caractéristique
 - n = 0.7 : indice de pseudoplasticité (n < 1 : fluide rhéofluidifiant)
@@ -164,10 +164,10 @@ Sur les parois mouillées, la normale à l'interface satisfait :
 $$\mathbf{n}_w \cdot \nabla \phi = -\frac{1}{\varepsilon}\cos(\theta) \quad \text{sur } \Gamma_{\text{paroi}}$$
 
 avec θ l'angle de contact statique :
-- θ_or = 145° sur l'électrode d'or
-- θ_gauche = 145° sur la paroi gauche
-- θ_droite = 90° sur la paroi droite  
-- θ_haut = 0° sur la surface supérieure
+- θ_or = 35 à 70° sur l'électrode d'or
+- θ_wall_EG = 35 à 90°
+- θ_paroi_EG = 35 à 90° 
+- θ_haut = 180° sur la surface supérieure (pas de mouillage sur le piston)
 
 #### Entrée (seringue)
 $$\mathbf{v} = v_{\text{inlet}}(t)\mathbf{e}_y \quad \text{sur } \Gamma_{\text{inlet}}$$
@@ -193,8 +193,8 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 | Propriété | Encre Ag/AgCl (Phase 1) | Air (Phase 2) | Unité |
 |-----------|-------------------------|---------------|-------|
-| Masse volumique ρ | 2200 | 1.2 | kg/m³ |
-| Viscosité η₀ | 1.5 | 1×10⁻⁵ | Pa·s |
+| Masse volumique ρ | 2200 kg/m³ |
+| Viscosité η₀ | 0.5 à 5 Pa·s |
 | Viscosité η_∞ | 0.05 | - | Pa·s |
 | Temps relaxation λ | 0.15 | - | s |
 | Indice n | 0.7 | - | - |
@@ -203,7 +203,7 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 | Propriété | Valeur | Unité |
 |-----------|--------|-------|
-| Tension de surface σ | 40×10⁻³ | N/m |
+| Tension de surface σ | 40×10⁻³ | mN/m |
 | Épaisseur interface ε | 5×10⁻⁶ | m |
 | Mobilité interface γ | 1 | - |
 
@@ -211,19 +211,19 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 | Élément | Paramètre | Valeur | Unité |
 |---------|-----------|--------|-------|
-| Puit | Diamètre D_w | 0.8 | mm |
+| Puit | Diamètre D_w | 0.8 à 1.5 | mm |
 | | Hauteur h_w | 0.128 | mm |
 | | Volume V_w | 64.3 | nL |
-| Seringue | Diamètre D_s | 0.20 | mm |
-| | Distance Δz | 30 | μm |
-| | Ratio surface | 0.8 | - |
+| Seringue | Diamètre D_s | 0.20 à 0.30 | mm |
+| | Distance Δz | 0 | μm |
+| | Ratio surface | 0.8 | - | (soit 80% du remplissage du well)
 
 ### 3.4 Paramètres de process
 
 | Paramètre | Symbole | Valeur | Unité |
 |-----------|---------|--------|-------|
-| Temps de dispense | t_dispense | 100 | ms |
+| Temps de dispense | t_dispense | 40 | ms |
 | Vitesse initiale | v₀ | 0.1 | m/s |
-| Pression initiale | p₀ | 700 | Pa |
-| Objectif remplissage | α_cible | 80 | % |
+| Pression initiale | p₀ | 700 | Pa | (non utilisée dans le modèle)
+| Remplissage | 80 | % |
 

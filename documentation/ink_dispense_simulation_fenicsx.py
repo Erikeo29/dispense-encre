@@ -1,74 +1,3 @@
-
-## 4. MÉTHODE NUMÉRIQUE
-
-### 4.1 Discrétisation spatiale
-
-Le domaine Ω est discrétisé par éléments finis avec :
-- Éléments P₂ pour la vitesse (polynômes quadratiques)
-- Éléments P₁ pour la pression (polynômes linéaires)
-- Éléments P₁ pour la fonction level-set
-
-Cette combinaison (P₂-P₁) satisfait la condition inf-sup pour la stabilité.
-
-### 4.2 Discrétisation temporelle
-
-Schéma de Crank-Nicolson (θ = 0.5) :
-$$\frac{\mathbf{v}^{n+1} - \mathbf{v}^n}{\Delta t} = \theta \mathcal{F}(\mathbf{v}^{n+1}) + (1-\theta)\mathcal{F}(\mathbf{v}^n)$$
-
-avec Δt = 10⁻⁴ s choisi pour satisfaire CFL < 0.5 :
-$$\text{CFL} = \frac{|\mathbf{v}|_{\max} \Delta t}{h} < 0.5$$
-
-où h est la taille caractéristique de maille.
-
-### 4.3 Algorithme de résolution
-
-```
-ALGORITHME : Simulation diphasique Phase-Field
-------------------------------------------------
-1. INITIALISATION
-   - Créer maillage avec raffinement près de l'interface
-   - Initialiser v = 0, p = 0, φ = φ₀
-   
-2. BOUCLE TEMPORELLE : pour t = 0 à T
-   
-   2.1 TRANSPORT INTERFACE
-       - Résoudre équation Phase-Field pour φⁿ⁺¹
-       - Réinitialiser distance signée si nécessaire
-   
-   2.2 MISE À JOUR PROPRIÉTÉS
-       - Calculer ρ(φⁿ⁺¹), η(φⁿ⁺¹, γ̇ⁿ)
-       - Calculer F_σ depuis φⁿ⁺¹
-   
-   2.3 RÉSOLUTION NAVIER-STOKES (algorithme SIMPLE)
-       a. Prédiction vitesse v*
-          Résoudre : ρ(v* - vⁿ)/Δt + ρ(vⁿ·∇)v* = -∇pⁿ + ∇·τⁿ + F
-       
-       b. Correction pression
-          Résoudre : ∇²p' = (ρ/Δt)∇·v*
-       
-       c. Correction vitesse
-          vⁿ⁺¹ = v* - (Δt/ρ)∇p'
-          pⁿ⁺¹ = pⁿ + p'
-   
-   2.4 VÉRIFICATION CONVERGENCE
-       - ||vⁿ⁺¹ - vⁿ||/||vⁿ|| < 10⁻⁶
-       - ||∇·vⁿ⁺¹|| < 10⁻⁸
-   
-   2.5 CALCUL MÉTRIQUES
-       - Taux de remplissage : α = ∫_Ω H(φ)dΩ / V_puit
-       - Si α ≥ 0.8 : STOP
-   
-3. POST-TRAITEMENT
-   - Export résultats (VTK/XDMF)
-   - Analyse statistique
-```
-
----
-
-## 5. IMPLÉMENTATION PYTHON
-
-### 5.1 Structure modulaire du code
-
 #!/usr/bin/env python3
 """
 Simulation de dispense
@@ -84,6 +13,8 @@ from mpi4py import MPI
 from petsc4py import PETSc
 from dolfinx import fem, mesh, io, plot, default_scalar_type
 from dolfinx.fem import Function, functionspace, dirichletbc, locate_dofs_topological, form, assemble_scalar
+from dolfinx.fem.petsc import NonlinearProblem
+from dolfinx.nls.petsc import NewtonSolver
 from dolfinx.mesh import locate_entities_boundary, meshtags, create_rectangle, CellType
 from dolfinx.io import XDMFFile
 import ufl
@@ -152,10 +83,11 @@ class InkDispenseSimulation:
         self.v_inlet = self.flow_rate / (np.pi * (self.D_needle/2)**2)  # vitesse entrée
 
         # ========== Paramètres numériques ==========
-        self.dt = params.get('dt', 1e-4)                   # pas de temps [s]
-        self.T_final = params.get('T_final', 0.1)          # temps final [s]
-        self.tol = params.get('tol', 1e-6)                 # tolérance convergence
-        self.mesh_resolution = params.get('mesh_res', 40)  # résolution maillage
+        self.dt = params.get('dt', 1e-4)                    # pas de temps [s]
+        self.T_final = params.get('T_final', 0.1)           # temps final [s]
+        self.tol = params.get('tol', 1e-6)                  # tolérance convergence
+        self.mesh_resolution = params.get('mesh_res', 40)   # résolution maillage
+        self.newton_damping = params.get('newton_damping', 1.0)  # damping Newton
 
         # ========== Paramètres export ==========
         self.output_dir = params.get('output_dir', 'simulation_results')
@@ -295,12 +227,13 @@ class InkDispenseSimulation:
 
         return u, p, phi
 
-    def setup_variational_problem(self, W, u_n, p_n, phi_n):
+    def setup_variational_problem(self, W, w, u_n, p_n, phi_n):
         """
         Configuration du problème variationnel pour le système couplé.
 
         Args:
             W: Espace mixte
+            w: Fonction inconnue (mélange vitesse/pression/level-set)
             u_n, p_n, phi_n: Solutions au pas de temps précédent
 
         Returns:
@@ -308,7 +241,6 @@ class InkDispenseSimulation:
         """
         # Fonctions test et inconnues
         (v, q, xi) = ufl.TestFunctions(W)
-        w = Function(W)
         (u, p, phi) = ufl.split(w)
 
         # ========== Tenseur des déformations ==========
@@ -379,19 +311,19 @@ class InkDispenseSimulation:
 
         return J, F
 
-    def apply_boundary_conditions(self, W, domain):
+    def apply_boundary_conditions(self, W, V, domain):
         """
         Application des conditions aux limites.
 
         Args:
             W: Espace mixte
+            V: Espace vitesse correspondant
             domain: Maillage
 
         Returns:
             bcs: Liste des conditions de Dirichlet
         """
-        V, Q, S = W.sub(0), W.sub(1), W.sub(2)
-
+        V_mixed = W.sub(0)
         bcs = []
 
         # ========== Condition d'entrée (inlet) ==========
@@ -412,34 +344,36 @@ class InkDispenseSimulation:
         # Localiser les dofs d'entrée
         fdim = domain.topology.dim - 1
         inlet_facets = locate_entities_boundary(domain, fdim, self.boundary_conditions['inlet'])
-        inlet_dofs = locate_dofs_topological((V.sub(0).collapse()[0], V.sub(0)), fdim, inlet_facets)
+        inlet_dofs = locate_dofs_topological((V_mixed, V), fdim, inlet_facets)
 
         u_inlet = Function(V)
         u_inlet.interpolate(inlet_velocity_expr)
-        bc_inlet = dirichletbc(u_inlet, inlet_dofs, V)
+        bc_inlet = dirichletbc(u_inlet, inlet_dofs, V_mixed)
         bcs.append(bc_inlet)
 
         # ========== Condition de non-glissement sur les parois ==========
         # Paroi gauche (axe de symétrie)
         axis_facets = locate_entities_boundary(domain, fdim, self.boundary_conditions['axis'])
-        axis_dofs_r = locate_dofs_topological((V.sub(0).collapse()[0], V.sub(0)), fdim, axis_facets)
-        bc_axis = dirichletbc(default_scalar_type(0), axis_dofs_r, V.sub(0))
+        axis_dofs = locate_dofs_topological((V_mixed, V), fdim, axis_facets)
+        u_axis = Function(V)
+        u_axis.x.array[:] = 0
+        bc_axis = dirichletbc(u_axis, axis_dofs, V_mixed)
         bcs.append(bc_axis)
 
         # Paroi droite
         wall_facets = locate_entities_boundary(domain, fdim, self.boundary_conditions['wall'])
-        wall_dofs = locate_dofs_topological(V, fdim, wall_facets)
+        wall_dofs = locate_dofs_topological((V_mixed, V), fdim, wall_facets)
         u_wall = Function(V)
         u_wall.x.array[:] = 0
-        bc_wall = dirichletbc(u_wall, wall_dofs)
+        bc_wall = dirichletbc(u_wall, wall_dofs, V_mixed)
         bcs.append(bc_wall)
 
         # Fond
         bottom_facets = locate_entities_boundary(domain, fdim, self.boundary_conditions['bottom'])
-        bottom_dofs = locate_dofs_topological(V, fdim, bottom_facets)
+        bottom_dofs = locate_dofs_topological((V_mixed, V), fdim, bottom_facets)
         u_bottom = Function(V)
         u_bottom.x.array[:] = 0
-        bc_bottom = dirichletbc(u_bottom, bottom_dofs)
+        bc_bottom = dirichletbc(u_bottom, bottom_dofs, V_mixed)
         bcs.append(bc_bottom)
 
         # ========== Angle de contact (Robin BC pour φ) ==========
@@ -462,15 +396,16 @@ class InkDispenseSimulation:
             Convergence (bool)
         """
         # Configuration du solveur Newton
-        problem = fem.petsc.NonlinearProblem(F, w, bcs=bcs, J=J)
-        solver = fem.petsc.NewtonSolver(MPI.COMM_WORLD, problem)
+        problem = NonlinearProblem(F, w, bcs=bcs, J=J)
+        solver = NewtonSolver(MPI.COMM_WORLD, problem)
 
         # Paramètres du solveur
         solver.convergence_criterion = "incremental"
         solver.rtol = self.tol
         solver.atol = 1e-10
-        solver.max_it = 20
+        solver.max_it = 40
         solver.report = True
+        solver.relaxation_parameter = self.newton_damping
 
         # Configuration du solveur linéaire
         ksp = solver.krylov_solver
@@ -611,11 +546,11 @@ class InkDispenseSimulation:
 
         # Problème variationnel
         print("Configuration du problème variationnel...")
-        J, F = self.setup_variational_problem(W, u_n, p_n, phi_n)
+        J, F = self.setup_variational_problem(W, w, u_n, p_n, phi_n)
 
         # Conditions aux limites
         print("Application des conditions aux limites...")
-        bcs = self.apply_boundary_conditions(W, domain)
+        bcs = self.apply_boundary_conditions(W, V, domain)
 
         # Boucle temporelle
         t = 0
@@ -786,8 +721,10 @@ if __name__ == "__main__":
         'angle_right': 45,
         'angle_eg': 30,
         'angle_gold': 60,
-        'T_final': 0.02,                 # 20 ms pour test rapide
-        'dt': 1e-4,
+        'T_final': 0.001,                # 1 ms pour test rapide
+        'dt': 1e-5,
+        'newton_damping': 0.3,
+        'flow_rate': 0.0,
         'mesh_res': 25,                  # Résolution réduite pour test
         'export_step': 5
     }

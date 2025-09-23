@@ -1,6 +1,6 @@
-# 💧 Simulation de Dispense d'Encre Ag/AgCl
+# 💧 Simulation de Dispensing
 
-Application Streamlit pour simuler et visualiser la dispense d'encre conductrice Ag/AgCl dans des puits microfluidiques.
+Application Streamlit pour simuler et visualiser la dispense.
 
 ## 🎯 Fonctionnalités
 
@@ -15,8 +15,8 @@ Application Streamlit pour simuler et visualiser la dispense d'encre conductrice
 
 ```bash
 # Cloner le repository
-git clone https://github.com/[votre-username]/dispense-encre-agagcl.git
-cd dispense-encre-agagcl
+git clone https://github.com/[votre-username]/dispensing.git
+cd dispensing
 
 # Installer les dépendances
 pip install -r requirements.txt
@@ -47,7 +47,7 @@ Modifiez `gif_mapping.csv` pour ajouter de nouvelles simulations :
 - **Diamètre du puit** : 800-1200 µm
 - **Diamètre de la buse** : 100-200 µm
 - **Shifts X/Z** : Positionnement de la buse
-- **Viscosité** : 10-30 Pa.s
+- **Viscosité** : 0.5-10 Pa.s
 - **Angles de contact** : 30-90°
 
 ## 📝 License
