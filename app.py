@@ -84,6 +84,18 @@ def hide_streamlit_branding():
     /* Forcer le masquage de tous les boutons flottants */
     div[class*="viewerBadge"] {display: none !important;}
     a[class*="viewerBadge"] {display: none !important;}
+
+    /* Masquer plus agressivement le bouton GitHub */
+    .styles_viewerBadge__CvC9N {display: none !important;}
+    .styles_viewerBadgeContainer__LdptP {display: none !important;}
+    .styles_viewerBadgeButton__4QdPM {display: none !important;}
+
+    /* Masquer les boutons en position fixe en bas à droite */
+    div[style*="position: fixed"][style*="bottom"] {display: none !important;}
+    a[style*="position: fixed"][style*="bottom"] {display: none !important;}
+
+    /* Masquer tout lien flottant */
+    a[target="_blank"][style*="position"] {display: none !important;}
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -141,14 +153,14 @@ def simulation_page():
 
                 viscosite_encre_1 = st.selectbox(
                     "Viscosité (Pa.s)",
-                    options=[1.5, 5.0],
+                    options=[5.0, 1.5],
                     key="visc_1"
                 )
 
             with col1_3:
                 angle_contact_1 = st.selectbox(
                     "Angle contact paroi droite (°)",
-                    options=[35, 90],
+                    options=[90, 35],
                     key="angle_1"
                 )
 
@@ -209,14 +221,14 @@ def simulation_page():
 
                 viscosite_encre_2 = st.selectbox(
                     "Viscosité (Pa.s)",
-                    options=[1.5, 5.0],
+                    options=[5.0, 1.5],
                     key="visc_2"
                 )
 
             with col2_3:
                 angle_contact_2 = st.selectbox(
                     "Angle contact paroi droite (°)",
-                    options=[35, 90],
+                    options=[90, 35],
                     key="angle_2"
                 )
 
@@ -248,11 +260,10 @@ def simulation_page():
         else:
             st.info("Configurez les paramètres et cliquez sur LANCER")
 
-    # Bouton unique pour lancer les deux simulations
-    st.markdown("---")
+    # Bouton unique pour lancer les deux simulations (sous les champs déroulants)
     col_left, col_center, col_right = st.columns([1, 1, 1])
-
     with col_center:
+        st.markdown("")  # Espacement
         if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
             # Lancer les deux simulations simultanément
             st.session_state.sim1_running = True
@@ -262,6 +273,7 @@ def simulation_page():
             st.rerun()
 
     # Section informations
+    st.markdown("---")
     st.markdown("---")
     with st.expander("ℹ️ Combinaisons disponibles"):
         st.markdown("""
