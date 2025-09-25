@@ -121,12 +121,12 @@ def simulation_page():
     sim1_params = None
     sim2_params = None
 
-    # Créer deux colonnes pour les simulations
-    sim1, sim2 = st.columns(2)
+    # Section des paramètres
+    st.markdown("#### Configuration des paramètres")
+    param_col1, param_col2 = st.columns(2)
 
-    with sim1:
+    with param_col1:
         st.subheader("📊 Simulation 1")
-
         with st.expander("Paramètres", expanded=True):
             # Diviser en 3 colonnes pour les paramètres
             col1_1, col1_2, col1_3 = st.columns(3)
@@ -173,28 +173,8 @@ def simulation_page():
         # Stocker les paramètres de la simulation 1
         sim1_params = (diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1, angle_contact_1, angle_or_1)
 
-        # Affichage du résultat de la simulation 1
-        if 'sim1_running' in st.session_state and st.session_state.sim1_running:
-            params = st.session_state.sim1_params
-            gif_mapping = load_gif_mapping()
-
-            if params in gif_mapping:
-                gif_file = gif_mapping[params]
-                gif_html = load_gif(gif_file)
-
-                if gif_html:
-                    st.markdown(gif_html, unsafe_allow_html=True)
-                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
-                else:
-                    st.error(f"Fichier GIF non trouvé: {gif_file}")
-            else:
-                st.warning(f"Aucune simulation disponible pour ces paramètres: Puit={params[0]}µm, Buse={params[1]}µm, Shift={params[2]}µm, Viscosité={params[3]}Pa.s")
-        else:
-            st.info("Configurez les paramètres et cliquez sur LANCER")
-
-    with sim2:
+    with param_col2:
         st.subheader("📊 Simulation 2")
-
         with st.expander("Paramètres", expanded=True):
             # Diviser en 3 colonnes pour les paramètres
             col2_1, col2_2, col2_3 = st.columns(3)
@@ -241,6 +221,46 @@ def simulation_page():
         # Stocker les paramètres de la simulation 2
         sim2_params = (diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2, angle_contact_2, angle_or_2)
 
+    # Bouton unique pour lancer les deux simulations (JUSTE APRÈS LES PARAMÈTRES)
+    st.markdown("")  # Petit espacement
+    col_left, col_center, col_right = st.columns([1, 1, 1])
+    with col_center:
+        if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
+            # Lancer les deux simulations simultanément
+            st.session_state.sim1_running = True
+            st.session_state.sim1_params = sim1_params
+            st.session_state.sim2_running = True
+            st.session_state.sim2_params = sim2_params
+            st.rerun()
+
+    # Section des résultats
+    st.markdown("---")
+    st.markdown("#### Résultats des simulations")
+    results_col1, results_col2 = st.columns(2)
+
+    with results_col1:
+        st.subheader("📊 Résultat Simulation 1")
+        # Affichage du résultat de la simulation 1
+        if 'sim1_running' in st.session_state and st.session_state.sim1_running:
+            params = st.session_state.sim1_params
+            gif_mapping = load_gif_mapping()
+
+            if params in gif_mapping:
+                gif_file = gif_mapping[params]
+                gif_html = load_gif(gif_file)
+
+                if gif_html:
+                    st.markdown(gif_html, unsafe_allow_html=True)
+                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
+                else:
+                    st.error(f"Fichier GIF non trouvé: {gif_file}")
+            else:
+                st.warning(f"Aucune simulation disponible pour ces paramètres")
+        else:
+            st.info("Configurez les paramètres et cliquez sur LANCER")
+
+    with results_col2:
+        st.subheader("📊 Résultat Simulation 2")
         # Affichage du résultat de la simulation 2
         if 'sim2_running' in st.session_state and st.session_state.sim2_running:
             params = st.session_state.sim2_params
@@ -256,24 +276,11 @@ def simulation_page():
                 else:
                     st.error(f"Fichier GIF non trouvé: {gif_file}")
             else:
-                st.warning(f"Aucune simulation disponible pour ces paramètres: Puit={params[0]}µm, Buse={params[1]}µm, Shift={params[2]}µm, Viscosité={params[3]}Pa.s")
+                st.warning(f"Aucune simulation disponible pour ces paramètres")
         else:
             st.info("Configurez les paramètres et cliquez sur LANCER")
 
-    # Bouton unique pour lancer les deux simulations (sous les champs déroulants)
-    col_left, col_center, col_right = st.columns([1, 1, 1])
-    with col_center:
-        st.markdown("")  # Espacement
-        if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
-            # Lancer les deux simulations simultanément
-            st.session_state.sim1_running = True
-            st.session_state.sim1_params = sim1_params
-            st.session_state.sim2_running = True
-            st.session_state.sim2_params = sim2_params
-            st.rerun()
-
     # Section informations
-    st.markdown("---")
     st.markdown("---")
     with st.expander("ℹ️ Combinaisons disponibles"):
         st.markdown("""
@@ -281,11 +288,13 @@ def simulation_page():
         - **Diamètre du puit**: 800, 1000, 1500 µm
         - **Diamètre de la buse**: 200, 250, 300 µm
         - **Shift buse en X**: 0, -75, -150 µm
-        - **Viscosité**: 1.5 Pa.s (série A: gif_a1-a27) ou 5.0 Pa.s (série B: gif_b1-b18)
+        - **Viscosité**: 1.5 ou 5.0 Pa.s
+        - **Angle contact paroi droite**: 35° ou 90°
+        - **Angle contact or**: 35° ou 75°
 
-        ### Total de simulations disponibles: 45 GIFs
-        - Série A (viscosité 1.5 Pa.s): 27 simulations (gif_a1 à gif_a27)
-        - Série B (viscosité 5.0 Pa.s): 18 simulations (gif_b1 à gif_b18)
+        ### Total de simulations disponibles: 109 GIFs
+        - 3 diamètres de puit × 3 diamètres de buse × 3 shifts X
+        - × 2 viscosités × 2 angles paroi × 2 angles or (partiel)
         """)
 
         # Afficher le mapping actuel
