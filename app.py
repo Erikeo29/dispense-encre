@@ -19,7 +19,7 @@ def load_gif_mapping():
         # Créer un dictionnaire avec les paramètres comme clé et le nom du fichier GIF comme valeur
         mapping = {}
         for _, row in df.iterrows():
-            # Clé : tuple (diamètre_puit, diamètre_buse, shift_x, viscosité, angle_contact_paroi, angle_contact_or)
+            # Clé : tuple (diamètre_puit, diamètre_buse, shift_x, viscosité, angle_contact, angle_contact_or)
             key = (
                 int(row['diamètre du puit (µm)']),
                 int(row['diamètre de la buse (µm)']),
@@ -68,7 +68,22 @@ def hide_streamlit_branding():
     ._container_badge {display: none;}
 
     /* Masquer tous les liens vers GitHub */
-    [href*="github"] {display: none;}
+    [href*="github"] {display: none !important;}
+
+    /* Masquer spécifiquement le bouton GitHub en bas à droite */
+    .viewerBadge_container__r5tak {display: none !important;}
+    .viewerBadge_link__qRIco {display: none !important;}
+
+    /* Masquer l'icône fork/étoile GitHub */
+    button[kind="header"] {display: none !important;}
+
+    /* Masquer tout élément avec data-testid contenant github */
+    [data-testid*="github"] {display: none !important;}
+    [data-testid="viewerBadge"] {display: none !important;}
+
+    /* Forcer le masquage de tous les boutons flottants */
+    div[class*="viewerBadge"] {display: none !important;}
+    a[class*="viewerBadge"] {display: none !important;}
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -89,6 +104,10 @@ def simulation_page():
     st.title("💧 Simulation de dispense d'encre")
     st.markdown("### Comparez jusqu'à 2 simulations simultanément")
     st.markdown("---")
+
+    # Variables pour stocker les paramètres
+    sim1_params = None
+    sim2_params = None
 
     # Créer deux colonnes pour les simulations
     sim1, sim2 = st.columns(2)
@@ -139,11 +158,8 @@ def simulation_page():
                     key="angle_or_1"
                 )
 
-            if st.button("🚀 Lancer", key="btn_sim1", type="primary", use_container_width=True):
-                st.session_state.sim1_running = True
-                st.session_state.sim1_params = (
-                    diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1, angle_contact_1, angle_or_1
-                )
+        # Stocker les paramètres de la simulation 1
+        sim1_params = (diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1, angle_contact_1, angle_or_1)
 
         # Affichage du résultat de la simulation 1
         if 'sim1_running' in st.session_state and st.session_state.sim1_running:
@@ -162,7 +178,7 @@ def simulation_page():
             else:
                 st.warning(f"Aucune simulation disponible pour ces paramètres: Puit={params[0]}µm, Buse={params[1]}µm, Shift={params[2]}µm, Viscosité={params[3]}Pa.s")
         else:
-            st.info("Sélectionnez les paramètres et lancez la simulation")
+            st.info("Configurez les paramètres et cliquez sur LANCER")
 
     with sim2:
         st.subheader("📊 Simulation 2")
@@ -210,11 +226,8 @@ def simulation_page():
                     key="angle_or_2"
                 )
 
-            if st.button("🚀 Lancer", key="btn_sim2", type="primary", use_container_width=True):
-                st.session_state.sim2_running = True
-                st.session_state.sim2_params = (
-                    diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2, angle_contact_2, angle_or_2
-                )
+        # Stocker les paramètres de la simulation 2
+        sim2_params = (diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2, angle_contact_2, angle_or_2)
 
         # Affichage du résultat de la simulation 2
         if 'sim2_running' in st.session_state and st.session_state.sim2_running:
@@ -233,7 +246,20 @@ def simulation_page():
             else:
                 st.warning(f"Aucune simulation disponible pour ces paramètres: Puit={params[0]}µm, Buse={params[1]}µm, Shift={params[2]}µm, Viscosité={params[3]}Pa.s")
         else:
-            st.info("Sélectionnez les paramètres et lancez la simulation")
+            st.info("Configurez les paramètres et cliquez sur LANCER")
+
+    # Bouton unique pour lancer les deux simulations
+    st.markdown("---")
+    col_left, col_center, col_right = st.columns([1, 1, 1])
+
+    with col_center:
+        if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
+            # Lancer les deux simulations simultanément
+            st.session_state.sim1_running = True
+            st.session_state.sim1_params = sim1_params
+            st.session_state.sim2_running = True
+            st.session_state.sim2_params = sim2_params
+            st.rerun()
 
     # Section informations
     st.markdown("---")
@@ -351,6 +377,15 @@ def main():
     if not os.path.exists("documentation"):
         st.sidebar.error("⚠️ Dossier 'documentation' non trouvé!")
 
+    # Afficher le total de simulations disponibles
+    try:
+        mapping = load_gif_mapping()
+        if mapping:
+            st.sidebar.success(f"✅ {len(mapping)} simulations chargées")
+    except:
+        st.sidebar.warning("⚠️ Problème de chargement des simulations")
+
+    # Router vers la page sélectionnée
     if page == "💧 Simulation":
         simulation_page()
     elif page == "📚 Physique":
