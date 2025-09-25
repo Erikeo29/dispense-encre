@@ -19,12 +19,14 @@ def load_gif_mapping():
         # Créer un dictionnaire avec les paramètres comme clé et le nom du fichier GIF comme valeur
         mapping = {}
         for _, row in df.iterrows():
-            # Clé : tuple (diamètre_puit, diamètre_buse, shift_x, viscosité)
+            # Clé : tuple (diamètre_puit, diamètre_buse, shift_x, viscosité, angle_contact_paroi, angle_contact_or)
             key = (
                 int(row['diamètre du puit (µm)']),
                 int(row['diamètre de la buse (µm)']),
                 int(row['shift buse en x (µm)']),
-                float(str(row['Viscosité de l\'encre (Pa.s)']).replace(',', '.'))
+                float(str(row['Viscosité de l\'encre (Pa.s)']).replace(',', '.')),
+                int(row['CA wall right']),
+                int(row['CA gold'])
             )
             # Valeur : chemin complet du fichier GIF
             mapping[key] = f"gif/{row['nom fichier gif']}"
@@ -65,11 +67,10 @@ def simulation_page():
         st.subheader("📊 Simulation 1")
 
         with st.expander("Paramètres", expanded=True):
-            # Diviser en 2 colonnes pour les paramètres
-            col1_1, col1_2 = st.columns(2)
+            # Diviser en 3 colonnes pour les paramètres
+            col1_1, col1_2, col1_3 = st.columns(3)
 
             with col1_1:
-                st.markdown("**Paramètres de simulation**")
                 diametre_puit_1 = st.selectbox(
                     "Diamètre puit (µm)",
                     options=[800, 1000, 1500],
@@ -83,7 +84,6 @@ def simulation_page():
                 )
 
             with col1_2:
-                st.markdown("**Paramètres additionnels**")
                 shift_buse_x_1 = st.selectbox(
                     "Shift X (µm)",
                     options=[0, -75, -150],
@@ -96,10 +96,23 @@ def simulation_page():
                     key="visc_1"
                 )
 
+            with col1_3:
+                angle_contact_1 = st.selectbox(
+                    "Angle contact paroi droite (°)",
+                    options=[35, 90],
+                    key="angle_1"
+                )
+
+                angle_or_1 = st.selectbox(
+                    "Angle contact or (°)",
+                    options=[35, 75],
+                    key="angle_or_1"
+                )
+
             if st.button("🚀 Lancer", key="btn_sim1", type="primary", use_container_width=True):
                 st.session_state.sim1_running = True
                 st.session_state.sim1_params = (
-                    diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1
+                    diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1, angle_contact_1, angle_or_1
                 )
 
         # Affichage du résultat de la simulation 1
@@ -113,7 +126,7 @@ def simulation_page():
 
                 if gif_html:
                     st.markdown(gif_html, unsafe_allow_html=True)
-                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s")
+                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
                 else:
                     st.error(f"Fichier GIF non trouvé: {gif_file}")
             else:
@@ -125,11 +138,10 @@ def simulation_page():
         st.subheader("📊 Simulation 2")
 
         with st.expander("Paramètres", expanded=True):
-            # Diviser en 2 colonnes pour les paramètres
-            col2_1, col2_2 = st.columns(2)
+            # Diviser en 3 colonnes pour les paramètres
+            col2_1, col2_2, col2_3 = st.columns(3)
 
             with col2_1:
-                st.markdown("**Paramètres de simulation**")
                 diametre_puit_2 = st.selectbox(
                     "Diamètre puit (µm)",
                     options=[800, 1000, 1500],
@@ -143,7 +155,6 @@ def simulation_page():
                 )
 
             with col2_2:
-                st.markdown("**Paramètres additionnels**")
                 shift_buse_x_2 = st.selectbox(
                     "Shift X (µm)",
                     options=[0, -75, -150],
@@ -156,10 +167,23 @@ def simulation_page():
                     key="visc_2"
                 )
 
+            with col2_3:
+                angle_contact_2 = st.selectbox(
+                    "Angle contact paroi droite (°)",
+                    options=[35, 90],
+                    key="angle_2"
+                )
+
+                angle_or_2 = st.selectbox(
+                    "Angle contact or (°)",
+                    options=[35, 75],
+                    key="angle_or_2"
+                )
+
             if st.button("🚀 Lancer", key="btn_sim2", type="primary", use_container_width=True):
                 st.session_state.sim2_running = True
                 st.session_state.sim2_params = (
-                    diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2
+                    diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2, angle_contact_2, angle_or_2
                 )
 
         # Affichage du résultat de la simulation 2
@@ -173,7 +197,7 @@ def simulation_page():
 
                 if gif_html:
                     st.markdown(gif_html, unsafe_allow_html=True)
-                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s")
+                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
                 else:
                     st.error(f"Fichier GIF non trouvé: {gif_file}")
             else:
