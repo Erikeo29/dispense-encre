@@ -1,12 +1,15 @@
 [theme]
-primaryColor = "#FF4B4B"
+primaryColor = "#1f77b4"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
 textColor = "#262730"
 
 [browser]
+# Désactiver la collecte de statistiques
 gatherUsageStats = false
 
-[ui]
-hideTopBar = false
-hideSidebarNav = false
+[client]
+# Masquer le menu hamburger complet (incluant les liens GitHub)
+showSidebarNavigation = false
+# Mode minimal pour la toolbar
+toolbarMode = "minimal"

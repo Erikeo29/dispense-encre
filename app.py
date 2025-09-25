@@ -45,6 +45,34 @@ def load_gif(gif_path):
     except FileNotFoundError:
         return None
 
+def hide_streamlit_branding():
+    """Injecte CSS pour masquer tous les éléments Streamlit indésirables"""
+    hide_streamlit_style = """
+    <style>
+    /* Masquer le menu hamburger */
+    #MainMenu {visibility: hidden;}
+
+    /* Masquer le footer "Made with Streamlit" */
+    footer {visibility: hidden;}
+
+    /* Masquer le header avec les liens GitHub */
+    header {visibility: hidden;}
+
+    /* Masquer le bouton de déploiement */
+    .stDeployButton {display: none;}
+
+    /* Masquer la toolbar */
+    .stToolbar {display: none;}
+
+    /* Masquer le viewer badge */
+    ._container_badge {display: none;}
+
+    /* Masquer tous les liens vers GitHub */
+    [href*="github"] {display: none;}
+    </style>
+    """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 def load_markdown_file(filepath):
     """Charge le contenu d'un fichier markdown."""
     try:
@@ -56,6 +84,8 @@ def load_markdown_file(filepath):
         return f"⚠️ Erreur lors de la lecture du fichier: {str(e)}"
 
 def simulation_page():
+    hide_streamlit_branding()
+
     st.title("💧 Simulation de dispense d'encre")
     st.markdown("### Comparez jusqu'à 2 simulations simultanément")
     st.markdown("---")
@@ -228,6 +258,7 @@ def simulation_page():
             st.warning("Impossible de charger le mapping des simulations")
 
 def physics_page():
+    hide_streamlit_branding()
     st.title("📚 Physique de la dispense d'encre")
     st.markdown("---")
 
@@ -238,6 +269,7 @@ def physics_page():
     st.markdown(physics_content)
 
 def code_page():
+    hide_streamlit_branding()
     st.title("💻 Code Python de simulation")
     st.markdown("---")
 
@@ -271,6 +303,9 @@ def code_page():
         st.markdown(code_content)
 
 def main():
+    # Masquer les éléments Streamlit dès le début
+    hide_streamlit_branding()
+
     st.sidebar.title("🧭 Navigation")
 
     page = st.sidebar.radio(
