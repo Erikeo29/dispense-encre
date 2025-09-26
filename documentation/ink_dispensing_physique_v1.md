@@ -60,10 +60,10 @@
 ### 1.1 Système étudié
 
 Le système considéré est un écoulement diphasique incompressible dans un domaine microfluidique, comprenant :
-- **Phase 1** : Encre Ag/AgCl (fluide non-Newtonien)
+- **Phase 1** : Encre (fluide non-Newtonien)
 - **Phase 2** : Air ambiant (fluide Newtonien)
 - **Domaine** : Puit cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
-- **Source** : Seringue de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 0 μm au-dessus du puit
+- **Source** : Seringue de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du puit
 
 ### 1.2 Hypothèses fondamentales
 
@@ -116,7 +116,7 @@ $$\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}} = \sqrt{2\sum_{i,j} D_{ij}D_{ij}}
 
 ### 2.2 Modèle rhéologique de Carreau
 
-La viscosité de l'encre Ag/AgCl suit le modèle de Carreau :
+La viscosité de l'encre suit le modèle de Carreau :
 $$\eta_1(\dot{\gamma}) = \eta_{\infty} + (\eta_0 - \eta_{\infty})\left[1 + (\lambda\dot{\gamma})^2\right]^{\frac{n-1}{2}}$$
 
 avec les paramètres :
@@ -164,7 +164,7 @@ Sur les parois mouillées, la normale à l'interface satisfait :
 $$\mathbf{n}_w \cdot \nabla \phi = -\frac{1}{\varepsilon}\cos(\theta) \quad \text{sur } \Gamma_{\text{paroi}}$$
 
 avec θ l'angle de contact statique :
-- θ_or = 35 à 70° sur l'électrode d'or
+- θ_or = 35 à 75° sur l'électrode d'or
 - θ_wall_EG = 35 à 90°
 - θ_paroi_EG = 35 à 90° 
 - θ_haut = 180° sur la surface supérieure (pas de mouillage sur le piston)
@@ -191,11 +191,11 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 ### 3.1 Propriétés des fluides
 
-| Propriété | Encre Ag/AgCl (Phase 1) | Air (Phase 2) | Unité |
+| Propriété | Encre (Phase 1) | Air (Phase 2) | Unité |
 |-----------|-------------------------|---------------|-------|
-| Masse volumique ρ | 2200 kg/m³ |
-| Viscosité η₀ | 0.5 à 5 Pa·s |
-| Viscosité η_∞ | 0.05 | - | Pa·s |
+| Masse volumique ρ | 3000 kg/m³ |
+| Viscosité η₀ | 1.5 à 5 Pa·s |
+| Viscosité η_∞ | 0.5 | - | Pa·s |
 | Temps relaxation λ | 0.15 | - | s |
 | Indice n | 0.7 | - | - |
 
@@ -215,7 +215,7 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 | | Hauteur h_w | 0.128 | mm |
 | | Volume V_w | 64.3 | nL |
 | Seringue | Diamètre D_s | 0.20 à 0.30 | mm |
-| | Distance Δz | 0 | μm |
+| | Distance Δz | +30 | μm |
 | | Ratio surface | 0.8 | - | (soit 80% du remplissage du well)
 
 ### 3.4 Paramètres de process
