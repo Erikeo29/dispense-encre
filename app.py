@@ -225,7 +225,7 @@ def simulation_page():
     st.markdown("")  # Petit espacement
     col_left, col_center, col_right = st.columns([1, 1, 1])
     with col_center:
-        if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
+        if st.button("LANCER LES SIMULATIONS", type="primary", use_container_width=True):
             # Lancer les deux simulations simultanément
             st.session_state.sim1_running = True
             st.session_state.sim1_params = sim1_params
