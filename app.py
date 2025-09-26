@@ -398,14 +398,7 @@ def main():
     if not os.path.exists("documentation"):
         st.sidebar.error("⚠️ Dossier 'documentation' non trouvé!")
 
-    # Afficher le total de simulations disponibles
-    try:
-        mapping = load_gif_mapping()
-        if mapping:
-            st.sidebar.success(f"✅ {len(mapping)} simulations chargées")
-    except:
-        st.sidebar.warning("⚠️ Problème de chargement des simulations")
-
+  
     # Router vers la page sélectionnée
     if page == "💧 Simulation":
         simulation_page()
