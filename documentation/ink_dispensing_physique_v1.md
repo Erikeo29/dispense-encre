@@ -63,7 +63,7 @@ Le système considéré est un écoulement diphasique incompressible dans un dom
 - **Phase 1** : Encre (fluide non-Newtonien)
 - **Phase 2** : Air ambiant (fluide Newtonien)
 - **Domaine** : Puit cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
-- **Source** : Seringue de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du puit
+- **Source** : Buse de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du puit
 
 ### 1.2 Hypothèses fondamentales
 
@@ -86,7 +86,7 @@ $\nabla \cdot \mathbf{v} = 0 \quad \text{dans } \Omega \times [0,T]$
 
 où :
 - **v** = (u, v) est le vecteur vitesse avec u et v les composantes selon x et y respectivement
-- **Ω** est le domaine spatial (géométrie du puit et seringue)
+- **Ω** est le domaine spatial (géométrie du puit et buse)
 - **[0,T]** est l'intervalle temporel avec T = 0.1 s
 - **Ω × [0,T]** signifie "en tout point de l'espace et à tout instant"
 
@@ -193,8 +193,8 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 | Propriété | Encre (Phase 1) | Air (Phase 2) | Unité |
 |-----------|-------------------------|---------------|-------|
-| Masse volumique ρ | 3000 kg/m³ |
-| Viscosité η₀ | 1.5 à 5 |- | Pa·s |
+| Masse volumique ρ | 3000 |- | kg/m³ |
+| Viscosité η₀ | 1.5 à 5 | 1×10⁻⁵ | Pa·s |
 | Viscosité η_∞ | 0.5 | - | Pa·s |
 | Temps relaxation λ | 0.15 | - | s |
 | Indice n | 0.7 | - | - |
