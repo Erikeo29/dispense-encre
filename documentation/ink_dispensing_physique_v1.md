@@ -194,7 +194,7 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 | Propriété | Encre (Phase 1) | Air (Phase 2) | Unité |
 |-----------|-------------------------|---------------|-------|
 | Masse volumique ρ | 3000 kg/m³ |
-| Viscosité η₀ | 1.5 à 5 Pa·s |
+| Viscosité η₀ | 1.5 à 5 |- | Pa·s |
 | Viscosité η_∞ | 0.5 | - | Pa·s |
 | Temps relaxation λ | 0.15 | - | s |
 | Indice n | 0.7 | - | - |
