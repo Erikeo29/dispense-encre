@@ -1,8 +1,8 @@
-# 🔬 Simulation de Dispense d'Encre Ag/AgCl
+# 🔬 Simulation de Dispense d'Encre rhéofluidifiante
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dispense-encre.streamlit.app/)
 
-Ce projet de R&D compare différentes approches numériques pour modéliser le processus de dispense d'encre conductrice (Ag/AgCl) dans des micro-puits pour la fabrication de biocapteurs.
+Ce projet compare différentes approches numériques pour modéliser le processus de dispense d'encre rhéofluidifiante dans des micro-puits.
 
 L'application Streamlit permet de visualiser et comparer les résultats de 4 modèles physiques distincts.
 
