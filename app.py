@@ -19,7 +19,6 @@ header {visibility: hidden;}
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # --- Chemins Absolus Robustes (Compatible Cloud) ---
-# On calcule le chemin du dossier où se trouve ce fichier app.py
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DOC_PATH = os.path.join(ROOT_DIR, "docs")
@@ -36,7 +35,9 @@ LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/simulation_lbm_29.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 
 # --- Fonctions Utilitaires ---
-@st.cache_data
+
+# On garde le cache pour les CSV car ils sont plus lourds à traiter
+@st.cache_data(ttl=600) # Expire après 10 min
 def load_gif_mapping():
     try:
         df = pd.read_csv(os.path.join(DATA_PATH, 'fem_gif_mapping.csv'), sep=';', encoding='utf-8')
@@ -47,12 +48,11 @@ def load_gif_mapping():
                 int(row['shift buse en x (µm)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')), 
                 int(row['CA wall right']), int(row['CA gold'])
             )
-            # Construction robuste du chemin
             mapping[key] = os.path.join(ASSETS_PATH, "fem/gif", row['nom fichier gif'])
         return mapping
     except Exception: return {}
 
-@st.cache_data
+@st.cache_data(ttl=600)
 def load_png_mapping():
     try:
         df = pd.read_csv(os.path.join(DATA_PATH, 'fem_png_mapping.csv'), sep=';', encoding='utf-8')
@@ -68,7 +68,8 @@ def load_png_mapping():
         return mapping
     except Exception: return {}
 
-@st.cache_data
+# SUPPRESSION DU CACHE pour les fichiers texte (Documentation) 
+# Cela force Streamlit à relire le fichier sur le disque à chaque actualisation
 def load_file_content(path):
     try:
         with open(path, 'r', encoding='utf-8') as f: return f.read()
@@ -109,17 +110,15 @@ selected_page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.info("Version 3.0.1 - Fixes")
+st.sidebar.info("Version 3.0.2 - Live Docs")
 
-# --- 1. PAGE INTRODUCTION ---
+# --- Pages ---
 if selected_page == "Introduction":
     st.title("Simulation de Dispense d'Encre type Ag/AgCl")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "intro/intro_project.md")))
     
-    # Galerie d'images
     col1, col2 = st.columns(2)
     col3, col4 = st.columns(2)
-
     with col1:
         st.markdown("**1. FEM / Phase-Field**")
         fem_gif = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
@@ -134,32 +133,21 @@ if selected_page == "Introduction":
         st.markdown("**4. SPH (PySPH)**")
         if os.path.exists(SPH_GIF_EX): st.image(SPH_GIF_EX, use_container_width=True)
 
-
-# --- 2. MODÈLES MULTIFLUIDIQUES ---
 elif selected_page == "Modèles de modélisation multifluidique":
     st.title("Comparatif des Méthodes de Modélisation Multifluidique")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "comparaison/comparaison_models.md")))
 
-# --- 3. FEM ---
 elif "FEM" in selected_page:
     st.title("Modèle 1 : FEM / Phase-Field (Python)")
     tab_phys, tab_code, tab_gif, tab_png = st.tabs(["Physique", "Code", "Exemples (GIF)", "Exemples (PNG)"])
-    with tab_phys:
-        display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_fem.md")))
-    with tab_code:
-        display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/code_fem.md")))
+    with tab_phys: display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_fem.md")))
+    with tab_code: display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/code_fem.md")))
     with tab_gif:
         st.subheader("Visualiseur GIF")
         c1, c2 = st.columns(2)
-        with c1:
-            p1 = (st.selectbox("Puit",[800,1000,1500],key="g1_d"), st.selectbox("Buse",[200,250,300],key="g1_b"),
-                  st.selectbox("Shift",[0,-75,-150],key="g1_s"), st.selectbox("Visc",[5.0,1.5],key="g1_v"),
-                  st.selectbox("Angle P",[90,35],key="g1_a"), st.selectbox("Angle F",[35,75],key="g1_o"))
-        with c2:
-            p2 = (st.selectbox("Puit",[800,1000,1500],key="g2_d",index=1), st.selectbox("Buse",[200,250,300],key="g2_b",index=1),
-                  st.selectbox("Shift",[0,-75,-150],key="g2_s",index=1), st.selectbox("Visc",[5.0,1.5],key="g2_v",index=1),
-                  st.selectbox("Angle P",[90,35],key="g2_a",index=1), st.selectbox("Angle F",[35,75],key="g2_o",index=1))
+        with c1: p1 = (st.selectbox("Puit",[800,1000,1500],key="g1_d"), st.selectbox("Buse",[200,250,300],key="g1_b"), st.selectbox("Shift",[0,-75,-150],key="g1_s"), st.selectbox("Visc",[5.0,1.5],key="g1_v"), st.selectbox("Angle P",[90,35],key="g1_a"), st.selectbox("Angle F",[35,75],key="g1_o"))
+        with c2: p2 = (st.selectbox("Puit",[800,1000,1500],key="g2_d",index=1), st.selectbox("Buse",[200,250,300],key="g2_b",index=1), st.selectbox("Shift",[0,-75,-150],key="g2_s",index=1), st.selectbox("Visc",[5.0,1.5],key="g2_v",index=1), st.selectbox("Angle P",[90,35],key="g2_a",index=1), st.selectbox("Angle F",[35,75],key="g2_o",index=1))
         if st.button("LANCER GIF"):
             st.session_state.run_g = True
             st.session_state.p_g = (p1, p2)
@@ -174,14 +162,8 @@ elif "FEM" in selected_page:
     with tab_png:
         st.subheader("Visualiseur PNG")
         c1, c2 = st.columns(2)
-        with c1:
-            p1 = (st.selectbox("Temps",[20,40],key="p1_t"), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=2,key="p1_v"),
-                  st.selectbox("Sx",[0,-75],key="p1_x"), st.selectbox("Sz",[0,-30],key="p1_z"),
-                  st.selectbox("Angle",[15,35,75],key="p1_a"), st.selectbox("Rempl.",[0.6,0.8],key="p1_r"))
-        with c2:
-            p2 = (st.selectbox("Temps",[20,40],key="p2_t",index=1), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=3,key="p2_v"),
-                  st.selectbox("Sx",[0,-75],key="p2_x",index=1), st.selectbox("Sz",[0,-30],key="p2_z",index=1),
-                  st.selectbox("Angle",[15,35,75],index=1,key="p2_a"), st.selectbox("Rempl.",[0.6,0.8],index=1,key="p2_r"))
+        with c1: p1 = (st.selectbox("Temps",[20,40],key="p1_t"), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=2,key="p1_v"), st.selectbox("Sx",[0,-75],key="p1_x"), st.selectbox("Sz",[0,-30],key="p1_z"), st.selectbox("Angle",[15,35,75],key="p1_a"), st.selectbox("Rempl.",[0.6,0.8],key="p1_r"))
+        with c2: p2 = (st.selectbox("Temps",[20,40],key="p2_t",index=1), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=3,key="p2_v"), st.selectbox("Sx",[0,-75],key="p2_x",index=1), st.selectbox("Sz",[0,-30],key="p2_z",index=1), st.selectbox("Angle",[15,35,75],index=1,key="p2_a"), st.selectbox("Rempl.",[0.6,0.8],index=1,key="p2_r"))
         if st.button("LANCER PNG"):
             st.session_state.run_p = True
             st.session_state.p_p = (p1, p2)
@@ -194,7 +176,6 @@ elif "FEM" in selected_page:
                     if params in m: st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
                     else: st.warning("Image non trouvée.")
 
-# --- 4. VOF ---
 elif "VOF" in selected_page:
     st.title("Modèle 2 : VOF (OpenFOAM)")
     t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
@@ -205,7 +186,6 @@ elif "VOF" in selected_page:
     with t3:
         if os.path.exists(VOF_GIF_EX): st.image(VOF_GIF_EX, caption="Simulation VOF - Cas 93")
 
-# --- 5. LBM ---
 elif "LBM" in selected_page:
     st.title("Modèle 3 : LBM (Palabos C++)")
     t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
@@ -216,7 +196,6 @@ elif "LBM" in selected_page:
     with t3:
         if os.path.exists(LBM_GIF_EX): st.image(LBM_GIF_EX, caption="Simulation LBM - Cas 29")
 
-# --- 6. SPH ---
 elif "SPH" in selected_page:
     st.title("Modèle 4 : SPH (PySPH Python)")
     t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
