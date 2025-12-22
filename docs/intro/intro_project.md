@@ -2,7 +2,7 @@
 
 ### Objectif du Projet
 
-Ce projet de vise à **modéliser** le processus de dispense d'encre dans un domaine micro-fluidique en utilisant **différents modèles de modélisation: FEM, VOF, LBM, SPH**
+Ce projet vise à **modéliser** le processus de dispense d'encre dans un domaine micro-fluidique en utilisant **différents modèles de modélisation: FEM, VOF, LBM, SPH**
 
 Une encre type Ag/AgCl possède un comportement rhéologique complexe (non-newtonien) et doit remplir précisément des micro-puits sans emprisonner d'air ni déborder.
 
