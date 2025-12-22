@@ -1,14 +1,10 @@
-# Simulation de Dispense d'Encre type Ag/AgCl
-
-### Optimisation de la dispense d'encre conductrice en micro-puits
-
----
+# Simulation de dispense d'encre rhéofluidifiante
 
 ### Objectif du Projet
 
-Ce projet de R&D vise à **comprendre, modéliser et optimiser** le processus complexe de dispense d'encre micro-fluidique.
+Ce projet de vise à **modéliser** le processus de dispense d'encre dans un domaine micro-fluidique en utilisant **différents modèles de modélisation: FEM, VOF, LBM, SPH**
 
-L'encre Ag/AgCl, utilisée pour la fabrication de biocapteurs, possède un comportement rhéologique complexe (non-newtonien) et doit remplir précisément des micro-puits sans emprisonner d'air ni déborder.
+Une encre type Ag/AgCl possède un comportement rhéologique complexe (non-newtonien) et doit remplir précisément des micro-puits sans emprisonner d'air ni déborder.
 
 **Défis techniques :**
 *   Dynamique rapide (quelques ms).

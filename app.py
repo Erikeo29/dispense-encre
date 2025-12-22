@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 # --- Configuration de la page ---
-st.set_page_config(page_title="Analyse de Simulation", page_icon="🔬", layout="wide")
+st.set_page_config(page_title="Analyse de Simulation", layout="wide")
 
 # --- Masquage des éléments de l'interface (Confidentialité) ---
 hide_streamlit_style = """
@@ -18,11 +18,13 @@ header {visibility: hidden;}
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# --- Chemins Relatifs (Structure Propre) ---
-BASE_PATH = "."
-DOC_PATH = "docs"
-DATA_PATH = "data"
-ASSETS_PATH = "assets"
+# --- Chemins Absolus Robustes (Compatible Cloud) ---
+# On calcule le chemin du dossier où se trouve ce fichier app.py
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DOC_PATH = os.path.join(ROOT_DIR, "docs")
+DATA_PATH = os.path.join(ROOT_DIR, "data")
+ASSETS_PATH = os.path.join(ROOT_DIR, "assets")
 
 # Chemins vers les codes sources
 LBM_SRC = os.path.join(DOC_PATH, "code/code_lbm.cpp")
@@ -45,6 +47,7 @@ def load_gif_mapping():
                 int(row['shift buse en x (µm)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')), 
                 int(row['CA wall right']), int(row['CA gold'])
             )
+            # Construction robuste du chemin
             mapping[key] = os.path.join(ASSETS_PATH, "fem/gif", row['nom fichier gif'])
         return mapping
     except Exception: return {}
@@ -69,7 +72,7 @@ def load_png_mapping():
 def load_file_content(path):
     try:
         with open(path, 'r', encoding='utf-8') as f: return f.read()
-    except Exception: return f"⚠️ Fichier non trouvé : {path}"
+    except Exception as e: return f"⚠️ Fichier non trouvé : {path} (Erreur: {str(e)})"
 
 def load_media_as_base64(file_path):
     try:
@@ -80,7 +83,7 @@ def load_media_as_base64(file_path):
         elif file_path.lower().endswith('.gif'): mime_type = 'image/gif'
         else: mime_type = 'image/png'
         return f'<img src="data:{mime_type};base64,{data_url}" style="width:100%; max-width:600px;">'
-    except FileNotFoundError: return None
+    except Exception: return None
 
 def display_smart_markdown(content):
     if "```python" in content:
@@ -100,45 +103,17 @@ def display_smart_markdown(content):
 
 # --- Barre Latérale ---
 st.sidebar.title("Navigation")
-
-# Astuce pour espacement : des options vides ou séparateurs ne sont pas possibles dans un radio unique.
-# Je scinde en sections avec des st.markdown("---") entre les blocs logiques si je n'utilise pas un radio unique.
-# MAIS pour garder une navigation fluide (état unique), je vais utiliser des espaces insécables dans les noms ou accepter la liste contiguë.
-# SOLUTION CLIENT : "saute une ligne après intro..." -> Je vais utiliser des options "vides" non sélectionnables ou juste aérer visuellement via des markdowns entre des widgets, mais cela casse la navigation unique.
-# Je vais rester sur un radio unique mais avec des noms clairs, et ajouter la section "À propos" en bas qui elle sera bien séparée.
-
-nav_options = [
-    "Introduction",
-    "Modèles de modélisation multifluidique",
-    "1. FEM / Phase-Field (Python)",
-    "2. VOF (OpenFOAM)",
-    "3. LBM (Palabos C++)",
-    "4. SPH (PySPH Python)",
-    "Conclusion"
-]
-
-# Astuce visuelle : j'ajoute des sauts de ligne dans les libellés pour aérer ? Non, Streamlit ne le rend pas bien.
-# Je vais garder la liste propre.
-
-selected_page = st.sidebar.radio("Aller à :", nav_options)
+selected_page = st.sidebar.radio(
+    "Aller à :",
+    ("Introduction", "Modèles de modélisation multifluidique", "1. FEM / Phase-Field (Python)", "2. VOF (OpenFOAM)", "3. LBM (Palabos C++)", "4. SPH (PySPH Python)")
+)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("""
-### À propos
-**Application de simulation de dispense d'encre.**
-
-**Version:** 3.0.0 - EQU - Dec-25
-
-**Features:**
-- Comparaison de 4 modèles (FEM, VOF, LBM, SPH)
-- Visualiseurs interactifs (GIF et PNG)
-- Documentation physique détaillée
-- Consultation des codes sources réels
-""")
+st.sidebar.info("Version 3.0.1 - Fixes")
 
 # --- 1. PAGE INTRODUCTION ---
 if selected_page == "Introduction":
-    st.title("🔬 Simulation de Dispense d'Encre type Ag/AgCl")
+    st.title("Simulation de Dispense d'Encre type Ag/AgCl")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "intro/intro_project.md")))
     
     # Galerie d'images
@@ -162,7 +137,7 @@ if selected_page == "Introduction":
 
 # --- 2. MODÈLES MULTIFLUIDIQUES ---
 elif selected_page == "Modèles de modélisation multifluidique":
-    st.title("📊 Comparatif des Méthodes de Modélisation Multifluidique")
+    st.title("Comparatif des Méthodes de Modélisation Multifluidique")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "comparaison/comparaison_models.md")))
 
@@ -251,8 +226,3 @@ elif "SPH" in selected_page:
         st.code(load_file_content(SPH_SRC), language='python', line_numbers=False)
     with t3:
         if os.path.exists(SPH_GIF_EX): st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03")
-
-# --- 7. CONCLUSION ---
-elif selected_page == "Conclusion":
-    st.title("🎯 Conclusion et Perspectives")
-    st.markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/conclusion.md")))
