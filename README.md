@@ -1,59 +1,52 @@
-# 💧 Simulation de Dispensing
+# 🔬 Simulation de Dispense d'Encre Ag/AgCl
 
-Application Streamlit pour simuler et visualiser la dispense.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dispense-encre.streamlit.app/)
 
-## 🎯 Fonctionnalités
+Ce projet de R&D compare différentes approches numériques pour modéliser le processus de dispense d'encre conductrice (Ag/AgCl) dans des micro-puits pour la fabrication de biocapteurs.
 
-- **Comparaison de 2 simulations** simultanées côte à côte
-- **Paramètres configurables** :
-  - Dimensions (diamètres puit/buse, shifts X/Z)
-  - Propriétés physiques (viscosité, angles de contact)
-- **Documentation intégrée** : physique et code source
-- **Mapping flexible** via fichier CSV
+L'application Streamlit permet de visualiser et comparer les résultats de 4 modèles physiques distincts.
 
-## 🚀 Installation
+## 📊 Modèles Comparés
 
+| Modèle | Méthode | Implémentation | Focus Physique |
+| :--- | :--- | :--- | :--- |
+| **FEM** | Éléments Finis / Phase-Field | **Python (FEniCS)** | Thermodynamique de l'interface, capillarité fine |
+| **VOF** | Volume of Fluid | **C++ (OpenFOAM)** | Standard industriel, robustesse, conservation de masse |
+| **LBM** | Lattice Boltzmann (Shan-Chen) | **C++ (Palabos)** | Calcul HPC, géométries complexes, mouillage naturel |
+| **SPH** | Smoothed Particle Hydrodynamics | **Python (PySPH)** | Surface libre complexe, éclaboussures, dynamique violente |
+
+## 📂 Structure du Projet
+
+L'architecture du projet a été rationalisée pour faciliter la maintenance :
+
+*   `app.py` : Point d'entrée de l'application Streamlit.
+*   `assets/` : Contient toutes les ressources visuelles (GIFs, PNGs), organisées par modèle (`fem`, `vof`, `lbm`, `sph`).
+*   `data/` : Contient les fichiers de mapping CSV pour les correspondances paramètres/résultats.
+*   `docs/` : Contient la documentation scientifique (Markdown) et les extraits de code source réels.
+    *   `physics/` : Explications théoriques.
+    *   `code/` : Fichiers sources (.cpp, .py) extraits des solveurs.
+
+## 🚀 Installation et Lancement
+
+Cloner le dépôt :
 ```bash
-# Cloner le repository
-git clone https://github.com/[votre-username]/dispensing.git
-cd dispensing
+git clone https://github.com/Erikeo29/dispense-encre.git
+cd dispense-encre
+```
 
-# Installer les dépendances
+Installer les dépendances :
+```bash
 pip install -r requirements.txt
+```
 
-# Lancer l'application
+Lancer l'application :
+```bash
 streamlit run app.py
 ```
 
-## 📁 Structure
+## 📝 Version
 
-```
-├── app.py                  # Application principale
-├── gif/                    # Dossier des animations GIF
-├── documentation/          # Documentation markdown
-├── gif_mapping.csv         # Correspondance paramètres-GIF
-└── requirements.txt        # Dépendances Python
-```
-
-## 🔧 Configuration
-
-Modifiez `gif_mapping.csv` pour ajouter de nouvelles simulations :
-- Format CSV avec séparateur point-virgule (;)
-- 10 paramètres par simulation
-- Placez les GIFs dans le dossier `gif/`
-
-## 📊 Paramètres de simulation
-
-- **Diamètre du puit** : 800-1200 µm
-- **Diamètre de la buse** : 100-200 µm
-- **Shifts X/Z** : Positionnement de la buse
-- **Viscosité** : 0.5-10 Pa.s
-- **Angles de contact** : 30-90°
-
-## 📝 License
-
-MIT
-
-## 👥 Auteur
-
-EQU - Septembre 2025
+**Version 3.0.0 (Décembre 2025)**
+*   Architecture multi-modèles unifiée.
+*   Intégration des résultats VOF, LBM et SPH.
+*   Documentation technique complète.
