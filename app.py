@@ -1,418 +1,258 @@
 import streamlit as st
 import base64
-from pathlib import Path
 import os
 import pandas as pd
 
-st.set_page_config(
-    page_title="Dispense d'encre",
-    page_icon="💧",
-    layout="wide"
-)
+# --- Configuration de la page ---
+st.set_page_config(page_title="Analyse de Simulation", page_icon="🔬", layout="wide")
 
+# --- Masquage des éléments de l'interface (Confidentialité) ---
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+.stDeployButton {display: none;}
+[data-testid="stToolbar"] {display: none;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# --- Chemins Relatifs (Structure Propre) ---
+BASE_PATH = "."
+DOC_PATH = "docs"
+DATA_PATH = "data"
+ASSETS_PATH = "assets"
+
+# Chemins vers les codes sources
+LBM_SRC = os.path.join(DOC_PATH, "code/code_lbm.cpp")
+SPH_SRC = os.path.join(DOC_PATH, "code/code_sph.py")
+
+# Chemins vers les exemples visuels
+VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/animation_vof_93.gif")
+LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/simulation_lbm_29.gif")
+SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
+
+# --- Fonctions Utilitaires ---
+@st.cache_data
 def load_gif_mapping():
-    """
-    Charge le mapping des combinaisons de paramètres vers les fichiers GIF depuis le CSV.
-    """
     try:
-        df = pd.read_csv('gif_mapping.csv', sep=';', encoding='utf-8')
-        # Créer un dictionnaire avec les paramètres comme clé et le nom du fichier GIF comme valeur
+        df = pd.read_csv(os.path.join(DATA_PATH, 'fem_gif_mapping.csv'), sep=';', encoding='utf-8')
         mapping = {}
         for _, row in df.iterrows():
-            # Clé : tuple (diamètre_puit, diamètre_buse, shift_x, viscosité, angle_contact, angle_contact_or)
             key = (
-                int(row['diamètre du puit (µm)']),
-                int(row['diamètre de la buse (µm)']),
-                int(row['shift buse en x (µm)']),
-                float(str(row['Viscosité de l\'encre (Pa.s)']).replace(',', '.')),
-                int(row['CA wall right']),
-                int(row['CA gold'])
+                int(row['diamètre du puit (µm)']), int(row['diamètre de la buse (µm)']),
+                int(row['shift buse en x (µm)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')), 
+                int(row['CA wall right']), int(row['CA gold'])
             )
-            # Valeur : chemin complet du fichier GIF
-            mapping[key] = f"gif/{row['nom fichier gif']}"
+            mapping[key] = os.path.join(ASSETS_PATH, "fem/gif", row['nom fichier gif'])
         return mapping
-    except Exception as e:
-        st.error(f"Erreur lors du chargement du mapping: {str(e)}")
-        return {}
+    except Exception: return {}
 
-def load_gif(gif_path):
-    """Charge et encode un GIF en base64 pour l'affichage HTML."""
+@st.cache_data
+def load_png_mapping():
     try:
-        with open(gif_path, "rb") as file:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'fem_png_mapping.csv'), sep=';', encoding='utf-8')
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                int(row['temps dispense (ms)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')), 
+                int(row['shift buse en x (µm)']), int(row['shift buse en z (µm)']),
+                int(row['CA gold']), float(str(row['remplissage']).replace(',', '.'))
+            )
+            filename = row['nom fichier gif'].replace('.png', '.jpg')
+            mapping[key] = os.path.join(ASSETS_PATH, "fem/png", filename)
+        return mapping
+    except Exception: return {}
+
+@st.cache_data
+def load_file_content(path):
+    try:
+        with open(path, 'r', encoding='utf-8') as f: return f.read()
+    except Exception: return f"⚠️ Fichier non trouvé : {path}"
+
+def load_media_as_base64(file_path):
+    try:
+        with open(file_path, "rb") as file:
             contents = file.read()
         data_url = base64.b64encode(contents).decode("utf-8")
-        return f'<img src="data:image/gif;base64,{data_url}" style="width:100%; max-width:600px;">'
-    except FileNotFoundError:
-        return None
+        if file_path.lower().endswith(('.jpg', '.jpeg')): mime_type = 'image/jpeg'
+        elif file_path.lower().endswith('.gif'): mime_type = 'image/gif'
+        else: mime_type = 'image/png'
+        return f'<img src="data:{mime_type};base64,{data_url}" style="width:100%; max-width:600px;">'
+    except FileNotFoundError: return None
 
-def hide_streamlit_branding():
-    """Injecte CSS pour masquer tous les éléments Streamlit indésirables"""
-    hide_streamlit_style = """
-    <style>
-    /* Masquer le menu hamburger */
-    #MainMenu {visibility: hidden;}
-
-    /* Masquer le footer "Made with Streamlit" */
-    footer {visibility: hidden;}
-
-    /* Masquer le header avec les liens GitHub */
-    header {visibility: hidden;}
-
-    /* Masquer le bouton de déploiement */
-    .stDeployButton {display: none;}
-
-    /* Masquer la toolbar */
-    .stToolbar {display: none;}
-
-    /* Masquer le viewer badge */
-    ._container_badge {display: none;}
-
-    /* Masquer tous les liens vers GitHub */
-    [href*="github"] {display: none !important;}
-
-    /* Masquer spécifiquement le bouton GitHub en bas à droite */
-    .viewerBadge_container__r5tak {display: none !important;}
-    .viewerBadge_link__qRIco {display: none !important;}
-
-    /* Masquer l'icône fork/étoile GitHub */
-    button[kind="header"] {display: none !important;}
-
-    /* Masquer tout élément avec data-testid contenant github */
-    [data-testid*="github"] {display: none !important;}
-    [data-testid="viewerBadge"] {display: none !important;}
-
-    /* Forcer le masquage de tous les boutons flottants */
-    div[class*="viewerBadge"] {display: none !important;}
-    a[class*="viewerBadge"] {display: none !important;}
-
-    /* Masquer plus agressivement le bouton GitHub */
-    .styles_viewerBadge__CvC9N {display: none !important;}
-    .styles_viewerBadgeContainer__LdptP {display: none !important;}
-    .styles_viewerBadgeButton__4QdPM {display: none !important;}
-
-    /* Masquer les boutons en position fixe en bas à droite */
-    div[style*="position: fixed"][style*="bottom"] {display: none !important;}
-    a[style*="position: fixed"][style*="bottom"] {display: none !important;}
-
-    /* Masquer tout lien flottant */
-    a[target="_blank"][style*="position"] {display: none !important;}
-    </style>
-    """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-def load_markdown_file(filepath):
-    """Charge le contenu d'un fichier markdown."""
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            return f.read()
-    except FileNotFoundError:
-        return f"⚠️ Fichier non trouvé: {filepath}"
-    except Exception as e:
-        return f"⚠️ Erreur lors de la lecture du fichier: {str(e)}"
-
-def simulation_page():
-    hide_streamlit_branding()
-
-    st.title("💧 Simulation de dispense d'encre")
-    st.markdown("### Comparez jusqu'à 2 simulations simultanément")
-    st.markdown("---")
-
-    # Variables pour stocker les paramètres
-    sim1_params = None
-    sim2_params = None
-
-    # Section des paramètres
-    st.markdown("#### Configuration des paramètres")
-    param_col1, param_col2 = st.columns(2)
-
-    with param_col1:
-        st.subheader("📊 Simulation 1")
-        with st.expander("Paramètres", expanded=True):
-            # Diviser en 3 colonnes pour les paramètres
-            col1_1, col1_2, col1_3 = st.columns(3)
-
-            with col1_1:
-                diametre_puit_1 = st.selectbox(
-                    "Diamètre puit (µm)",
-                    options=[800, 1000, 1500],
-                    key="diam_puit_1"
-                )
-
-                diametre_buse_1 = st.selectbox(
-                    "Diamètre buse (µm)",
-                    options=[200, 250, 300],
-                    key="diam_buse_1"
-                )
-
-            with col1_2:
-                shift_buse_x_1 = st.selectbox(
-                    "Shift X (µm)",
-                    options=[0, -75, -150],
-                    key="shift_x_1"
-                )
-
-                viscosite_encre_1 = st.selectbox(
-                    "Viscosité (Pa.s)",
-                    options=[5.0, 1.5],
-                    key="visc_1"
-                )
-
-            with col1_3:
-                angle_contact_1 = st.selectbox(
-                    "Angle contact paroi droite (°)",
-                    options=[90, 35],
-                    key="angle_1"
-                )
-
-                angle_or_1 = st.selectbox(
-                    "Angle contact or (°)",
-                    options=[35, 75],
-                    key="angle_or_1"
-                )
-
-        # Stocker les paramètres de la simulation 1
-        sim1_params = (diametre_puit_1, diametre_buse_1, shift_buse_x_1, viscosite_encre_1, angle_contact_1, angle_or_1)
-
-    with param_col2:
-        st.subheader("📊 Simulation 2")
-        with st.expander("Paramètres", expanded=True):
-            # Diviser en 3 colonnes pour les paramètres
-            col2_1, col2_2, col2_3 = st.columns(3)
-
-            with col2_1:
-                diametre_puit_2 = st.selectbox(
-                    "Diamètre puit (µm)",
-                    options=[800, 1000, 1500],
-                    key="diam_puit_2"
-                )
-
-                diametre_buse_2 = st.selectbox(
-                    "Diamètre buse (µm)",
-                    options=[200, 250, 300],
-                    key="diam_buse_2"
-                )
-
-            with col2_2:
-                shift_buse_x_2 = st.selectbox(
-                    "Shift X (µm)",
-                    options=[0, -75, -150],
-                    key="shift_x_2"
-                )
-
-                viscosite_encre_2 = st.selectbox(
-                    "Viscosité (Pa.s)",
-                    options=[5.0, 1.5],
-                    key="visc_2"
-                )
-
-            with col2_3:
-                angle_contact_2 = st.selectbox(
-                    "Angle contact paroi droite (°)",
-                    options=[90, 35],
-                    key="angle_2"
-                )
-
-                angle_or_2 = st.selectbox(
-                    "Angle contact or (°)",
-                    options=[35, 75],
-                    key="angle_or_2"
-                )
-
-        # Stocker les paramètres de la simulation 2
-        sim2_params = (diametre_puit_2, diametre_buse_2, shift_buse_x_2, viscosite_encre_2, angle_contact_2, angle_or_2)
-
-    # Bouton unique pour lancer les deux simulations (JUSTE APRÈS LES PARAMÈTRES)
-    st.markdown("")  # Petit espacement
-    col_left, col_center, col_right = st.columns([1, 1, 1])
-    with col_center:
-        if st.button("🚀 LANCER LES SIMULATIONS", type="primary", use_container_width=True):
-            # Lancer les deux simulations simultanément
-            st.session_state.sim1_running = True
-            st.session_state.sim1_params = sim1_params
-            st.session_state.sim2_running = True
-            st.session_state.sim2_params = sim2_params
-            st.rerun()
-
-    # Section des résultats
-    st.markdown("---")
-    st.markdown("#### Résultats des simulations")
-    results_col1, results_col2 = st.columns(2)
-
-    with results_col1:
-        st.subheader("📊 Résultat Simulation 1")
-        # Affichage du résultat de la simulation 1
-        if 'sim1_running' in st.session_state and st.session_state.sim1_running:
-            params = st.session_state.sim1_params
-            gif_mapping = load_gif_mapping()
-
-            if params in gif_mapping:
-                gif_file = gif_mapping[params]
-                gif_html = load_gif(gif_file)
-
-                if gif_html:
-                    st.markdown(gif_html, unsafe_allow_html=True)
-                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
-                else:
-                    st.error(f"Fichier GIF non trouvé: {gif_file}")
-            else:
-                st.warning(f"Aucune simulation disponible pour ces paramètres")
-        else:
-            st.info("Configurez les paramètres et cliquez sur LANCER")
-
-    with results_col2:
-        st.subheader("📊 Résultat Simulation 2")
-        # Affichage du résultat de la simulation 2
-        if 'sim2_running' in st.session_state and st.session_state.sim2_running:
-            params = st.session_state.sim2_params
-            gif_mapping = load_gif_mapping()
-
-            if params in gif_mapping:
-                gif_file = gif_mapping[params]
-                gif_html = load_gif(gif_file)
-
-                if gif_html:
-                    st.markdown(gif_html, unsafe_allow_html=True)
-                    st.caption(f"Puit: {params[0]}µm | Buse: {params[1]}µm | Shift X: {params[2]}µm | Viscosité: {params[3]} Pa.s | Angle paroi: {params[4]}° | Angle or: {params[5]}°")
-                else:
-                    st.error(f"Fichier GIF non trouvé: {gif_file}")
-            else:
-                st.warning(f"Aucune simulation disponible pour ces paramètres")
-        else:
-            st.info("Configurez les paramètres et cliquez sur LANCER")
-
-    # Section informations
-    st.markdown("---")
-    with st.expander("ℹ️ Combinaisons disponibles"):
-        st.markdown("""
-        ### Paramètres disponibles:
-        - **Diamètre du puit**: 800, 1000, 1500 µm
-        - **Diamètre de la buse**: 200, 250, 300 µm
-        - **Shift buse en X**: 0, -75, -150 µm
-        - **Viscosité**: 1.5 ou 5.0 Pa.s
-        - **Angle contact paroi droite**: 35° ou 90°
-        - **Angle contact or**: 35° ou 75°
-
-        ### Total de simulations disponibles: 109 GIFs
-        - 3 diamètres de puit × 3 diamètres de buse × 3 shifts X
-        - × 2 viscosités × 2 angles paroi × 2 angles or (partiel)
-        """)
-
-        # Afficher le mapping actuel
-        try:
-            mapping = load_gif_mapping()
-            st.markdown(f"**{len(mapping)} simulations chargées depuis gif_mapping.csv**")
-        except:
-            st.warning("Impossible de charger le mapping des simulations")
-
-def physics_page():
-    hide_streamlit_branding()
-    st.title("📚 Physique de la dispense d'encre")
-    st.markdown("---")
-
-    # Charger le contenu depuis le fichier markdown
-    physics_content = load_markdown_file("documentation/ink_dispensing_physique_v1.md")
-
-    # Afficher le contenu
-    st.markdown(physics_content)
-
-def code_page():
-    hide_streamlit_branding()
-    st.title("💻 Code Python de simulation")
-    st.markdown("---")
-
-    # Charger le contenu depuis le fichier markdown
-    code_content = load_markdown_file("documentation/ink_dispensing_code_v8.md")
-
-    # Traiter le contenu pour extraire le code Python
-    if "```python" in code_content:
-        # Extraire les blocs de code Python
-        parts = code_content.split("```python")
-
+def display_smart_markdown(content):
+    if "```python" in content:
+        parts = content.split("```python")
         for i, part in enumerate(parts):
-            if i == 0:
-                # Texte avant le premier bloc de code
-                if part.strip():
-                    st.markdown(part)
-            else:
-                # Séparer le code du texte qui suit
+            if i > 0:
                 if "```" in part:
                     code, text = part.split("```", 1)
-                    # Afficher le code
-                    st.code(code.strip(), language='python')
-                    # Afficher le texte qui suit
-                    if text.strip():
-                        st.markdown(text)
+                    st.code(code.strip(), language='python', line_numbers=False)
+                    if text.strip(): st.markdown(text)
                 else:
-                    # Cas où le bloc de code n'est pas fermé correctement
-                    st.code(part.strip(), language='python')
+                    st.code(part.strip(), language='python', line_numbers=False)
+            elif part.strip():
+                st.markdown(part)
     else:
-        # Si pas de blocs de code Python, afficher tel quel
-        st.markdown(code_content)
+        st.markdown(content)
 
-def main():
-    # Masquer les éléments Streamlit dès le début
-    hide_streamlit_branding()
+# --- Barre Latérale ---
+st.sidebar.title("Navigation")
 
-    st.sidebar.title("🧭 Navigation")
+# Astuce pour espacement : des options vides ou séparateurs ne sont pas possibles dans un radio unique.
+# Je scinde en sections avec des st.markdown("---") entre les blocs logiques si je n'utilise pas un radio unique.
+# MAIS pour garder une navigation fluide (état unique), je vais utiliser des espaces insécables dans les noms ou accepter la liste contiguë.
+# SOLUTION CLIENT : "saute une ligne après intro..." -> Je vais utiliser des options "vides" non sélectionnables ou juste aérer visuellement via des markdowns entre des widgets, mais cela casse la navigation unique.
+# Je vais rester sur un radio unique mais avec des noms clairs, et ajouter la section "À propos" en bas qui elle sera bien séparée.
 
-    page = st.sidebar.radio(
-        "Choisir une page",
-        ["💧 Simulation", "📚 Physique", "💻 Code Python"],
-        label_visibility="collapsed"
-    )
+nav_options = [
+    "Introduction",
+    "Modèles de modélisation multifluidique",
+    "1. FEM / Phase-Field (Python)",
+    "2. VOF (OpenFOAM)",
+    "3. LBM (Palabos C++)",
+    "4. SPH (PySPH Python)",
+    "Conclusion"
+]
 
-    st.sidebar.markdown("---")
+# Astuce visuelle : j'ajoute des sauts de ligne dans les libellés pour aérer ? Non, Streamlit ne le rend pas bien.
+# Je vais garder la liste propre.
 
-    # Bouton pour réinitialiser toutes les simulations
-    if st.sidebar.button("🔄 Réinitialiser les simulations", use_container_width=True):
-        if 'sim1_running' in st.session_state:
-            del st.session_state.sim1_running
-        if 'sim2_running' in st.session_state:
-            del st.session_state.sim2_running
-        if 'sim1_params' in st.session_state:
-            del st.session_state.sim1_params
-        if 'sim2_params' in st.session_state:
-            del st.session_state.sim2_params
-        st.rerun()
+selected_page = st.sidebar.radio("Aller à :", nav_options)
 
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("""
-    ### À propos
-    **Application de simulation de dispense d'encre.**
-    """)
-    st.sidebar.markdown("")  # Ligne vide pour espacer
-    st.sidebar.markdown("**Version:** 2.0.0   - EQU - Sept-25")
-    st.sidebar.markdown("")  # Ligne vide pour espacer
-    st.sidebar.markdown("")  # Ligne vide pour espacer
+st.sidebar.markdown("---")
+st.sidebar.markdown("""
+### À propos
+**Application de simulation de dispense d'encre.**
 
-    st.sidebar.markdown("""
-    **Features:**
-    - Comparaison de 2 simulations
-    - Documentation intégrée
-    - Code source disponible
-    """)
+**Version:** 3.0.0 - EQU - Dec-25
 
-    # Vérifier l'existence des dossiers requis
-    if not os.path.exists("gif"):
-        st.sidebar.error("⚠️ Dossier 'gif' non trouvé!")
-    if not os.path.exists("documentation"):
-        st.sidebar.error("⚠️ Dossier 'documentation' non trouvé!")
+**Features:**
+- Comparaison de 4 modèles (FEM, VOF, LBM, SPH)
+- Visualiseurs interactifs (GIF et PNG)
+- Documentation physique détaillée
+- Consultation des codes sources réels
+""")
 
-    # Afficher le total de simulations disponibles
-    try:
-        mapping = load_gif_mapping()
-        if mapping:
-            st.sidebar.success(f"✅ {len(mapping)} simulations chargées")
-    except:
-        st.sidebar.warning("⚠️ Problème de chargement des simulations")
+# --- 1. PAGE INTRODUCTION ---
+if selected_page == "Introduction":
+    st.title("🔬 Simulation de Dispense d'Encre type Ag/AgCl")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "intro/intro_project.md")))
+    
+    # Galerie d'images
+    col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
 
-    # Router vers la page sélectionnée
-    if page == "💧 Simulation":
-        simulation_page()
-    elif page == "📚 Physique":
-        physics_page()
-    elif page == "💻 Code Python":
-        code_page()
+    with col1:
+        st.markdown("**1. FEM / Phase-Field**")
+        fem_gif = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
+        if os.path.exists(fem_gif): st.image(fem_gif, use_container_width=True)
+    with col2:
+        st.markdown("**2. VOF (OpenFOAM)**")
+        if os.path.exists(VOF_GIF_EX): st.image(VOF_GIF_EX, use_container_width=True)
+    with col3:
+        st.markdown("**3. LBM (Palabos)**")
+        if os.path.exists(LBM_GIF_EX): st.image(LBM_GIF_EX, use_container_width=True)
+    with col4:
+        st.markdown("**4. SPH (PySPH)**")
+        if os.path.exists(SPH_GIF_EX): st.image(SPH_GIF_EX, use_container_width=True)
 
-if __name__ == "__main__":
-    main()
+
+# --- 2. MODÈLES MULTIFLUIDIQUES ---
+elif selected_page == "Modèles de modélisation multifluidique":
+    st.title("📊 Comparatif des Méthodes de Modélisation Multifluidique")
+    st.markdown("---")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "comparaison/comparaison_models.md")))
+
+# --- 3. FEM ---
+elif "FEM" in selected_page:
+    st.title("Modèle 1 : FEM / Phase-Field (Python)")
+    tab_phys, tab_code, tab_gif, tab_png = st.tabs(["Physique", "Code", "Exemples (GIF)", "Exemples (PNG)"])
+    with tab_phys:
+        display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_fem.md")))
+    with tab_code:
+        display_smart_markdown(load_file_content(os.path.join(DOC_PATH, "code/code_fem.md")))
+    with tab_gif:
+        st.subheader("Visualiseur GIF")
+        c1, c2 = st.columns(2)
+        with c1:
+            p1 = (st.selectbox("Puit",[800,1000,1500],key="g1_d"), st.selectbox("Buse",[200,250,300],key="g1_b"),
+                  st.selectbox("Shift",[0,-75,-150],key="g1_s"), st.selectbox("Visc",[5.0,1.5],key="g1_v"),
+                  st.selectbox("Angle P",[90,35],key="g1_a"), st.selectbox("Angle F",[35,75],key="g1_o"))
+        with c2:
+            p2 = (st.selectbox("Puit",[800,1000,1500],key="g2_d",index=1), st.selectbox("Buse",[200,250,300],key="g2_b",index=1),
+                  st.selectbox("Shift",[0,-75,-150],key="g2_s",index=1), st.selectbox("Visc",[5.0,1.5],key="g2_v",index=1),
+                  st.selectbox("Angle P",[90,35],key="g2_a",index=1), st.selectbox("Angle F",[35,75],key="g2_o",index=1))
+        if st.button("LANCER GIF"):
+            st.session_state.run_g = True
+            st.session_state.p_g = (p1, p2)
+        if st.session_state.get('run_g', False):
+            r1, r2 = st.columns(2)
+            m = load_gif_mapping()
+            for i, c in enumerate([r1, r2]):
+                with c:
+                    params = st.session_state.p_g[i]
+                    if params in m: st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                    else: st.warning("Simulation non trouvée.")
+    with tab_png:
+        st.subheader("Visualiseur PNG")
+        c1, c2 = st.columns(2)
+        with c1:
+            p1 = (st.selectbox("Temps",[20,40],key="p1_t"), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=2,key="p1_v"),
+                  st.selectbox("Sx",[0,-75],key="p1_x"), st.selectbox("Sz",[0,-30],key="p1_z"),
+                  st.selectbox("Angle",[15,35,75],key="p1_a"), st.selectbox("Rempl.",[0.6,0.8],key="p1_r"))
+        with c2:
+            p2 = (st.selectbox("Temps",[20,40],key="p2_t",index=1), st.selectbox("Visc",[0.05,0.5,1.5,5.0],index=3,key="p2_v"),
+                  st.selectbox("Sx",[0,-75],key="p2_x",index=1), st.selectbox("Sz",[0,-30],key="p2_z",index=1),
+                  st.selectbox("Angle",[15,35,75],index=1,key="p2_a"), st.selectbox("Rempl.",[0.6,0.8],index=1,key="p2_r"))
+        if st.button("LANCER PNG"):
+            st.session_state.run_p = True
+            st.session_state.p_p = (p1, p2)
+        if st.session_state.get('run_p', False):
+            r1, r2 = st.columns(2)
+            m = load_png_mapping()
+            for i, c in enumerate([r1, r2]):
+                with c:
+                    params = st.session_state.p_p[i]
+                    if params in m: st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                    else: st.warning("Image non trouvée.")
+
+# --- 4. VOF ---
+elif "VOF" in selected_page:
+    st.title("Modèle 2 : VOF (OpenFOAM)")
+    t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
+    with t1: st.markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_vof.md")))
+    with t2:
+        st.header("Configuration")
+        st.code("transportModel Carreau; rho 3000; nu0 1.667e-4; sigma 0.04;", language='cpp', line_numbers=False)
+    with t3:
+        if os.path.exists(VOF_GIF_EX): st.image(VOF_GIF_EX, caption="Simulation VOF - Cas 93")
+
+# --- 5. LBM ---
+elif "LBM" in selected_page:
+    st.title("Modèle 3 : LBM (Palabos C++)")
+    t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
+    with t1: st.markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_lbm.md")))
+    with t2:
+        st.header("Code Source Palabos")
+        st.code(load_file_content(LBM_SRC), language='cpp', line_numbers=False)
+    with t3:
+        if os.path.exists(LBM_GIF_EX): st.image(LBM_GIF_EX, caption="Simulation LBM - Cas 29")
+
+# --- 6. SPH ---
+elif "SPH" in selected_page:
+    st.title("Modèle 4 : SPH (PySPH Python)")
+    t1, t2, t3 = st.tabs(["Physique", "Code", "Exemples"])
+    with t1: st.markdown(load_file_content(os.path.join(DOC_PATH, "physics/physics_sph.md")))
+    with t2:
+        st.header("Code Source PySPH")
+        st.code(load_file_content(SPH_SRC), language='python', line_numbers=False)
+    with t3:
+        if os.path.exists(SPH_GIF_EX): st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03")
+
+# --- 7. CONCLUSION ---
+elif selected_page == "Conclusion":
+    st.title("🎯 Conclusion et Perspectives")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/conclusion.md")))
