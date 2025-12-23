@@ -151,19 +151,19 @@ def display_smart_markdown(content):
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.radio(
     "Aller à :",
-    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion", "Équations clés", "Lexique")
+    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire")
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-**Version 3.3.0** - Dec 2025
+**Version 3.4.0** - Dec 2025
 *EQU Research*
 
 **Nouveautés :**
 - Page d'accueil
 - Documentation enrichie
 - Équations clés & Lexique
-- UI améliorée
+- Un peu d'histoire
 """)
 
 # --- Pages ---
@@ -375,3 +375,9 @@ elif selected_page == "Lexique":
     st.title("Lexique et Acronymes")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "lexique/lexique.md")))
+
+# ===== PAGE HISTOIRE =====
+elif selected_page == "Un peu d'histoire":
+    st.title("Un Peu d'Histoire")
+    st.markdown("---")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "histoire/histoire.md")))
