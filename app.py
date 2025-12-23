@@ -151,11 +151,20 @@ def display_smart_markdown(content):
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.radio(
     "Aller à :",
-    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)")
+    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion")
 )
 
 st.sidebar.markdown("---")
-st.sidebar.info("Version 3.1.0")
+st.sidebar.markdown("""
+**Version 3.1.0** - Dec 2025
+*EQU Research*
+
+**Nouveautés :**
+- Page d'accueil
+- Doc. scientifique enrichie
+- Onglets améliorés
+- Bouton retour en haut
+""")
 
 # --- Pages ---
 
@@ -348,3 +357,9 @@ elif "SPH" in selected_page:
         st.subheader("Exemple de Simulation SPH")
         if os.path.exists(SPH_GIF_EX):
             st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03", use_container_width=True)
+
+# ===== PAGE CONCLUSION =====
+elif selected_page == "Conclusion":
+    st.title("Conclusion et Perspectives")
+    st.markdown("---")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/conclusion.md")))
