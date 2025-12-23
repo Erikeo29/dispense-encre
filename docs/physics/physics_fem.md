@@ -354,11 +354,11 @@ avec $m$ un paramètre de régularisation (typiquement $m = 100$ s).
 
 Pour les encres **viscoélastiques** (avec mémoire élastique), le tenseur des contraintes polymériques $\boldsymbol{\tau}_p$ évolue selon :
 
-$$\boldsymbol{\tau}_p + \lambda_1 \overset{\triangledown}{\boldsymbol{\tau}_p} = 2\eta_p \mathbf{D}$$
+$$\boldsymbol{\tau}_p + \lambda_1 \stackrel{\nabla}{\boldsymbol{\tau}_p} = 2\eta_p \mathbf{D}$$
 
-où $\overset{\triangledown}{\boldsymbol{\tau}_p}$ est la **dérivée convectée supérieure** :
+où $\stackrel{\nabla}{\boldsymbol{\tau}_p}$ est la **dérivée convectée supérieure** :
 
-$$\overset{\triangledown}{\boldsymbol{\tau}_p} = \frac{\partial \boldsymbol{\tau}_p}{\partial t} + (\mathbf{v} \cdot \nabla)\boldsymbol{\tau}_p - (\nabla \mathbf{v})^T \cdot \boldsymbol{\tau}_p - \boldsymbol{\tau}_p \cdot \nabla \mathbf{v}$$
+$$\stackrel{\nabla}{\boldsymbol{\tau}_p} = \frac{\partial \boldsymbol{\tau}_p}{\partial t} + (\mathbf{v} \cdot \nabla)\boldsymbol{\tau}_p - (\nabla \mathbf{v})^T \cdot \boldsymbol{\tau}_p - \boldsymbol{\tau}_p \cdot \nabla \mathbf{v}$$
 
 **Paramètres :**
 - $\lambda_1$ : temps de relaxation [s]
@@ -373,7 +373,7 @@ La viscosité totale est $\eta = \eta_s + \eta_p$.
 
 Pour les encres fortement non-linéaires, le modèle **Giesekus** ajoute un terme quadratique :
 
-$$\boldsymbol{\tau}_p + \lambda_1 \overset{\triangledown}{\boldsymbol{\tau}_p} + \frac{\alpha \lambda_1}{\eta_p} \boldsymbol{\tau}_p \cdot \boldsymbol{\tau}_p = 2\eta_p \mathbf{D}$$
+$$\boldsymbol{\tau}_p + \lambda_1 \stackrel{\nabla}{\boldsymbol{\tau}_p} + \frac{\alpha \lambda_1}{\eta_p} \boldsymbol{\tau}_p \cdot \boldsymbol{\tau}_p = 2\eta_p \mathbf{D}$$
 
 où $\alpha \in [0, 0.5]$ est le paramètre de mobilité anisotrope.
 
@@ -414,10 +414,10 @@ $$\boldsymbol{\sigma}_{fluide} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solide} \
 
 Pour gérer la déformation du domaine fluide, on utilise la formulation **ALE (Arbitrary Lagrangian-Eulerian)** :
 
-$$\rho \left[\frac{\partial \mathbf{v}}{\partial t}\bigg|_{\chi} + (\mathbf{v} - \mathbf{v}_{mesh}) \cdot \nabla \mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \mathbf{F}$$
+$$\rho \left[\left.\frac{\partial \mathbf{v}}{\partial t}\right|_{\chi} + (\mathbf{v} - \mathbf{v}_{mesh}) \cdot \nabla \mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \mathbf{F}$$
 
 où :
-- $\frac{\partial}{\partial t}\big|_{\chi}$ : dérivée à coordonnées ALE fixées
+- $\left.\frac{\partial}{\partial t}\right|_{\chi}$ : dérivée à coordonnées ALE fixées
 - $\mathbf{v}_{mesh}$ : vitesse du maillage
 
 **Lissage du maillage :** Équation de Laplace pour les déplacements nodaux :
