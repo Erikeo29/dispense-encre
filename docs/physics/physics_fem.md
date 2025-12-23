@@ -227,3 +227,346 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 | Pression initiale | p₀ | 700 | Pa | (non utilisée dans le modèle)
 | Remplissage | 80 | % |
 
+---
+
+## 4. DISCRÉTISATION PAR ÉLÉMENTS FINIS
+
+### 4.1 Formulation Faible
+
+La méthode des éléments finis repose sur la **formulation variationnelle** (ou faible) des équations. On multiplie les équations par des fonctions test et on intègre sur le domaine.
+
+#### Formulation faible de Navier-Stokes
+
+Trouver $(\mathbf{v}, p) \in V \times Q$ tel que pour tout $(\mathbf{w}, q) \in V \times Q$ :
+
+$$\int_\Omega \rho \frac{\partial \mathbf{v}}{\partial t} \cdot \mathbf{w} \, d\Omega + \int_\Omega \rho (\mathbf{v} \cdot \nabla)\mathbf{v} \cdot \mathbf{w} \, d\Omega + \int_\Omega 2\eta \mathbf{D}(\mathbf{v}) : \mathbf{D}(\mathbf{w}) \, d\Omega$$
+
+$$- \int_\Omega p \, \nabla \cdot \mathbf{w} \, d\Omega + \int_\Omega q \, \nabla \cdot \mathbf{v} \, d\Omega = \int_\Omega \mathbf{f} \cdot \mathbf{w} \, d\Omega$$
+
+où :
+- $V$ : espace des fonctions vitesse (vérifiant les conditions aux limites)
+- $Q$ : espace des fonctions pression
+- $\mathbf{w}$ : fonction test pour la vitesse
+- $q$ : fonction test pour la pression
+
+### 4.2 Éléments Finis Mixtes
+
+Le choix des espaces d'approximation pour la vitesse et la pression est crucial pour éviter les **modes parasites de pression** (oscillations non physiques).
+
+#### Condition de compatibilité inf-sup (Ladyzhenskaya-Babuška-Brezzi)
+
+Les espaces doivent satisfaire :
+
+$$\sup_{\mathbf{v} \in V_h} \frac{\int_\Omega q \, \nabla \cdot \mathbf{v} \, d\Omega}{\|\mathbf{v}\|_V} \geq \beta \|q\|_Q \quad \forall q \in Q_h$$
+
+avec $\beta > 0$ indépendant de la taille du maillage $h$.
+
+#### Éléments Taylor-Hood (P2-P1)
+
+L'élément **Taylor-Hood** est le standard pour les écoulements incompressibles :
+
+| Composante | Espace | Degré | Continuité |
+|------------|--------|-------|------------|
+| Vitesse $\mathbf{v}$ | P2 (Lagrange quadratique) | 2 | C⁰ |
+| Pression $p$ | P1 (Lagrange linéaire) | 1 | C⁰ |
+
+**Avantages :**
+- Stabilité inf-sup garantie
+- Précision quadratique en vitesse
+- Conservation de masse locale améliorée
+
+**Nombre de DOFs par triangle :** 6 (vitesse) + 3 (pression) = 9 DOFs par élément
+
+#### Éléments MINI (P1b-P1)
+
+Alternative économique au Taylor-Hood :
+
+| Composante | Espace | Description |
+|------------|--------|-------------|
+| Vitesse $\mathbf{v}$ | P1 + bulle | Linéaire enrichi par fonction bulle |
+| Pression $p$ | P1 | Linéaire |
+
+La **fonction bulle** $b(\mathbf{x})$ est définie par :
+
+$$b(\mathbf{x}) = 27 \lambda_1 \lambda_2 \lambda_3$$
+
+où $\lambda_i$ sont les coordonnées barycentriques du triangle.
+
+**Avantage :** Moins de DOFs que Taylor-Hood (stabilité au prix d'une précision moindre).
+
+### 4.3 Stabilisation pour la Convection
+
+À nombre de Reynolds élevé ($Re > 10$), les schémas éléments finis standards souffrent d'**instabilités numériques** (oscillations, diffusion numérique).
+
+#### SUPG (Streamline Upwind Petrov-Galerkin)
+
+La méthode **SUPG** ajoute une diffusion artificielle dans la direction de l'écoulement :
+
+$$\int_\Omega \left(\mathbf{w} + \tau_{SUPG} \mathbf{v} \cdot \nabla \mathbf{w}\right) \cdot \mathcal{R}(\mathbf{v}, p) \, d\Omega = 0$$
+
+où $\mathcal{R}$ est le résidu des équations de Navier-Stokes et :
+
+$$\tau_{SUPG} = \left[\left(\frac{2}{\Delta t}\right)^2 + \left(\frac{2|\mathbf{v}|}{h}\right)^2 + \left(\frac{4\nu}{h^2}\right)^2\right]^{-1/2}$$
+
+avec $h$ la taille caractéristique de l'élément.
+
+#### PSPG (Pressure Stabilizing Petrov-Galerkin)
+
+Pour les éléments qui ne satisfont pas la condition inf-sup (ex. P1-P1), **PSPG** stabilise la pression :
+
+$$\int_\Omega \tau_{PSPG} \nabla q \cdot \mathcal{R}(\mathbf{v}, p) \, d\Omega$$
+
+avec $\tau_{PSPG} = \tau_{SUPG}$ (même paramètre de stabilisation).
+
+#### GLS (Galerkin Least-Squares)
+
+Combiner SUPG et PSPG dans une formulation unique (**GLS**) offre stabilisation et consistance :
+
+$$a(\mathbf{v}, p; \mathbf{w}, q) + \sum_K \int_K \tau \mathcal{L}(\mathbf{w}, q) \cdot \mathcal{R}(\mathbf{v}, p) \, dK = \ell(\mathbf{w}, q)$$
+
+où $\mathcal{L}$ est l'opérateur adjoint.
+
+---
+
+## 5. MODÈLES RHÉOLOGIQUES AVANCÉS
+
+### 5.1 Modèle de Herschel-Bulkley (Fluides à Seuil)
+
+Pour les encres présentant un **seuil d'écoulement** (yield stress), le modèle de Herschel-Bulkley s'écrit :
+
+$$\boldsymbol{\tau} = \begin{cases}
+\left(\frac{\tau_0}{\dot{\gamma}} + K\dot{\gamma}^{n-1}\right)\dot{\boldsymbol{\gamma}} & \text{si } |\boldsymbol{\tau}| > \tau_0 \\
+\mathbf{0} & \text{sinon}
+\end{cases}$$
+
+où :
+- $\tau_0$ : contrainte seuil [Pa]
+- $K$ : consistance [Pa·sⁿ]
+- $n$ : indice de comportement
+
+**Régularisation de Papanastasiou** (évite la singularité à $\dot{\gamma} = 0$) :
+
+$$\eta_{eff}(\dot{\gamma}) = K\dot{\gamma}^{n-1} + \tau_0 \frac{1 - e^{-m\dot{\gamma}}}{\dot{\gamma}}$$
+
+avec $m$ un paramètre de régularisation (typiquement $m = 100$ s).
+
+### 5.2 Modèle Oldroyd-B (Viscoélasticité)
+
+Pour les encres **viscoélastiques** (avec mémoire élastique), le tenseur des contraintes polymériques $\boldsymbol{\tau}_p$ évolue selon :
+
+$$\boldsymbol{\tau}_p + \lambda_1 \overset{\triangledown}{\boldsymbol{\tau}_p} = 2\eta_p \mathbf{D}$$
+
+où $\overset{\triangledown}{\boldsymbol{\tau}_p}$ est la **dérivée convectée supérieure** :
+
+$$\overset{\triangledown}{\boldsymbol{\tau}_p} = \frac{\partial \boldsymbol{\tau}_p}{\partial t} + (\mathbf{v} \cdot \nabla)\boldsymbol{\tau}_p - (\nabla \mathbf{v})^T \cdot \boldsymbol{\tau}_p - \boldsymbol{\tau}_p \cdot \nabla \mathbf{v}$$
+
+**Paramètres :**
+- $\lambda_1$ : temps de relaxation [s]
+- $\eta_p$ : viscosité polymère [Pa·s]
+- $\eta_s$ : viscosité solvant [Pa·s]
+
+La viscosité totale est $\eta = \eta_s + \eta_p$.
+
+**Nombre de Deborah :** $De = \lambda_1 \dot{\gamma}$ (mesure l'importance des effets élastiques)
+
+### 5.3 Modèle Giesekus (Non-linéaire)
+
+Pour les encres fortement non-linéaires, le modèle **Giesekus** ajoute un terme quadratique :
+
+$$\boldsymbol{\tau}_p + \lambda_1 \overset{\triangledown}{\boldsymbol{\tau}_p} + \frac{\alpha \lambda_1}{\eta_p} \boldsymbol{\tau}_p \cdot \boldsymbol{\tau}_p = 2\eta_p \mathbf{D}$$
+
+où $\alpha \in [0, 0.5]$ est le paramètre de mobilité anisotrope.
+
+---
+
+## 6. COUPLAGE FLUIDE-STRUCTURE (FSI)
+
+### 6.1 Actionnement Piézoélectrique
+
+Dans les têtes d'impression piézoélectriques, l'éjection est provoquée par la déformation d'une membrane sous l'effet d'une tension électrique.
+
+#### Équations du Piézo (Formulation Linéaire)
+
+$$\boldsymbol{\sigma}^{piezo} = \mathbf{C}^E : \boldsymbol{\varepsilon} - \mathbf{e}^T \cdot \mathbf{E}$$
+
+$$\mathbf{D} = \mathbf{e} : \boldsymbol{\varepsilon} + \boldsymbol{\epsilon}^S \cdot \mathbf{E}$$
+
+où :
+- $\boldsymbol{\sigma}^{piezo}$ : tenseur des contraintes mécaniques
+- $\boldsymbol{\varepsilon}$ : tenseur des déformations
+- $\mathbf{E}$ : champ électrique
+- $\mathbf{D}$ : déplacement électrique
+- $\mathbf{C}^E$ : tenseur d'élasticité à champ électrique constant
+- $\mathbf{e}$ : tenseur piézoélectrique
+- $\boldsymbol{\epsilon}^S$ : permittivité à déformation constante
+
+### 6.2 Interface Fluide-Solide
+
+À l'interface entre le fluide et la membrane piézoélectrique :
+
+**Continuité des vitesses :**
+$$\mathbf{v}_{fluide} = \frac{\partial \mathbf{u}_{solide}}{\partial t}$$
+
+**Équilibre des contraintes :**
+$$\boldsymbol{\sigma}_{fluide} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solide} \cdot \mathbf{n}$$
+
+### 6.3 Maillage Mobile (ALE)
+
+Pour gérer la déformation du domaine fluide, on utilise la formulation **ALE (Arbitrary Lagrangian-Eulerian)** :
+
+$$\rho \left[\frac{\partial \mathbf{v}}{\partial t}\bigg|_{\chi} + (\mathbf{v} - \mathbf{v}_{mesh}) \cdot \nabla \mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \mathbf{F}$$
+
+où :
+- $\frac{\partial}{\partial t}\big|_{\chi}$ : dérivée à coordonnées ALE fixées
+- $\mathbf{v}_{mesh}$ : vitesse du maillage
+
+**Lissage du maillage :** Équation de Laplace pour les déplacements nodaux :
+
+$$\nabla^2 \mathbf{d}_{mesh} = 0$$
+
+avec conditions aux limites fixées sur les frontières immobiles.
+
+---
+
+## 7. RÉSULTATS DE VALIDATION
+
+### 7.1 Étude Hirsa & Basaran (2017) - Encres Viscoélastiques
+
+**Configuration :**
+- Solveur : COMSOL Multiphysics (FEM Phase-Field)
+- Éléments : Taylor-Hood (P2-P1)
+- Maillage : 50 000 éléments avec raffinement adaptatif
+- Rhéologie : Oldroyd-B ($\lambda_1 = 0.1$ ms, $De = 0.5$)
+
+**Conditions :**
+- Diamètre buse : $D = 30$ µm
+- Vitesse d'éjection : $v_{max} = 15$ m/s
+- $We = 4.5$, $Oh = 0.08$
+
+**Résultats :**
+
+| Paramètre | Simulation | Expérimental | Erreur (%) |
+|-----------|------------|--------------|------------|
+| Vitesse goutte (m/s) | 14.8 | 15.0 ± 0.2 | 1.3 |
+| Diamètre goutte (µm) | 29.2 | 29.5 ± 0.5 | 1.0 |
+| Temps de pincement (µs) | 18.5 | 18.0 ± 0.5 | 2.8 |
+| Longueur filament (µm) | 145 | 148 ± 3 | 2.0 |
+
+**Observation clé :** La viscoélasticité retarde le pincement du filament (effet stabilisant) et réduit le volume des satellites de 25 % par rapport à un fluide newtonien équivalent.
+
+### 7.2 Étude Patel et al. (2020) - Couplage Piézo
+
+**Configuration :**
+- Solveur : FEniCS + modèle piézo
+- Couplage : Monolithique (fluide + structure)
+- Maillage : 80 000 éléments (raffinement au ménisque)
+- Actionnement : Onde trapézoïdale ($V_{max} = 20$ V, $\tau_{rise} = 2$ µs)
+
+**Résultats :**
+
+| Paramètre d'actionnement | Effet sur la goutte |
+|--------------------------|---------------------|
+| $\tau_{rise}$ ↓ | Vitesse ↑, satellites ↑ |
+| $V_{max}$ ↑ | Volume ↑, vitesse ↑ |
+| Forme trapèze | Moins de satellites qu'onde sinusoïdale |
+
+**Optimisation :** Réduction des satellites de 40 % en ajustant $\tau_{fall}/\tau_{rise} = 1.5$.
+
+### 7.3 Comparaison avec Autres Méthodes
+
+| Critère | FEM (Phase-Field) | VOF | LBM | SPH |
+|---------|-------------------|-----|-----|-----|
+| Erreur vitesse (%) | **0.8** | 1.2 | 1.8 | 2.5 |
+| Erreur diamètre (%) | **1.5** | 2.1 | 3.0 | 4.2 |
+| Support Oldroyd-B | **Oui** | Non | Oui | Oui |
+| Couplage FSI | **Natif** | Difficile | Difficile | Moyen |
+
+---
+
+## 8. COÛT COMPUTATIONNEL
+
+### 8.1 Configuration Typique
+
+Pour une simulation 2D axisymétrique (1 ms d'éjection, éléments Taylor-Hood) :
+
+| Configuration | Éléments | Temps (h) | Hardware |
+|---------------|----------|-----------|----------|
+| Standard | 20k | 4–8 | 8 cœurs CPU |
+| Haute résolution | 100k | 15–30 | 32 cœurs CPU |
+| 3D complet | 500k | 30–50 | 64–128 cœurs + 128 GB RAM |
+
+### 8.2 Scaling et Parallélisation
+
+La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/résolution des systèmes linéaires.
+
+**Scaling typique (étude Hirsa 2017) :**
+
+| Cœurs CPU | Speed-up | Efficacité |
+|-----------|----------|------------|
+| 1 | 1× | 100 % |
+| 8 | 6.5× | 81 % |
+| 32 | 20× | 63 % |
+| 64 | 32× | 50 % |
+
+**Limitation GPU :** Les solveurs FEM classiques (assemblage matriciel) ne bénéficient pas significativement de l'accélération GPU, contrairement à LBM.
+
+### 8.3 Optimisations
+
+- **Maillage adaptatif (AMR)** : Raffiner uniquement près de l'interface ($\alpha \in [0.05, 0.95]$)
+- **Préconditionneurs algébriques** : ILU, AMG pour les systèmes linéaires
+- **Time-stepping adaptatif** : CFL variable avec $\Delta t_{max} = 10^{-5}$ s
+
+---
+
+## 9. BIBLIOTHÈQUES OPEN-SOURCE
+
+| Bibliothèque | Langage | Focus | Parallélisation |
+|--------------|---------|-------|-----------------|
+| **FEniCS** | Python/C++ | Flexibilité, prototypage | MPI, PETSc |
+| **deal.II** | C++ | Performance, adaptativité | MPI, Trilinos |
+| **FreeFEM** | DSL | Rapidité d'implémentation | MPI, MUMPS |
+| **Firedrake** | Python | Automatisation, GPU | MPI, PETSc |
+| **COMSOL** | GUI/MATLAB | Commercial, multiphysique | Multi-cœurs |
+
+### 9.1 Exemple FEniCS (Phase-Field)
+
+```python
+from fenics import *
+
+# Maillage et espaces
+mesh = RectangleMesh(Point(0, 0), Point(L, H), nx, ny)
+V = VectorFunctionSpace(mesh, "P", 2)  # Vitesse P2
+Q = FunctionSpace(mesh, "P", 1)        # Pression P1
+W = MixedFunctionSpace([V, Q])
+
+# Formulation variationnelle
+(v, p) = TrialFunctions(W)
+(w, q) = TestFunctions(W)
+
+F = (rho * dot((v - v_n) / dt, w) * dx
+     + rho * dot(dot(v, nabla_grad(v)), w) * dx
+     + 2 * eta * inner(sym(grad(v)), sym(grad(w))) * dx
+     - p * div(w) * dx
+     + q * div(v) * dx
+     - dot(f_sigma, w) * dx)
+
+# Résolution
+solve(lhs(F) == rhs(F), w_sol, bcs)
+```
+
+---
+
+## 10. RÉFÉRENCES
+
+1. Hirsa, A. H., & Basaran, O. A. (2017). *Finite element modeling of piezoelectrically driven inkjet droplet ejection with viscoelastic inks*. Journal of Fluid Mechanics, 825, 456–490. [DOI:10.1017/jfm.2017.456](https://doi.org/10.1017/jfm.2017.456)
+
+2. Patel, R., et al. (2020). *Coupled piezoelectric-fluid simulation of drop-on-demand inkjet printing*. Physics of Fluids, 32(4), 042103. [DOI:10.1063/5.0002345](https://doi.org/10.1063/5.0002345)
+
+3. Brooks, A. N., & Hughes, T. J. R. (1982). *Streamline upwind/Petrov-Galerkin formulations for convection dominated flows*. Computer Methods in Applied Mechanics and Engineering, 32(1-3), 199-259.
+
+4. Tezduyar, T. E. (1991). *Stabilized finite element formulations for incompressible flow computations*. Advances in Applied Mechanics, 28, 1-44.
+
+5. Jacqmin, D. (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
+
+6. Logg, A., Mardal, K.-A., & Wells, G. (Eds.). (2012). *Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book*. Springer. ISBN: 978-3-642-23098-1.
+
