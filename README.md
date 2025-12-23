@@ -1,52 +1,67 @@
-# 🔬 Simulation de Dispense d'Encre rhéofluidifiante
+# Simulation de Dispense d'Encre Rhéofluidifiante
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dispense-encre.streamlit.app/)
 
-Ce projet compare différentes approches numériques pour modéliser le processus de dispense d'encre rhéofluidifiante dans des micro-puits.
+Application Streamlit pour la visualisation et comparaison de simulations numériques de dispense de fluides rhéofluidifiants (encre Ag/AgCl) dans des micro-puits.
 
-L'application Streamlit permet de visualiser et comparer les résultats de 4 modèles physiques distincts.
-
-## 📊 Modèles Comparés
+## Modèles Comparés
 
 | Modèle | Méthode | Implémentation | Focus Physique |
-| :--- | :--- | :--- | :--- |
-| **FEM** | Éléments Finis / Phase-Field | **Python (FEniCS)** | Thermodynamique de l'interface, capillarité fine |
-| **VOF** | Volume of Fluid | **C++ (OpenFOAM)** | Standard industriel, robustesse, conservation de masse |
-| **LBM** | Lattice Boltzmann (Shan-Chen) | **C++ (Palabos)** | Calcul HPC, géométries complexes, mouillage naturel |
-| **SPH** | Smoothed Particle Hydrodynamics | **Python (PySPH)** | Surface libre complexe, éclaboussures, dynamique violente |
+|--------|---------|----------------|----------------|
+| **FEM** | Éléments Finis / Phase-Field | Python (FEniCS) | Thermodynamique interface, capillarité |
+| **VOF** | Volume of Fluid | C++ (OpenFOAM) | Standard industriel, conservation masse |
+| **LBM** | Lattice Boltzmann | C++ (Palabos) | Performance GPU, géométries complexes |
+| **SPH** | Smoothed Particle Hydrodynamics | Python (PySPH) | Surfaces libres, grandes déformations |
 
-## 📂 Structure du Projet
+## Fonctionnalités
 
-L'architecture du projet a été rationalisée pour faciliter la maintenance :
+- **Page d'accueil** : Aperçu des 4 modèles avec exemples animés
+- **Documentation scientifique** : Équations LaTeX, nombres adimensionnels, références
+- **Comparaison détaillée** : Tableaux hardware, précision, coût calcul
+- **Visualiseur interactif** : Sélection de paramètres pour le modèle FEM
+- **Navigation fluide** : Bouton retour en haut, onglets visibles
 
-*   `app.py` : Point d'entrée de l'application Streamlit.
-*   `assets/` : Contient toutes les ressources visuelles (GIFs, PNGs), organisées par modèle (`fem`, `vof`, `lbm`, `sph`).
-*   `data/` : Contient les fichiers de mapping CSV pour les correspondances paramètres/résultats.
-*   `docs/` : Contient la documentation scientifique (Markdown) et les extraits de code source réels.
-    *   `physics/` : Explications théoriques.
-    *   `code/` : Fichiers sources (.cpp, .py) extraits des solveurs.
+## Structure du Projet
 
-## 🚀 Installation et Lancement
+```
+app.py              # Application Streamlit (~350 lignes)
+assets/             # Ressources visuelles (GIFs, PNGs)
+  fem/, vof/, lbm/, sph/
+data/               # Mappings CSV paramètres → fichiers
+docs/               # Documentation Markdown (~2000 lignes)
+  accueil/          # Page d'accueil
+  intro/            # Contexte scientifique
+  physics/          # Théorie par modèle
+  comparaison/      # Tableaux comparatifs
+  conclusion/       # Recommandations
+```
 
-Cloner le dépôt :
+## Installation
+
 ```bash
 git clone https://github.com/Erikeo29/dispense-encre.git
 cd dispense-encre
-```
-
-Installer les dépendances :
-```bash
 pip install -r requirements.txt
-```
-
-Lancer l'application :
-```bash
 streamlit run app.py
 ```
 
-## 📝 Version
+## Documentation Technique
 
-**Version 3.0.0 (Décembre 2025)**
-*   Architecture multi-modèles unifiée.
-*   Intégration des résultats VOF, LBM et SPH.
-*   Documentation technique complète.
+La documentation inclut :
+- Nombres adimensionnels (Re, We, Oh, De, Ca, Bo)
+- Équations de Navier-Stokes et modèles rhéologiques (Carreau, Herschel-Bulkley)
+- Méthodes numériques détaillées (VOF-PLIC, LBM-BGK, SPH-CSF, FEM-SUPG)
+- Résultats de validation expérimentale
+- Recommandations hardware et coûts calcul
+
+## Version
+
+**Version 3.1.0 (Décembre 2025)**
+- Nouvelle page d'accueil avec aperçu des 4 modèles
+- Documentation scientifique enrichie (~2000 lignes)
+- Interface améliorée (onglets visibles, bouton retour haut)
+- Corrections LaTeX pour compatibilité KaTeX
+
+## Licence
+
+Projet de recherche - Usage interne
