@@ -151,18 +151,18 @@ def display_smart_markdown(content):
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.radio(
     "Aller à :",
-    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion", "Lexique")
+    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion", "Équations clés", "Lexique")
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-**Version 3.2.0** - Dec 2025
+**Version 3.3.0** - Dec 2025
 *EQU Research*
 
 **Nouveautés :**
 - Page d'accueil
 - Documentation enrichie
-- Conclusion & Lexique
+- Équations clés & Lexique
 - UI améliorée
 """)
 
@@ -363,6 +363,12 @@ elif selected_page == "Conclusion":
     st.title("Conclusion et Perspectives")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "conclusion/conclusion.md")))
+
+# ===== PAGE ÉQUATIONS CLÉS =====
+elif selected_page == "Équations clés":
+    st.title("Équations Clés des Modèles")
+    st.markdown("---")
+    st.markdown(load_file_content(os.path.join(DOC_PATH, "equations/equations_clef.md")))
 
 # ===== PAGE LEXIQUE =====
 elif selected_page == "Lexique":
