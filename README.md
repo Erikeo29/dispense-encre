@@ -56,9 +56,11 @@ La documentation inclut :
 
 ## Version
 
-**Version 3.1.0 (Décembre 2025)**
+**Version 3.3.0 (Décembre 2025)**
 - Nouvelle page d'accueil avec aperçu des 4 modèles
-- Documentation scientifique enrichie (~2000 lignes)
+- Documentation scientifique enrichie (~2500 lignes)
+- Page "Équations clés" avec synthèse des équations
+- Page "Lexique" avec glossaire complet
 - Interface améliorée (onglets visibles, bouton retour haut)
 - Corrections LaTeX pour compatibilité KaTeX
 
