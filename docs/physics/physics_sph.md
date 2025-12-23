@@ -31,11 +31,11 @@ Le noyau $W(r, h)$ doit satisfaire plusieurs propriétés :
 
 **Cubic Spline (M₄) :**
 
-$$W(q) = \frac{\sigma_d}{h^d} \begin{cases}
-1 - \frac{3}{2}q^2 + \frac{3}{4}q^3 & 0 \leq q < 1 \\
-\frac{1}{4}(2-q)^3 & 1 \leq q < 2 \\
-0 & q \geq 2
-\end{cases}$$
+| Domaine | Expression |
+|---------|------------|
+| $0 \leq q < 1$ | $W(q) = \frac{\sigma_d}{h^d} \left(1 - \frac{3}{2}q^2 + \frac{3}{4}q^3\right)$ |
+| $1 \leq q < 2$ | $W(q) = \frac{\sigma_d}{h^d} \cdot \frac{1}{4}(2-q)^3$ |
+| $q \geq 2$ | $W(q) = 0$ |
 
 avec $q = r/h$ et $\sigma_d$ le facteur de normalisation dimensionnel.
 
@@ -82,10 +82,10 @@ La SPH standard souffre d'instabilités numériques, notamment des **oscillation
 
 ### Formulation de Monaghan
 
-$$\Pi_{ab} = \begin{cases}
-\frac{-\alpha \bar{c}_{ab} \mu_{ab} + \beta \mu_{ab}^2}{\bar{\rho}_{ab}} & \mathbf{v}_{ab} \cdot \mathbf{r}_{ab} < 0 \\
-0 & \text{sinon}
-\end{cases}$$
+| Condition | Expression de $\Pi_{ab}$ |
+|-----------|--------------------------|
+| $\mathbf{v}_{ab} \cdot \mathbf{r}_{ab} < 0$ | $\Pi_{ab} = \frac{-\alpha \bar{c}_{ab} \mu_{ab} + \beta \mu_{ab}^2}{\bar{\rho}_{ab}}$ |
+| sinon | $\Pi_{ab} = 0$ |
 
 avec :
 
