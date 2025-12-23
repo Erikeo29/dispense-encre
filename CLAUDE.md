@@ -4,115 +4,105 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-### Development
 ```bash
-# Run the application locally
+# Run locally
 streamlit run app.py
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Deploy to GitHub (after changes)
-git add .
-git commit -m "Your commit message"
-git push origin main
+# Deploy (auto-deploys on push)
+git add . && git commit -m "message" && git push origin main
 ```
 
 ## Architecture
 
-### Core Application Structure
+### Overview
 
-The application is a Streamlit-based simulation tool with a multi-page architecture:
+Multi-model Streamlit application (V3.0) comparing 4 numerical methods for simulating shear-thinning ink dispensing into micro-wells:
 
-1. **`app.py`**: Main application file (417 lines) containing all logic
-   - `main()`: Entry point (lines 352-415) that handles page routing through sidebar navigation
-   - Three main pages: Simulation, Physics Documentation, Python Code
+| Model | Method | Implementation |
+|-------|--------|----------------|
+| FEM | Phase-Field / Finite Elements | Python (FEniCS) |
+| VOF | Volume of Fluid | C++ (OpenFOAM) |
+| LBM | Lattice Boltzmann (Shan-Chen) | C++ (Palabos) |
+| SPH | Smoothed Particle Hydrodynamics | Python (PySPH) |
 
-2. **Simulation System**:
-   - Uses CSV-based GIF mapping via `load_gif_mapping()` function (lines 13-36)
-   - Reads `gif_mapping.csv` with semicolon separators and converts to Python dictionary
-   - Displays two side-by-side simulations with independent parameter controls
-   - 6 parameters per simulation: puit diameter, buse diameter, shift X, viscosity, contact angle (wall), contact angle (gold)
-   - Central "LANCER LES SIMULATIONS" button triggers both simulations simultaneously
-   - 109 pre-computed simulation results available
+### File Structure
 
-3. **Data Flow**:
-   - User selects 6 parameters per simulation → Stored as tuple in session state
-   - Click "LANCER" button → Sets `sim1_running` and `sim2_running` flags → Triggers `st.rerun()`
-   - Parameter tuple lookup in `gif_mapping` dictionary → Returns GIF filename
-   - GIF loaded from `gif/` directory and converted to base64 for inline display via HTML `<img>` tag
-   - Session state preserves parameters between Streamlit reruns
+```
+app.py              # Single-file application (207 lines)
+assets/             # Visual resources organized by model
+  fem/gif/          # FEM simulation GIFs
+  fem/png/          # FEM simulation PNGs (stored as .jpg)
+  vof/gif/          # VOF simulation GIFs
+  lbm/gif/          # LBM simulation GIFs
+  sph/gif/          # SPH simulation GIFs
+data/               # CSV mappings for parameter lookups
+  fem_gif_mapping.csv   # 6-param tuple → GIF path
+  fem_png_mapping.csv   # 6-param tuple → PNG path
+docs/               # Documentation markdown files
+  intro/            # Project introduction
+  physics/          # Theory for each model
+  code/             # Source code extracts (.cpp, .py, .md)
+  comparaison/      # Model comparison
+```
 
-### Key Architectural Decisions
+### Key Patterns
 
-- **CSV-Based Parameter Mapping**: The `load_gif_mapping()` function reads `gif_mapping.csv` and creates a dictionary with tuple keys `(puit_diam, buse_diam, shift_x, viscosity, angle_wall, angle_gold)` → `gif_path`. Enables quick lookup of pre-computed simulations.
+**CSV-Based Parameter Mapping** (`load_gif_mapping()`, `load_png_mapping()`):
+- Semicolon-separated CSV with French locale (comma as decimal separator)
+- Creates dict with tuple keys for O(1) lookup: `(param1, param2, ...) → filepath`
+- Cached with 10-minute TTL via `@st.cache_data(ttl=600)`
 
-- **Tuple-Based Lookup Pattern**: Parameters stored as immutable tuples allow fast dictionary lookups. Requires exact parameter matches (no interpolation).
+**Documentation Loading** (`load_file_content()`):
+- No caching (TTL removed) to enable live documentation updates
+- Reads markdown files from `docs/` directory
 
-- **Session State Mechanics**: Streamlit reruns entire script on interaction. Parameters stored in `st.session_state` persist across reruns. Flags like `sim1_running` trigger conditional GIF display.
+**Media Display** (`load_media_as_base64()`):
+- Converts images to base64 for inline HTML rendering
+- Handles GIF, PNG, and JPG formats
 
-- **Aggressive Branding Removal**: `hide_streamlit_branding()` function (lines 48-101) injects CSS to hide Streamlit UI elements (hamburger menu, footer, GitHub button, toolbar) for professional appearance.
-
-- **Base64 GIF Encoding**: GIFs converted to base64 strings and embedded in HTML `<img>` tags for inline display without external file serving.
-
-- **Documentation Loading**: Physics and code documentation are loaded from markdown files in `documentation/` directory using `load_markdown_file()` (lines 103-111).
-
-### Important Files
-
-- `gif_mapping.csv`: Contains parameter-to-GIF mappings (7 columns: filename + 6 parameters, semicolon-separated, 109 data rows)
-- `documentation/ink_dispensing_physique_v1.md`: Physics documentation
-- `documentation/ink_dispensing_code_v8.md`: Python code examples
-- `.streamlit/config.toml`: UI theme configuration (color scheme, minimal toolbar)
+**Page Routing**:
+- Sidebar radio navigation with 6 pages
+- FEM page has 4 tabs: Physics, Code, GIF Viewer, PNG Viewer
+- Other model pages have 3 tabs: Physics, Code, Examples
 
 ## Common Tasks
 
-### Adding New Simulations
+### Adding New FEM Simulations
 
-1. Generate GIF file from FEniCS simulation with desired parameters
-2. Save GIF to `gif/` directory (naming convention: `gif_XXX.gif`)
-3. Add new row to `gif_mapping.csv` with parameters and filename:
+1. Generate GIF/PNG from FEniCS simulation
+2. Save to `assets/fem/gif/` or `assets/fem/png/` (PNG saved as .jpg)
+3. Add row to `data/fem_gif_mapping.csv` or `data/fem_png_mapping.csv`:
    ```csv
-   gif_new01.gif;800;200;0;1,5;90;35
+   new_file.gif;800;200;0;1,5;90;35
    ```
-   Note: Use semicolon separator and comma for decimal point (French locale)
-4. Test locally: `streamlit run app.py`
-5. Deploy: `git add . && git commit -m "Add simulation XXX" && git push`
+   Note: semicolon separator, comma decimal (French locale)
 
-### Modifying Parameter Ranges
+### Modifying FEM Parameter Options
 
-Parameter dropdowns are defined in `simulation_page()` function around lines 134-220. To add new values:
+GIF viewer parameters in `app.py:149-150`:
+- Tuple order: (puit, buse, shift, viscosity, angle_wall, angle_gold)
 
-**Example - Add new nozzle diameter (300 µm)**:
-```python
-# Simulation 1 (around line 154)
-diametre_buse_1 = st.selectbox(
-    "Diamètre buse (µm)",
-    options=[200, 250, 300, 350],  # Add 350
-    key="diam_buse_1"
-)
+PNG viewer parameters in `app.py:165-166`:
+- Tuple order: (temps, viscosity, shift_x, shift_z, angle, remplissage)
 
-# Simulation 2 (around line 204)
-diametre_buse_2 = st.selectbox(
-    "Diamètre buse (µm)",
-    options=[200, 250, 300, 350],  # Add 350
-    key="diam_buse_2"
-)
-```
+### Adding Documentation
 
-Note: Must also generate corresponding GIF files and update CSV for new parameter combinations.
+1. Create/edit markdown in appropriate `docs/` subdirectory
+2. No app.py changes needed if using existing paths
+3. Changes appear immediately (no cache)
 
-### Troubleshooting Missing GIFs
+### Troubleshooting
 
-If simulation shows "Aucune simulation disponible pour cette combinaison":
-1. Check parameter tuple matches exactly a row in `gif_mapping.csv`
-2. Verify GIF file exists in `gif/` directory
-3. Check CSV uses semicolons and comma decimal separator (French format)
-4. Validate CSV encoding (UTF-8) and no extra spaces
+**"Simulation non trouvée"**: Parameter tuple doesn't match any CSV row exactly
+- Check CSV uses semicolons and comma decimals
+- Verify tuple order matches CSV column order
+- Ensure file exists in `assets/` directory
 
-### Deployment Notes
+## Deployment
 
 - Repository: https://github.com/Erikeo29/dispense-encre
-- Branch: `main` (single branch deployment)
-- Streamlit Cloud auto-redeploys on push to main branch
-- Check `requirements.txt` for dependency versions (streamlit==1.40.2, pandas==2.2.3)
-- No environment variables currently required
+- Streamlit Cloud auto-redeploys on push to `main`
+- Dependencies: streamlit, pandas (see requirements.txt)
