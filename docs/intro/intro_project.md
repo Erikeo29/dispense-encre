@@ -1,24 +1,33 @@
-# Simulation de la Dispense de Microgouttes d'Encre Rhéofluidifiante
+# Modélisation de la Dispense de Fluides Rhéofluidifiants
 
 ## Contexte Scientifique et Industriel
 
-### Évolution Technologique de l'Impression Jet d'Encre
+### Technologies de Dispense Microfluidique
 
-L'impression jet d'encre (*inkjet*) a connu une évolution remarquable depuis ses débuts dans les années 1960. Les premières technologies, basées sur le **continuous inkjet (CIJ)** (Sweet, 1965), utilisaient un jet continu dévié électrostatiquement pour former des gouttes. L'avènement du **drop-on-demand (DOD)** dans les années 1980, notamment avec les têtes piézo-électriques (Epson, HP), a révolutionné le domaine en permettant un contrôle précis de l'éjection de gouttes de 1–100 pL à des fréquences allant jusqu'à 100 kHz.
+La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
 
-**Applications industrielles actuelles :**
-- Impression 3D et fabrication additive
-- Électronique imprimée (circuits, capteurs)
-- Bioprinting et dépôt de cellules
-- Dépôt de matériaux fonctionnels (encres conductrices Ag/AgCl)
+**Applications industrielles :**
+- Fabrication de capteurs électrochimiques (dépôt d'encres Ag/AgCl)
+- Électronique imprimée (circuits conducteurs, antennes RFID)
+- Bioprinting et dépôt de biomatériaux
+- Revêtements fonctionnels et couches minces
+- Dosage pharmaceutique de précision
+
+### Mécanismes Physiques
+
+La dispense de fluides implique plusieurs phénomènes physiques couplés :
+- **Écoulement diphasique** : interaction fluide/air à l'interface
+- **Capillarité** : tension superficielle et mouillage sur les parois
+- **Rhéologie** : comportement non-newtonien des fluides complexes
+- **Dynamique interfaciale** : déformation, pincement et stabilité
 
 ---
 
-## Propriétés des Encres Rhéofluidifiantes
+## Propriétés des Fluides Rhéofluidifiants
 
 ### Comportement Non-Newtonien
 
-Les encres rhéofluidifiantes sont des fluides **non-newtoniens** dont la viscosité apparente diminue sous l'effet d'un cisaillement. Leur comportement est décrit par des lois empiriques :
+Les fluides rhéofluidifiants sont des fluides **non-newtoniens** dont la viscosité apparente diminue sous l'effet d'un cisaillement. Ce comportement est essentiel pour la dispense : le fluide s'écoule facilement sous pression mais conserve sa forme au repos.
 
 **Loi de puissance (Ostwald-de Waele) :**
 
@@ -32,88 +41,83 @@ $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\ga
 
 où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini, et $k$, $a$ des paramètres d'ajustement.
 
-**Exemple industriel :** Une encre piézo-électrique typique présente $\eta_0 = 15$ mPa·s (au repos) et $\eta = 3$ mPa·s sous $\dot{\gamma} = 10^4$ s⁻¹.
+**Exemple :** Une encre Ag/AgCl typique présente $\eta_0 = 0.5$–$5$ Pa·s (au repos) et $\eta_\infty = 0.05$ Pa·s sous fort cisaillement.
 
 ---
 
-## Défis Technologiques Actuels
+## Nombres Adimensionnels Fondamentaux
 
-### Enjeux Majeurs de l'Impression Inkjet
+La modélisation de la dispense de fluides implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
 
-| Défi | Description | Impact |
-|------|-------------|--------|
-| **Résolution spatiale** | Atteindre > 2400 dpi nécessite des gouttes < 5 µm | Contrôle de la dynamique interfaciale |
-| **Stabilité des gouttes** | Les satellites représentent 20–30 % du volume éjecté | Réduction de la qualité d'impression |
-| **Compatibilité des encres** | Encres pigmentées vs colorants | Modèles rhéologiques avancés requis |
-| **Efficacité énergétique** | Têtes piezo consommant jusqu'à 10 W à > 50 kHz | Limite l'intégration portable |
-
----
-
-## Problématiques Clés et Nombres Adimensionnels
-
-La modélisation de la dispense de microgouttes implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
-
-### Nombres Adimensionnels Fondamentaux
-
-| Nombre | Expression | Signification | Valeur typique (inkjet) |
-|--------|------------|---------------|------------------------|
+| Nombre | Expression | Signification | Valeur typique |
+|--------|------------|---------------|----------------|
 | **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Effets inertiels vs visqueux | 10 – 100 |
-| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We \approx 4$ (satellites) |
-| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.1$ (gouttes stables) |
-| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques (temps de relaxation $\lambda$) | Variable selon encre |
-| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ (régime capillaire) |
-| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ (gravité négligeable) |
+| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We < 10$ |
+| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.5$ |
+| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques (temps de relaxation $\lambda$) | Variable |
+| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ |
+| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ |
 
 **Interprétation physique :**
-- $Re$ entre 10 et 100 : régime laminaire avec effets inertiels significatifs
-- $We \approx 4$ : valeur critique pour la formation de satellites
-- $Oh < 0.1$ : favorise la formation de gouttes stables
+- $Re$ entre 10 et 100 : régime laminaire avec effets inertiels
+- $Oh < 0.5$ : formation de gouttes/filaments stables
+- $Bo \ll 1$ : gravité négligeable (régime capillaire dominant)
 
 ---
 
-## Objectifs du Projet
+## Défis de la Modélisation Numérique
 
-Ce projet vise à **modéliser et comparer** quatre approches numériques pour la simulation de dispense d'encre rhéofluidifiante dans des micro-puits :
+### Enjeux Techniques
 
-### Approche Comparative Multi-Modèles
-
-| Modèle | Méthode | Implémentation | Focus Physique |
-|--------|---------|----------------|----------------|
-| **FEM** | Phase-Field / Éléments Finis | Python (FEniCS) | Thermodynamique de l'interface, capillarité fine |
-| **VOF** | Volume of Fluid | C++ (OpenFOAM) | Standard industriel, robustesse, conservation de masse |
-| **LBM** | Lattice Boltzmann (Shan-Chen) | C++ (Palabos) | Calcul HPC/GPU, géométries complexes, mouillage naturel |
-| **SPH** | Smoothed Particle Hydrodynamics | Python (PySPH) | Surfaces libres complexes, éclaboussures, dynamique violente |
-
-### Système Physique Étudié
-
-- **Simulation diphasique** : encre Ag/AgCl + air en domaine microfluidique
-- **Régime** : laminaire incompressible ($Re \ll 2300$)
-- **Interface** : méthodes de suivi adaptées à chaque approche
-- **Rhéologie** : modèle de Carreau pour le comportement rhéofluidifiant
-
-**Paramètres géométriques :**
-- Diamètre du puit : 800 – 1500 µm
-- Diamètre de la buse : 200 – 350 µm
-- Décalage horizontal : 0, -75, -150 µm
-- Temps de dispense : 40 ms
+| Défi | Description | Approche |
+|------|-------------|----------|
+| **Suivi d'interface** | Capturer la déformation de l'interface fluide/air | VOF, Phase-Field, Level-Set |
+| **Rhéologie complexe** | Modéliser le comportement non-newtonien | Lois constitutives (Carreau, Herschel-Bulkley) |
+| **Mouillage** | Gérer les angles de contact dynamiques | Conditions aux limites spécifiques |
+| **Multi-échelles** | Du micron (interface) au millimètre (puit) | Maillages adaptatifs, méthodes sans maillage |
+| **Coût calcul** | Simulations 3D transitoires coûteuses | GPU, parallélisation, méthodes hybrides |
 
 ---
 
-## Structure de la Documentation
+## Système Physique Étudié
 
-Cette documentation technique est organisée comme suit :
+### Configuration Géométrique
 
-1. **Comparaison des modèles** : Analyse technique comparative (précision, coût, hardware)
-2. **Physique FEM** : Fondements mathématiques de la méthode Phase-Field
-3. **Physique VOF** : Méthode Volume of Fluid et schémas de reconstruction
-4. **Physique LBM** : Approche mésoscopique Lattice Boltzmann
-5. **Physique SPH** : Méthode lagrangienne sans maillage
-6. **Conclusion** : Recommandations et perspectives
+Le système modélisé consiste en :
+- **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
+- **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm
+- **Fluide** : encre Ag/AgCl rhéofluidifiante ($\rho$ = 3000 kg/m³)
+- **Environnement** : air ambiant
+
+### Paramètres de Simulation
+
+| Paramètre | Plage | Unité |
+|-----------|-------|-------|
+| Diamètre puit | 800 – 1500 | µm |
+| Diamètre buse | 200 – 350 | µm |
+| Décalage horizontal | 0, -75, -150 | µm |
+| Viscosité $\eta_0$ | 0.5 – 5 | Pa·s |
+| Angle de contact paroi | 35 – 90 | ° |
+| Angle de contact électrode | 35 – 75 | ° |
+| Temps de dispense | 20 – 40 | ms |
 
 ---
 
-## Références Clés
+## Approche Multi-Modèles
 
-- Sweet, R. G. (1965). *High frequency recording with electrostatically deflected ink jets*. Review of Scientific Instruments, 36(2), 131-136.
+Ce projet compare quatre méthodes numériques complémentaires :
+
+| Modèle | Approche | Avantage Principal |
+|--------|----------|-------------------|
+| **FEM / Phase-Field** | Eulérienne, éléments finis | Précision thermodynamique, couplages multiphysiques |
+| **VOF** | Eulérienne, volumes finis | Robustesse, standard industriel |
+| **LBM** | Mésoscopique, réseau | Performance GPU, géométries complexes |
+| **SPH** | Lagrangienne, sans maillage | Surfaces libres, grandes déformations |
+
+---
+
+## Références
+
 - Basaran, O. A., Gao, H., & Bhat, P. P. (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
 - Derby, B. (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414.
+- Owens, R. G., & Phillips, T. N. (2002). *Computational Rheology*. Imperial College Press.

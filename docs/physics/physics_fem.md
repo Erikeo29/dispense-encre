@@ -334,10 +334,10 @@ où $\mathcal{L}$ est l'opérateur adjoint.
 
 Pour les encres présentant un **seuil d'écoulement** (yield stress), le modèle de Herschel-Bulkley s'écrit :
 
-$$\boldsymbol{\tau} = \begin{cases}
-\left(\frac{\tau_0}{\dot{\gamma}} + K\dot{\gamma}^{n-1}\right)\dot{\boldsymbol{\gamma}} & \text{si } |\boldsymbol{\tau}| > \tau_0 \\
-\mathbf{0} & \text{sinon}
-\end{cases}$$
+| Condition | Tenseur des contraintes $\boldsymbol{\tau}$ |
+|-----------|---------------------------------------------|
+| $\|\boldsymbol{\tau}\| > \tau_0$ | $\boldsymbol{\tau} = \left(\frac{\tau_0}{\dot{\gamma}} + K\dot{\gamma}^{n-1}\right)\dot{\boldsymbol{\gamma}}$ |
+| sinon | $\boldsymbol{\tau} = \mathbf{0}$ |
 
 où :
 - $\tau_0$ : contrainte seuil [Pa]
