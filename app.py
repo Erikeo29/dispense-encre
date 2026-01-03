@@ -23,14 +23,23 @@ TRANSLATIONS = {
         "overview_title": "Aperçu des résultats des 4 modèles de Simulation",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
-        "image_1": "Image 1",
-        "image_2": "Image 2",
         "btn_launch": "LANCER LES SIMULATIONS",
         "btn_show": "AFFICHER LES IMAGES",
         "combo_unavailable": "Combinaison non disponible",
         "image_unavailable": "Image non disponible",
-        "gif_viewer": "Visualiseur de Simulations GIF",
-        "png_viewer": "Visualiseur d'Images PNG",
+        "gif_viewer": "Visualisation dynamique (GIF)",
+        "png_viewer": "Visualisation état final (PNG)",
+        # Labels GIF
+        "lbl_well": "Ø Puit (µm)",
+        "lbl_nozzle": "Ø Buse (µm)",
+        "lbl_shift_x": "Décalage X (µm)",
+        "lbl_viscosity": "η₀ (Pa·s)",
+        "lbl_ca_wall": "θ paroi (°)",
+        "lbl_ca_gold": "θ substrat (°)",
+        # Labels PNG
+        "lbl_time": "Temps (ms)",
+        "lbl_shift_z": "Décalage Z (µm)",
+        "lbl_ratio": "Ratio buse/puit",
         "version_info": """**Version 0.5.0** ***(not released)***
 
 Jan 2025 - *EQU*
@@ -60,14 +69,23 @@ Jan 2025 - *EQU*
         "overview_title": "Overview of 4 Simulation Models Results",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
-        "image_1": "Image 1",
-        "image_2": "Image 2",
         "btn_launch": "LAUNCH SIMULATIONS",
         "btn_show": "SHOW IMAGES",
         "combo_unavailable": "Combination not available",
         "image_unavailable": "Image not available",
-        "gif_viewer": "GIF Simulation Viewer",
-        "png_viewer": "PNG Image Viewer",
+        "gif_viewer": "Dynamic Visualization (GIF)",
+        "png_viewer": "Final State Visualization (PNG)",
+        # Labels GIF
+        "lbl_well": "Ø Well (µm)",
+        "lbl_nozzle": "Ø Nozzle (µm)",
+        "lbl_shift_x": "Offset X (µm)",
+        "lbl_viscosity": "η₀ (Pa·s)",
+        "lbl_ca_wall": "θ wall (°)",
+        "lbl_ca_gold": "θ substrate (°)",
+        # Labels PNG
+        "lbl_time": "Time (ms)",
+        "lbl_shift_z": "Offset Z (µm)",
+        "lbl_ratio": "Nozzle/well ratio",
         "version_info": """**Version 0.5.0** ***(not released)***
 
 Jan 2025 - *EQU*
@@ -462,31 +480,33 @@ elif selected_page == model_pages[0]:  # FEM
     with tabs[2]:  # GIF
         st.subheader(t("gif_viewer"))
 
-        # Zone de sélection des paramètres
+        # Zone de sélection des paramètres (colonnes réduites avec espaceurs)
         with st.container(border=True):
             st.markdown(f"**{t('sim_1')}**")
-            g1_cols = st.columns(6)
-            with g1_cols[0]: g1_d = st.selectbox("Puit",[800,1000,1500],key="g1_d")
-            with g1_cols[1]: g1_b = st.selectbox("Buse",[200,250,300],key="g1_b")
-            with g1_cols[2]: g1_s = st.selectbox("Shift X",[0,-75,-150],key="g1_s")
-            with g1_cols[3]: g1_v = st.selectbox("Visco.",[5.0,1.5],key="g1_v")
-            with g1_cols[4]: g1_a = st.selectbox("θ Paroi",[90,35],key="g1_a")
-            with g1_cols[5]: g1_o = st.selectbox("θ Or",[35,75],key="g1_o")
+            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+            with c1: g1_d = st.selectbox(t("lbl_well"), [800,1000,1500], key="g1_d")
+            with c2: g1_b = st.selectbox(t("lbl_nozzle"), [200,250,300], key="g1_b")
+            with c3: g1_s = st.selectbox(t("lbl_shift_x"), [0,-75,-150], key="g1_s")
+            with c4: g1_v = st.selectbox(t("lbl_viscosity"), [5.0,1.5], key="g1_v")
+            with c5: g1_a = st.selectbox(t("lbl_ca_wall"), [90,35], key="g1_a")
+            with c6: g1_o = st.selectbox(t("lbl_ca_gold"), [35,75], key="g1_o")
             p1 = (g1_d, g1_b, g1_s, g1_v, g1_a, g1_o)
 
             st.markdown(f"**{t('sim_2')}**")
-            g2_cols = st.columns(6)
-            with g2_cols[0]: g2_d = st.selectbox("Puit",[800,1000,1500],key="g2_d",index=1)
-            with g2_cols[1]: g2_b = st.selectbox("Buse",[200,250,300],key="g2_b",index=1)
-            with g2_cols[2]: g2_s = st.selectbox("Shift X",[0,-75,-150],key="g2_s",index=1)
-            with g2_cols[3]: g2_v = st.selectbox("Visco.",[5.0,1.5],key="g2_v",index=1)
-            with g2_cols[4]: g2_a = st.selectbox("θ Paroi",[90,35],key="g2_a",index=1)
-            with g2_cols[5]: g2_o = st.selectbox("θ Or",[35,75],key="g2_o",index=1)
+            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+            with c1: g2_d = st.selectbox(t("lbl_well"), [800,1000,1500], key="g2_d", index=1)
+            with c2: g2_b = st.selectbox(t("lbl_nozzle"), [200,250,300], key="g2_b", index=1)
+            with c3: g2_s = st.selectbox(t("lbl_shift_x"), [0,-75,-150], key="g2_s", index=1)
+            with c4: g2_v = st.selectbox(t("lbl_viscosity"), [5.0,1.5], key="g2_v", index=1)
+            with c5: g2_a = st.selectbox(t("lbl_ca_wall"), [90,35], key="g2_a", index=1)
+            with c6: g2_o = st.selectbox(t("lbl_ca_gold"), [35,75], key="g2_o", index=1)
             p2 = (g2_d, g2_b, g2_s, g2_v, g2_a, g2_o)
 
-            if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_gif"):
-                st.session_state.run_g = True
-                st.session_state.p_g = (p1, p2)
+            _, btn_col, _ = st.columns([1, 2, 1])
+            with btn_col:
+                if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_gif"):
+                    st.session_state.run_g = True
+                    st.session_state.p_g = (p1, p2)
 
         # Zone d'affichage des résultats
         if st.session_state.get('run_g', False):
@@ -504,31 +524,33 @@ elif selected_page == model_pages[0]:  # FEM
     with tabs[3]:  # PNG
         st.subheader(t("png_viewer"))
 
-        # Zone de sélection des paramètres
+        # Zone de sélection des paramètres (colonnes réduites avec espaceurs)
         with st.container(border=True):
-            st.markdown(f"**{t('image_1')}**")
-            p1_cols = st.columns(6)
-            with p1_cols[0]: p1_t = st.selectbox("Temps",[20,40],key="p1_t")
-            with p1_cols[1]: p1_v = st.selectbox("Visco.",[0.05,0.5,1.5,5.0],index=2,key="p1_v")
-            with p1_cols[2]: p1_x = st.selectbox("Shift X",[0,-75],key="p1_x")
-            with p1_cols[3]: p1_z = st.selectbox("Shift Z",[0,-30],key="p1_z")
-            with p1_cols[4]: p1_a = st.selectbox("θ Or",[15,35,75],key="p1_a")
-            with p1_cols[5]: p1_r = st.selectbox("Rempl.",[0.6,0.8],key="p1_r")
+            st.markdown(f"**{t('sim_1')}**")
+            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+            with c1: p1_t = st.selectbox(t("lbl_time"), [20,40], key="p1_t")
+            with c2: p1_v = st.selectbox(t("lbl_viscosity"), [0.05,0.5,1.5,5.0], index=2, key="p1_v")
+            with c3: p1_x = st.selectbox(t("lbl_shift_x"), [0,-75], key="p1_x")
+            with c4: p1_z = st.selectbox(t("lbl_shift_z"), [0,-30], key="p1_z")
+            with c5: p1_a = st.selectbox(t("lbl_ca_gold"), [15,35,75], key="p1_a")
+            with c6: p1_r = st.selectbox(t("lbl_ratio"), [0.6,0.8], key="p1_r")
             png1 = (p1_t, p1_v, p1_x, p1_z, p1_a, p1_r)
 
-            st.markdown(f"**{t('image_2')}**")
-            p2_cols = st.columns(6)
-            with p2_cols[0]: p2_t = st.selectbox("Temps",[20,40],key="p2_t",index=1)
-            with p2_cols[1]: p2_v = st.selectbox("Visco.",[0.05,0.5,1.5,5.0],index=3,key="p2_v")
-            with p2_cols[2]: p2_x = st.selectbox("Shift X",[0,-75],key="p2_x",index=1)
-            with p2_cols[3]: p2_z = st.selectbox("Shift Z",[0,-30],key="p2_z",index=1)
-            with p2_cols[4]: p2_a = st.selectbox("θ Or",[15,35,75],index=1,key="p2_a")
-            with p2_cols[5]: p2_r = st.selectbox("Rempl.",[0.6,0.8],index=1,key="p2_r")
+            st.markdown(f"**{t('sim_2')}**")
+            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+            with c1: p2_t = st.selectbox(t("lbl_time"), [20,40], key="p2_t", index=1)
+            with c2: p2_v = st.selectbox(t("lbl_viscosity"), [0.05,0.5,1.5,5.0], index=3, key="p2_v")
+            with c3: p2_x = st.selectbox(t("lbl_shift_x"), [0,-75], key="p2_x", index=1)
+            with c4: p2_z = st.selectbox(t("lbl_shift_z"), [0,-30], key="p2_z", index=1)
+            with c5: p2_a = st.selectbox(t("lbl_ca_gold"), [15,35,75], index=1, key="p2_a")
+            with c6: p2_r = st.selectbox(t("lbl_ratio"), [0.6,0.8], index=1, key="p2_r")
             png2 = (p2_t, p2_v, p2_x, p2_z, p2_a, p2_r)
 
-            if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png"):
-                st.session_state.run_p = True
-                st.session_state.p_p = (png1, png2)
+            _, btn_col, _ = st.columns([1, 2, 1])
+            with btn_col:
+                if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png"):
+                    st.session_state.run_p = True
+                    st.session_state.p_p = (png1, png2)
 
         # Zone d'affichage des résultats
         if st.session_state.get('run_p', False):
@@ -537,7 +559,7 @@ elif selected_page == model_pages[0]:  # FEM
                 m = load_png_mapping()
                 for i, (col, params) in enumerate(zip(png_cols, st.session_state.p_p)):
                     with col:
-                        st.caption(f"{t('image_1') if i==0 else t('image_2')}")
+                        st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
                         if params in m:
                             st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
                         else:
