@@ -130,10 +130,9 @@ h1, h2, h3 {
     color: white;
 }
 
-/* Bouton retour en haut - SVG flèche blanche sur fond bleu */
-.back-to-top {
+/* Boutons de navigation - SVG flèche blanche sur fond bleu */
+.nav-button {
     position: fixed;
-    bottom: 50%;
     right: 30px;
     z-index: 9999;
     background-color: #004b87;
@@ -147,10 +146,17 @@ h1, h2, h3 {
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    transition: all 0.2s ease;
 }
-.back-to-top:hover {
+.nav-button:hover {
     background-color: #003366;
     transform: scale(1.1);
+}
+.back-to-top {
+    bottom: calc(50% + 30px);
+}
+.scroll-to-bottom {
+    bottom: calc(50% - 30px);
 }
 
 /* Espacement des radio buttons dans la sidebar */
@@ -164,10 +170,16 @@ h1, h2, h3 {
 }
 </style>
 
-<!-- Bouton retour en haut - SVG avec flèche blanche -->
-<a href="#top" class="back-to-top" title="Retour en haut">
+<!-- Bouton retour en haut - SVG avec flèche vers le haut -->
+<a href="#top" class="nav-button back-to-top" title="Retour en haut / Back to top">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
         <path d="M12 4l-8 8h5v8h6v-8h5z"/>
+    </svg>
+</a>
+<!-- Bouton descendre en bas - SVG avec flèche vers le bas -->
+<a href="#bottom" class="nav-button scroll-to-bottom" title="Aller en bas / Go to bottom">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 20l8-8h-5V4h-6v8H4z"/>
     </svg>
 </a>
 <div id="top"></div>
@@ -614,3 +626,6 @@ elif selected_page == annex_pages[4]:  # Bibliographie / Bibliography
     st.title(selected_page)
     st.markdown("---")
     st.markdown(load_file_content("biblio/biblio.md"))
+
+# --- Ancre de fin de page pour bouton scroll-to-bottom ---
+st.markdown('<div id="bottom"></div>', unsafe_allow_html=True)
