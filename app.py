@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 # --- Configuration de la page ---
-st.set_page_config(page_title="Simulation Dispense", layout="wide")
+st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_sidebar_state="expanded")
 
 # --- Dictionnaire de Traduction UI ---
 TRANSLATIONS = {
@@ -116,12 +116,10 @@ def t(key):
 # --- Styles CSS personnalisés (Style Académique) ---
 custom_css = """
 <style>
-/* Masquer éléments Streamlit */
+/* Masquer éléments Streamlit (sauf toolbar pour bouton sidebar) */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
-header {visibility: hidden;}
 .stDeployButton {display: none;}
-[data-testid="stToolbar"] {display: none;}
 
 /* Style académique */
 .main {
@@ -186,6 +184,28 @@ h1, h2, h3 {
 [data-testid="stSidebar"] .stRadio > div > label > div:first-child {
     border: 2px solid #666;
 }
+
+/* Réduire l'espace des séparateurs dans la sidebar */
+[data-testid="stSidebar"] hr {
+    margin: 4px 0;
+}
+
+/* Réduire l'espace sous les subheaders de la sidebar */
+[data-testid="stSidebar"] [data-testid="stSubheader"] {
+    margin-bottom: -10px;
+}
+
+/* Réduire l'espace des paragraphes markdown dans la sidebar */
+[data-testid="stSidebar"] [data-testid="stMarkdown"] p {
+    margin-bottom: 0.3rem;
+}
+
+/* Réduire l'espace des listes dans la sidebar */
+[data-testid="stSidebar"] [data-testid="stMarkdown"] ul {
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+
 </style>
 
 <!-- Bouton retour en haut - SVG avec flèche vers le haut -->
