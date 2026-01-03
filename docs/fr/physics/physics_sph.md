@@ -287,12 +287,14 @@ Pour une simulation 3D (1 ms d'éjection, 10⁶ particules) :
 
 ## Références
 
-1. Monaghan, J. J. (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703.
+> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
 
-2. Morris, J. P., Fox, P. J., & Zhu, Y. (2000). *Modeling low Reynolds number incompressible flows using SPH*. Journal of Computational Physics, 136(1), 214-226.
+1. Monaghan, J. J. (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
 
-3. Adami, S., Hu, X. Y., & Adams, N. A. (2012). *A generalized wall boundary condition for smoothed particle hydrodynamics*. Journal of Computational Physics, 231(21), 7057-7075.
+2. Morris, J. P., Fox, P. J., & Zhu, Y. (1997). *Modeling low Reynolds number incompressible flows using SPH*. Journal of Computational Physics, 136(1), 214-226. [DOI:10.1006/jcph.1997.5776](https://doi.org/10.1006/jcph.1997.5776)
 
-4. Pourquie, M., et al. (2024). *Smoothed particle hydrodynamics for high-speed inkjet of complex fluids: Power-law and thixotropic effects*. Journal of Non-Newtonian Fluid Mechanics, 323, 104567. [DOI:10.1016/j.jnnfm.2024.104567](https://doi.org/10.1016/j.jnnfm.2024.104567)
+3. Adami, S., Hu, X. Y., & Adams, N. A. (2012). *A generalized wall boundary condition for smoothed particle hydrodynamics*. Journal of Computational Physics, 231(21), 7057-7075. [DOI:10.1016/j.jcp.2012.05.005](https://doi.org/10.1016/j.jcp.2012.05.005)
 
-5. Markesteijn, A. P., et al. (2023). *SPH simulation of multi-droplet inkjet printing: Coalescence and satellite formation*. Physics of Fluids, 35(3), 033315. [DOI:10.1063/5.0123456](https://doi.org/10.1063/5.0123456)
+4. Liu, M. B., & Liu, G. R. (2010). *Smoothed Particle Hydrodynamics (SPH): an Overview and Recent Developments*. Archives of Computational Methods in Engineering, 17, 25-76. [DOI:10.1007/s11831-010-9040-7](https://doi.org/10.1007/s11831-010-9040-7)
+
+5. Violeau, D. (2012). *Fluid Mechanics and the SPH Method: Theory and Applications*. Oxford University Press. ISBN: 978-0-19-965552-6.

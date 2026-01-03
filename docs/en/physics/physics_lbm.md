@@ -265,12 +265,14 @@ For a 3D simulation (1 ms ejection, D3Q19):
 
 ## References
 
-1. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364.
+> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
 
-2. Shan, X., & Chen, H. (1993). *Lattice Boltzmann model for simulating flows with multiple phases and components*. Physical Review E, 47(3), 1815.
+1. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
 
-3. Li, Z., Ginzburg, I., & Thovert, J. F. (2022). *Lattice Boltzmann simulation of shear-thinning inkjet droplet dynamics on GPU*. Computers & Fluids, 240, 105678. [DOI:10.1016/j.compfluid.2022.105678](https://doi.org/10.1016/j.compfluid.2022.105678)
+2. Shan, X., & Chen, H. (1993). *Lattice Boltzmann model for simulating flows with multiple phases and components*. Physical Review E, 47(3), 1815. [DOI:10.1103/PhysRevE.47.1815](https://doi.org/10.1103/PhysRevE.47.1815)
 
-4. Thiery, B., Ginzburg, I., & Li, Z. (2023). *A hybrid VOF-LBM approach for high-resolution inkjet simulations*. Journal of Computational Physics, 476, 111876. [DOI:10.1016/j.jcp.2023.111876](https://doi.org/10.1016/j.jcp.2023.111876)
+3. Krüger, T., Kusumaatmaja, H., Kuzmin, A., Shardt, O., Silva, G., & Viggen, E. M. (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. ISBN: 978-3-319-44649-3. [DOI:10.1007/978-3-319-44649-3](https://doi.org/10.1007/978-3-319-44649-3)
 
-5. Krüger, T., et al. (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. ISBN: 978-3-319-44649-3.
+4. Huang, H., Sukop, M., & Lu, X. (2015). *Multiphase Lattice Boltzmann Methods: Theory and Application*. Wiley-Blackwell. ISBN: 978-1-118-97133-8.
+
+5. Fakhari, A., & Rahimian, M. H. (2010). *Phase-field modeling by the method of lattice Boltzmann equations*. Physical Review E, 81(3), 036707. [DOI:10.1103/PhysRevE.81.036707](https://doi.org/10.1103/PhysRevE.81.036707)
