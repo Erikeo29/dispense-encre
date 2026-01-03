@@ -228,12 +228,12 @@ Numerical modeling of shear-thinning ink microdroplet dispensing is a rapidly ex
 
 ---
 
-## Key References
+## References
+
+> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
 
 1. Basaran, O. A., Gao, H., & Bhat, P. P. (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
 
-2. Raissi, M., et al. (2020). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations*. Journal of Computational Physics, 378, 686–707. [DOI:10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
+2. Derby, B. (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414.
 
-3. Thiery, B., et al. (2023). *A hybrid VOF-LBM approach for high-resolution inkjet simulations*. Journal of Computational Physics, 476, 111876. [DOI:10.1016/j.jcp.2023.111876](https://doi.org/10.1016/j.jcp.2023.111876)
-
-4. IBM Quantum. (2023). *Quantum algorithms for fluid dynamics*. IBM Research Report.
+3. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics, 378, 686-707. [DOI:10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)

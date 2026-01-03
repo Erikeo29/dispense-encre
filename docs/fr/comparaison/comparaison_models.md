@@ -189,18 +189,18 @@ Basé sur 20 études avec validation expérimentale (shadowgraphy, PIV) :
 
 ---
 
-## Références Sélectionnées
+## Références
 
-1. Duarte, J. F., et al. (2019). *High-fidelity simulation of inkjet droplet formation using a coupled level-set/VOF method with adaptive mesh refinement*. Journal of Computational Physics, 398, 108923. [DOI:10.1016/j.jcp.2019.108923](https://doi.org/10.1016/j.jcp.2019.108923)
+> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
 
-2. Li, Z., et al. (2021). *VOF modeling of non-Newtonian inkjet with power-law rheology*. Physics of Fluids, 33(5), 053312. [DOI:10.1063/5.0054321](https://doi.org/10.1063/5.0054321)
+1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
 
-3. Hirsa, A. H., & Basaran, O. A. (2017). *Finite element modeling of piezoelectrically driven inkjet droplet ejection with viscoelastic inks*. Journal of Fluid Mechanics, 825, 456–490. [DOI:10.1017/jfm.2017.456](https://doi.org/10.1017/jfm.2017.456)
+2. Jacqmin, D. (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
 
-4. Li, Z., et al. (2022). *Lattice Boltzmann simulation of shear-thinning inkjet droplet dynamics on GPU*. Computers & Fluids, 240, 105678. [DOI:10.1016/j.compfluid.2022.105678](https://doi.org/10.1016/j.compfluid.2022.105678)
+3. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
 
-5. Pourquie, M., et al. (2024). *Smoothed particle hydrodynamics for high-speed inkjet of complex fluids: Power-law and thixotropic effects*. Journal of Non-Newtonian Fluid Mechanics, 323, 104567. [DOI:10.1016/j.jnnfm.2024.104567](https://doi.org/10.1016/j.jnnfm.2024.104567)
+4. Monaghan, J. J. (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
 
-6. Thiery, B., et al. (2023). *A hybrid VOF-LBM approach for high-resolution inkjet simulations*. Journal of Computational Physics, 476, 111876. [DOI:10.1016/j.jcp.2023.111876](https://doi.org/10.1016/j.jcp.2023.111876)
+5. Basaran, O. A., Gao, H., & Bhat, P. P. (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
 
-7. Raissi, M., et al. (2020). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations*. Journal of Computational Physics, 378, 686–707. [DOI:10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
+6. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics, 378, 686-707. [DOI:10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
