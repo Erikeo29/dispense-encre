@@ -364,6 +364,8 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 ## Références Biographiques
 
+> **Note** : Pour la liste complète des références techniques, consultez la section **Bibliographie** dans le menu Annexes.
+
 1. MacTutor History of Mathematics Archive. University of St Andrews. [mathshistory.st-andrews.ac.uk](https://mathshistory.st-andrews.ac.uk/)
 
 2. Nobel Prize Organization. [nobelprize.org](https://www.nobelprize.org/)
