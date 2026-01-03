@@ -1,39 +1,39 @@
-# Simulation de Dispense d'Encre Rhéofluidifiante
+# Shear-Thinning Ink Dispensing Simulation
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dispense-encre.streamlit.app/)
 
-Application Streamlit pour la visualisation et comparaison de simulations numériques de dispense de fluides rhéofluidifiants (encre Ag/AgCl) dans des micro-puits.
+Streamlit application for visualization and comparison of numerical simulations of shear-thinning fluid dispensing (Ag/AgCl ink) into micro-wells.
 
-## Modèles Comparés
+## Compared Models
 
-| Modèle | Méthode | Implémentation | Focus Physique |
-|--------|---------|----------------|----------------|
-| **FEM** | Éléments Finis / Phase-Field | Python (FEniCS) | Thermodynamique interface, capillarité |
-| **VOF** | Volume of Fluid | C++ (OpenFOAM) | Standard industriel, conservation masse |
-| **LBM** | Lattice Boltzmann | C++ (Palabos) | Performance GPU, géométries complexes |
-| **SPH** | Smoothed Particle Hydrodynamics | Python (PySPH) | Surfaces libres, grandes déformations |
+| Model | Method | Implementation | Physical Focus |
+|-------|--------|----------------|----------------|
+| **FEM** | Finite Elements / Phase-Field | Python (FEniCS) | Interface thermodynamics, capillarity |
+| **VOF** | Volume of Fluid | C++ (OpenFOAM) | Industrial standard, mass conservation |
+| **LBM** | Lattice Boltzmann | C++ (Palabos) | GPU performance, complex geometries |
+| **SPH** | Smoothed Particle Hydrodynamics | Python (PySPH) | Free surfaces, large deformations |
 
-## Fonctionnalités
+## Features
 
-- **Page d'accueil** : Aperçu des 4 modèles avec exemples animés
-- **Documentation scientifique** : Équations LaTeX, nombres adimensionnels, références
-- **Comparaison détaillée** : Tableaux hardware, précision, coût calcul
-- **Visualiseur interactif** : Sélection de paramètres pour le modèle FEM
-- **Navigation fluide** : Bouton retour en haut, onglets visibles
+- **Home page**: Overview of 4 models with animated examples
+- **Scientific documentation**: LaTeX equations, dimensionless numbers, references
+- **Detailed comparison**: Hardware tables, accuracy, computational cost
+- **Interactive viewer**: Parameter selection for FEM model
+- **Smooth navigation**: Back-to-top/bottom buttons, visible tabs
+- **Bilingual support**: Full FR/EN interface
 
-## Structure du Projet
+## Project Structure
 
 ```
-app.py              # Application Streamlit (~350 lignes)
-assets/             # Ressources visuelles (GIFs, PNGs)
+app.py              # Streamlit application (~660 lines)
+assets/             # Visual resources (GIFs, PNGs)
   fem/, vof/, lbm/, sph/
-data/               # Mappings CSV paramètres → fichiers
-docs/               # Documentation Markdown (~2000 lignes)
-  accueil/          # Page d'accueil
-  intro/            # Contexte scientifique
-  physics/          # Théorie par modèle
-  comparaison/      # Tableaux comparatifs
-  conclusion/       # Recommandations
+data/               # CSV mappings parameters → files
+docs/               # Markdown documentation
+  fr/, en/          # Bilingual content
+  physics/          # Theory per model
+  comparaison/      # Comparison tables
+  biblio/           # Centralized bibliography
 ```
 
 ## Installation
@@ -45,31 +45,31 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Documentation Technique
+## Technical Documentation
 
-La documentation inclut :
-- Nombres adimensionnels (Re, We, Oh, De, Ca, Bo)
-- Équations de Navier-Stokes et modèles rhéologiques (Carreau, Herschel-Bulkley)
-- Méthodes numériques détaillées (VOF-PLIC, LBM-BGK, SPH-CSF, FEM-SUPG)
-- Résultats de validation expérimentale
-- Recommandations hardware et coûts calcul
+Documentation includes:
+- Dimensionless numbers (Re, We, Oh, De, Ca, Bo)
+- Navier-Stokes equations and rheological models (Carreau, Herschel-Bulkley)
+- Detailed numerical methods (VOF-PLIC, LBM-BGK, SPH-CSF, FEM-SUPG)
+- Experimental validation results
+- Hardware recommendations and computational costs
 
 ## Version
 
-**Version 3.5.0 (Janvier 2026)**
-- Support bilingue FR/EN complet
-- Bibliographie centralisée avec DOI vérifiés
-- Boutons navigation haut/bas
-- Sidebar compacte (espacements optimisés)
-- Labels améliorés pour les visualiseurs GIF/PNG
-- Containers avec bordures pour les paramètres
+**Version 3.5.0 (January 2026)**
+- Full bilingual FR/EN support
+- Centralized bibliography with verified DOIs
+- Up/down navigation buttons
+- Compact sidebar (optimized spacing)
+- Improved labels for GIF/PNG viewers
+- Bordered containers for parameters
 
-**Version 3.4.0 (Décembre 2025)**
-- Page d'accueil avec aperçu des 4 modèles
-- Pages annexes : Équations clés, Lexique, Histoire
-- Interface améliorée (onglets visibles)
-- Corrections LaTeX pour compatibilité KaTeX
+**Version 3.4.0 (December 2025)**
+- Home page with 4 models overview
+- Appendix pages: Key Equations, Glossary, History
+- Improved interface (visible tabs)
+- LaTeX fixes for KaTeX compatibility
 
-## Licence
+## License
 
-Projet de recherche - Usage interne
+Research project - Internal use
