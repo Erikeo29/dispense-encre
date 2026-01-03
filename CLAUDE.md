@@ -19,7 +19,7 @@ git add . && git commit -m "message" && git push origin main
 
 ### Overview
 
-Multi-model Streamlit application (V3.1) comparing 4 numerical methods for simulating shear-thinning ink dispensing into micro-wells:
+Multi-model Streamlit application (V3.5) comparing 4 numerical methods for simulating shear-thinning ink dispensing into micro-wells:
 
 | Model | Method | Implementation |
 |-------|--------|----------------|
@@ -66,20 +66,23 @@ docs/               # Documentation markdown files (~2000 lines total)
 - Converts images to base64 for inline HTML rendering
 - Handles GIF, PNG, and JPG formats
 
-**Custom CSS Styling**:
+**Custom CSS Styling** (lines 116-210):
 - Tabs: larger font (16px), bold, colored background on selection
-- Back-to-top button: fixed position, bottom-right corner
-- Streamlit UI elements hidden (menu, footer, toolbar)
+- Navigation buttons: back-to-top + scroll-to-bottom (fixed position, right side)
+- Sidebar: reduced spacing (hr margin 4px, subheader margin -10px)
+- Streamlit UI elements hidden (menu, footer, deploy button)
+
+**Bilingual Support**:
+- TRANSLATIONS dict with FR/EN keys
+- `t(key)` function returns translated string
+- Language selector in sidebar (radio horizontal)
+- Page selection preserved on language switch
 
 **Page Routing**:
-- Sidebar radio navigation with 7 pages:
-  1. Accueil (landing page with 4 GIF examples)
-  2. Introduction (scientific context)
-  3. Comparaison des modèles
-  4. FEM / Phase-Field (4 tabs)
-  5. VOF (OpenFOAM)
-  6. LBM (Palabos)
-  7. SPH (PySPH)
+- Sidebar radio navigation with 12 pages in 3 groups:
+  - General: Accueil, Introduction, Comparaison
+  - Models: FEM, VOF, LBM, SPH
+  - Appendices: Conclusion, Équations clés, Lexique, Histoire, Bibliographie
 
 ## Common Tasks
 

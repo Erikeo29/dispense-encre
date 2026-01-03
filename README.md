@@ -56,13 +56,18 @@ La documentation inclut :
 
 ## Version
 
+**Version 3.5.0 (Janvier 2026)**
+- Support bilingue FR/EN complet
+- Bibliographie centralisée avec DOI vérifiés
+- Boutons navigation haut/bas
+- Sidebar compacte (espacements optimisés)
+- Labels améliorés pour les visualiseurs GIF/PNG
+- Containers avec bordures pour les paramètres
+
 **Version 3.4.0 (Décembre 2025)**
-- Nouvelle page d'accueil avec aperçu des 4 modèles
-- Documentation scientifique enrichie (~3000 lignes)
-- Page "Équations clés" avec synthèse des équations
-- Page "Lexique" avec glossaire complet
-- Page "Un peu d'histoire" : biographies des savants (Navier, Stokes, Boltzmann, Carreau...)
-- Interface améliorée (onglets visibles, bouton retour haut)
+- Page d'accueil avec aperçu des 4 modèles
+- Pages annexes : Équations clés, Lexique, Histoire
+- Interface améliorée (onglets visibles)
 - Corrections LaTeX pour compatibilité KaTeX
 
 ## Licence
