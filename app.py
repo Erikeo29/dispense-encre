@@ -130,21 +130,19 @@ h1, h2, h3 {
     color: white;
 }
 
-/* Bouton retour en haut */
+/* Bouton retour en haut - SVG flèche blanche sur fond bleu */
 .back-to-top {
     position: fixed;
     bottom: 50%;
     right: 30px;
     z-index: 9999;
     background-color: #004b87;
-    color: white;
     border: none;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,8 +164,12 @@ h1, h2, h3 {
 }
 </style>
 
-<!-- Bouton retour en haut -->
-<a href="#top" class="back-to-top" title="Retour en haut">&#8679;</a>
+<!-- Bouton retour en haut - SVG avec flèche blanche -->
+<a href="#top" class="back-to-top" title="Retour en haut">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M12 4l-8 8h5v8h6v-8h5z"/>
+    </svg>
+</a>
 <div id="top"></div>
 """
 st.markdown(custom_css, unsafe_allow_html=True)
@@ -325,6 +327,9 @@ if new_lang != old_lang:
         st.session_state.nav_gen = new_gen_pages[0]
         st.session_state.nav_model = None
         st.session_state.nav_annex = None
+
+    st.session_state.lang = new_lang
+    st.rerun()
 
 st.session_state.lang = new_lang
 

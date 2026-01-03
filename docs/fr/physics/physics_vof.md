@@ -207,10 +207,12 @@ Pour une simulation 2D axisymétrique (1 ms d'éjection) :
 
 ## Références
 
-1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225.
+> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
 
-2. Brackbill, J. U., Kothe, D. B., & Zemach, C. (1992). *A continuum method for modeling surface tension*. Journal of Computational Physics, 100(2), 335-354.
+1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
 
-3. Duarte, J. F., et al. (2019). *High-fidelity simulation of inkjet droplet formation using a coupled level-set/VOF method with adaptive mesh refinement*. Journal of Computational Physics, 398, 108923. [DOI:10.1016/j.jcp.2019.108923](https://doi.org/10.1016/j.jcp.2019.108923)
+2. Brackbill, J. U., Kothe, D. B., & Zemach, C. (1992). *A continuum method for modeling surface tension*. Journal of Computational Physics, 100(2), 335-354. [DOI:10.1016/0021-9991(92)90240-Y](https://doi.org/10.1016/0021-9991(92)90240-Y)
 
-4. Li, Z., et al. (2021). *VOF modeling of non-Newtonian inkjet with power-law rheology*. Physics of Fluids, 33(5), 053312. [DOI:10.1063/5.0054321](https://doi.org/10.1063/5.0054321)
+3. Popinet, S. (2009). *An accurate adaptive solver for surface-tension-driven interfacial flows*. Journal of Computational Physics, 228(16), 5838-5866. [DOI:10.1016/j.jcp.2009.04.042](https://doi.org/10.1016/j.jcp.2009.04.042)
+
+4. Jasak, H. (1996). *Error Analysis and Estimation for the Finite Volume Method with Applications to Fluid Flows*. PhD Thesis, Imperial College London.

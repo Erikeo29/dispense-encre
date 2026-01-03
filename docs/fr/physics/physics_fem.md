@@ -558,15 +558,17 @@ solve(lhs(F) == rhs(F), w_sol, bcs)
 
 ## 10. RÉFÉRENCES
 
-1. Hirsa, A. H., & Basaran, O. A. (2017). *Finite element modeling of piezoelectrically driven inkjet droplet ejection with viscoelastic inks*. Journal of Fluid Mechanics, 825, 456–490. [DOI:10.1017/jfm.2017.456](https://doi.org/10.1017/jfm.2017.456)
+> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
 
-2. Patel, R., et al. (2020). *Coupled piezoelectric-fluid simulation of drop-on-demand inkjet printing*. Physics of Fluids, 32(4), 042103. [DOI:10.1063/5.0002345](https://doi.org/10.1063/5.0002345)
+1. Jacqmin, D. (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
 
-3. Brooks, A. N., & Hughes, T. J. R. (1982). *Streamline upwind/Petrov-Galerkin formulations for convection dominated flows*. Computer Methods in Applied Mechanics and Engineering, 32(1-3), 199-259.
+2. Yue, P., Feng, J. J., Liu, C., & Shen, J. (2004). *A diffuse-interface method for simulating two-phase flows of complex fluids*. Journal of Fluid Mechanics, 515, 293-317. [DOI:10.1017/S0022112004000370](https://doi.org/10.1017/S0022112004000370)
+
+3. Brooks, A. N., & Hughes, T. J. R. (1982). *Streamline upwind/Petrov-Galerkin formulations for convection dominated flows*. Computer Methods in Applied Mechanics and Engineering, 32(1-3), 199-259. [DOI:10.1016/0045-7825(82)90071-8](https://doi.org/10.1016/0045-7825(82)90071-8)
 
 4. Tezduyar, T. E. (1991). *Stabilized finite element formulations for incompressible flow computations*. Advances in Applied Mechanics, 28, 1-44.
 
-5. Jacqmin, D. (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
+5. Logg, A., Mardal, K.-A., & Wells, G. (Eds.). (2012). *Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book*. Springer. ISBN: 978-3-642-23098-1.
 
-6. Logg, A., Mardal, K.-A., & Wells, G. (Eds.). (2012). *Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book*. Springer. ISBN: 978-3-642-23098-1.
+6. Basaran, O. A. (2002). *Small-scale free surface flows with breakup: Drop formation and emerging applications*. AIChE Journal, 48(9), 1842-1848. [DOI:10.1002/aic.690480902](https://doi.org/10.1002/aic.690480902)
 
