@@ -266,13 +266,3 @@ For a 3D simulation (1 ms ejection, D3Q19):
 ## References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
-
-1. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
-
-2. Shan, X., & Chen, H. (1993). *Lattice Boltzmann model for simulating flows with multiple phases and components*. Physical Review E, 47(3), 1815. [DOI:10.1103/PhysRevE.47.1815](https://doi.org/10.1103/PhysRevE.47.1815)
-
-3. Krüger, T., Kusumaatmaja, H., Kuzmin, A., Shardt, O., Silva, G., & Viggen, E. M. (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. ISBN: 978-3-319-44649-3. [DOI:10.1007/978-3-319-44649-3](https://doi.org/10.1007/978-3-319-44649-3)
-
-4. Huang, H., Sukop, M., & Lu, X. (2015). *Multiphase Lattice Boltzmann Methods: Theory and Application*. Wiley-Blackwell. ISBN: 978-1-118-97133-8.
-
-5. Fakhari, A., & Rahimian, M. H. (2010). *Phase-field modeling by the method of lattice Boltzmann equations*. Physical Review E, 81(3), 036707. [DOI:10.1103/PhysRevE.81.036707](https://doi.org/10.1103/PhysRevE.81.036707)

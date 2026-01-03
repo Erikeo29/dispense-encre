@@ -208,11 +208,3 @@ For a 2D axisymmetric simulation (1 ms ejection):
 ## References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
-
-1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
-
-2. Brackbill, J. U., Kothe, D. B., & Zemach, C. (1992). *A continuum method for modeling surface tension*. Journal of Computational Physics, 100(2), 335-354. [DOI:10.1016/0021-9991(92)90240-Y](https://doi.org/10.1016/0021-9991(92)90240-Y)
-
-3. Popinet, S. (2009). *An accurate adaptive solver for surface-tension-driven interfacial flows*. Journal of Computational Physics, 228(16), 5838-5866. [DOI:10.1016/j.jcp.2009.04.042](https://doi.org/10.1016/j.jcp.2009.04.042)
-
-4. Jasak, H. (1996). *Error Analysis and Estimation for the Finite Volume Method with Applications to Fluid Flows*. PhD Thesis, Imperial College London.

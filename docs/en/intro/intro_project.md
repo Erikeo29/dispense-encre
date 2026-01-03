@@ -119,7 +119,3 @@ This project compares four complementary numerical methods:
 ## References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
-
-- Basaran, O. A., Gao, H., & Bhat, P. P. (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
-- Derby, B. (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414.
-- Owens, R. G., & Phillips, T. N. (2002). *Computational Rheology*. Imperial College Press.

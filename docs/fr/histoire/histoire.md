@@ -366,15 +366,3 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 > **Note** : Pour la liste complète des références techniques, consultez la section **Bibliographie** dans le menu Annexes.
 
-1. MacTutor History of Mathematics Archive. University of St Andrews. [mathshistory.st-andrews.ac.uk](https://mathshistory.st-andrews.ac.uk/)
-
-2. Nobel Prize Organization. [nobelprize.org](https://www.nobelprize.org/)
-
-3. McKinley, G. H., & Renardy, M. (2011). *Wolfgang von Ohnesorge*. Physics of Fluids, 23(12), 127101.
-
-4. Bistafa, S. R. (2024). *200 Years of the Navier-Stokes Equation*. arXiv:2401.13669.
-
-5. Society of Rheology. *Fellowship Profiles*. [rheology.org](https://www.rheology.org/)
-
-6. National Academy of Engineering. *Memorial Tributes: John W. Cahn*. Volume 22.
-

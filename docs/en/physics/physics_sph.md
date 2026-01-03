@@ -288,13 +288,3 @@ For a 3D simulation (1 ms ejection, 10⁶ particles):
 ## References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
-
-1. Monaghan, J. J. (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
-
-2. Morris, J. P., Fox, P. J., & Zhu, Y. (1997). *Modeling low Reynolds number incompressible flows using SPH*. Journal of Computational Physics, 136(1), 214-226. [DOI:10.1006/jcph.1997.5776](https://doi.org/10.1006/jcph.1997.5776)
-
-3. Adami, S., Hu, X. Y., & Adams, N. A. (2012). *A generalized wall boundary condition for smoothed particle hydrodynamics*. Journal of Computational Physics, 231(21), 7057-7075. [DOI:10.1016/j.jcp.2012.05.005](https://doi.org/10.1016/j.jcp.2012.05.005)
-
-4. Liu, M. B., & Liu, G. R. (2010). *Smoothed Particle Hydrodynamics (SPH): an Overview and Recent Developments*. Archives of Computational Methods in Engineering, 17, 25-76. [DOI:10.1007/s11831-010-9040-7](https://doi.org/10.1007/s11831-010-9040-7)
-
-5. Violeau, D. (2012). *Fluid Mechanics and the SPH Method: Theory and Applications*. Oxford University Press. ISBN: 978-0-19-965552-6.
