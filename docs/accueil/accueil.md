@@ -1,5 +1,3 @@
-# Bienvenue
-
 ## Objectif du Projet
 
 Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-puits. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
@@ -11,20 +9,20 @@ Ce projet propose une **étude comparative de quatre méthodes numériques** pou
 
 ---
 
-## Application Cible
+## Application cible
 
-Les simulations modélisent la **dispense d'encre conductrice Ag/AgCl** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
+Les simulations modélisent la **dispense d'une encre type Ag/AgCl** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
 
 **Paramètres clés étudiés :**
 - Géométrie : diamètre puit (800–1500 µm), diamètre buse (200–350 µm)
 - Rhéologie : viscosité variable (modèle de Carreau)
-- Mouillage : angles de contact sur parois et électrode
+- Mouillage : angles de contact sur le fond du puit, sur les parois verticales du puit, sur la surface horizontale du substrat.
 
 ---
 
 ## Navigation
 
-Utilisez le menu latéral pour explorer :
+Utilisez le menu latéral pour explorer les différents chapitres du projet:
 1. **Introduction** : Contexte scientifique et nombres adimensionnels
 2. **Comparaison des modèles** : Tableaux comparatifs détaillés
-3. **Pages par modèle** : Physique, code source et exemples de simulation
+3. **Pages par modèle** : Physique, code source et exemples de simulation: animation de l'écoulement pendant la dispense(fichiers GIF) et images de l'état final (fichiers PNG).

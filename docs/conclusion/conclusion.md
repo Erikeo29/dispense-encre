@@ -1,5 +1,3 @@
-# Conclusion et Perspectives
-
 ## Synthèse des Résultats
 
 Cette étude comparative exhaustive a analysé quatre modèles numériques pour la simulation de dispense de microgouttes d'encre rhéofluidifiante : **VOF, FEM, LBM et SPH**. Les conclusions majeures sont les suivantes :

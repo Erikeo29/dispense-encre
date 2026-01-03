@@ -1,5 +1,3 @@
-# Un Peu d'Histoire
-
 Ce projet de simulation de dispense de fluides repose sur des siècles de découvertes scientifiques. Cette page rend hommage aux savants dont les travaux fondamentaux ont rendu possible la modélisation numérique moderne des écoulements diphasiques.
 
 ---
