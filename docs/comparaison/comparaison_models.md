@@ -1,5 +1,3 @@
-# Analyse Comparative des Modèles Numériques
-
 ## Synthèse des Performances
 
 Cette section présente une comparaison exhaustive des quatre méthodes numériques pour la simulation de dispense de microgouttes d'encre rhéofluidifiante, basée sur une méta-analyse de 62 études publiées entre 2010 et 2025.

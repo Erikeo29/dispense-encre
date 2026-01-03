@@ -1,5 +1,3 @@
-# Équations Clés
-
 Ce chapitre présente les équations fondamentales utilisées dans les quatre modèles numériques. L'objectif est de comprendre les points communs (équations de Navier-Stokes, rhéologie) et les différences (discrétisation, suivi d'interface).
 
 ---

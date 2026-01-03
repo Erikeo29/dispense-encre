@@ -36,7 +36,7 @@ header {visibility: hidden;}
 /* Bouton retour en haut */
 .back-to-top {
     position: fixed;
-    bottom: 30px;
+    bottom: 50%;
     right: 30px;
     z-index: 9999;
     background-color: #ff4b4b;
@@ -56,6 +56,16 @@ header {visibility: hidden;}
 .back-to-top:hover {
     background-color: #d63030;
     transform: scale(1.1);
+}
+
+/* Espacement des radio buttons dans la sidebar */
+[data-testid="stSidebar"] .stRadio > div {
+    gap: 8px;
+}
+
+/* Améliorer la visibilité des radio buttons */
+[data-testid="stSidebar"] .stRadio > div > label > div:first-child {
+    border: 2px solid #666;
 }
 </style>
 
@@ -148,16 +158,32 @@ def display_smart_markdown(content):
         st.markdown(content)
 
 # --- Barre Latérale ---
-st.sidebar.title("Navigation")
+st.sidebar.title("Modélisation de la dispense d'encre")
+st.sidebar.markdown("---")
+st.sidebar.subheader("Navigation")
+
 selected_page = st.sidebar.radio(
     "Aller à :",
-    ("Accueil", "Introduction", "Comparaison des modèles", "1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)", "Conclusion", "Équations clés", "Lexique", "Un peu d'histoire")
+    [
+        "Accueil",
+        "Introduction",
+        "Comparaison des modèles",
+        "　1. FEM / Phase-Field",
+        "　2. VOF (OpenFOAM)",
+        "　3. LBM (Palabos)",
+        "　4. SPH (PySPH)",
+        "Conclusion",
+        "Équations clés",
+        "Lexique",
+        "Un peu d'histoire"
+    ],
+    label_visibility="collapsed"
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
-**Version 3.4.0** - Dec 2025
-*EQU Research*
+**Version 0.4.2** ***(not released)***
+Dec 2025 - *EQU*
 
 **Nouveautés :**
 - Page d'accueil
@@ -170,11 +196,11 @@ st.sidebar.markdown("""
 
 # ===== PAGE ACCUEIL =====
 if selected_page == "Accueil":
-    st.title("Simulation de Dispense d'Encre Ag/AgCl")
+    st.title("Simulation de dispense d'encre type Ag/AgCl")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "accueil/accueil.md")))
 
     st.markdown("---")
-    st.subheader("Aperçu des 4 Modèles de Simulation")
+    st.subheader("Aperçu des résultats des 4 modèles de Simulation")
 
     col1, col2 = st.columns(2)
     col3, col4 = st.columns(2)
@@ -205,13 +231,13 @@ if selected_page == "Accueil":
 
 # ===== PAGE INTRODUCTION =====
 elif selected_page == "Introduction":
-    st.title("Introduction : Contexte Scientifique")
+    st.title("Introduction : Contexte scientifique")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "intro/intro_project.md")))
 
 # ===== PAGE COMPARAISON =====
 elif selected_page == "Comparaison des modèles":
-    st.title("Comparaison des Méthodes de Modélisation")
+    st.title("Comparaison des Méthodes de Modélisation Numérique")
     st.markdown("---")
     st.markdown(load_file_content(os.path.join(DOC_PATH, "comparaison/comparaison_models.md")))
 
@@ -228,34 +254,41 @@ elif "FEM" in selected_page:
 
     with tab_gif:
         st.subheader("Visualiseur de Simulations GIF")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("**Simulation 1**")
-            p1 = (st.selectbox("Puit (µm)",[800,1000,1500],key="g1_d"),
-                  st.selectbox("Buse (µm)",[200,250,300],key="g1_b"),
-                  st.selectbox("Shift X (µm)",[0,-75,-150],key="g1_s"),
-                  st.selectbox("Viscosité (Pa·s)",[5.0,1.5],key="g1_v"),
-                  st.selectbox("Angle Paroi (°)",[90,35],key="g1_a"),
-                  st.selectbox("Angle Or (°)",[35,75],key="g1_o"))
-        with c2:
-            st.markdown("**Simulation 2**")
-            p2 = (st.selectbox("Puit (µm)",[800,1000,1500],key="g2_d",index=1),
-                  st.selectbox("Buse (µm)",[200,250,300],key="g2_b",index=1),
-                  st.selectbox("Shift X (µm)",[0,-75,-150],key="g2_s",index=1),
-                  st.selectbox("Viscosité (Pa·s)",[5.0,1.5],key="g2_v",index=1),
-                  st.selectbox("Angle Paroi (°)",[90,35],key="g2_a",index=1),
-                  st.selectbox("Angle Or (°)",[35,75],key="g2_o",index=1))
 
-        if st.button("LANCER LES SIMULATIONS", type="primary", use_container_width=True):
+        # Simulation 1 - 6 paramètres sur une seule ligne
+        st.markdown("**Simulation 1**")
+        g1_cols = st.columns(6)
+        with g1_cols[0]: g1_d = st.selectbox("Puit",[800,1000,1500],key="g1_d")
+        with g1_cols[1]: g1_b = st.selectbox("Buse",[200,250,300],key="g1_b")
+        with g1_cols[2]: g1_s = st.selectbox("Shift X",[0,-75,-150],key="g1_s")
+        with g1_cols[3]: g1_v = st.selectbox("Visco.",[5.0,1.5],key="g1_v")
+        with g1_cols[4]: g1_a = st.selectbox("θ Paroi",[90,35],key="g1_a")
+        with g1_cols[5]: g1_o = st.selectbox("θ Or",[35,75],key="g1_o")
+        p1 = (g1_d, g1_b, g1_s, g1_v, g1_a, g1_o)
+
+        # Simulation 2 - 6 paramètres sur une seule ligne
+        st.markdown("**Simulation 2**")
+        g2_cols = st.columns(6)
+        with g2_cols[0]: g2_d = st.selectbox("Puit",[800,1000,1500],key="g2_d",index=1)
+        with g2_cols[1]: g2_b = st.selectbox("Buse",[200,250,300],key="g2_b",index=1)
+        with g2_cols[2]: g2_s = st.selectbox("Shift X",[0,-75,-150],key="g2_s",index=1)
+        with g2_cols[3]: g2_v = st.selectbox("Visco.",[5.0,1.5],key="g2_v",index=1)
+        with g2_cols[4]: g2_a = st.selectbox("θ Paroi",[90,35],key="g2_a",index=1)
+        with g2_cols[5]: g2_o = st.selectbox("θ Or",[35,75],key="g2_o",index=1)
+        p2 = (g2_d, g2_b, g2_s, g2_v, g2_a, g2_o)
+
+        # Bouton lancer
+        if st.button("LANCER LES SIMULATIONS", type="primary", use_container_width=True, key="btn_gif"):
             st.session_state.run_g = True
             st.session_state.p_g = (p1, p2)
 
+        # Affichage des GIFs côte à côte
         if st.session_state.get('run_g', False):
-            r1, r2 = st.columns(2)
+            gif_cols = st.columns(2)
             m = load_gif_mapping()
-            for i, c in enumerate([r1, r2]):
-                with c:
-                    params = st.session_state.p_g[i]
+            for i, (col, params) in enumerate(zip(gif_cols, st.session_state.p_g)):
+                with col:
+                    st.subheader(f"Simulation {i+1}")
                     if params in m:
                         st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
                     else:
@@ -263,34 +296,41 @@ elif "FEM" in selected_page:
 
     with tab_png:
         st.subheader("Visualiseur d'Images PNG")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("**Image 1**")
-            p1 = (st.selectbox("Temps (ms)",[20,40],key="p1_t"),
-                  st.selectbox("Viscosité",[0.05,0.5,1.5,5.0],index=2,key="p1_v"),
-                  st.selectbox("Shift X",[0,-75],key="p1_x"),
-                  st.selectbox("Shift Z",[0,-30],key="p1_z"),
-                  st.selectbox("Angle",[15,35,75],key="p1_a"),
-                  st.selectbox("Remplissage",[0.6,0.8],key="p1_r"))
-        with c2:
-            st.markdown("**Image 2**")
-            p2 = (st.selectbox("Temps (ms)",[20,40],key="p2_t",index=1),
-                  st.selectbox("Viscosité",[0.05,0.5,1.5,5.0],index=3,key="p2_v"),
-                  st.selectbox("Shift X",[0,-75],key="p2_x",index=1),
-                  st.selectbox("Shift Z",[0,-30],key="p2_z",index=1),
-                  st.selectbox("Angle",[15,35,75],index=1,key="p2_a"),
-                  st.selectbox("Remplissage",[0.6,0.8],index=1,key="p2_r"))
 
-        if st.button("AFFICHER LES IMAGES", type="primary", use_container_width=True):
+        # Image 1 - 6 paramètres sur une seule ligne
+        st.markdown("**Image 1**")
+        p1_cols = st.columns(6)
+        with p1_cols[0]: p1_t = st.selectbox("Temps",[20,40],key="p1_t")
+        with p1_cols[1]: p1_v = st.selectbox("Visco.",[0.05,0.5,1.5,5.0],index=2,key="p1_v")
+        with p1_cols[2]: p1_x = st.selectbox("Shift X",[0,-75],key="p1_x")
+        with p1_cols[3]: p1_z = st.selectbox("Shift Z",[0,-30],key="p1_z")
+        with p1_cols[4]: p1_a = st.selectbox("θ Or",[15,35,75],key="p1_a")
+        with p1_cols[5]: p1_r = st.selectbox("Rempl.",[0.6,0.8],key="p1_r")
+        png1 = (p1_t, p1_v, p1_x, p1_z, p1_a, p1_r)
+
+        # Image 2 - 6 paramètres sur une seule ligne
+        st.markdown("**Image 2**")
+        p2_cols = st.columns(6)
+        with p2_cols[0]: p2_t = st.selectbox("Temps",[20,40],key="p2_t",index=1)
+        with p2_cols[1]: p2_v = st.selectbox("Visco.",[0.05,0.5,1.5,5.0],index=3,key="p2_v")
+        with p2_cols[2]: p2_x = st.selectbox("Shift X",[0,-75],key="p2_x",index=1)
+        with p2_cols[3]: p2_z = st.selectbox("Shift Z",[0,-30],key="p2_z",index=1)
+        with p2_cols[4]: p2_a = st.selectbox("θ Or",[15,35,75],index=1,key="p2_a")
+        with p2_cols[5]: p2_r = st.selectbox("Rempl.",[0.6,0.8],index=1,key="p2_r")
+        png2 = (p2_t, p2_v, p2_x, p2_z, p2_a, p2_r)
+
+        # Bouton afficher
+        if st.button("AFFICHER LES IMAGES", type="primary", use_container_width=True, key="btn_png"):
             st.session_state.run_p = True
-            st.session_state.p_p = (p1, p2)
+            st.session_state.p_p = (png1, png2)
 
+        # Affichage des PNGs côte à côte
         if st.session_state.get('run_p', False):
-            r1, r2 = st.columns(2)
+            png_cols = st.columns(2)
             m = load_png_mapping()
-            for i, c in enumerate([r1, r2]):
-                with c:
-                    params = st.session_state.p_p[i]
+            for i, (col, params) in enumerate(zip(png_cols, st.session_state.p_p)):
+                with col:
+                    st.caption(f"Image {i+1}")
                     if params in m:
                         st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
                     else:
