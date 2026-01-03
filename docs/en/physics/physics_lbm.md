@@ -1,269 +1,269 @@
-# Méthode Lattice Boltzmann (LBM)
+# Lattice Boltzmann Method (LBM)
 
-## Principe Mésoscopique
+## Mesoscopic Principle
 
-La méthode **LBM (Lattice Boltzmann Method)** est une approche mésoscopique qui ne résout pas directement les équations de Navier-Stokes, mais l'**équation de Boltzmann discrétisée** sur un réseau régulier (lattice).
+The **LBM (Lattice Boltzmann Method)** is a mesoscopic approach that does not directly solve the Navier-Stokes equations, but rather the **discretized Boltzmann equation** on a regular lattice.
 
-### Concept Fondamental
+### Fundamental Concept
 
-On suit l'évolution de **fonctions de distribution** $f_i(\mathbf{x}, t)$ représentant la probabilité de trouver des particules à la position $\mathbf{x}$ au temps $t$, se déplaçant selon des directions discrètes $\mathbf{c}_i$.
+We track the evolution of **distribution functions** $f_i(\mathbf{x}, t)$ representing the probability of finding particles at position $\mathbf{x}$ at time $t$, moving in discrete directions $\mathbf{c}_i$.
 
-Les grandeurs macroscopiques (densité $\rho$, vitesse $\mathbf{u}$) sont obtenues par **moments statistiques** :
+Macroscopic quantities (density $\rho$, velocity $\mathbf{u}$) are obtained through **statistical moments**:
 
-$$\rho = \sum_i f_i \quad \text{et} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c}_i$$
+$$\rho = \sum_i f_i \quad \text{and} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c}_i$$
 
 ---
 
-## Équation de Boltzmann Discrète
+## Discrete Boltzmann Equation
 
-### Formulation BGK
+### BGK Formulation
 
-L'équation fondamentale est :
+The fundamental equation is:
 
 $$f_i(\mathbf{x} + \mathbf{c}_i \Delta t, t + \Delta t) - f_i(\mathbf{x}, t) = \Omega_i(f) + F_i$$
 
-où :
-- $\Omega_i(f)$ : opérateur de collision (relaxation vers l'équilibre)
-- $F_i$ : terme de force externe
+where:
+- $\Omega_i(f)$: collision operator (relaxation toward equilibrium)
+- $F_i$: external force term
 
-### Opérateur de Collision BGK
+### BGK Collision Operator
 
-L'approximation BGK (Bhatnagar-Gross-Krook) simplifie la collision en une relaxation linéaire vers l'équilibre :
+The BGK (Bhatnagar-Gross-Krook) approximation simplifies collision as linear relaxation toward equilibrium:
 
 $$\Omega_i = -\frac{1}{\tau}(f_i - f_i^{eq})$$
 
-où $\tau$ est le **temps de relaxation** et $f_i^{eq}$ la distribution d'équilibre de Maxwell-Boltzmann discrétisée :
+where $\tau$ is the **relaxation time** and $f_i^{eq}$ the discretized Maxwell-Boltzmann equilibrium distribution:
 
 $$f_i^{eq} = w_i \rho \left[1 + \frac{\mathbf{c}_i \cdot \mathbf{u}}{c_s^2} + \frac{(\mathbf{c}_i \cdot \mathbf{u})^2}{2c_s^4} - \frac{\mathbf{u}^2}{2c_s^2}\right]$$
 
-avec $c_s = 1/\sqrt{3}$ la vitesse du son sur le réseau et $w_i$ les poids de quadrature.
+with $c_s = 1/\sqrt{3}$ the lattice speed of sound and $w_i$ the quadrature weights.
 
 ---
 
-## Grilles de Discrétisation
+## Discretization Grids
 
-### Nomenclature DdQq
+### DdQq Nomenclature
 
-La notation **DdQq** indique :
-- **d** : nombre de dimensions spatiales
-- **q** : nombre de vitesses discrètes
+The **DdQq** notation indicates:
+- **d**: number of spatial dimensions
+- **q**: number of discrete velocities
 
-### Grilles Courantes
+### Common Grids
 
-| Grille | Application | Vitesses |
-|--------|-------------|----------|
-| **D2Q9** | 2D standard | 9 directions (repos + 4 axes + 4 diagonales) |
-| **D3Q15** | 3D économique | 15 directions |
-| **D3Q19** | 3D standard | 19 directions (bon compromis précision/coût) |
-| **D3Q27** | 3D haute précision | 27 directions (cube complet) |
+| Grid | Application | Velocities |
+|------|-------------|------------|
+| **D2Q9** | 2D standard | 9 directions (rest + 4 axes + 4 diagonals) |
+| **D3Q15** | 3D economical | 15 directions |
+| **D3Q19** | 3D standard | 19 directions (good precision/cost compromise) |
+| **D3Q27** | 3D high precision | 27 directions (full cube) |
 
-**Choix typique pour l'inkjet :** D3Q19 avec $\Delta x = 0.3$ µm
+**Typical Choice for Inkjet:** D3Q19 with $\Delta x = 0.3$ µm
 
 ---
 
-## Lien avec la Viscosité
+## Relationship with Viscosity
 
-### Relation Fondamentale
+### Fundamental Relation
 
-La viscosité cinématique $\nu$ est reliée au temps de relaxation $\tau$ par :
+Kinematic viscosity $\nu$ is related to relaxation time $\tau$ by:
 
 $$\nu = c_s^2 \left(\tau - \frac{1}{2}\right) \Delta t$$
 
-Cette relation est **fondamentale** : elle permet de modéliser des fluides de viscosités différentes en ajustant simplement $\tau$.
+This relation is **fundamental**: it allows modeling fluids of different viscosities by simply adjusting $\tau$.
 
-### Adaptation aux Fluides Non-Newtoniens
+### Adaptation for Non-Newtonian Fluids
 
-Pour les fluides rhéofluidifiants, $\tau$ dépend localement du taux de cisaillement $\dot{\gamma}$ :
+For shear-thinning fluids, $\tau$ depends locally on shear rate $\dot{\gamma}$:
 
 $$\tau(\dot{\gamma}) = \frac{1}{2} + \frac{\nu(\dot{\gamma})}{c_s^2 \Delta t}$$
 
-où $\nu(\dot{\gamma})$ est donné par une loi rhéologique (ex. loi de puissance, Carreau).
+where $\nu(\dot{\gamma})$ is given by a rheological law (e.g., power law, Carreau).
 
 ---
 
-## Modèles Multiphasiques
+## Multiphase Models
 
-### Shan-Chen (Pseudopotentiel)
+### Shan-Chen (Pseudopotential)
 
-Le modèle **Shan-Chen** modélise les interactions entre fluides via une **force interparticulaire** :
+The **Shan-Chen** model represents fluid interactions via an **interparticle force**:
 
 $$\mathbf{F}_{int}(\mathbf{x}) = -G\psi(\mathbf{x}) \sum_i w_i \psi(\mathbf{x} + \mathbf{c}_i \Delta t) \mathbf{c}_i$$
 
-où :
-- $G$ : paramètre d'interaction (contrôle la tension superficielle)
-- $\psi(\mathbf{x})$ : fonction de pseudopotentiel dépendant de la densité locale
+where:
+- $G$: interaction parameter (controls surface tension)
+- $\psi(\mathbf{x})$: pseudopotential function depending on local density
 
-**Séparation de phase :** Cette force provoque une séparation spontanée des phases (comme eau/huile) sans suivi explicite de l'interface.
+**Phase Separation:** This force causes spontaneous phase separation (like oil/water) without explicit interface tracking.
 
-**Tension superficielle :** $\sigma \propto G(\psi_{max} - \psi_{min})^2$
+**Surface Tension:** $\sigma \propto G(\psi_{max} - \psi_{min})^2$
 
 ### Free Energy Model
 
-Le modèle **Free Energy** est basé sur une fonctionnelle d'énergie libre :
+The **Free Energy** model is based on a free energy functional:
 
 $$\mathcal{F} = \int_V \left[\psi(\rho) + \frac{\kappa}{2}|\nabla\rho|^2\right] dV$$
 
-La force d'interface est dérivée du gradient d'énergie :
+The interface force is derived from the energy gradient:
 
 $$\mathbf{F} = -\nabla \cdot \boldsymbol{\sigma}^{chem}$$
 
-**Avantages vs Shan-Chen :**
-- Meilleure stabilité pour les grands ratios de densité
-- Contrôle plus précis de la tension superficielle
-- Moins de courants parasites
+**Advantages vs Shan-Chen:**
+- Better stability for large density ratios
+- More precise surface tension control
+- Fewer spurious currents
 
 ### Color Gradient Model
 
-Utilise deux populations de fluides (rouge/bleu) avec une force de ségrégation :
+Uses two fluid populations (red/blue) with a segregation force:
 
 $$\mathbf{F}_{seg} = A|\nabla \rho^N| \mathbf{n}$$
 
-où $\rho^N = (\rho^R - \rho^B)/(\rho^R + \rho^B)$ est la fraction de couleur normalisée.
+where $\rho^N = (\rho^R - \rho^B)/(\rho^R + \rho^B)$ is the normalized color fraction.
 
 ---
 
-## Gestion du Mouillage
+## Wetting Management
 
-### Angles de Contact
+### Contact Angles
 
-Les angles de contact sur les parois solides sont gérés en assignant une **densité fictive** (ou un potentiel) aux nœuds solides :
+Contact angles on solid walls are managed by assigning a **fictitious density** (or potential) to solid nodes:
 
 $$\rho_{solid} = \rho_0 + \Delta \rho \cdot \cos(\theta_{eq})$$
 
-où $\theta_{eq}$ est l'angle de contact d'équilibre souhaité.
+where $\theta_{eq}$ is the desired equilibrium contact angle.
 
-**Avantage majeur :** Le mouillage est géré **naturellement** sans conditions aux limites explicites complexes, ce qui est idéal pour les géométries complexes (micro-puits, rugosité).
+**Major Advantage:** Wetting is handled **naturally** without complex explicit boundary conditions, which is ideal for complex geometries (micro-wells, roughness).
 
 ---
 
-## Scalabilité GPU
+## GPU Scalability
 
-### Performance Exceptionnelle
+### Exceptional Performance
 
-La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour indépendamment lors des étapes de collision et de streaming.
+LBM is **intrinsically parallel**: each node can be updated independently during collision and streaming steps.
 
-**Accélération typique :** x20 sur GPU vs CPU (mesuré sur NVIDIA A100)
+**Typical Speedup:** x20 on GPU vs CPU (measured on NVIDIA A100)
 
-### Benchmark Li et al. (2022)
+### Li et al. Benchmark (2022)
 
-| Configuration | Temps de calcul |
-|---------------|-----------------|
-| CPU (20 h) | Référence |
+| Configuration | Computation Time |
+|---------------|------------------|
+| CPU (20 h) | Reference |
 | GPU A100 (1 GPU) | 2 h |
 | GPU A100 (4 GPUs) | 35 min |
 | GPU A100 (16 GPUs) | 10 min |
 
-**Scalabilité quasi-linéaire** jusqu'à 16 GPUs.
+**Near-linear scalability** up to 16 GPUs.
 
 ---
 
-## Bibliothèques Open-Source
+## Open-Source Libraries
 
 ### Palabos
 
-**Palabos** (Parallel Lattice Boltzmann Solver) est la référence open-source :
+**Palabos** (Parallel Lattice Boltzmann Solver) is the open-source reference:
 
-- **Langage :** C++ orienté objet
-- **Parallélisation :** MPI natif, excellent scaling sur clusters
-- **Modèles :** Shan-Chen, Free Energy, Color Gradient
-- **Documentation :** Excellente avec tutoriels
+- **Language:** Object-oriented C++
+- **Parallelization:** Native MPI, excellent cluster scaling
+- **Models:** Shan-Chen, Free Energy, Color Gradient
+- **Documentation:** Excellent with tutorials
 
 ### Alternatives
 
-| Bibliothèque | Focus | GPU |
-|--------------|-------|-----|
-| **OpenLB** | Ingénierie, applications industrielles | OpenMP/CUDA |
-| **waLBerla** | HPC extrême, millions de cœurs | CUDA native |
-| **Sailfish** | GPU natif, Python interface | CUDA prioritaire |
-| **Musubi** | Couplage multiphysique | MPI |
+| Library | Focus | GPU |
+|---------|-------|-----|
+| **OpenLB** | Engineering, industrial applications | OpenMP/CUDA |
+| **waLBerla** | Extreme HPC, millions of cores | Native CUDA |
+| **Sailfish** | GPU native, Python interface | CUDA priority |
+| **Musubi** | Multiphysics coupling | MPI |
 
 ---
 
-## Résultats de Validation
+## Validation Results
 
-### Étude Li et al. (2022) - Encre Rhéofluidifiante
+### Li et al. Study (2022) - Shear-Thinning Ink
 
-**Configuration :**
-- Solveur : Palabos (C++/CUDA)
-- Grille : D3Q19, $\Delta x = 0.3$ µm
-- Interface : Free Energy (Shan-Chen)
-- Rhéologie : MRT avec $\tau(\dot{\gamma})$, $n = 0.72$
+**Configuration:**
+- Solver: Palabos (C++/CUDA)
+- Grid: D3Q19, $\Delta x = 0.3$ µm
+- Interface: Free Energy (Shan-Chen)
+- Rheology: MRT with $\tau(\dot{\gamma})$, $n = 0.72$
 
-**Conditions :**
+**Conditions:**
 - $Re = 40$, $We = 3.5$
 - $T = 298$ K
-- Hardware : NVIDIA A100 GPU
+- Hardware: NVIDIA A100 GPU
 
-**Résultats :**
-- Vitesse maximale de la goutte : 15.2 m/s (expérimental : 15.0 m/s)
-- Diamètre de la goutte : 28 µm (erreur < 2 %)
-- Temps de calcul : 2 h (vs 20 h sur CPU)
+**Results:**
+- Maximum droplet velocity: 15.2 m/s (experimental: 15.0 m/s)
+- Droplet diameter: 28 µm (error < 2%)
+- Computation time: 2 h (vs 20 h on CPU)
 
-**Mécanisme :** La rhéofluidification réduit la viscosité dans le filament, accélérant le pincement. Le modèle Free Energy capture correctement la tension superficielle ($\sigma = 35$ mN/m).
+**Mechanism:** Shear-thinning reduces viscosity in the filament, accelerating pinch-off. The Free Energy model correctly captures surface tension ($\sigma = 35$ mN/m).
 
-### Hybridation VOF-LBM (Thiery et al., 2023)
+### VOF-LBM Hybridization (Thiery et al., 2023)
 
-**Objectif :** Combiner la précision interfaciale de VOF avec la scalabilité de LBM.
+**Objective:** Combine VOF interface precision with LBM scalability.
 
-**Méthodologie :**
-- VOF (PLIC) pour le suivi d'interface
-- LBM (D2Q9) pour la résolution de Navier-Stokes
-- Couplage : transfert de $\alpha$ et $\mathbf{v}$ entre les deux méthodes
+**Methodology:**
+- VOF (PLIC) for interface tracking
+- LBM (D2Q9) for Navier-Stokes resolution
+- Coupling: transfer of $\alpha$ and $\mathbf{v}$ between the two methods
 
-**Résultats :**
+**Results:**
 
-| Modèle | Précision (µm) | Temps (h) | Scalabilité GPU |
-|--------|----------------|-----------|-----------------|
-| VOF seul | 0.5 | 10 | Moyenne |
-| LBM seul | 1.2 | 2 | Excellente |
-| Hybride VOF-LBM | 0.3 | 3 | Bonne |
+| Model | Precision (µm) | Time (h) | GPU Scalability |
+|-------|----------------|----------|-----------------|
+| VOF only | 0.5 | 10 | Medium |
+| LBM only | 1.2 | 2 | Excellent |
+| Hybrid VOF-LBM | 0.3 | 3 | Good |
 
 ---
 
-## Limitations et Solutions
+## Limitations and Solutions
 
-### Compressibilité Artificielle
+### Artificial Compressibility
 
-**Problème :** La LBM simule un fluide faiblement compressible. Pour maintenir l'approximation incompressible :
+**Problem:** LBM simulates a weakly compressible fluid. To maintain the incompressible approximation:
 
 $$Ma = \frac{u}{c_s} < 0.1$$
 
-**Solution :** Utiliser des schémas à faible Mach (LBM à deux vitesses de relaxation, entropic LBM).
+**Solution:** Use low-Mach schemes (two-relaxation-time LBM, entropic LBM).
 
-### Courants Parasites
+### Spurious Currents
 
-**Problème :** Des courants de convection artificiels apparaissent aux interfaces (Shan-Chen).
+**Problem:** Artificial convection currents appear at interfaces (Shan-Chen).
 
-**Solutions :**
-- Modèle Free Energy (réduit les courants parasites de 90 %)
-- Isotropie améliorée des opérateurs de gradient
-- Schémas de discrétisation d'ordre supérieur
+**Solutions:**
+- Free Energy model (reduces spurious currents by 90%)
+- Improved isotropy of gradient operators
+- Higher-order discretization schemes
 
-### Calibration Rhéologique
+### Rheological Calibration
 
-**Problème :** La relation $\nu(\tau)$ est linéaire, ce qui limite la gamme de viscosités simulables.
+**Problem:** The $\nu(\tau)$ relation is linear, limiting the range of simulable viscosities.
 
-**Solution :** Matrices de relaxation multiple (MRT) avec des temps de relaxation séparés pour les moments impairs et pairs.
-
----
-
-## Coût Computationnel
-
-### Configuration Typique
-
-Pour une simulation 3D (1 ms d'éjection, D3Q19) :
-
-| Configuration | Grille | Temps (h) | Hardware |
-|---------------|--------|-----------|----------|
-| Standard | 100³ nœuds | 4–8 | 4 cœurs CPU |
-| Haute résolution | 300³ nœuds | 1–2 | A100 GPU |
-| Multi-GPU | 500³ nœuds | 0.5–1 | 4× A100 |
-
-**Mémoire GPU :** ~16 GB pour 300³ nœuds en D3Q19 (19 distributions × 8 bytes × 27M nœuds)
+**Solution:** Multiple relaxation time matrices (MRT) with separate relaxation times for odd and even moments.
 
 ---
 
-## Références
+## Computational Cost
+
+### Typical Configuration
+
+For a 3D simulation (1 ms ejection, D3Q19):
+
+| Configuration | Grid | Time (h) | Hardware |
+|---------------|------|----------|----------|
+| Standard | 100³ nodes | 4–8 | 4 CPU cores |
+| High resolution | 300³ nodes | 1–2 | A100 GPU |
+| Multi-GPU | 500³ nodes | 0.5–1 | 4× A100 |
+
+**GPU Memory:** ~16 GB for 300³ nodes in D3Q19 (19 distributions × 8 bytes × 27M nodes)
+
+---
+
+## References
 
 1. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364.
 

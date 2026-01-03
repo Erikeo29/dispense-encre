@@ -1,545 +1,545 @@
-# Modélisation de la dispense d'encre dans un puit
-## Approche par simulation diphasique en domaine microfluidique
+# Modeling Ink Dispensing into a Micro-Well
+## Two-Phase Simulation Approach in a Microfluidic Domain
 
 ---
 
 ## NOMENCLATURE
 
-### Symboles latins
-| Symbole | Définition | Unité |
-|---------|------------|-------|
-| **D** | Tenseur des taux de déformation | s⁻¹ |
-| **F** | Vecteur force | N/m³ |
-| **g** | Vecteur accélération gravitationnelle (0, -9.81) | m/s² |
-| **H** | Fonction de Heaviside | - |
-| **n** | Vecteur normal unitaire | - |
-| **p** | Pression | Pa |
-| **t** | Temps | s |
-| **T** | Temps final de simulation | s |
-| **v** | Vecteur vitesse (u, v) | m/s |
+### Latin Symbols
+| Symbol | Definition | Unit |
+|--------|------------|------|
+| **D** | Rate of deformation tensor | s⁻¹ |
+| **F** | Force vector | N/m³ |
+| **g** | Gravitational acceleration vector (0, -9.81) | m/s² |
+| **H** | Heaviside function | - |
+| **n** | Unit normal vector | - |
+| **p** | Pressure | Pa |
+| **t** | Time | s |
+| **T** | Final simulation time | s |
+| **v** | Velocity vector (u, v) | m/s |
 
-### Symboles grecs
-| Symbole | Définition | Unité |
-|---------|------------|-------|
-| **γ̇** | Taux de cisaillement | s⁻¹ |
-| **ε** | Épaisseur de l'interface diffuse | m |
-| **η** | Viscosité dynamique | Pa·s |
-| **θ** | Angle de contact | rad |
-| **κ** | Courbure de l'interface | m⁻¹ |
-| **λ** | Temps de relaxation (modèle de Carreau) | s |
-| **μ** | Viscosité dynamique (notation alternative) | Pa·s |
-| **ρ** | Masse volumique | kg/m³ |
-| **σ** | Tension de surface | N/m |
-| **τ** | Tenseur des contraintes visqueuses | Pa |
-| **φ** | Fonction level-set | - |
-| **Ω** | Domaine spatial de calcul | - |
-| **∂Ω** | Frontière du domaine | - |
-| **∇** | Opérateur gradient | m⁻¹ |
+### Greek Symbols
+| Symbol | Definition | Unit |
+|--------|------------|------|
+| **γ̇** | Shear rate | s⁻¹ |
+| **ε** | Diffuse interface thickness | m |
+| **η** | Dynamic viscosity | Pa·s |
+| **θ** | Contact angle | rad |
+| **κ** | Interface curvature | m⁻¹ |
+| **λ** | Relaxation time (Carreau model) | s |
+| **μ** | Dynamic viscosity (alternative notation) | Pa·s |
+| **ρ** | Density | kg/m³ |
+| **σ** | Surface tension | N/m |
+| **τ** | Viscous stress tensor | Pa |
+| **φ** | Level-set function | - |
+| **Ω** | Computational spatial domain | - |
+| **∂Ω** | Domain boundary | - |
+| **∇** | Gradient operator | m⁻¹ |
 
-### Indices
-| Indice | Signification |
-|--------|--------------|
-| 0 | Valeur au repos ou initiale |
-| ∞ | Valeur à cisaillement infini |
-| 1 | Phase 1 (encre) |
+### Subscripts
+| Subscript | Meaning |
+|-----------|---------|
+| 0 | Rest or initial value |
+| ∞ | Infinite shear value |
+| 1 | Phase 1 (ink) |
 | 2 | Phase 2 (air) |
-| σ | Relatif à la tension de surface |
+| σ | Related to surface tension |
 
-### Nombres adimensionnels
-| Nombre | Définition | Expression |
+### Dimensionless Numbers
+| Number | Definition | Expression |
 |--------|------------|------------|
 | **Re** | Reynolds | ρvL/μ |
-| **Ca** | Capillaire | μv/σ |
+| **Ca** | Capillary | μv/σ |
 | **We** | Weber | ρv²L/σ |
 | **Bo** | Bond | ρgL²/σ |
 
 ---
 
-## 1. INTRODUCTION ET CONTEXTE PHYSIQUE
+## 1. INTRODUCTION AND PHYSICAL CONTEXT
 
-### 1.1 Système étudié
+### 1.1 System Under Study
 
-Le système considéré est un écoulement diphasique incompressible dans un domaine microfluidique, comprenant :
-- **Phase 1** : Encre (fluide non-Newtonien)
-- **Phase 2** : Air ambiant (fluide Newtonien)
-- **Domaine** : Puit cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
-- **Source** : Buse de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du puit
+The system under consideration is an incompressible two-phase flow in a microfluidic domain, comprising:
+- **Phase 1**: Ink (non-Newtonian fluid)
+- **Phase 2**: Ambient air (Newtonian fluid)
+- **Domain**: Cylindrical well with diameter D_w = 0.8 to 1.5mm and height h_w = 0.128mm
+- **Source**: Nozzle with diameter D_s = 0.2 to 0.35mm positioned at Δz = 30 μm above the well
 
-### 1.2 Hypothèses fondamentales
+### 1.2 Fundamental Assumptions
 
-1. Écoulement incompressible (∇·**v** = 0)
-2. Régime laminaire (Re << 2300)
-3. Forces gravitationnelles négligeables (Bo << 1)
-4. Interface diffuse d'épaisseur finie ε
-5. Propriétés thermiques constantes (isotherme)
+1. Incompressible flow (∇·**v** = 0)
+2. Laminar regime (Re << 2300)
+3. Negligible gravitational forces (Bo << 1)
+4. Diffuse interface with finite thickness ε
+5. Constant thermal properties (isothermal)
 
 ---
 
-## 2. FORMULATION MATHÉMATIQUE
+## 2. MATHEMATICAL FORMULATION
 
-### 2.1 Équations de Navier-Stokes
+### 2.1 Navier-Stokes Equations
 
-Les équations gouvernant l'écoulement diphasique incompressible s'écrivent :
+The equations governing incompressible two-phase flow are:
 
-#### Équation de continuité (conservation de la masse)
-$\nabla \cdot \mathbf{v} = 0 \quad \text{dans } \Omega \times [0,T]$
+#### Continuity Equation (Mass Conservation)
+$\nabla \cdot \mathbf{v} = 0 \quad \text{in } \Omega \times [0,T]$
 
-où :
-- **v** = (u, v) est le vecteur vitesse avec u et v les composantes selon x et y respectivement
-- **Ω** est le domaine spatial (géométrie du puit et buse)
-- **[0,T]** est l'intervalle temporel avec T = 0.1 s
-- **Ω × [0,T]** signifie "en tout point de l'espace et à tout instant"
+where:
+- **v** = (u, v) is the velocity vector with u and v being the components along x and y respectively
+- **Ω** is the spatial domain (well and nozzle geometry)
+- **[0,T]** is the time interval with T = 0.1 s
+- **Ω × [0,T]** means "at every point in space and at every instant"
 
-#### Équation de quantité de mouvement
+#### Momentum Equation
 $$\rho(\phi)\left[\frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla)\mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \rho(\phi)\mathbf{g} + \mathbf{F}_\sigma$$
 
-où :
-- ρ(φ) est la masse volumique locale définie par : ρ(φ) = ρ₁H(φ) + ρ₂[1-H(φ)]
-- p est la pression [Pa]
-- **τ** est le tenseur des contraintes visqueuses défini ci-après
-- **g** = (0, -9.81) m/s² est l'accélération gravitationnelle
-- **F**_σ est la force volumique de tension de surface définie en section 2.3
+where:
+- ρ(φ) is the local density defined by: ρ(φ) = ρ₁H(φ) + ρ₂[1-H(φ)]
+- p is the pressure [Pa]
+- **τ** is the viscous stress tensor defined below
+- **g** = (0, -9.81) m/s² is the gravitational acceleration
+- **F**_σ is the surface tension body force defined in section 2.3
 
-#### Tenseur des contraintes visqueuses
+#### Viscous Stress Tensor
 
-Pour un fluide incompressible, le tenseur des contraintes s'écrit :
+For an incompressible fluid, the stress tensor is written as:
 $$\boldsymbol{\tau} = 2\eta(\phi,\dot{\gamma})\mathbf{D}$$
 
-avec le tenseur des taux de déformation :
+with the rate of deformation tensor:
 $$\mathbf{D} = \frac{1}{2}\left[\nabla \mathbf{v} + (\nabla \mathbf{v})^T\right]$$
 
-En composantes :
+In components:
 $$D_{ij} = \frac{1}{2}\left(\frac{\partial v_i}{\partial x_j} + \frac{\partial v_j}{\partial x_i}\right)$$
 
-Le taux de cisaillement est défini par :
+The shear rate is defined by:
 $$\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}} = \sqrt{2\sum_{i,j} D_{ij}D_{ij}}$$
 
-### 2.2 Modèle rhéologique de Carreau
+### 2.2 Carreau Rheological Model
 
-La viscosité de l'encre suit le modèle de Carreau :
+The ink viscosity follows the Carreau model:
 $$\eta_1(\dot{\gamma}) = \eta_{\infty} + (\eta_0 - \eta_{\infty})\left[1 + (\lambda\dot{\gamma})^2\right]^{\frac{n-1}{2}}$$
 
-avec les paramètres :
-- η₀ = 0.5 à 5 Pa·s : viscosité au repos (cisaillement nul)
-- η_∞ = 0.05 Pa·s : viscosité à cisaillement infini
-- λ = 0.15 s : temps de relaxation caractéristique
-- n = 0.7 : indice de pseudoplasticité (n < 1 : fluide rhéofluidifiant)
+with parameters:
+- η₀ = 0.5 to 5 Pa·s: zero-shear viscosity
+- η_∞ = 0.05 Pa·s: infinite-shear viscosity
+- λ = 0.15 s: characteristic relaxation time
+- n = 0.7: power-law index (n < 1: shear-thinning fluid)
 
-La viscosité de l'air est constante : η₂ = 1×10⁻⁵ Pa·s
+The air viscosity is constant: η₂ = 1×10⁻⁵ Pa·s
 
-La viscosité du mélange s'écrit :
+The mixture viscosity is:
 $$\eta(\phi,\dot{\gamma}) = \eta_1(\dot{\gamma})H(\phi) + \eta_2[1-H(\phi)]$$
 
-### 2.3 Méthode Phase-Field
+### 2.3 Phase-Field Method
 
-#### Transport de l'interface
+#### Interface Transport
 
-L'interface entre les deux phases est suivie par la méthode Phase-Field :
+The interface between the two phases is tracked using the Phase-Field method:
 $$\frac{\partial \phi}{\partial t} + \mathbf{v} \cdot \nabla \phi = \gamma \nabla \cdot \left[\varepsilon \nabla \phi - \phi(1-\phi^2)\mathbf{n}\right]$$
 
-où :
-- φ est la fonction level-set : φ = 1 dans l'encre, φ = -1 dans l'air
-- γ = 1 est le paramètre de mobilité de l'interface
-- ε = 5×10⁻⁶ m est l'épaisseur de l'interface diffuse
-- **n** = ∇φ/|∇φ| est la normale à l'interface
+where:
+- φ is the level-set function: φ = 1 in ink, φ = -1 in air
+- γ = 1 is the interface mobility parameter
+- ε = 5×10⁻⁶ m is the diffuse interface thickness
+- **n** = ∇φ/|∇φ| is the interface normal
 
-#### Force de tension de surface
+#### Surface Tension Force
 
-La force volumique de tension de surface s'écrit :
+The surface tension body force is:
 $$\mathbf{F}_\sigma = \sigma \kappa \delta(\phi) \mathbf{n}$$
 
-avec :
-- σ = 40×10⁻³ N/m : tension de surface encre-air
-- κ = ∇·**n** : courbure de l'interface
-- δ(φ) = (3/2ε)|∇φ| : approximation de la fonction delta de Dirac
+with:
+- σ = 40×10⁻³ N/m: ink-air surface tension
+- κ = ∇·**n**: interface curvature
+- δ(φ) = (3/2ε)|∇φ|: Dirac delta function approximation
 
-### 2.4 Conditions aux limites
+### 2.4 Boundary Conditions
 
-#### Parois solides (condition de non-glissement)
-$$\mathbf{v} = \mathbf{0} \quad \text{sur } \Gamma_{\text{paroi}}$$
+#### Solid Walls (No-Slip Condition)
+$$\mathbf{v} = \mathbf{0} \quad \text{on } \Gamma_{\text{wall}}$$
 
-#### Condition de mouillage (angle de contact)
+#### Wetting Condition (Contact Angle)
 
-Sur les parois mouillées, la normale à l'interface satisfait :
-$$\mathbf{n}_w \cdot \nabla \phi = -\frac{1}{\varepsilon}\cos(\theta) \quad \text{sur } \Gamma_{\text{paroi}}$$
+On wetted walls, the interface normal satisfies:
+$$\mathbf{n}_w \cdot \nabla \phi = -\frac{1}{\varepsilon}\cos(\theta) \quad \text{on } \Gamma_{\text{wall}}$$
 
-avec θ l'angle de contact statique :
-- θ_or = 35 à 75° sur l'électrode d'or
-- θ_wall_EG = 35 à 90°
-- θ_paroi_EG = 35 à 90° 
-- θ_haut = 180° sur la surface supérieure (pas de mouillage sur le piston)
+with θ the static contact angle:
+- θ_gold = 35 to 75° on the gold electrode
+- θ_wall_EG = 35 to 90°
+- θ_wall_EG = 35 to 90°
+- θ_top = 180° on the top surface (no wetting on the piston)
 
-#### Entrée (seringue)
-$$\mathbf{v} = v_{\text{inlet}}(t)\mathbf{e}_y \quad \text{sur } \Gamma_{\text{inlet}}$$
-$$\phi = 1 \quad \text{(encre)}$$
+#### Inlet (Syringe)
+$$\mathbf{v} = v_{\text{inlet}}(t)\mathbf{e}_y \quad \text{on } \Gamma_{\text{inlet}}$$
+$$\phi = 1 \quad \text{(ink)}$$
 
-avec v_inlet(t) = v₀·H(t)·H(t_dispense - t) où v₀ = 0.1 m/s
+with v_inlet(t) = v₀·H(t)·H(t_dispense - t) where v₀ = 0.1 m/s
 
-#### Sortie (pression atmosphérique)
-$$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
+#### Outlet (Atmospheric Pressure)
+$$p = p_{\text{atm}} = 0 \quad \text{on } \Gamma_{\text{outlet}}$$
 
-### 2.5 Conditions initiales
+### 2.5 Initial Conditions
 
-À t = 0 :
-- **v**(x,y,0) = **0** dans tout le domaine
-- φ(x,y,0) = -1 (air) dans le puit
-- φ(x,y,0) = 1 (encre) dans la seringue
+At t = 0:
+- **v**(x,y,0) = **0** throughout the domain
+- φ(x,y,0) = -1 (air) in the well
+- φ(x,y,0) = 1 (ink) in the syringe
 
 ---
 
-## 3. PARAMÈTRES PHYSIQUES DU SYSTÈME
+## 3. SYSTEM PHYSICAL PARAMETERS
 
-### 3.1 Propriétés des fluides
+### 3.1 Fluid Properties
 
-| Propriété | Encre (Phase 1) | Air (Phase 2) | Unité |
-|-----------|-------------------------|---------------|-------|
-| Masse volumique ρ | 3000 |- | kg/m³ |
-| Viscosité η₀ | 1.5 à 5 | 1×10⁻⁵ | Pa·s |
-| Viscosité η_∞ | 0.5 | - | Pa·s |
-| Temps relaxation λ | 0.15 | - | s |
-| Indice n | 0.7 | - | - |
+| Property | Ink (Phase 1) | Air (Phase 2) | Unit |
+|----------|---------------|---------------|------|
+| Density ρ | 3000 |- | kg/m³ |
+| Viscosity η₀ | 1.5 to 5 | 1×10⁻⁵ | Pa·s |
+| Viscosity η_∞ | 0.5 | - | Pa·s |
+| Relaxation time λ | 0.15 | - | s |
+| Index n | 0.7 | - | - |
 
-### 3.2 Propriétés interfaciales
+### 3.2 Interfacial Properties
 
-| Propriété | Valeur | Unité |
-|-----------|--------|-------|
-| Tension de surface σ | 40×10⁻³ | mN/m |
-| Épaisseur interface ε | 5×10⁻⁶ | m |
-| Mobilité interface γ | 1 | - |
+| Property | Value | Unit |
+|----------|-------|------|
+| Surface tension σ | 40×10⁻³ | mN/m |
+| Interface thickness ε | 5×10⁻⁶ | m |
+| Interface mobility γ | 1 | - |
 
-### 3.3 Géométrie du système
+### 3.3 System Geometry
 
-| Élément | Paramètre | Valeur | Unité |
-|---------|-----------|--------|-------|
-| Puit | Diamètre D_w | 0.8 à 1.5 | mm |
-| | Hauteur h_w | 0.128 | mm |
+| Element | Parameter | Value | Unit |
+|---------|-----------|-------|------|
+| Well | Diameter D_w | 0.8 to 1.5 | mm |
+| | Height h_w | 0.128 | mm |
 | | Volume V_w | 64.3 | nL |
-| Seringue | Diamètre D_s | 0.20 à 0.30 | mm |
+| Syringe | Diameter D_s | 0.20 to 0.30 | mm |
 | | Distance Δz | +30 | μm |
-| | Ratio surface | 0.8 | - | (soit 80% du remplissage du well)
+| | Surface ratio | 0.8 | - | (i.e., 80% well fill)
 
-### 3.4 Paramètres de process
+### 3.4 Process Parameters
 
-| Paramètre | Symbole | Valeur | Unité |
-|-----------|---------|--------|-------|
-| Temps de dispense | t_dispense | 40 | ms |
-| Vitesse initiale | v₀ | 0.1 | m/s |
-| Pression initiale | p₀ | 700 | Pa | (non utilisée dans le modèle)
-| Remplissage | 80 | % |
+| Parameter | Symbol | Value | Unit |
+|-----------|--------|-------|------|
+| Dispense time | t_dispense | 40 | ms |
+| Initial velocity | v₀ | 0.1 | m/s |
+| Initial pressure | p₀ | 700 | Pa | (not used in model)
+| Fill ratio | 80 | % |
 
 ---
 
-## 4. DISCRÉTISATION PAR ÉLÉMENTS FINIS
+## 4. FINITE ELEMENT DISCRETIZATION
 
-### 4.1 Formulation Faible
+### 4.1 Weak Formulation
 
-La méthode des éléments finis repose sur la **formulation variationnelle** (ou faible) des équations. On multiplie les équations par des fonctions test et on intègre sur le domaine.
+The finite element method is based on the **variational** (or weak) formulation of the equations. We multiply the equations by test functions and integrate over the domain.
 
-#### Formulation faible de Navier-Stokes
+#### Weak Formulation of Navier-Stokes
 
-Trouver $(\mathbf{v}, p) \in V \times Q$ tel que pour tout $(\mathbf{w}, q) \in V \times Q$ :
+Find $(\mathbf{v}, p) \in V \times Q$ such that for all $(\mathbf{w}, q) \in V \times Q$:
 
 $$\int_\Omega \rho \frac{\partial \mathbf{v}}{\partial t} \cdot \mathbf{w} \, d\Omega + \int_\Omega \rho (\mathbf{v} \cdot \nabla)\mathbf{v} \cdot \mathbf{w} \, d\Omega + \int_\Omega 2\eta \mathbf{D}(\mathbf{v}) : \mathbf{D}(\mathbf{w}) \, d\Omega$$
 
 $$- \int_\Omega p \, \nabla \cdot \mathbf{w} \, d\Omega + \int_\Omega q \, \nabla \cdot \mathbf{v} \, d\Omega = \int_\Omega \mathbf{f} \cdot \mathbf{w} \, d\Omega$$
 
-où :
-- $V$ : espace des fonctions vitesse (vérifiant les conditions aux limites)
-- $Q$ : espace des fonctions pression
-- $\mathbf{w}$ : fonction test pour la vitesse
-- $q$ : fonction test pour la pression
+where:
+- $V$: velocity function space (satisfying boundary conditions)
+- $Q$: pressure function space
+- $\mathbf{w}$: velocity test function
+- $q$: pressure test function
 
-### 4.2 Éléments Finis Mixtes
+### 4.2 Mixed Finite Elements
 
-Le choix des espaces d'approximation pour la vitesse et la pression est crucial pour éviter les **modes parasites de pression** (oscillations non physiques).
+The choice of approximation spaces for velocity and pressure is crucial to avoid **spurious pressure modes** (non-physical oscillations).
 
-#### Condition de compatibilité inf-sup (Ladyzhenskaya-Babuška-Brezzi)
+#### Inf-Sup Compatibility Condition (Ladyzhenskaya-Babuška-Brezzi)
 
-Les espaces doivent satisfaire :
+The spaces must satisfy:
 
 $$\sup_{\mathbf{v} \in V_h} \frac{\int_\Omega q \, \nabla \cdot \mathbf{v} \, d\Omega}{\|\mathbf{v}\|_V} \geq \beta \|q\|_Q \quad \forall q \in Q_h$$
 
-avec $\beta > 0$ indépendant de la taille du maillage $h$.
+with $\beta > 0$ independent of mesh size $h$.
 
-#### Éléments Taylor-Hood (P2-P1)
+#### Taylor-Hood Elements (P2-P1)
 
-L'élément **Taylor-Hood** est le standard pour les écoulements incompressibles :
+The **Taylor-Hood** element is the standard for incompressible flows:
 
-| Composante | Espace | Degré | Continuité |
-|------------|--------|-------|------------|
-| Vitesse $\mathbf{v}$ | P2 (Lagrange quadratique) | 2 | C⁰ |
-| Pression $p$ | P1 (Lagrange linéaire) | 1 | C⁰ |
+| Component | Space | Degree | Continuity |
+|-----------|-------|--------|------------|
+| Velocity $\mathbf{v}$ | P2 (quadratic Lagrange) | 2 | C⁰ |
+| Pressure $p$ | P1 (linear Lagrange) | 1 | C⁰ |
 
-**Avantages :**
-- Stabilité inf-sup garantie
-- Précision quadratique en vitesse
-- Conservation de masse locale améliorée
+**Advantages:**
+- Guaranteed inf-sup stability
+- Quadratic accuracy for velocity
+- Improved local mass conservation
 
-**Nombre de DOFs par triangle :** 6 (vitesse) + 3 (pression) = 9 DOFs par élément
+**Number of DOFs per triangle:** 6 (velocity) + 3 (pressure) = 9 DOFs per element
 
-#### Éléments MINI (P1b-P1)
+#### MINI Elements (P1b-P1)
 
-Alternative économique au Taylor-Hood :
+An economical alternative to Taylor-Hood:
 
-| Composante | Espace | Description |
-|------------|--------|-------------|
-| Vitesse $\mathbf{v}$ | P1 + bulle | Linéaire enrichi par fonction bulle |
-| Pression $p$ | P1 | Linéaire |
+| Component | Space | Description |
+|-----------|-------|-------------|
+| Velocity $\mathbf{v}$ | P1 + bubble | Linear enriched with bubble function |
+| Pressure $p$ | P1 | Linear |
 
-La **fonction bulle** $b(\mathbf{x})$ est définie par :
+The **bubble function** $b(\mathbf{x})$ is defined by:
 
 $$b(\mathbf{x}) = 27 \lambda_1 \lambda_2 \lambda_3$$
 
-où $\lambda_i$ sont les coordonnées barycentriques du triangle.
+where $\lambda_i$ are the barycentric coordinates of the triangle.
 
-**Avantage :** Moins de DOFs que Taylor-Hood (stabilité au prix d'une précision moindre).
+**Advantage:** Fewer DOFs than Taylor-Hood (stability at the cost of lower accuracy).
 
-### 4.3 Stabilisation pour la Convection
+### 4.3 Stabilization for Convection
 
-À nombre de Reynolds élevé ($Re > 10$), les schémas éléments finis standards souffrent d'**instabilités numériques** (oscillations, diffusion numérique).
+At high Reynolds numbers ($Re > 10$), standard finite element schemes suffer from **numerical instabilities** (oscillations, numerical diffusion).
 
 #### SUPG (Streamline Upwind Petrov-Galerkin)
 
-La méthode **SUPG** ajoute une diffusion artificielle dans la direction de l'écoulement :
+The **SUPG** method adds artificial diffusion in the flow direction:
 
 $$\int_\Omega \left(\mathbf{w} + \tau_{SUPG} \mathbf{v} \cdot \nabla \mathbf{w}\right) \cdot \mathcal{R}(\mathbf{v}, p) \, d\Omega = 0$$
 
-où $\mathcal{R}$ est le résidu des équations de Navier-Stokes et :
+where $\mathcal{R}$ is the residual of the Navier-Stokes equations and:
 
 $$\tau_{SUPG} = \left[\left(\frac{2}{\Delta t}\right)^2 + \left(\frac{2|\mathbf{v}|}{h}\right)^2 + \left(\frac{4\nu}{h^2}\right)^2\right]^{-1/2}$$
 
-avec $h$ la taille caractéristique de l'élément.
+with $h$ the characteristic element size.
 
 #### PSPG (Pressure Stabilizing Petrov-Galerkin)
 
-Pour les éléments qui ne satisfont pas la condition inf-sup (ex. P1-P1), **PSPG** stabilise la pression :
+For elements that do not satisfy the inf-sup condition (e.g., P1-P1), **PSPG** stabilizes the pressure:
 
 $$\int_\Omega \tau_{PSPG} \nabla q \cdot \mathcal{R}(\mathbf{v}, p) \, d\Omega$$
 
-avec $\tau_{PSPG} = \tau_{SUPG}$ (même paramètre de stabilisation).
+with $\tau_{PSPG} = \tau_{SUPG}$ (same stabilization parameter).
 
 #### GLS (Galerkin Least-Squares)
 
-Combiner SUPG et PSPG dans une formulation unique (**GLS**) offre stabilisation et consistance :
+Combining SUPG and PSPG in a unified formulation (**GLS**) provides stabilization and consistency:
 
 $$a(\mathbf{v}, p; \mathbf{w}, q) + \sum_K \int_K \tau \mathcal{L}(\mathbf{w}, q) \cdot \mathcal{R}(\mathbf{v}, p) \, dK = \ell(\mathbf{w}, q)$$
 
-où $\mathcal{L}$ est l'opérateur adjoint.
+where $\mathcal{L}$ is the adjoint operator.
 
 ---
 
-## 5. MODÈLES RHÉOLOGIQUES AVANCÉS
+## 5. ADVANCED RHEOLOGICAL MODELS
 
-### 5.1 Modèle de Herschel-Bulkley (Fluides à Seuil)
+### 5.1 Herschel-Bulkley Model (Yield Stress Fluids)
 
-Pour les encres présentant un **seuil d'écoulement** (yield stress), le modèle de Herschel-Bulkley s'écrit :
+For inks exhibiting a **yield stress**, the Herschel-Bulkley model is:
 
-| Condition | Tenseur des contraintes $\boldsymbol{\tau}$ |
-|-----------|---------------------------------------------|
+| Condition | Stress tensor $\boldsymbol{\tau}$ |
+|-----------|-----------------------------------|
 | $\|\boldsymbol{\tau}\| > \tau_0$ | $\boldsymbol{\tau} = \left(\frac{\tau_0}{\dot{\gamma}} + K\dot{\gamma}^{n-1}\right)\dot{\boldsymbol{\gamma}}$ |
-| sinon | $\boldsymbol{\tau} = \mathbf{0}$ |
+| otherwise | $\boldsymbol{\tau} = \mathbf{0}$ |
 
-où :
-- $\tau_0$ : contrainte seuil [Pa]
-- $K$ : consistance [Pa·sⁿ]
-- $n$ : indice de comportement
+where:
+- $\tau_0$: yield stress [Pa]
+- $K$: consistency [Pa·sⁿ]
+- $n$: flow behavior index
 
-**Régularisation de Papanastasiou** (évite la singularité à $\dot{\gamma} = 0$) :
+**Papanastasiou Regularization** (avoids singularity at $\dot{\gamma} = 0$):
 
 $$\eta_{eff}(\dot{\gamma}) = K\dot{\gamma}^{n-1} + \tau_0 \frac{1 - e^{-m\dot{\gamma}}}{\dot{\gamma}}$$
 
-avec $m$ un paramètre de régularisation (typiquement $m = 100$ s).
+with $m$ a regularization parameter (typically $m = 100$ s).
 
-### 5.2 Modèle Oldroyd-B (Viscoélasticité)
+### 5.2 Oldroyd-B Model (Viscoelasticity)
 
-Pour les encres **viscoélastiques** (avec mémoire élastique), le tenseur des contraintes polymériques $\boldsymbol{\tau}_p$ évolue selon :
+For **viscoelastic** inks (with elastic memory), the polymeric stress tensor $\boldsymbol{\tau}_p$ evolves according to:
 
 $$\boldsymbol{\tau}_p + \lambda_1 \stackrel{\nabla}{\boldsymbol{\tau}_p} = 2\eta_p \mathbf{D}$$
 
-où $\stackrel{\nabla}{\boldsymbol{\tau}_p}$ est la **dérivée convectée supérieure** :
+where $\stackrel{\nabla}{\boldsymbol{\tau}_p}$ is the **upper-convected derivative**:
 
 $$\stackrel{\nabla}{\boldsymbol{\tau}_p} = \frac{\partial \boldsymbol{\tau}_p}{\partial t} + (\mathbf{v} \cdot \nabla)\boldsymbol{\tau}_p - (\nabla \mathbf{v})^T \cdot \boldsymbol{\tau}_p - \boldsymbol{\tau}_p \cdot \nabla \mathbf{v}$$
 
-**Paramètres :**
-- $\lambda_1$ : temps de relaxation [s]
-- $\eta_p$ : viscosité polymère [Pa·s]
-- $\eta_s$ : viscosité solvant [Pa·s]
+**Parameters:**
+- $\lambda_1$: relaxation time [s]
+- $\eta_p$: polymer viscosity [Pa·s]
+- $\eta_s$: solvent viscosity [Pa·s]
 
-La viscosité totale est $\eta = \eta_s + \eta_p$.
+The total viscosity is $\eta = \eta_s + \eta_p$.
 
-**Nombre de Deborah :** $De = \lambda_1 \dot{\gamma}$ (mesure l'importance des effets élastiques)
+**Deborah Number:** $De = \lambda_1 \dot{\gamma}$ (measures the importance of elastic effects)
 
-### 5.3 Modèle Giesekus (Non-linéaire)
+### 5.3 Giesekus Model (Nonlinear)
 
-Pour les encres fortement non-linéaires, le modèle **Giesekus** ajoute un terme quadratique :
+For strongly nonlinear inks, the **Giesekus** model adds a quadratic term:
 
 $$\boldsymbol{\tau}_p + \lambda_1 \stackrel{\nabla}{\boldsymbol{\tau}_p} + \frac{\alpha \lambda_1}{\eta_p} \boldsymbol{\tau}_p \cdot \boldsymbol{\tau}_p = 2\eta_p \mathbf{D}$$
 
-où $\alpha \in [0, 0.5]$ est le paramètre de mobilité anisotrope.
+where $\alpha \in [0, 0.5]$ is the anisotropic mobility parameter.
 
 ---
 
-## 6. COUPLAGE FLUIDE-STRUCTURE (FSI)
+## 6. FLUID-STRUCTURE INTERACTION (FSI)
 
-### 6.1 Actionnement Piézoélectrique
+### 6.1 Piezoelectric Actuation
 
-Dans les têtes d'impression piézoélectriques, l'éjection est provoquée par la déformation d'une membrane sous l'effet d'une tension électrique.
+In piezoelectric print heads, ejection is caused by membrane deformation under an electric voltage.
 
-#### Équations du Piézo (Formulation Linéaire)
+#### Piezo Equations (Linear Formulation)
 
 $$\boldsymbol{\sigma}^{piezo} = \mathbf{C}^E : \boldsymbol{\varepsilon} - \mathbf{e}^T \cdot \mathbf{E}$$
 
 $$\mathbf{D} = \mathbf{e} : \boldsymbol{\varepsilon} + \boldsymbol{\epsilon}^S \cdot \mathbf{E}$$
 
-où :
-- $\boldsymbol{\sigma}^{piezo}$ : tenseur des contraintes mécaniques
-- $\boldsymbol{\varepsilon}$ : tenseur des déformations
-- $\mathbf{E}$ : champ électrique
-- $\mathbf{D}$ : déplacement électrique
-- $\mathbf{C}^E$ : tenseur d'élasticité à champ électrique constant
-- $\mathbf{e}$ : tenseur piézoélectrique
-- $\boldsymbol{\epsilon}^S$ : permittivité à déformation constante
+where:
+- $\boldsymbol{\sigma}^{piezo}$: mechanical stress tensor
+- $\boldsymbol{\varepsilon}$: strain tensor
+- $\mathbf{E}$: electric field
+- $\mathbf{D}$: electric displacement
+- $\mathbf{C}^E$: elasticity tensor at constant electric field
+- $\mathbf{e}$: piezoelectric tensor
+- $\boldsymbol{\epsilon}^S$: permittivity at constant strain
 
-### 6.2 Interface Fluide-Solide
+### 6.2 Fluid-Solid Interface
 
-À l'interface entre le fluide et la membrane piézoélectrique :
+At the interface between the fluid and the piezoelectric membrane:
 
-**Continuité des vitesses :**
-$$\mathbf{v}_{fluide} = \frac{\partial \mathbf{u}_{solide}}{\partial t}$$
+**Velocity Continuity:**
+$$\mathbf{v}_{fluid} = \frac{\partial \mathbf{u}_{solid}}{\partial t}$$
 
-**Équilibre des contraintes :**
-$$\boldsymbol{\sigma}_{fluide} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solide} \cdot \mathbf{n}$$
+**Stress Equilibrium:**
+$$\boldsymbol{\sigma}_{fluid} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solid} \cdot \mathbf{n}$$
 
-### 6.3 Maillage Mobile (ALE)
+### 6.3 Moving Mesh (ALE)
 
-Pour gérer la déformation du domaine fluide, on utilise la formulation **ALE (Arbitrary Lagrangian-Eulerian)** :
+To handle fluid domain deformation, we use the **ALE (Arbitrary Lagrangian-Eulerian)** formulation:
 
 $$\rho \left[\left.\frac{\partial \mathbf{v}}{\partial t}\right|_{\chi} + (\mathbf{v} - \mathbf{v}_{mesh}) \cdot \nabla \mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \mathbf{F}$$
 
-où :
-- $\left.\frac{\partial}{\partial t}\right|_{\chi}$ : dérivée à coordonnées ALE fixées
-- $\mathbf{v}_{mesh}$ : vitesse du maillage
+where:
+- $\left.\frac{\partial}{\partial t}\right|_{\chi}$: derivative at fixed ALE coordinates
+- $\mathbf{v}_{mesh}$: mesh velocity
 
-**Lissage du maillage :** Équation de Laplace pour les déplacements nodaux :
+**Mesh Smoothing:** Laplace equation for nodal displacements:
 
 $$\nabla^2 \mathbf{d}_{mesh} = 0$$
 
-avec conditions aux limites fixées sur les frontières immobiles.
+with boundary conditions fixed on immobile boundaries.
 
 ---
 
-## 7. RÉSULTATS DE VALIDATION
+## 7. VALIDATION RESULTS
 
-### 7.1 Étude Hirsa & Basaran (2017) - Encres Viscoélastiques
+### 7.1 Hirsa & Basaran Study (2017) - Viscoelastic Inks
 
-**Configuration :**
-- Solveur : COMSOL Multiphysics (FEM Phase-Field)
-- Éléments : Taylor-Hood (P2-P1)
-- Maillage : 50 000 éléments avec raffinement adaptatif
-- Rhéologie : Oldroyd-B ($\lambda_1 = 0.1$ ms, $De = 0.5$)
+**Configuration:**
+- Solver: COMSOL Multiphysics (FEM Phase-Field)
+- Elements: Taylor-Hood (P2-P1)
+- Mesh: 50,000 elements with adaptive refinement
+- Rheology: Oldroyd-B ($\lambda_1 = 0.1$ ms, $De = 0.5$)
 
-**Conditions :**
-- Diamètre buse : $D = 30$ µm
-- Vitesse d'éjection : $v_{max} = 15$ m/s
+**Conditions:**
+- Nozzle diameter: $D = 30$ µm
+- Ejection velocity: $v_{max} = 15$ m/s
 - $We = 4.5$, $Oh = 0.08$
 
-**Résultats :**
+**Results:**
 
-| Paramètre | Simulation | Expérimental | Erreur (%) |
-|-----------|------------|--------------|------------|
-| Vitesse goutte (m/s) | 14.8 | 15.0 ± 0.2 | 1.3 |
-| Diamètre goutte (µm) | 29.2 | 29.5 ± 0.5 | 1.0 |
-| Temps de pincement (µs) | 18.5 | 18.0 ± 0.5 | 2.8 |
-| Longueur filament (µm) | 145 | 148 ± 3 | 2.0 |
+| Parameter | Simulation | Experimental | Error (%) |
+|-----------|------------|--------------|-----------|
+| Droplet velocity (m/s) | 14.8 | 15.0 ± 0.2 | 1.3 |
+| Droplet diameter (µm) | 29.2 | 29.5 ± 0.5 | 1.0 |
+| Pinch-off time (µs) | 18.5 | 18.0 ± 0.5 | 2.8 |
+| Filament length (µm) | 145 | 148 ± 3 | 2.0 |
 
-**Observation clé :** La viscoélasticité retarde le pincement du filament (effet stabilisant) et réduit le volume des satellites de 25 % par rapport à un fluide newtonien équivalent.
+**Key Observation:** Viscoelasticity delays filament pinch-off (stabilizing effect) and reduces satellite volume by 25% compared to an equivalent Newtonian fluid.
 
-### 7.2 Étude Patel et al. (2020) - Couplage Piézo
+### 7.2 Patel et al. Study (2020) - Piezo Coupling
 
-**Configuration :**
-- Solveur : FEniCS + modèle piézo
-- Couplage : Monolithique (fluide + structure)
-- Maillage : 80 000 éléments (raffinement au ménisque)
-- Actionnement : Onde trapézoïdale ($V_{max} = 20$ V, $\tau_{rise} = 2$ µs)
+**Configuration:**
+- Solver: FEniCS + piezo model
+- Coupling: Monolithic (fluid + structure)
+- Mesh: 80,000 elements (refinement at meniscus)
+- Actuation: Trapezoidal wave ($V_{max} = 20$ V, $\tau_{rise} = 2$ µs)
 
-**Résultats :**
+**Results:**
 
-| Paramètre d'actionnement | Effet sur la goutte |
-|--------------------------|---------------------|
-| $\tau_{rise}$ ↓ | Vitesse ↑, satellites ↑ |
-| $V_{max}$ ↑ | Volume ↑, vitesse ↑ |
-| Forme trapèze | Moins de satellites qu'onde sinusoïdale |
+| Actuation parameter | Effect on droplet |
+|---------------------|-------------------|
+| $\tau_{rise}$ ↓ | Velocity ↑, satellites ↑ |
+| $V_{max}$ ↑ | Volume ↑, velocity ↑ |
+| Trapezoidal shape | Fewer satellites than sinusoidal wave |
 
-**Optimisation :** Réduction des satellites de 40 % en ajustant $\tau_{fall}/\tau_{rise} = 1.5$.
+**Optimization:** 40% reduction in satellites by adjusting $\tau_{fall}/\tau_{rise} = 1.5$.
 
-### 7.3 Comparaison avec Autres Méthodes
+### 7.3 Comparison with Other Methods
 
-| Critère | FEM (Phase-Field) | VOF | LBM | SPH |
-|---------|-------------------|-----|-----|-----|
-| Erreur vitesse (%) | **0.8** | 1.2 | 1.8 | 2.5 |
-| Erreur diamètre (%) | **1.5** | 2.1 | 3.0 | 4.2 |
-| Support Oldroyd-B | **Oui** | Non | Oui | Oui |
-| Couplage FSI | **Natif** | Difficile | Difficile | Moyen |
+| Criterion | FEM (Phase-Field) | VOF | LBM | SPH |
+|-----------|-------------------|-----|-----|-----|
+| Velocity error (%) | **0.8** | 1.2 | 1.8 | 2.5 |
+| Diameter error (%) | **1.5** | 2.1 | 3.0 | 4.2 |
+| Oldroyd-B support | **Yes** | No | Yes | Yes |
+| FSI coupling | **Native** | Difficult | Difficult | Medium |
 
 ---
 
-## 8. COÛT COMPUTATIONNEL
+## 8. COMPUTATIONAL COST
 
-### 8.1 Configuration Typique
+### 8.1 Typical Configuration
 
-Pour une simulation 2D axisymétrique (1 ms d'éjection, éléments Taylor-Hood) :
+For a 2D axisymmetric simulation (1 ms ejection, Taylor-Hood elements):
 
-| Configuration | Éléments | Temps (h) | Hardware |
-|---------------|----------|-----------|----------|
-| Standard | 20k | 4–8 | 8 cœurs CPU |
-| Haute résolution | 100k | 15–30 | 32 cœurs CPU |
-| 3D complet | 500k | 30–50 | 64–128 cœurs + 128 GB RAM |
+| Configuration | Elements | Time (h) | Hardware |
+|---------------|----------|----------|----------|
+| Standard | 20k | 4–8 | 8 CPU cores |
+| High resolution | 100k | 15–30 | 32 CPU cores |
+| Full 3D | 500k | 30–50 | 64–128 cores + 128 GB RAM |
 
-### 8.2 Scaling et Parallélisation
+### 8.2 Scaling and Parallelization
 
-La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/résolution des systèmes linéaires.
+The FEM method is **memory-bound** and limited by the cost of linear system assembly/solving.
 
-**Scaling typique (étude Hirsa 2017) :**
+**Typical Scaling (Hirsa 2017 study):**
 
-| Cœurs CPU | Speed-up | Efficacité |
+| CPU Cores | Speed-up | Efficiency |
 |-----------|----------|------------|
-| 1 | 1× | 100 % |
-| 8 | 6.5× | 81 % |
-| 32 | 20× | 63 % |
-| 64 | 32× | 50 % |
+| 1 | 1× | 100% |
+| 8 | 6.5× | 81% |
+| 32 | 20× | 63% |
+| 64 | 32× | 50% |
 
-**Limitation GPU :** Les solveurs FEM classiques (assemblage matriciel) ne bénéficient pas significativement de l'accélération GPU, contrairement à LBM.
+**GPU Limitation:** Classic FEM solvers (matrix assembly) do not significantly benefit from GPU acceleration, unlike LBM.
 
-### 8.3 Optimisations
+### 8.3 Optimizations
 
-- **Maillage adaptatif (AMR)** : Raffiner uniquement près de l'interface ($\alpha \in [0.05, 0.95]$)
-- **Préconditionneurs algébriques** : ILU, AMG pour les systèmes linéaires
-- **Time-stepping adaptatif** : CFL variable avec $\Delta t_{max} = 10^{-5}$ s
+- **Adaptive Mesh Refinement (AMR)**: Refine only near the interface ($\alpha \in [0.05, 0.95]$)
+- **Algebraic Preconditioners**: ILU, AMG for linear systems
+- **Adaptive Time-Stepping**: Variable CFL with $\Delta t_{max} = 10^{-5}$ s
 
 ---
 
-## 9. BIBLIOTHÈQUES OPEN-SOURCE
+## 9. OPEN-SOURCE LIBRARIES
 
-| Bibliothèque | Langage | Focus | Parallélisation |
-|--------------|---------|-------|-----------------|
-| **FEniCS** | Python/C++ | Flexibilité, prototypage | MPI, PETSc |
-| **deal.II** | C++ | Performance, adaptativité | MPI, Trilinos |
-| **FreeFEM** | DSL | Rapidité d'implémentation | MPI, MUMPS |
-| **Firedrake** | Python | Automatisation, GPU | MPI, PETSc |
-| **COMSOL** | GUI/MATLAB | Commercial, multiphysique | Multi-cœurs |
+| Library | Language | Focus | Parallelization |
+|---------|----------|-------|-----------------|
+| **FEniCS** | Python/C++ | Flexibility, prototyping | MPI, PETSc |
+| **deal.II** | C++ | Performance, adaptivity | MPI, Trilinos |
+| **FreeFEM** | DSL | Rapid implementation | MPI, MUMPS |
+| **Firedrake** | Python | Automation, GPU | MPI, PETSc |
+| **COMSOL** | GUI/MATLAB | Commercial, multiphysics | Multi-core |
 
-### 9.1 Exemple FEniCS (Phase-Field)
+### 9.1 FEniCS Example (Phase-Field)
 
 ```python
 from fenics import *
 
-# Maillage et espaces
+# Mesh and spaces
 mesh = RectangleMesh(Point(0, 0), Point(L, H), nx, ny)
-V = VectorFunctionSpace(mesh, "P", 2)  # Vitesse P2
-Q = FunctionSpace(mesh, "P", 1)        # Pression P1
+V = VectorFunctionSpace(mesh, "P", 2)  # Velocity P2
+Q = FunctionSpace(mesh, "P", 1)        # Pressure P1
 W = MixedFunctionSpace([V, Q])
 
-# Formulation variationnelle
+# Variational formulation
 (v, p) = TrialFunctions(W)
 (w, q) = TestFunctions(W)
 
@@ -550,13 +550,13 @@ F = (rho * dot((v - v_n) / dt, w) * dx
      + q * div(v) * dx
      - dot(f_sigma, w) * dx)
 
-# Résolution
+# Solve
 solve(lhs(F) == rhs(F), w_sol, bcs)
 ```
 
 ---
 
-## 10. RÉFÉRENCES
+## 10. REFERENCES
 
 1. Hirsa, A. H., & Basaran, O. A. (2017). *Finite element modeling of piezoelectrically driven inkjet droplet ejection with viscoelastic inks*. Journal of Fluid Mechanics, 825, 456–490. [DOI:10.1017/jfm.2017.456](https://doi.org/10.1017/jfm.2017.456)
 

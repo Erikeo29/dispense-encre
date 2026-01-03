@@ -1,195 +1,195 @@
-## Synthèse des Performances
+## Performance Summary
 
-Cette section présente une comparaison exhaustive des quatre méthodes numériques pour la simulation de dispense de microgouttes d'encre rhéofluidifiante, basée sur une méta-analyse de 62 études publiées entre 2010 et 2025.
-
----
-
-## Tableau Comparatif Global
-
-| Critère | VOF | FEM | LBM | SPH |
-|---------|-----|-----|-----|-----|
-| **Précision interfaciale** | 0.1–1 µm (PLIC) | 0.05–0.5 µm (éléments adaptatifs) | 0.2–2 µm (Free Energy) | 0.5–5 µm (CSF artificielle) |
-| **Temps de calcul** | 2–10 h (CPU) / 30 min (GPU) | 10–50 h (multi-core) | 1–5 h (GPU) | 5–20 h (GPU) |
-| **Support rhéologique** | Loi de puissance, Carreau-Yasuda | Herschel-Bulkley, Oldroyd-B | Loi de puissance, Oldroyd-B | Loi de puissance, viscoélastique |
-| **Hardware requis** | 10–50 TFLOPS (GPU modéré) | 20–100 TFLOPS (CPU multi-core) | 5–30 TFLOPS (GPU haute perf.) | 10–40 TFLOPS (GPU modéré) |
-| **Avantages** | Robustesse, précision interfaciale | Précision locale, couplage multiphysique | Scalabilité GPU, rapidité | Adaptabilité, coalescence naturelle |
-| **Limitations** | Diffusivité numérique, coût mémoire | Maillages déformables coûteux | Compressibilité artificielle | Bruit numérique, instabilité tenseur |
-| **Citations moyennes** | 250 | 180 | 320 | 210 |
+This section presents a comprehensive comparison of the four numerical methods for simulating shear-thinning ink microdroplet dispensing, based on a meta-analysis of 62 studies published between 2010 and 2025.
 
 ---
 
-## Besoins Hardware Détaillés
+## Global Comparison Table
 
-### Configuration Typique par Modèle
+| Criterion | VOF | FEM | LBM | SPH |
+|-----------|-----|-----|-----|-----|
+| **Interface precision** | 0.1–1 µm (PLIC) | 0.05–0.5 µm (adaptive elements) | 0.2–2 µm (Free Energy) | 0.5–5 µm (artificial CSF) |
+| **Computation time** | 2–10 h (CPU) / 30 min (GPU) | 10–50 h (multi-core) | 1–5 h (GPU) | 5–20 h (GPU) |
+| **Rheological support** | Power law, Carreau-Yasuda | Herschel-Bulkley, Oldroyd-B | Power law, Oldroyd-B | Power law, viscoelastic |
+| **Hardware required** | 10–50 TFLOPS (moderate GPU) | 20–100 TFLOPS (multi-core CPU) | 5–30 TFLOPS (high-perf GPU) | 10–40 TFLOPS (moderate GPU) |
+| **Advantages** | Robustness, interface precision | Local precision, multiphysics coupling | GPU scalability, speed | Adaptability, natural coalescence |
+| **Limitations** | Numerical diffusivity, memory cost | Expensive deformable meshes | Artificial compressibility | Numerical noise, tensor instability |
+| **Average citations** | 250 | 180 | 320 | 210 |
 
-Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
+---
 
-| Modèle | CPU (cœurs) | GPU | Mémoire (GB) | Temps (h) |
-|--------|-------------|-----|--------------|-----------|
+## Detailed Hardware Requirements
+
+### Typical Configuration per Model
+
+For a standard simulation (1 ms ejection, 10⁶ cells/particles):
+
+| Model | CPU (cores) | GPU | Memory (GB) | Time (h) |
+|-------|-------------|-----|-------------|----------|
 | **VOF** | 16–32 | RTX 3080–4090 | 16–32 | 2–10 |
-| **FEM** | 64–128 | Peu efficace | 64–128 | 10–50 |
+| **FEM** | 64–128 | Inefficient | 64–128 | 10–50 |
 | **LBM** | 4–8 | A100 (40 GB) | 8–16 | 1–5 |
 | **SPH** | 8–16 | RTX 4090 (24 GB) | 32–64 | 5–20 |
 
-### Analyse de la Scalabilité
+### Scalability Analysis
 
-- **LBM** : le plus efficace sur GPU, avec une accélération x20 vs CPU
-- **FEM** : limité par les CPU multi-cœurs et la mémoire
-- **VOF et SPH** : bon compromis pour les GPU grand public
-
----
-
-## Précision et Validation Expérimentale
-
-### Comparaison des Erreurs Moyennes
-
-Basé sur 20 études avec validation expérimentale (shadowgraphy, PIV) :
-
-| Critère | VOF | FEM | LBM | SPH |
-|---------|-----|-----|-----|-----|
-| Vitesse de la goutte (%) | 1.2 | 0.8 | 1.8 | 2.5 |
-| Diamètre de la goutte (%) | 2.1 | 1.5 | 3.0 | 4.2 |
-| Temps de pincement (%) | 3.5 | 2.8 | 4.0 | 5.5 |
-| Volume des satellites (%) | 5.0 | 4.0 | 6.0 | 7.0 |
-
-**Analyse :**
-- **FEM** offre la meilleure précision globale grâce à sa capacité à gérer les géométries complexes et les couplages multiphysiques
-- **VOF** est précis pour les interfaces mais moins pour la rhéologie complexe
-- **LBM** et **SPH** ont des erreurs plus élevées en raison de la compressibilité artificielle (LBM) et du bruit numérique (SPH)
+- **LBM**: Most efficient on GPU, with x20 speedup vs CPU
+- **FEM**: Limited by multi-core CPUs and memory
+- **VOF and SPH**: Good compromise for consumer GPUs
 
 ---
 
-## Adaptabilité aux Encres Rhéofluidifiantes
+## Precision and Experimental Validation
 
-### Lois Rhéologiques Supportées
+### Average Error Comparison
 
-| Loi Rhéologique | VOF | FEM | LBM | SPH |
+Based on 20 studies with experimental validation (shadowgraphy, PIV):
+
+| Criterion | VOF | FEM | LBM | SPH |
+|-----------|-----|-----|-----|-----|
+| Droplet velocity (%) | 1.2 | 0.8 | 1.8 | 2.5 |
+| Droplet diameter (%) | 2.1 | 1.5 | 3.0 | 4.2 |
+| Pinch-off time (%) | 3.5 | 2.8 | 4.0 | 5.5 |
+| Satellite volume (%) | 5.0 | 4.0 | 6.0 | 7.0 |
+
+**Analysis:**
+- **FEM** offers the best overall precision due to its ability to handle complex geometries and multiphysics coupling
+- **VOF** is accurate for interfaces but less so for complex rheology
+- **LBM** and **SPH** have higher errors due to artificial compressibility (LBM) and numerical noise (SPH)
+
+---
+
+## Adaptability to Shear-Thinning Inks
+
+### Supported Rheological Laws
+
+| Rheological Law | VOF | FEM | LBM | SPH |
 |-----------------|-----|-----|-----|-----|
-| Newtonien | Oui | Oui | Oui | Oui |
-| Loi de puissance | Oui | Oui | Oui | Oui |
-| Carreau-Yasuda | Oui | Oui | Oui | Oui |
-| Herschel-Bulkley | Non | Oui | Non | Oui |
-| Oldroyd-B (viscoélastique) | Non | Oui | Oui | Oui |
-| Thixotropie | Non | Non | Non | Oui |
+| Newtonian | Yes | Yes | Yes | Yes |
+| Power law | Yes | Yes | Yes | Yes |
+| Carreau-Yasuda | Yes | Yes | Yes | Yes |
+| Herschel-Bulkley | No | Yes | No | Yes |
+| Oldroyd-B (viscoelastic) | No | Yes | Yes | Yes |
+| Thixotropy | No | No | No | Yes |
 
-**Analyse :**
-- **FEM** est le plus polyvalent pour la rhéologie complexe
-- **SPH** est le seul à gérer la thixotropie grâce à son approche lagrangienne
-- **VOF** et **LBM** sont limités aux lois simples (loi de puissance, Carreau)
+**Analysis:**
+- **FEM** is the most versatile for complex rheology
+- **SPH** is the only one handling thixotropy thanks to its Lagrangian approach
+- **VOF** and **LBM** are limited to simple laws (power law, Carreau)
 
 ---
 
-## Analyse Critique par Modèle
+## Critical Analysis by Model
 
 ### VOF (Volume of Fluid)
 
-**Principe :** Méthode eulérienne pour le suivi d'interfaces, où la fraction volumique $\alpha$ ($0 \leq \alpha \leq 1$) représente la proportion de fluide dans chaque cellule.
+**Principle:** Eulerian method for interface tracking, where the volume fraction $\alpha$ ($0 \leq \alpha \leq 1$) represents the fluid proportion in each cell.
 
-**Points forts :**
-- Robustesse éprouvée (standard industriel)
-- Conservation de masse parfaite
-- Implémentations open-source matures (OpenFOAM, Basilisk)
-- Précision interfaciale élevée (0.1–1 µm avec PLIC)
+**Strengths:**
+- Proven robustness (industry standard)
+- Perfect mass conservation
+- Mature open-source implementations (OpenFOAM, Basilisk)
+- High interface precision (0.1–1 µm with PLIC)
 
-**Limitations :**
-- Diffusivité numérique aux interfaces fines
-- Coût mémoire élevé pour les maillages fins
-- Difficulté à gérer les coalescences multiples
+**Limitations:**
+- Numerical diffusivity at fine interfaces
+- High memory cost for fine meshes
+- Difficulty handling multiple coalescences
 
 ---
 
 ### FEM (Finite Element Method / Phase-Field)
 
-**Principe :** Discrétisation du domaine en éléments finis avec formulation faible. L'interface est représentée par un champ de phase $\phi$ d'épaisseur finie $\varepsilon$.
+**Principle:** Domain discretization into finite elements with weak formulation. The interface is represented by a phase field $\phi$ with finite thickness $\varepsilon$.
 
-**Points forts :**
-- Précision locale élevée (0.05–0.5 µm avec éléments adaptatifs)
-- Capacité à gérer des géométries complexes et des couplages multiphysiques
-- Implémentations commerciales puissantes (COMSOL, Ansys)
+**Strengths:**
+- High local precision (0.05–0.5 µm with adaptive elements)
+- Ability to handle complex geometries and multiphysics coupling
+- Powerful commercial implementations (COMSOL, Ansys)
 
-**Limitations :**
-- Coût computationnel élevé pour les maillages 3D déformables
-- Difficulté à gérer les interfaces libres sans méthodes hybrides
-- Sensibilité aux paramètres de stabilisation
+**Limitations:**
+- High computational cost for 3D deformable meshes
+- Difficulty handling free interfaces without hybrid methods
+- Sensitivity to stabilization parameters
 
 ---
 
 ### LBM (Lattice Boltzmann Method)
 
-**Principe :** Méthode mésoscopique discrétisant l'équation de Boltzmann sur une grille régulière (D2Q9, D3Q19). Les grandeurs macroscopiques sont obtenues par moments statistiques.
+**Principle:** Mesoscopic method discretizing the Boltzmann equation on a regular grid (D2Q9, D3Q19). Macroscopic quantities are obtained through statistical moments.
 
-**Points forts :**
-- Scalabilité GPU exceptionnelle (accélération x20 vs CPU)
-- Adapté aux écoulements parallèles et aux géométries complexes
-- Implémentations open-source performantes (Palabos, waLBerla)
+**Strengths:**
+- Exceptional GPU scalability (x20 speedup vs CPU)
+- Suited for parallel flows and complex geometries
+- High-performance open-source implementations (Palabos, waLBerla)
 
-**Limitations :**
-- Compressibilité artificielle (nombre de Mach $Ma < 0.1$ requis)
-- Difficulté à modéliser les interfaces avec une précision sub-micronique
-- Calibration délicate des paramètres rhéologiques
+**Limitations:**
+- Artificial compressibility (Mach number $Ma < 0.1$ required)
+- Difficulty modeling interfaces with sub-micron precision
+- Delicate calibration of rheological parameters
 
 ---
 
 ### SPH (Smoothed Particle Hydrodynamics)
 
-**Principe :** Méthode lagrangienne sans maillage où le fluide est discrétisé en particules mobiles. Les équations de Navier-Stokes sont résolues via des noyaux d'interpolation (ex. cubic spline).
+**Principle:** Meshless Lagrangian method where the fluid is discretized into mobile particles. Navier-Stokes equations are solved via interpolation kernels (e.g., cubic spline).
 
-**Points forts :**
-- Adaptabilité aux déformations extrêmes (coalescence, fragmentation)
-- Pas de maillage → pas de problèmes de distorsion
-- Implémentations open-source (DualSPHysics, PySPH)
+**Strengths:**
+- Adaptability to extreme deformations (coalescence, fragmentation)
+- No mesh → no distortion problems
+- Open-source implementations (DualSPHysics, PySPH)
 
-**Limitations :**
-- Bruit numérique dans les champs de pression et de vitesse
-- Instabilité du tenseur des contraintes à haute vitesse
-- Coût mémoire élevé pour les simulations 3D
-
----
-
-## Défis Communs et Solutions
-
-### Problèmes Identifiés
-
-| Défi | Modèles concernés | Solution |
-|------|-------------------|----------|
-| **Diffusivité numérique** | VOF, LBM | Schémas de reconstruction (PLIC pour VOF, Free Energy pour LBM) |
-| **Instabilité tenseur contraintes** | SPH | Noyaux d'ordre supérieur (quintic spline) + viscosité artificielle |
-| **Coût computationnel** | FEM | Parallélisation sur CPU multi-cœurs + hybridation (FEM-SPH) |
-| **Compressibilité artificielle** | LBM | Schémas à faible Mach (LBM à deux vitesses de relaxation) |
-
-### Solutions Innovantes
-
-**Hybridation :**
-- **VOF-LBM** : Combine la précision interfaciale de VOF avec la scalabilité de LBM (Thiery et al., 2023)
-- **FEM-SPH** : Utilise FEM pour la rhéologie et SPH pour les interfaces (Patel et al., 2024)
-
-**Apprentissage automatique :**
-- **PINN (Physics-Informed Neural Networks)** : Accélère les simulations VOF en apprenant la dynamique interfaciale (Raissi et al., 2020)
-- **Surrogate Models** : Remplace les simulations coûteuses par des réseaux de neurones entraînés
+**Limitations:**
+- Numerical noise in pressure and velocity fields
+- Stress tensor instability at high velocity
+- High memory cost for 3D simulations
 
 ---
 
-## Recommandations par Application
+## Common Challenges and Solutions
 
-### Pour l'Industrie
+### Identified Problems
 
-| Application | Modèle recommandé | Hardware | Justification |
+| Challenge | Affected models | Solution |
+|-----------|-----------------|----------|
+| **Numerical diffusivity** | VOF, LBM | Reconstruction schemes (PLIC for VOF, Free Energy for LBM) |
+| **Stress tensor instability** | SPH | Higher-order kernels (quintic spline) + artificial viscosity |
+| **Computational cost** | FEM | Multi-core CPU parallelization + hybridization (FEM-SPH) |
+| **Artificial compressibility** | LBM | Low-Mach schemes (two-relaxation-time LBM) |
+
+### Innovative Solutions
+
+**Hybridization:**
+- **VOF-LBM**: Combines VOF interface precision with LBM scalability (Thiery et al., 2023)
+- **FEM-SPH**: Uses FEM for rheology and SPH for interfaces (Patel et al., 2024)
+
+**Machine Learning:**
+- **PINN (Physics-Informed Neural Networks)**: Accelerates VOF simulations by learning interface dynamics (Raissi et al., 2020)
+- **Surrogate Models**: Replaces expensive simulations with trained neural networks
+
+---
+
+## Recommendations by Application
+
+### For Industry
+
+| Application | Recommended model | Hardware | Justification |
 |-------------|-------------------|----------|---------------|
-| Impression inkjet standard (< 1200 dpi) | VOF (OpenFOAM) | GPU RTX 3080–4090 | Robustesse et précision interfaciale |
-| Impression haute résolution (> 2400 dpi) | Hybride VOF-LBM | GPU A100 (40 GB) | Précision interfaciale + scalabilité |
-| Encres viscoélastiques | FEM (COMSOL) | CPU 64–128 cœurs + 128 GB RAM | Capacité à gérer les lois rhéologiques complexes |
+| Standard inkjet printing (< 1200 dpi) | VOF (OpenFOAM) | GPU RTX 3080–4090 | Robustness and interface precision |
+| High-resolution printing (> 2400 dpi) | Hybrid VOF-LBM | GPU A100 (40 GB) | Interface precision + scalability |
+| Viscoelastic inks | FEM (COMSOL) | CPU 64–128 cores + 128 GB RAM | Ability to handle complex rheological laws |
 
-### Pour la R&D Académique
+### For Academic R&D
 
-| Application | Modèle recommandé | Justification |
+| Application | Recommended model | Justification |
 |-------------|-------------------|---------------|
-| Études fondamentales sur la rhéologie | SPH (PySPH) | Flexibilité et capacité à gérer la thixotropie |
-| Développement de modèles hybrides | VOF-SPH, FEM-LBM | Combiner les avantages de chaque méthode |
-| Intégration de l'IA | PINN + VOF/FEM | Accélérer les simulations et optimiser les paramètres |
+| Fundamental rheology studies | SPH (PySPH) | Flexibility and thixotropy handling capability |
+| Hybrid model development | VOF-SPH, FEM-LBM | Combine advantages of each method |
+| AI integration | PINN + VOF/FEM | Accelerate simulations and optimize parameters |
 
 ---
 
-## Références Sélectionnées
+## Selected References
 
 1. Duarte, J. F., et al. (2019). *High-fidelity simulation of inkjet droplet formation using a coupled level-set/VOF method with adaptive mesh refinement*. Journal of Computational Physics, 398, 108923. [DOI:10.1016/j.jcp.2019.108923](https://doi.org/10.1016/j.jcp.2019.108923)
 
