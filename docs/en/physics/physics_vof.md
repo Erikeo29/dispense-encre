@@ -1,44 +1,44 @@
-# Méthode Volume of Fluid (VOF)
+# Volume of Fluid (VOF) Method
 
-## Principe Fondamental
+## Fundamental Principle
 
-La méthode **VOF (Volume of Fluid)** est une approche eulérienne pour le suivi d'interfaces dans les écoulements diphasiques. Elle représente le standard industriel pour les simulations à surface libre, notamment dans OpenFOAM avec le solveur `interFoam`.
+The **VOF (Volume of Fluid)** method is an Eulerian approach for interface tracking in two-phase flows. It represents the industry standard for free surface simulations, particularly in OpenFOAM with the `interFoam` solver.
 
-### Concept de Fraction Volumique
+### Volume Fraction Concept
 
-L'interface entre les deux fluides est capturée par une variable scalaire, la **fraction volumique** $\alpha$ :
+The interface between the two fluids is captured by a scalar variable, the **volume fraction** $\alpha$:
 
-- $\alpha = 1$ : Fluide 1 (encre) pur
-- $\alpha = 0$ : Fluide 2 (air) pur
-- $0 < \alpha < 1$ : Zone d'interface (transition)
+- $\alpha = 1$: Pure Fluid 1 (ink)
+- $\alpha = 0$: Pure Fluid 2 (air)
+- $0 < \alpha < 1$: Interface zone (transition)
 
-Cette approche est dite "à interface diffuse" car l'interface n'est pas une ligne nette mais une zone de transition sur quelques cellules.
+This approach is called "diffuse interface" because the interface is not a sharp line but a transition zone spanning several cells.
 
 ---
 
-## Équations Fondamentales
+## Fundamental Equations
 
-### Équation de Transport de $\alpha$
+### Transport Equation for $\alpha$
 
-L'évolution de la fraction volumique est gouvernée par l'équation d'advection :
+The evolution of the volume fraction is governed by the advection equation:
 
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\alpha \mathbf{v}) = 0$$
 
-où $\mathbf{v}$ est le champ de vitesse.
+where $\mathbf{v}$ is the velocity field.
 
-### Force de Tension Superficielle (CSF)
+### Surface Tension Force (CSF)
 
-La tension superficielle est modélisée via le modèle **Continuum Surface Force (CSF)** de Brackbill :
+Surface tension is modeled via Brackbill's **Continuum Surface Force (CSF)** model:
 
 $$\mathbf{f}_\sigma = \sigma \kappa \nabla \alpha$$
 
-où :
-- $\sigma$ : tension superficielle [N/m]
-- $\kappa = -\nabla \cdot \left(\frac{\nabla \alpha}{|\nabla \alpha|}\right)$ : courbure de l'interface
+where:
+- $\sigma$: surface tension [N/m]
+- $\kappa = -\nabla \cdot \left(\frac{\nabla \alpha}{|\nabla \alpha|}\right)$: interface curvature
 
-### Propriétés du Mélange
+### Mixture Properties
 
-Les propriétés physiques sont interpolées linéairement :
+Physical properties are linearly interpolated:
 
 $$\rho = \alpha \rho_1 + (1-\alpha) \rho_2$$
 
@@ -46,75 +46,75 @@ $$\eta = \alpha \eta_1 + (1-\alpha) \eta_2$$
 
 ---
 
-## Schémas de Reconstruction d'Interface
+## Interface Reconstruction Schemes
 
-### Problématique de la Diffusion Numérique
+### Numerical Diffusion Problem
 
-Le transport de $\alpha$ par advection pure conduit à une **diffusion numérique** de l'interface, la rendant floue sur plusieurs cellules. Plusieurs schémas existent pour maintenir une interface nette :
+Transporting $\alpha$ by pure advection leads to **numerical diffusion** of the interface, spreading it over several cells. Several schemes exist to maintain a sharp interface:
 
 ### PLIC (Piecewise Linear Interface Calculation)
 
-Le schéma **PLIC** reconstruit l'interface comme un plan dans chaque cellule :
+The **PLIC** scheme reconstructs the interface as a plane within each cell:
 
 $$\mathbf{n} \cdot \mathbf{x} = d$$
 
-où $\mathbf{n} = \frac{\nabla \alpha}{|\nabla \alpha|}$ est la normale à l'interface et $d$ la distance à l'origine.
+where $\mathbf{n} = \frac{\nabla \alpha}{|\nabla \alpha|}$ is the interface normal and $d$ the distance from the origin.
 
-**Avantages :**
-- Précision interfaciale de 0.1–1 µm
-- Conservation de masse exacte
-- Standard dans OpenFOAM
+**Advantages:**
+- Interface precision of 0.1–1 µm
+- Exact mass conservation
+- Standard in OpenFOAM
 
 ### Geometric VOF
 
-Utilise des algorithmes géométriques pour calculer les flux de $\alpha$ entre cellules :
-- Calcul exact des volumes de fluide traversant chaque face
-- Plus coûteux mais plus précis que les schémas algébriques
+Uses geometric algorithms to compute $\alpha$ fluxes between cells:
+- Exact calculation of fluid volumes crossing each face
+- More expensive but more accurate than algebraic schemes
 
 ### Compressive VOF (OpenFOAM)
 
-OpenFOAM ajoute un terme de **compression artificielle** (MULES) :
+OpenFOAM adds an **artificial compression** term (MULES):
 
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\mathbf{v} \alpha) + \nabla \cdot [\mathbf{v}_r \alpha (1-\alpha)] = 0$$
 
-où $\mathbf{v}_r = c_\alpha |\mathbf{v}| \mathbf{n}$ est une vitesse de compression artificielle qui agit **uniquement à l'interface** ($\alpha(1-\alpha) \neq 0$) pour contrer la diffusion.
+where $\mathbf{v}_r = c_\alpha |\mathbf{v}| \mathbf{n}$ is an artificial compression velocity acting **only at the interface** ($\alpha(1-\alpha) \neq 0$) to counteract diffusion.
 
-**Paramètre clé :** $c_\alpha = 1$ (valeur par défaut dans OpenFOAM)
+**Key Parameter:** $c_\alpha = 1$ (default value in OpenFOAM)
 
 ---
 
-## Adaptation aux Fluides Non-Newtoniens
+## Adaptation for Non-Newtonian Fluids
 
-### Tenseur des Contraintes
+### Stress Tensor
 
-Pour les encres rhéofluidifiantes, le tenseur des contraintes $\boldsymbol{\tau}$ est modifié pour inclure la dépendance au taux de cisaillement $\dot{\gamma}$ :
+For shear-thinning inks, the stress tensor $\boldsymbol{\tau}$ is modified to include shear rate $\dot{\gamma}$ dependence:
 
 $$\boldsymbol{\tau} = K|\dot{\gamma}|^{n-1}\dot{\gamma}$$
 
-où $\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}}$ et $\mathbf{D} = \frac{1}{2}\left(\nabla \mathbf{v} + (\nabla \mathbf{v})^T\right)$.
+where $\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}}$ and $\mathbf{D} = \frac{1}{2}\left(\nabla \mathbf{v} + (\nabla \mathbf{v})^T\right)$.
 
-### Modèle de Carreau dans OpenFOAM
+### Carreau Model in OpenFOAM
 
-La viscosité effective $\eta_{eff}$ suit le modèle de Carreau :
+The effective viscosity $\eta_{eff}$ follows the Carreau model:
 
 $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda \dot{\gamma})^2]^{(n-1)/2}$$
 
-**Paramètres typiques pour encre Ag/AgCl :**
+**Typical Parameters for Ag/AgCl Ink:**
 
-| Paramètre | Symbole | Valeur | Unité |
-|-----------|---------|--------|-------|
-| Masse volumique | $\rho$ | 3000 | kg/m³ |
-| Viscosité au repos | $\eta_0$ | 0.5 – 5 | Pa·s |
-| Viscosité à cisaillement infini | $\eta_\infty$ | 0.05 – 0.167 | Pa·s |
-| Temps de relaxation | $\lambda$ | 0.15 | s |
-| Indice de pseudoplasticité | $n$ | 0.7 | - |
-| Tension de surface | $\sigma$ | 0.04 | N/m |
+| Parameter | Symbol | Value | Unit |
+|-----------|--------|-------|------|
+| Density | $\rho$ | 3000 | kg/m³ |
+| Zero-shear viscosity | $\eta_0$ | 0.5 – 5 | Pa·s |
+| Infinite-shear viscosity | $\eta_\infty$ | 0.05 – 0.167 | Pa·s |
+| Relaxation time | $\lambda$ | 0.15 | s |
+| Power-law index | $n$ | 0.7 | - |
+| Surface tension | $\sigma$ | 0.04 | N/m |
 
 ---
 
-## Configuration OpenFOAM
+## OpenFOAM Configuration
 
-### Fichier `transportProperties`
+### `transportProperties` File
 
 ```cpp
 transportModel Carreau;
@@ -127,85 +127,85 @@ CarreauCoeffs
     n       n [0 0 0 0 0 0 0] 0.7;           // n
 }
 
-sigma   sigma [1 0 -2 0 0 0 0] 0.04;  // Tension de surface
+sigma   sigma [1 0 -2 0 0 0 0] 0.04;  // Surface tension
 ```
 
-### Solveur `interFoam`
+### `interFoam` Solver
 
-Le solveur `interFoam` résout :
-1. Équation de transport de $\alpha$ (MULES)
-2. Équations de Navier-Stokes avec propriétés variables
-3. Couplage pression-vitesse (PIMPLE)
+The `interFoam` solver solves:
+1. Transport equation for $\alpha$ (MULES)
+2. Navier-Stokes equations with variable properties
+3. Pressure-velocity coupling (PIMPLE)
 
 ---
 
-## Avantages et Limitations
+## Advantages and Limitations
 
-### Points Forts
+### Strengths
 
-- **Robustesse éprouvée** : Standard industriel avec >25 ans de développement
-- **Conservation de masse parfaite** : Propriété intrinsèque de la formulation
-- **Implémentations open-source** : OpenFOAM, Basilisk
-- **Précision interfaciale** : 0.1–1 µm avec PLIC et maillage adaptatif (AMR)
+- **Proven robustness**: Industry standard with >25 years of development
+- **Perfect mass conservation**: Intrinsic property of the formulation
+- **Open-source implementations**: OpenFOAM, Basilisk
+- **Interface precision**: 0.1–1 µm with PLIC and adaptive mesh refinement (AMR)
 
 ### Limitations
 
-- **Diffusivité numérique** : Nécessite des schémas de reconstruction coûteux
-- **Coût mémoire** : Maillages fins requis pour les interfaces fines
-- **Coalescences multiples** : Difficiles à gérer proprement
-- **Rhéologie newtonienne** : Les lois simples (Carreau) fonctionnent, les lois complexes (thixotropie) sont difficiles
+- **Numerical diffusivity**: Requires expensive reconstruction schemes
+- **Memory cost**: Fine meshes required for thin interfaces
+- **Multiple coalescences**: Difficult to handle properly
+- **Newtonian rheology**: Simple laws (Carreau) work, complex laws (thixotropy) are difficult
 
 ---
 
-## Résultats de Validation
+## Validation Results
 
-### Étude Duarte et al. (2019)
+### Duarte et al. Study (2019)
 
-**Configuration :**
-- Solveur : OpenFOAM (`interFoam`)
-- Maillage adaptatif (AMR) avec taille minimale de cellule = 0.2 µm
-- Encre newtonienne ($\sigma = 35$ mN/m, $\eta = 4$ mPa·s)
+**Configuration:**
+- Solver: OpenFOAM (`interFoam`)
+- Adaptive mesh refinement (AMR) with minimum cell size = 0.2 µm
+- Newtonian ink ($\sigma = 35$ mN/m, $\eta = 4$ mPa·s)
 
-**Résultats :**
-- Longueur du filament avant détachement : 150 µm (expérimental : 148 ± 2 µm)
-- Vitesse de la goutte : 12 m/s (erreur < 2 %)
-- Formation de satellite : 8 % du volume total à $t = 15$ µs
+**Results:**
+- Filament length before detachment: 150 µm (experimental: 148 ± 2 µm)
+- Droplet velocity: 12 m/s (error < 2%)
+- Satellite formation: 8% of total volume at $t = 15$ µs
 
-### Étude Li et al. (2021) - Fluides Non-Newtoniens
+### Li et al. Study (2021) - Non-Newtonian Fluids
 
-**Configuration :**
-- Loi de puissance ($n = 0.7$, $K = 0.1$ Pa·sⁿ)
+**Configuration:**
+- Power law ($n = 0.7$, $K = 0.1$ Pa·sⁿ)
 - $We = 3.5$, $Oh = 0.05$
 
-**Résultats :**
+**Results:**
 
-| Paramètre | Newtonien ($n=1$) | Rhéofluidifiant ($n=0.7$) |
-|-----------|-------------------|---------------------------|
-| Temps de pincement (µs) | 18 ± 0.5 | 22 ± 0.8 |
-| Volume satellite (%) | 12 | 8 |
-| Vitesse goutte (m/s) | 12.1 | 11.8 |
+| Parameter | Newtonian ($n=1$) | Shear-thinning ($n=0.7$) |
+|-----------|-------------------|--------------------------|
+| Pinch-off time (µs) | 18 ± 0.5 | 22 ± 0.8 |
+| Satellite volume (%) | 12 | 8 |
+| Droplet velocity (m/s) | 12.1 | 11.8 |
 
-**Mécanisme :** La rhéofluidification réduit la viscosité effective dans les zones de fort cisaillement (filament), accélérant le pincement tout en réduisant les satellites.
-
----
-
-## Coût Computationnel
-
-### Configuration Typique
-
-Pour une simulation 2D axisymétrique (1 ms d'éjection) :
-
-| Configuration | Maillage | Temps (h) | Hardware |
-|---------------|----------|-----------|----------|
-| Standard | 100k cellules | 2–4 | 8 cœurs CPU |
-| Haute résolution | 500k cellules | 8–12 | 16 cœurs CPU |
-| AMR | 100k–1M (adaptatif) | 4–8 | 16 cœurs + GPU |
-
-**Impact GPU :** OpenFOAM supporte CUDA depuis la version 10, avec des accélérations de x5–x10 pour les opérations matricielles.
+**Mechanism:** Shear-thinning reduces the effective viscosity in high-shear zones (filament), accelerating pinch-off while reducing satellites.
 
 ---
 
-## Références
+## Computational Cost
+
+### Typical Configuration
+
+For a 2D axisymmetric simulation (1 ms ejection):
+
+| Configuration | Mesh | Time (h) | Hardware |
+|---------------|------|----------|----------|
+| Standard | 100k cells | 2–4 | 8 CPU cores |
+| High resolution | 500k cells | 8–12 | 16 CPU cores |
+| AMR | 100k–1M (adaptive) | 4–8 | 16 cores + GPU |
+
+**GPU Impact:** OpenFOAM has supported CUDA since version 10, with x5–x10 speedups for matrix operations.
+
+---
+
+## References
 
 1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225.
 
