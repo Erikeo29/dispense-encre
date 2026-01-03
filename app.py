@@ -290,83 +290,90 @@ if 'nav_annex' not in st.session_state: st.session_state.nav_annex = None
 
 # --- Barre Latérale ---
 
-# Sélecteur de langue
+# Sélecteur de langue avec conservation de la page
+old_lang = st.session_state.get('lang', 'fr')
 lang_selection = st.sidebar.radio(
     "Language",
     ["🇫🇷 FR", "🇬🇧 EN"],
     horizontal=True,
-    label_visibility="collapsed"
+    label_visibility="collapsed",
+    index=0 if old_lang == "fr" else 1
 )
-if "FR" in lang_selection:
-    st.session_state.lang = "fr"
-else:
-    st.session_state.lang = "en"
+new_lang = "fr" if "FR" in lang_selection else "en"
+
+# Si la langue change, convertir la sélection actuelle
+if new_lang != old_lang:
+    # Trouver l'index de la page actuelle dans l'ancienne langue
+    old_gen_pages = TRANSLATIONS[old_lang]["gen_pages"]
+    old_model_pages = TRANSLATIONS[old_lang]["model_pages"]
+    old_annex_pages = TRANSLATIONS[old_lang]["annex_pages"]
+    new_gen_pages = TRANSLATIONS[new_lang]["gen_pages"]
+    new_model_pages = TRANSLATIONS[new_lang]["model_pages"]
+    new_annex_pages = TRANSLATIONS[new_lang]["annex_pages"]
+
+    if st.session_state.nav_gen and st.session_state.nav_gen in old_gen_pages:
+        idx = old_gen_pages.index(st.session_state.nav_gen)
+        st.session_state.nav_gen = new_gen_pages[idx]
+    elif st.session_state.nav_model and st.session_state.nav_model in old_model_pages:
+        idx = old_model_pages.index(st.session_state.nav_model)
+        st.session_state.nav_model = new_model_pages[idx]
+    elif st.session_state.nav_annex and st.session_state.nav_annex in old_annex_pages:
+        idx = old_annex_pages.index(st.session_state.nav_annex)
+        st.session_state.nav_annex = new_annex_pages[idx]
+    else:
+        # Par défaut, sélectionner Accueil/Home
+        st.session_state.nav_gen = new_gen_pages[0]
+        st.session_state.nav_model = None
+        st.session_state.nav_annex = None
+
+st.session_state.lang = new_lang
 
 st.sidebar.title(t("sidebar_title"))
 st.sidebar.markdown("---")
 
-# Navigation par groupes avec callbacks
+# Navigation par groupes avec callbacks (style electrochemistry)
 st.sidebar.subheader(t("gen_header"))
-idx_gen = t("gen_pages").index(st.session_state.nav_gen) if st.session_state.nav_gen in t("gen_pages") else None
 nav_gen = st.sidebar.radio(
-    "Gen", t("gen_pages"),
-    index=idx_gen,
+    "Nav Gen",
+    t("gen_pages"),
+    key="nav_gen",
     on_change=on_change_gen,
-    key="nav_gen_radio",
     label_visibility="collapsed"
 )
 
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("models_header"))
-idx_mod = t("model_pages").index(st.session_state.nav_model) if st.session_state.nav_model in t("model_pages") else None
 nav_model = st.sidebar.radio(
-    "Models", t("model_pages"),
-    index=idx_mod,
+    "Nav Models",
+    t("model_pages"),
+    key="nav_model",
+    index=None,
     on_change=on_change_model,
-    key="nav_model_radio",
     label_visibility="collapsed"
 )
 
 st.sidebar.markdown("---")
 st.sidebar.subheader(t("annex_header"))
-idx_ann = t("annex_pages").index(st.session_state.nav_annex) if st.session_state.nav_annex in t("annex_pages") else None
 nav_annex = st.sidebar.radio(
-    "Annex", t("annex_pages"),
-    index=idx_ann,
+    "Nav Annex",
+    t("annex_pages"),
+    key="nav_annex",
+    index=None,
     on_change=on_change_annex,
-    key="nav_annex_radio",
     label_visibility="collapsed"
 )
-
-# Mettre à jour les états
-if nav_gen and nav_gen != st.session_state.get("prev_gen"):
-    st.session_state.nav_gen = nav_gen
-    st.session_state.nav_model = None
-    st.session_state.nav_annex = None
-elif nav_model and nav_model != st.session_state.get("prev_model"):
-    st.session_state.nav_model = nav_model
-    st.session_state.nav_gen = None
-    st.session_state.nav_annex = None
-elif nav_annex and nav_annex != st.session_state.get("prev_annex"):
-    st.session_state.nav_annex = nav_annex
-    st.session_state.nav_gen = None
-    st.session_state.nav_model = None
-
-st.session_state.prev_gen = nav_gen
-st.session_state.prev_model = nav_model
-st.session_state.prev_annex = nav_annex
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
 
 # --- Déterminer la page active ---
 selected_page = None
-if st.session_state.nav_gen:
-    selected_page = st.session_state.nav_gen
-elif st.session_state.nav_model:
-    selected_page = st.session_state.nav_model
-elif st.session_state.nav_annex:
-    selected_page = st.session_state.nav_annex
+if nav_model:
+    selected_page = nav_model
+elif nav_annex:
+    selected_page = nav_annex
+elif nav_gen:
+    selected_page = nav_gen
 else:
     selected_page = t("gen_pages")[0]  # Default: Accueil/Home
 
