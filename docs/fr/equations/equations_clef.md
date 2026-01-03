@@ -364,13 +364,3 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 ## Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
-
-1. Batchelor, G. K. (1967). *An Introduction to Fluid Dynamics*. Cambridge University Press.
-
-2. Bird, R. B., Stewart, W. E., & Lightfoot, E. N. (2002). *Transport Phenomena* (2nd ed.). Wiley.
-
-3. Tryggvason, G., Scardovelli, R., & Zaleski, S. (2011). *Direct Numerical Simulations of Gas-Liquid Multiphase Flows*. Cambridge University Press.
-
-4. Krüger, T., et al. (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. [DOI:10.1007/978-3-319-44649-3](https://doi.org/10.1007/978-3-319-44649-3)
-
-5. Liu, G. R., & Liu, M. B. (2003). *Smoothed Particle Hydrodynamics: A Meshfree Particle Method*. World Scientific.

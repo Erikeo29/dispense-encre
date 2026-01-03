@@ -192,15 +192,3 @@ Based on 20 studies with experimental validation (shadowgraphy, PIV):
 ## References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
-
-1. Hirt, C. W., & Nichols, B. D. (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
-
-2. Jacqmin, D. (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
-
-3. Chen, S., & Doolen, G. D. (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
-
-4. Monaghan, J. J. (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
-
-5. Basaran, O. A., Gao, H., & Bhat, P. P. (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
-
-6. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics, 378, 686-707. [DOI:10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
