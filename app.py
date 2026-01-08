@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 import os
 import pandas as pd
+from anthropic import Anthropic
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_sidebar_state="expanded")
@@ -53,6 +54,15 @@ Jan 2025 - *EQU*
         "caption_vof": "Volume of Fluid - C++/OpenFOAM",
         "caption_lbm": "Lattice Boltzmann - C++/Palabos",
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
+        # Chatbot
+        "chat_title": "🤖 Assistant IA",
+        "chat_welcome": "Bonjour ! Je suis votre assistant pour comprendre les simulations de dispense d'encre Ag/AgCl. Posez-moi vos questions sur FEM, VOF, LBM, SPH, ou la physique des fluides !",
+        "chat_placeholder": "Posez votre question...",
+        "chat_error": "Erreur de connexion à l'API. Vérifiez votre clé API.",
+        "chat_close": "Fermer",
+        "chat_clear": "Effacer",
+        "chat_api_missing": "⚠️ Clé API manquante. Configurez ANTHROPIC_API_KEY.",
+        "chat_toggle": "Assistant IA",
     },
     "en": {
         "title": "Ag/AgCl Ink Dispensing Simulation",
@@ -99,6 +109,15 @@ Jan 2025 - *EQU*
         "caption_vof": "Volume of Fluid - C++/OpenFOAM",
         "caption_lbm": "Lattice Boltzmann - C++/Palabos",
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
+        # Chatbot
+        "chat_title": "🤖 AI Assistant",
+        "chat_welcome": "Hello! I'm your assistant to help you understand Ag/AgCl ink dispensing simulations. Ask me about FEM, VOF, LBM, SPH, or fluid physics!",
+        "chat_placeholder": "Ask your question...",
+        "chat_error": "API connection error. Check your API key.",
+        "chat_close": "Close",
+        "chat_clear": "Clear",
+        "chat_api_missing": "⚠️ API key missing. Configure ANTHROPIC_API_KEY.",
+        "chat_toggle": "AI Assistant",
     }
 }
 
@@ -173,6 +192,33 @@ h1, h2, h3 {
 }
 .scroll-to-bottom {
     bottom: calc(50% - 30px);
+}
+
+/* Bouton chatbot flottant */
+.chat-toggle-btn {
+    bottom: calc(50% - 90px);
+    background-color: #28a745;
+}
+.chat-toggle-btn:hover {
+    background-color: #218838;
+}
+
+/* Style du popover chatbot */
+[data-testid="stPopover"] {
+    max-width: 500px !important;
+}
+[data-testid="stPopover"] > div {
+    padding: 0 !important;
+}
+
+/* Messages du chat */
+.chat-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 /* Espacement des radio buttons dans la sidebar */
@@ -420,6 +466,123 @@ nav_annex = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
+
+# --- Chatbot dans la Sidebar (avec toggle ON/OFF) ---
+
+def is_chatbot_enabled():
+    """Vérifie si le chatbot doit être affiché."""
+    # 1. Vérifier si la clé API existe
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", None)
+        except Exception:
+            pass
+    if not api_key:
+        return False  # Pas de clé = pas de chatbot
+
+    # 2. Vérifier si explicitement désactivé dans secrets
+    try:
+        enabled = st.secrets.get("CHATBOT_ENABLED", True)
+        if isinstance(enabled, str):
+            enabled = enabled.lower() in ("true", "1", "yes", "oui")
+        return enabled
+    except Exception:
+        return True  # Par défaut activé si clé présente
+
+# System prompt contextuel pour l'assistant (défini hors du if)
+SYSTEM_PROMPT = """Tu es un assistant expert en simulation numérique de la dispense d'encre Ag/AgCl dans des micro-puits.
+
+Tu connais parfaitement les 4 méthodes numériques comparées dans cette application :
+1. **FEM / Phase-Field** (FEniCS/Python) : Méthode des éléments finis avec approche champ de phase pour le suivi d'interface diffuse
+2. **VOF** (OpenFOAM/C++) : Volume of Fluid avec suivi d'interface nette (α ∈ [0,1])
+3. **LBM** (Palabos/C++) : Lattice Boltzmann avec modèle Shan-Chen pour le multiphasique
+4. **SPH** (PySPH/Python) : Smoothed Particle Hydrodynamics, méthode particulaire lagrangienne
+
+Tu maîtrises :
+- La rhéologie des fluides non-newtoniens (modèle Carreau pour les encres rhéofluidifiantes)
+- Les phénomènes capillaires (tension de surface σ, angles de contact θ)
+- Les nombres adimensionnels (Reynolds Re, Capillaire Ca, Weber We, Ohnesorge Oh)
+- Les équations de Navier-Stokes incompressibles
+- Les conditions aux limites (mouillabilité, non-glissement)
+
+Réponds de manière concise, pédagogique et scientifiquement rigoureuse.
+Utilise des équations LaTeX quand c'est pertinent (format $equation$ pour inline).
+Si tu ne connais pas la réponse, dis-le honnêtement.
+Réponds dans la langue de l'utilisateur (français ou anglais).
+"""
+
+def get_anthropic_client():
+    """Retourne le client Anthropic si la clé API est disponible."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", None)
+        except Exception:
+            pass
+    if api_key:
+        return Anthropic(api_key=api_key)
+    return None
+
+def stream_claude_response(user_message: str):
+    """Génère la réponse de Claude en streaming (mot par mot)."""
+    client = get_anthropic_client()
+    if not client:
+        yield t("chat_api_missing")
+        return
+
+    st.session_state.chat_messages.append({"role": "user", "content": user_message})
+
+    try:
+        with client.messages.stream(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1024,
+            system=SYSTEM_PROMPT,
+            messages=st.session_state.chat_messages
+        ) as stream:
+            full_response = ""
+            for text in stream.text_stream:
+                full_response += text
+                yield text
+
+            # Sauvegarder la réponse complète dans l'historique
+            st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
+
+    except Exception as e:
+        error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
+        yield error_msg
+
+# Initialiser l'historique du chat
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = []
+
+# Interface chatbot dans la sidebar (seulement si activé)
+if is_chatbot_enabled():
+    st.sidebar.markdown("---")
+    with st.sidebar.popover(f"💬 {t('chat_title')}", use_container_width=True):
+        # Bouton effacer
+        if st.button(t("chat_clear"), use_container_width=True):
+            st.session_state.chat_messages = []
+            st.rerun()
+
+        st.markdown("---")
+
+        # Message de bienvenue
+        if not st.session_state.chat_messages:
+            st.info(t("chat_welcome"))
+
+        # Historique des messages
+        for msg in st.session_state.chat_messages:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+
+        # Zone de saisie
+        if prompt := st.chat_input(t("chat_placeholder")):
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            with st.chat_message("assistant"):
+                # Streaming : affichage progressif mot par mot !
+                st.write_stream(stream_claude_response(prompt))
 
 # --- Déterminer la page active ---
 selected_page = None
