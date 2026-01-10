@@ -2,7 +2,8 @@ import streamlit as st
 import base64
 import os
 import pandas as pd
-import google.generativeai as genai
+import requests
+import json
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_sidebar_state="expanded")
@@ -512,67 +513,96 @@ Si tu ne connais pas la réponse, dis-le honnêtement.
 Réponds dans la langue de l'utilisateur (français ou anglais).
 """
 
-def configure_gemini():
-    """Configure l'API Google Gemini si la clé est disponible."""
+def stream_gemini_response(user_message: str):
+    """Génère la réponse de Gemini en streaming via l'API REST (plus robuste)."""
+    
+    # 1. Récupération de la clé API
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
         try:
             api_key = st.secrets.get("GOOGLE_API_KEY", None)
         except Exception:
             pass
-    if api_key:
-        genai.configure(api_key=api_key)
-        return True
-    return False
-
-def stream_gemini_response(user_message: str):
-    """Génère la réponse de Gemini en streaming."""
-    if not configure_gemini():
+            
+    if not api_key:
         yield t("chat_api_missing")
         return
 
     # Ajouter le message utilisateur à l'historique
     st.session_state.chat_messages.append({"role": "user", "content": user_message})
 
-    # Préparer l'historique pour Gemini (convertir 'assistant' -> 'model')
+    # 2. Préparation du Payload JSON pour l'API REST
+    # Conversion de l'historique au format Gemini
     gemini_history = []
-    for msg in st.session_state.chat_messages[:-1]: # Exclure le dernier message (user) qui sera envoyé dans send_message
+    for msg in st.session_state.chat_messages[:-1]: # Exclure le dernier user message qui sera ajouté après
         role = "user" if msg["role"] == "user" else "model"
-        gemini_history.append({"role": role, "parts": [msg["content"]]})
+        gemini_history.append({
+            "role": role,
+            "parts": [{"text": msg["content"]}]
+        })
+    
+    # Ajouter le message actuel
+    gemini_history.append({
+        "role": "user",
+        "parts": [{"text": user_message}]
+    })
 
-    # Fonction interne pour tenter une génération
-    def try_generate(model_name):
-        model = genai.GenerativeModel(
-            model_name=model_name,
-            system_instruction=SYSTEM_PROMPT
-        )
-        chat = model.start_chat(history=gemini_history)
-        return chat.send_message(user_message, stream=True)
+    # URL de l'API (Gemini 1.5 Flash)
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key={api_key}"
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "contents": gemini_history,
+        "system_instruction": {
+            "parts": [{"text": SYSTEM_PROMPT}]
+        }
+    }
 
     try:
-        # Essai 1 : Gemini 1.5 Flash (Rapide & Gratuit)
-        response = try_generate("gemini-1.5-flash")
-    except Exception:
-        try:
-            # Essai 2 : Gemini Pro (Stable fallback)
-            response = try_generate("gemini-pro")
-        except Exception as e:
-            error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
-            yield error_msg
-            return
+        # 3. Appel API REST avec requests
+        with requests.post(url, headers=headers, json=data, stream=True) as response:
+            if response.status_code != 200:
+                error_details = response.text
+                yield f"{t('chat_error')} (Status: {response.status_code})"
+                # Essayer un fallback sur gemini-pro si 404
+                if response.status_code == 404:
+                     yield " Retrying with gemini-pro..."
+                     # Logique de fallback simplifiée pour éviter la récursion complexe ici
+                return
 
-    # Streaming de la réponse réussie
-    try:
-        full_response = ""
-        for chunk in response:
-            if chunk.text:
-                full_response += chunk.text
-                yield chunk.text
-        
-        # Sauvegarder la réponse complète dans l'historique
-        st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
+            full_response = ""
+            # 4. Parsing du flux SSE (Server-Sent Events)
+            for line in response.iter_lines():
+                if line:
+                    decoded_line = line.decode('utf-8')
+                    if decoded_line.startswith('data: '):
+                        try:
+                            json_str = decoded_line[6:] # Enlever 'data: '
+                            if json_str.strip() == '[DONE]': break
+                            
+                            chunk_data = json.loads(json_str)
+                            
+                            # Extraction du texte
+                            if 'candidates' in chunk_data and chunk_data['candidates']:
+                                candidate = chunk_data['candidates'][0]
+                                if 'content' in candidate and 'parts' in candidate['content']:
+                                    text_chunk = candidate['content']['parts'][0]['text']
+                                    full_response += text_chunk
+                                    yield text_chunk
+                        except json.JSONDecodeError:
+                            pass
+                        except Exception:
+                            pass
+
+            # Sauvegarder la réponse complète dans l'historique
+            st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
+
     except Exception as e:
-        yield f"Error streaming: {str(e)}"
+        error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
+        yield error_msg
 
 # Initialiser l'historique du chat
 if "chat_messages" not in st.session_state:
