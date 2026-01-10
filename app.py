@@ -2,8 +2,7 @@ import streamlit as st
 import base64
 import os
 import pandas as pd
-import requests
-import json
+from anthropic import Anthropic
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_sidebar_state="expanded")
@@ -62,7 +61,7 @@ Jan 2025 - *EQU*
         "chat_error": "Erreur de connexion à l'API. Vérifiez votre clé API.",
         "chat_close": "Fermer",
         "chat_clear": "Effacer",
-        "chat_api_missing": "⚠️ Clé API manquante. Configurez GOOGLE_API_KEY.",
+        "chat_api_missing": "⚠️ Clé API manquante. Configurez ANTHROPIC_API_KEY.",
         "chat_toggle": "Assistant IA",
     },
     "en": {
@@ -117,7 +116,7 @@ Jan 2025 - *EQU*
         "chat_error": "API connection error. Check your API key.",
         "chat_close": "Close",
         "chat_clear": "Clear",
-        "chat_api_missing": "⚠️ API key missing. Configure GOOGLE_API_KEY.",
+        "chat_api_missing": "⚠️ API key missing. Configure ANTHROPIC_API_KEY.",
         "chat_toggle": "AI Assistant",
     }
 }
@@ -473,10 +472,10 @@ st.sidebar.markdown(t("version_info"))
 def is_chatbot_enabled():
     """Vérifie si le chatbot doit être affiché."""
     # 1. Vérifier si la clé API existe
-    api_key = os.environ.get("GOOGLE_API_KEY")
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         try:
-            api_key = st.secrets.get("GOOGLE_API_KEY", None)
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", None)
         except Exception:
             pass
     if not api_key:
@@ -513,91 +512,45 @@ Si tu ne connais pas la réponse, dis-le honnêtement.
 Réponds dans la langue de l'utilisateur (français ou anglais).
 """
 
-def stream_gemini_response(user_message: str):
-    """Génère la réponse de Gemini en streaming via l'API REST (Version v1 Robuste)."""
-    
-    # 1. Récupération et nettoyage de la clé API
-    raw_key = os.environ.get("GOOGLE_API_KEY")
-    if not raw_key:
+def get_anthropic_client():
+    """Retourne le client Anthropic si la clé API est disponible."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
         try:
-            raw_key = st.secrets.get("GOOGLE_API_KEY", None)
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", None)
         except Exception:
             pass
-            
-    if not raw_key:
+    if api_key:
+        return Anthropic(api_key=api_key)
+    return None
+
+def stream_claude_response(user_message: str):
+    """Génère la réponse de Claude en streaming (mot par mot)."""
+    client = get_anthropic_client()
+    if not client:
         yield t("chat_api_missing")
         return
-        
-    # Nettoyage crucial (enlever " " ou ' ' qui cassent l'URL)
-    api_key = str(raw_key).strip().strip('"').strip("'")
 
-    # Ajouter le message utilisateur à l'historique
-    if "chat_messages" not in st.session_state:
-        st.session_state.chat_messages = []
     st.session_state.chat_messages.append({"role": "user", "content": user_message})
 
-    # 2. Préparation du Payload (Format compatible v1)
-    # On met le system prompt en premier message pour maximiser la compatibilité
-    contents = [
-        {
-            "role": "user",
-            "parts": [{"text": f"INSTRUCTIONS SYSTEME: {SYSTEM_PROMPT}"}]
-        },
-        {
-            "role": "model",
-            "parts": [{"text": "Compris. Je vais répondre en tant qu'assistant expert en simulation de dispense d'encre."}]
-        }
-    ]
-    
-    # Conversion du reste de l'historique
-    for msg in st.session_state.chat_messages:
-        role = "user" if msg["role"] == "user" else "model"
-        contents.append({
-            "role": role,
-            "parts": [{"text": msg["content"]}]
-        })
-
-    # URL stable v1
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:streamGenerateContent?key={api_key}"
-    
     try:
-        with requests.post(url, headers={"Content-Type": "application/json"}, json={"contents": contents}, stream=True) as response:
-            if response.status_code != 200:
-                # Debug : afficher les 4 premiers caractères de la clé pour vérification
-                key_hint = api_key[:4] + "..." if len(api_key) > 4 else "???"
-                yield f"{t('chat_error')} (Status: {response.status_code}, Key: {key_hint})"
-                return
-
+        with client.messages.stream(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1024,
+            system=SYSTEM_PROMPT,
+            messages=st.session_state.chat_messages
+        ) as stream:
             full_response = ""
-            for line in response.iter_lines():
-                if line:
-                    decoded_line = line.decode('utf-8').strip()
-                    # Le format streaming v1 peut différer légèrement du v1beta
-                    if decoded_line.startswith('data: '):
-                        decoded_line = decoded_line[6:]
-                    
-                    if not decoded_line or decoded_line == '[DONE]': continue
-                    
-                    try:
-                        # Si la ligne commence par [ ou {, c'est du JSON
-                        if decoded_line.startswith('[') or decoded_line.startswith('{'):
-                            chunk_data = json.loads(decoded_line)
-                            # Parfois l'API renvoie une liste de chunks
-                            if isinstance(chunk_data, list): chunk_data = chunk_data[0]
-                            
-                            if 'candidates' in chunk_data and chunk_data['candidates']:
-                                part = chunk_data['candidates'][0]['content']['parts'][0]
-                                if 'text' in part:
-                                    text_chunk = part['text']
-                                    full_response += text_chunk
-                                    yield text_chunk
-                    except:
-                        pass
+            for text in stream.text_stream:
+                full_response += text
+                yield text
 
+            # Sauvegarder la réponse complète dans l'historique
             st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
 
     except Exception as e:
-        yield f"{t('chat_error')} ({str(e)[:50]})"
+        error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
+        yield error_msg
 
 # Initialiser l'historique du chat
 if "chat_messages" not in st.session_state:
@@ -629,7 +582,7 @@ if is_chatbot_enabled():
                 st.markdown(prompt)
             with st.chat_message("assistant"):
                 # Streaming : affichage progressif mot par mot !
-                st.write_stream(stream_gemini_response(prompt))
+                st.write_stream(stream_claude_response(prompt))
 
 # --- Déterminer la page active ---
 selected_page = None
