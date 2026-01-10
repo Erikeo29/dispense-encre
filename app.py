@@ -534,37 +534,45 @@ def stream_gemini_response(user_message: str):
     # Ajouter le message utilisateur à l'historique
     st.session_state.chat_messages.append({"role": "user", "content": user_message})
 
-    try:
-        # Préparer l'historique pour Gemini (convertir 'assistant' -> 'model')
-        gemini_history = []
-        for msg in st.session_state.chat_messages[:-1]: # Exclure le dernier message (user) qui sera envoyé dans send_message
-            role = "user" if msg["role"] == "user" else "model"
-            gemini_history.append({"role": role, "parts": [msg["content"]]})
+    # Préparer l'historique pour Gemini (convertir 'assistant' -> 'model')
+    gemini_history = []
+    for msg in st.session_state.chat_messages[:-1]: # Exclure le dernier message (user) qui sera envoyé dans send_message
+        role = "user" if msg["role"] == "user" else "model"
+        gemini_history.append({"role": role, "parts": [msg["content"]]})
 
-        # Initialiser le modèle avec le system prompt
+    # Fonction interne pour tenter une génération
+    def try_generate(model_name):
         model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name=model_name,
             system_instruction=SYSTEM_PROMPT
         )
-        
-        # Démarrer le chat avec l'historique
         chat = model.start_chat(history=gemini_history)
-        
-        # Envoyer le message et streamer la réponse
-        response = chat.send_message(user_message, stream=True)
-        
+        return chat.send_message(user_message, stream=True)
+
+    try:
+        # Essai 1 : Gemini 1.5 Flash (Rapide & Gratuit)
+        response = try_generate("gemini-1.5-flash")
+    except Exception:
+        try:
+            # Essai 2 : Gemini Pro (Stable fallback)
+            response = try_generate("gemini-pro")
+        except Exception as e:
+            error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
+            yield error_msg
+            return
+
+    # Streaming de la réponse réussie
+    try:
         full_response = ""
         for chunk in response:
             if chunk.text:
                 full_response += chunk.text
                 yield chunk.text
-
+        
         # Sauvegarder la réponse complète dans l'historique
         st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
-
     except Exception as e:
-        error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
-        yield error_msg
+        yield f"Error streaming: {str(e)}"
 
 # Initialiser l'historique du chat
 if "chat_messages" not in st.session_state:
