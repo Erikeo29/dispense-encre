@@ -10,7 +10,7 @@ st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_side
 # --- Dictionnaire de Traduction UI ---
 TRANSLATIONS = {
     "fr": {
-        "title": "Simulation de Dispense d'Encre Ag/AgCl",
+        "title": "Simulation de Dispense d'Encre Rhéofluidifiante",
         "sidebar_title": "Modélisation de la dispense d'encre",
         "nav_header": "Navigation",
         "gen_header": "Général",
@@ -56,7 +56,7 @@ Jan 2025 - *EQU*
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
         # Chatbot
         "chat_title": "🤖 Assistant IA",
-        "chat_welcome": "Bonjour ! Je suis votre assistant pour comprendre les simulations de dispense d'encre Ag/AgCl. Posez-moi vos questions sur FEM, VOF, LBM, SPH, ou la physique des fluides !",
+        "chat_welcome": "Bonjour ! Je suis votre assistant pour comprendre les simulations de dispense d'encre rhéofluidifiante. Posez-moi vos questions sur FEM, VOF, LBM, SPH, ou la physique des fluides !",
         "chat_placeholder": "Posez votre question...",
         "chat_error": "Erreur de connexion à l'API. Vérifiez votre clé API.",
         "chat_close": "Fermer",
@@ -65,7 +65,7 @@ Jan 2025 - *EQU*
         "chat_toggle": "Assistant IA",
     },
     "en": {
-        "title": "Ag/AgCl Ink Dispensing Simulation",
+        "title": "Shear-Thinning Ink Dispensing Simulation",
         "sidebar_title": "Ink Dispensing Modeling",
         "nav_header": "Navigation",
         "gen_header": "General",
@@ -111,7 +111,7 @@ Jan 2025 - *EQU*
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
         # Chatbot
         "chat_title": "🤖 AI Assistant",
-        "chat_welcome": "Hello! I'm your assistant to help you understand Ag/AgCl ink dispensing simulations. Ask me about FEM, VOF, LBM, SPH, or fluid physics!",
+        "chat_welcome": "Hello! I'm your assistant to help you understand shear-thinning ink dispensing simulations. Ask me about FEM, VOF, LBM, SPH, or fluid physics!",
         "chat_placeholder": "Ask your question...",
         "chat_error": "API connection error. Check your API key.",
         "chat_close": "Close",
@@ -250,6 +250,22 @@ h1, h2, h3 {
 [data-testid="stSidebar"] [data-testid="stMarkdown"] ul {
     margin-top: 0;
     margin-bottom: 0.3rem;
+}
+
+/* Style spécifique pour le bouton du popover Chatbot dans la sidebar */
+[data-testid="stSidebar"] [data-testid="stPopover"] > button {
+    background-color: #004b87;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+[data-testid="stSidebar"] [data-testid="stPopover"] > button:hover {
+    background-color: #003366;
+    color: white;
+}
+[data-testid="stSidebar"] [data-testid="stPopover"] > button:active {
+    background-color: #002244;
+    color: white;
 }
 
 </style>
@@ -464,9 +480,6 @@ nav_annex = st.sidebar.radio(
     label_visibility="collapsed"
 )
 
-st.sidebar.markdown("---")
-st.sidebar.markdown(t("version_info"))
-
 # --- Chatbot dans la Sidebar (avec toggle ON/OFF) ---
 
 def is_chatbot_enabled():
@@ -491,7 +504,7 @@ def is_chatbot_enabled():
         return True  # Par défaut activé si clé présente
 
 # System prompt contextuel pour l'assistant (défini hors du if)
-SYSTEM_PROMPT = """Tu es un assistant expert en simulation numérique de la dispense d'encre Ag/AgCl dans des micro-puits.
+SYSTEM_PROMPT = """Tu es un assistant expert en simulation numérique de la dispense d'encre rhéofluidifiante dans des micro-puits.
 
 Tu connais parfaitement les 4 méthodes numériques comparées dans cette application :
 1. **FEM / Phase-Field** (FEniCS/Python) : Méthode des éléments finis avec approche champ de phase pour le suivi d'interface diffuse
@@ -559,7 +572,7 @@ if "chat_messages" not in st.session_state:
 # Interface chatbot dans la sidebar (seulement si activé)
 if is_chatbot_enabled():
     st.sidebar.markdown("---")
-    with st.sidebar.popover(f"💬 {t('chat_title')}", use_container_width=True):
+    with st.sidebar.popover(f"{t('chat_title')}", use_container_width=True):
         # Bouton effacer
         if st.button(t("chat_clear"), use_container_width=True):
             st.session_state.chat_messages = []
@@ -583,6 +596,9 @@ if is_chatbot_enabled():
             with st.chat_message("assistant"):
                 # Streaming : affichage progressif mot par mot !
                 st.write_stream(stream_claude_response(prompt))
+
+st.sidebar.markdown("---")
+st.sidebar.markdown(t("version_info"))
 
 # --- Déterminer la page active ---
 selected_page = None
