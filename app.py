@@ -14,13 +14,13 @@ TRANSLATIONS = {
         "sidebar_title": "Modélisation de la dispense d'encre",
         "nav_header": "Navigation",
         "gen_header": "Général",
-        "models_header": "Modèles",
+        "models_header": "Résultats de modélisation",
         "annex_header": "Annexes",
         "gen_pages": ["Accueil", "Introduction", "Comparaison des modèles"],
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
         "annex_pages": ["Conclusion", "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"],
-        "tabs_fem": ["Physique", "Code", "Exemples GIF", "Exemples PNG"],
-        "tabs_other": ["Physique", "Code", "Exemples"],
+        "tabs_fem": ["Physique", "Code", "Résultats de modélisation (GIF)", "Résultats de modélisation (PNG)"],
+        "tabs_other": ["Physique", "Code", "Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 4 modèles de Simulation",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
@@ -30,6 +30,11 @@ TRANSLATIONS = {
         "image_unavailable": "Image non disponible",
         "gif_viewer": "Visualisation dynamique (GIF)",
         "png_viewer": "Visualisation état final (PNG)",
+        # Titres Modèles
+        "title_model_1": "Modèle 1 : FEM / Phase-Field (Python)",
+        "title_model_2": "Modèle 2 : VOF (OpenFOAM)",
+        "title_model_3": "Modèle 3 : LBM (Palabos C++)",
+        "title_model_4": "Modèle 4 : SPH (PySPH Python)",
         # Labels GIF
         "lbl_well": "Ø Puit (µm)",
         "lbl_nozzle": "Ø Buse (µm)",
@@ -55,7 +60,7 @@ Jan 2025 - *EQU*
         "caption_lbm": "Lattice Boltzmann - C++/Palabos",
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
         # Chatbot
-        "chat_title": "🤖 Assistant IA",
+        "chat_title": "Assistant IA",
         "chat_welcome": "Bonjour ! Je suis votre assistant pour comprendre les simulations de dispense d'encre rhéofluidifiante. Posez-moi vos questions sur FEM, VOF, LBM, SPH, ou la physique des fluides !",
         "chat_placeholder": "Posez votre question...",
         "chat_error": "Erreur de connexion à l'API. Vérifiez votre clé API.",
@@ -69,13 +74,13 @@ Jan 2025 - *EQU*
         "sidebar_title": "Ink Dispensing Modeling",
         "nav_header": "Navigation",
         "gen_header": "General",
-        "models_header": "Models",
+        "models_header": "Modeling Results",
         "annex_header": "Appendices",
         "gen_pages": ["Home", "Introduction", "Model Comparison"],
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
         "annex_pages": ["Conclusion", "Key Equations", "Glossary", "A Bit of History", "Bibliography"],
-        "tabs_fem": ["Physics", "Code", "GIF Examples", "PNG Examples"],
-        "tabs_other": ["Physics", "Code", "Examples"],
+        "tabs_fem": ["Physics", "Code", "Modeling Results (GIF)", "Modeling Results (PNG)"],
+        "tabs_other": ["Physics", "Code", "Modeling Results"],
         "overview_title": "Overview of 4 Simulation Models Results",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
@@ -85,6 +90,11 @@ Jan 2025 - *EQU*
         "image_unavailable": "Image not available",
         "gif_viewer": "Dynamic Visualization (GIF)",
         "png_viewer": "Final State Visualization (PNG)",
+        # Model Titles
+        "title_model_1": "Model 1 : FEM / Phase-Field (Python)",
+        "title_model_2": "Model 2 : VOF (OpenFOAM)",
+        "title_model_3": "Model 3 : LBM (Palabos C++)",
+        "title_model_4": "Model 4 : SPH (PySPH Python)",
         # Labels GIF
         "lbl_well": "Ø Well (µm)",
         "lbl_nozzle": "Ø Nozzle (µm)",
@@ -110,7 +120,7 @@ Jan 2025 - *EQU*
         "caption_lbm": "Lattice Boltzmann - C++/Palabos",
         "caption_sph": "Smoothed Particle Hydrodynamics - Python/PySPH",
         # Chatbot
-        "chat_title": "🤖 AI Assistant",
+        "chat_title": "AI Assistant",
         "chat_welcome": "Hello! I'm your assistant to help you understand shear-thinning ink dispensing simulations. Ask me about FEM, VOF, LBM, SPH, or fluid physics!",
         "chat_placeholder": "Ask your question...",
         "chat_error": "API connection error. Check your API key.",
@@ -667,7 +677,7 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
 
 # ===== PAGE FEM =====
 elif selected_page == model_pages[0]:  # FEM
-    st.title(f"Model 1 : FEM / Phase-Field (Python)")
+    st.title(t("title_model_1"))
     tabs = st.tabs(t("tabs_fem"))
 
     with tabs[0]:  # Physique
@@ -766,7 +776,7 @@ elif selected_page == model_pages[0]:  # FEM
 
 # ===== PAGE VOF =====
 elif selected_page == model_pages[1]:  # VOF
-    st.title("Model 2 : VOF (OpenFOAM)")
+    st.title(t("title_model_2"))
     tabs = st.tabs(t("tabs_other"))
 
     with tabs[0]:
@@ -794,7 +804,7 @@ rho   3000;  // Masse volumique [kg/m³]""", language='cpp')
 
 # ===== PAGE LBM =====
 elif selected_page == model_pages[2]:  # LBM
-    st.title("Model 3 : LBM (Palabos C++)")
+    st.title(t("title_model_3"))
     tabs = st.tabs(t("tabs_other"))
 
     with tabs[0]:
@@ -811,7 +821,7 @@ elif selected_page == model_pages[2]:  # LBM
 
 # ===== PAGE SPH =====
 elif selected_page == model_pages[3]:  # SPH
-    st.title("Model 4 : SPH (PySPH Python)")
+    st.title(t("title_model_4"))
     tabs = st.tabs(t("tabs_other"))
 
     with tabs[0]:
