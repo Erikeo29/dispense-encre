@@ -356,6 +356,45 @@ def load_png_mapping():
         return mapping
     except Exception: return {}
 
+@st.cache_data(ttl=600)
+def load_lbm_gif_mapping():
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'lbm_gif_mapping.csv'), sep=';', encoding='utf-8')
+        mapping = {}
+        for _, row in df.iterrows():
+            # Clé : (ratio, ca_sub, ca_wall_l, ca_wall_r, ca_plat_l, visc, shift)
+            key = (
+                float(str(row['ratio surface goutte/puit']).replace(',', '.')),
+                int(row['CA substrat (deg)']),
+                int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)']),
+                int(row['CA plateau gauche (deg)']),
+                float(str(row['Viscosite eta0 (Pa.s)']).replace(',', '.')),
+                int(row['shift X (um)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "lbm/gif", row['nom fichier gif'])
+        return mapping, df
+    except Exception: return {}, pd.DataFrame()
+
+@st.cache_data(ttl=600)
+def load_lbm_png_mapping():
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'lbm_png_mapping.csv'), sep=';', encoding='utf-8')
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                float(str(row['ratio surface goutte/puit']).replace(',', '.')),
+                int(row['CA substrat (deg)']),
+                int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)']),
+                int(row['CA plateau gauche (deg)']),
+                float(str(row['Viscosite eta0 (Pa.s)']).replace(',', '.')),
+                int(row['shift X (um)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "lbm/png", row['nom fichier png'])
+        return mapping, df
+    except Exception: return {}, pd.DataFrame()
+
 def load_file_content(relative_path):
     """Charge un fichier depuis docs/<lang>/relative_path"""
     lang = get_language()
@@ -847,7 +886,7 @@ rho   3000;  // Masse volumique [kg/m³]""", language='cpp')
 # ===== PAGE LBM =====
 elif selected_page == model_pages[2]:  # LBM
     st.title(t("title_model_3"))
-    tabs = st.tabs(t("tabs_other"))
+    tabs = st.tabs(t("tabs_fem"))
 
     with tabs[0]:
         st.markdown(load_file_content("physics/physics_lbm.md"))
@@ -856,10 +895,108 @@ elif selected_page == model_pages[2]:  # LBM
         st.subheader("Code Source Palabos")
         st.code(load_file_content(os.path.join(DOC_PATH, "fr/code/code_lbm.cpp")), language='cpp')
 
-    with tabs[2]:
-        st.subheader("Exemple de Simulation LBM")
-        if os.path.exists(LBM_GIF_EX):
-            st.image(LBM_GIF_EX, caption="Simulation LBM - Cas 29", use_container_width=True)
+    with tabs[2]:  # GIF
+        c_title, c_pop = st.columns([0.7, 0.3])
+        with c_title:
+            st.subheader(t("gif_viewer"))
+        
+        mapping_g, df_g = load_lbm_gif_mapping()
+        
+        with c_pop:
+            with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                if not df_g.empty:
+                    st.dataframe(df_g, use_container_width=True, hide_index=True)
+                else:
+                    st.error("Data not found")
+
+        if not df_g.empty:
+            with st.container(border=True):
+                st.markdown(f"**{t('sim_1')}**")
+                # Sélecteurs LBM
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: lbm_ratio = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r")
+                with c2: lbm_visc = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v")
+                with c3: lbm_shift = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s")
+                with c4: lbm_ca_sub = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c")
+                
+                # Autres CA (moins critiques, on peut les mettre en expander ou 2eme ligne)
+                with st.expander("Paramètres avancés (Angles de contact)"):
+                    cc1, cc2, cc3 = st.columns(3)
+                    with cc1: lbm_ca_wl = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_wl")
+                    with cc2: lbm_ca_wr = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_wr")
+                    with cc3: lbm_ca_pl = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_pl")
+
+                p_lbm = (lbm_ratio, lbm_ca_sub, lbm_ca_wl, lbm_ca_wr, lbm_ca_pl, lbm_visc, lbm_shift)
+
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_lbm_g"):
+                        st.session_state.run_lbm_g = True
+                        st.session_state.p_lbm_g = p_lbm
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_g"):
+                        st.session_state.run_lbm_g = False
+                        st.rerun()
+
+            if st.session_state.get('run_lbm_g', False):
+                with st.container(border=True):
+                    if st.session_state.p_lbm_g in mapping_g:
+                        st.markdown(load_media_as_base64(mapping_g[st.session_state.p_lbm_g]), unsafe_allow_html=True)
+                    else:
+                        st.warning(t("combo_unavailable"))
+        else:
+            st.warning("Mapping data missing for LBM GIF.")
+
+    with tabs[3]:  # PNG
+        c_title, c_pop = st.columns([0.7, 0.3])
+        with c_title:
+            st.subheader(t("png_viewer"))
+        
+        mapping_p, df_p = load_lbm_png_mapping()
+        
+        with c_pop:
+            with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                if not df_p.empty:
+                    st.dataframe(df_p, use_container_width=True, hide_index=True)
+                else:
+                    st.error("Data not found")
+
+        if not df_p.empty:
+            with st.container(border=True):
+                st.markdown(f"**{t('sim_1')}**")
+                # Sélecteurs LBM PNG
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: lbm_ratio_p = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r")
+                with c2: lbm_visc_p = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v")
+                with c3: lbm_shift_p = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s")
+                with c4: lbm_ca_sub_p = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c")
+                
+                with st.expander("Paramètres avancés (Angles de contact)"):
+                    cc1, cc2, cc3 = st.columns(3)
+                    with cc1: lbm_ca_wl_p = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_wl")
+                    with cc2: lbm_ca_wr_p = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_wr")
+                    with cc3: lbm_ca_pl_p = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_pl")
+
+                p_lbm_p = (lbm_ratio_p, lbm_ca_sub_p, lbm_ca_wl_p, lbm_ca_wr_p, lbm_ca_pl_p, lbm_visc_p, lbm_shift_p)
+
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_lbm_p"):
+                        st.session_state.run_lbm_p = True
+                        st.session_state.p_lbm_p = p_lbm_p
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_p"):
+                        st.session_state.run_lbm_p = False
+                        st.rerun()
+
+            if st.session_state.get('run_lbm_p', False):
+                with st.container(border=True):
+                    if st.session_state.p_lbm_p in mapping_p:
+                        st.markdown(load_media_as_base64(mapping_p[st.session_state.p_lbm_p]), unsafe_allow_html=True)
+                    else:
+                        st.warning(t("combo_unavailable"))
+        else:
+            st.warning("Mapping data missing for LBM PNG.")
 
 # ===== PAGE SPH =====
 elif selected_page == model_pages[3]:  # SPH
