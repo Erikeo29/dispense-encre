@@ -1,5 +1,4 @@
-# Modélisation de la dispense d'encre dans un puit
-## Approche par simulation diphasique en domaine microfluidique
+Approche par simulation diphasique en domaine microfluidique
 
 ---
 

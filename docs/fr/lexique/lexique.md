@@ -1,5 +1,3 @@
-# Lexique
-
 ## Acronymes des Méthodes Numériques
 
 | Acronyme | Signification | Description |

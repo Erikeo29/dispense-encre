@@ -1,5 +1,3 @@
-# Méthode Smoothed Particle Hydrodynamics (SPH)
-
 ## Principe Lagrangien Sans Maillage
 
 La méthode **SPH (Smoothed Particle Hydrodynamics)** est une approche **lagrangienne** et **sans maillage (meshless)** où le fluide est représenté par un ensemble de particules mobiles transportant les propriétés physiques (masse, vitesse, pression).

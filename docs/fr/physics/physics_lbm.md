@@ -1,5 +1,3 @@
-# Méthode Lattice Boltzmann (LBM)
-
 ## Principe Mésoscopique
 
 La méthode **LBM (Lattice Boltzmann Method)** est une approche mésoscopique qui ne résout pas directement les équations de Navier-Stokes, mais l'**équation de Boltzmann discrétisée** sur un réseau régulier (lattice).

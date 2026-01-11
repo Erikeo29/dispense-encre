@@ -33,10 +33,10 @@ TRANSLATIONS = {
         "png_viewer": "Visualisation état final (PNG)",
         "lbl_avail_sims": "📋 Simulations disponibles",
         # Titres Modèles
-        "title_model_1": "Modèle 1 : FEM / Phase-Field (Python)",
-        "title_model_2": "Modèle 2 : VOF (OpenFOAM)",
-        "title_model_3": "Modèle 3 : LBM (Palabos C++)",
-        "title_model_4": "Modèle 4 : SPH (PySPH Python)",
+        "title_model_1": "Modèle 1 : Méthode des Éléments Finis / Phase-Field (Python)",
+        "title_model_2": "Modèle 2 : Méthode Volume of Fluid (OpenFOAM)",
+        "title_model_3": "Modèle 3 : Méthode Lattice Boltzmann (Palabos C++)",
+        "title_model_4": "Modèle 4 : Méthode Smoothed Particle Hydrodynamics (PySPH)",
         # Labels GIF
         "lbl_well": "Ø Puit (µm)",
         "lbl_nozzle": "Ø Buse (µm)",
@@ -99,10 +99,10 @@ TRANSLATIONS = {
         "png_viewer": "Final State Visualization (PNG)",
         "lbl_avail_sims": "📋 Available Simulations",
         # Model Titles
-        "title_model_1": "Model 1 : FEM / Phase-Field (Python)",
-        "title_model_2": "Model 2 : VOF (OpenFOAM)",
-        "title_model_3": "Model 3 : LBM (Palabos C++)",
-        "title_model_4": "Model 4 : SPH (PySPH Python)",
+        "title_model_1": "Model 1 : Finite Element Method / Phase-Field (Python)",
+        "title_model_2": "Model 2 : Volume of Fluid Method (OpenFOAM)",
+        "title_model_3": "Model 3 : Lattice Boltzmann Method (Palabos C++)",
+        "title_model_4": "Model 4 : Smoothed Particle Hydrodynamics (PySPH)",
         # Labels GIF
         "lbl_well": "Ø Well (µm)",
         "lbl_nozzle": "Ø Nozzle (µm)",

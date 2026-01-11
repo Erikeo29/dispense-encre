@@ -1,5 +1,3 @@
-# Glossary
-
 ## Numerical Method Acronyms
 
 | Acronym | Full Name | Description |
