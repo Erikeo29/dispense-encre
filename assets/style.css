@@ -4,17 +4,55 @@
    ========================================================================== */
 
 /* --- Masquer éléments Streamlit natifs --- */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-.stDeployButton {display: none;}
+#MainMenu {visibility: hidden !important;}
+footer {visibility: hidden !important;}
+header {visibility: hidden !important;}
+.stDeployButton {display: none !important;}
 
-/* --- Masquer badges GitHub/Fork (Streamlit Cloud) --- */
+/* --- Masquer badges GitHub/Fork (Streamlit Cloud) - Version renforcée --- */
+/* Anciens sélecteurs */
 .viewerBadge_container__1QSob {display: none !important;}
 .viewerBadge_link__qRIco {display: none !important;}
 [data-testid="stToolbar"] {display: none !important;}
 [data-testid="stDecoration"] {display: none !important;}
 .stApp > header {display: none !important;}
+
+/* Nouveaux sélecteurs Streamlit Cloud 2024-2025 */
+[data-testid="stStatusWidget"] {display: none !important;}
+.stAppViewBlockContainer [data-testid="stStatusWidget"] {display: none !important;}
+div[data-testid="stStatusWidget"] {display: none !important;}
+
+/* Masquer tout lien GitHub en bas de page */
+a[href*="github.com/streamlit"] {display: none !important;}
+a[href*="streamlit.io"] {display: none !important;}
+
+/* Badge "Made with Streamlit" et icônes en bas à droite */
+.reportview-container .main footer {display: none !important;}
+.stApp footer {display: none !important;}
+footer a {display: none !important;}
+
+/* Masquer les éléments positionnés en bas à droite (badges flottants) */
+[class*="StatusWidget"] {display: none !important;}
+[class*="viewerBadge"] {display: none !important;}
+[class*="stGitHub"] {display: none !important;}
+
+/* Ciblage agressif - masquer liens externes en bas */
+.stApp a[target="_blank"][href*="github"] {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Streamlit Cloud ribbon/badge */
+.ribbon {display: none !important;}
+.st-emotion-cache-h4xjwg {display: none !important;}
+.st-emotion-cache-1avcm0n {display: none !important;}
+
+/* Masquer le conteneur de status en bas à droite */
+section[data-testid="stStatusWidget"] {display: none !important;}
+div.stStatusWidget {display: none !important;}
 
 /* --- Style académique général --- */
 .main {
