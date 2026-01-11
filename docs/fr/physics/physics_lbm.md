@@ -1,7 +1,18 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Sommaire :**
+1. Principe Mésoscopique
+2. Équation de Boltzmann Discrète
+3. Grilles de Discrétisation
+4. Lien avec la Viscosité
+5. Modèles Multiphasiques
+6. Gestion du Mouillage
+7. Scalabilité GPU
+8. Bibliothèques Open-Source
+9. Résultats de Validation
+10. Limitations et Solutions
+11. Coût Computationnel
+12. Références
 
-**Sommaire :** 1. Principe Mésoscopique • 2. Équation de Boltzmann Discrète • 3. Grilles de Discrétisation • 4. Lien avec la Viscosité • 5. Modèles Multiphasiques • 6. Gestion du Mouillage • 7. Scalabilité GPU • 8. Bibliothèques Open-Source • 9. Résultats de Validation • 10. Limitations et Solutions • 11. Coût Computationnel • 12. Références
-</div>
+---
 
 ## 1. Principe Mésoscopique
 

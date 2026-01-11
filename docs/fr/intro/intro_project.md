@@ -1,7 +1,12 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Sommaire :**
+1. Contexte Scientifique et Industriel
+2. Propriétés des Fluides Rhéofluidifiants
+3. Défis de la Modélisation Numérique
+4. Système Physique Étudié
+5. Approche Multi-Modèles
+6. Références
 
-**Sommaire :** 1. Contexte Scientifique et Industriel • 2. Propriétés des Fluides Rhéofluidifiants • 3. Défis de la Modélisation Numérique • 4. Système Physique Étudié • 5. Approche Multi-Modèles • 6. Références
-</div>
+---
 
 # Modélisation de la Dispense de Fluides Rhéofluidifiants
 

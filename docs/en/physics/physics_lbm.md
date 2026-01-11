@@ -1,7 +1,18 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Mesoscopic Principle
+2. Discrete Boltzmann Equation
+3. Discretization Grids
+4. Relationship with Viscosity
+5. Multiphase Models
+6. Wetting Management
+7. GPU Scalability
+8. Open-Source Libraries
+9. Validation Results
+10. Limitations and Solutions
+11. Computational Cost
+12. References
 
-**Contents:** 1. Mesoscopic Principle • 2. Discrete Boltzmann Equation • 3. Discretization Grids • 4. Relationship with Viscosity • 5. Multiphase Models • 6. Wetting Management • 7. GPU Scalability • 8. Open-Source Libraries • 9. Validation Results • 10. Limitations and Solutions • 11. Computational Cost • 12. References
-</div>
+---
 
 ## 1. Mesoscopic Principle
 

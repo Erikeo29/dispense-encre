@@ -1,7 +1,19 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Sommaire :**
+1. Principe Lagrangien Sans Maillage
+2. Noyaux de Lissage
+3. Équations du Mouvement
+4. Viscosité Artificielle
+5. Tension Superficielle
+6. Conditions aux Limites
+7. Fluides Non-Newtoniens
+8. Résultats de Validation
+9. Avantages Uniques
+10. Limitations et Solutions
+11. Coût Computationnel
+12. Bibliothèques Open-Source
+13. Références
 
-**Sommaire :** 1. Principe Lagrangien Sans Maillage • 2. Noyaux de Lissage • 3. Équations du Mouvement • 4. Viscosité Artificielle • 5. Tension Superficielle • 6. Conditions aux Limites • 7. Fluides Non-Newtoniens • 8. Résultats de Validation • 9. Avantages Uniques • 10. Limitations et Solutions • 11. Coût Computationnel • 12. Bibliothèques Open-Source • 13. Références
-</div>
+---
 
 ## 1. Principe Lagrangien Sans Maillage
 

@@ -1,7 +1,15 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Sommaire :**
+1. Synthèse des Performances
+2. Tableau Comparatif Global
+3. Approches de Discrétisation
+4. Besoins Hardware Détaillés
+5. Adaptabilité aux Encres Rhéofluidifiantes
+6. Analyse Critique par Modèle
+7. Défis Communs et Solutions
+8. Recommandations par Application
+9. Références
 
-**Sommaire :** 1. Synthèse des Performances • 2. Tableau Comparatif Global • 3. Approches de Discrétisation • 4. Besoins Hardware Détaillés • 5. Adaptabilité aux Encres Rhéofluidifiantes • 6. Analyse Critique par Modèle • 7. Défis Communs et Solutions • 8. Recommandations par Application • 9. Références
-</div>
+---
 
 ## 1. Synthèse des Performances
 

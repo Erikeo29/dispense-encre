@@ -1,7 +1,15 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Fundamental Principle
+2. Fundamental Equations
+3. Interface Reconstruction Schemes
+4. Non-Newtonian Fluids
+5. OpenFOAM Configuration
+6. Advantages and Limitations
+7. Validation Results
+8. Computational Cost
+9. References
 
-**Contents:** 1. Fundamental Principle • 2. Fundamental Equations • 3. Interface Reconstruction Schemes • 4. Non-Newtonian Fluids • 5. OpenFOAM Configuration • 6. Advantages and Limitations • 7. Validation Results • 8. Computational Cost • 9. References
-</div>
+---
 
 ## 1. Fundamental Principle
 

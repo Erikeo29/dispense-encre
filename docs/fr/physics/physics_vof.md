@@ -1,7 +1,15 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Sommaire :**
+1. Principe Fondamental
+2. Équations Fondamentales
+3. Schémas de Reconstruction
+4. Fluides Non-Newtoniens
+5. Configuration OpenFOAM
+6. Avantages et Limitations
+7. Résultats de Validation
+8. Coût Computationnel
+9. Références
 
-**Sommaire :** 1. Principe Fondamental • 2. Équations Fondamentales • 3. Schémas de Reconstruction • 4. Fluides Non-Newtoniens • 5. Configuration OpenFOAM • 6. Avantages et Limitations • 7. Résultats de Validation • 8. Coût Computationnel • 9. Références
-</div>
+---
 
 ## 1. Principe Fondamental
 
