@@ -1,3 +1,12 @@
+**Sommaire :**
+1. Pères de la Mécanique des Fluides
+2. Pionniers de la Rhéologie
+3. Fondateurs de la Mécanique Statistique
+4. Créateurs des Méthodes Numériques
+5. Inventeurs des Méthodes Modernes
+6. Tableau Chronologique
+7. Diagramme des Filiations Scientifiques
+
 Ce projet de simulation de dispense de fluides repose sur des siècles de découvertes scientifiques. Cette page rend hommage aux savants dont les travaux fondamentaux ont rendu possible la modélisation numérique moderne des écoulements diphasiques.
 
 ---

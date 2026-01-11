@@ -7,7 +7,7 @@
 
 ## 1. Objectif du Projet
 
-Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-puits. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
+Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-via. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
 
 - **FEM / Phase-Field** : Méthode des éléments finis avec suivi d'interface par champ de phase
 - **VOF (Volume of Fluid)** : Méthode eulérienne standard industriel (OpenFOAM)
@@ -18,12 +18,12 @@ Ce projet propose une **étude comparative de quatre méthodes numériques** pou
 
 ## 2. Application Cible
 
-Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
+Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-via.
 
 **Paramètres clés étudiés :**
-- Géométrie : diamètre puit (800–1500 µm), diamètre buse (200–350 µm)
+- Géométrie : diamètre micro-via (800–1500 µm), diamètre buse (200–350 µm)
 - Rhéologie : viscosité variable (modèle de Carreau)
-- Mouillage : angles de contact sur le fond du puit, sur les parois verticales du puit, sur la surface horizontale du substrat.
+- Mouillage : angles de contact sur le fond du micro-via, sur les parois verticales du micro-via, sur la surface horizontale du substrat.
 
 ---
 

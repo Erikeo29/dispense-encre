@@ -1,3 +1,13 @@
+**Sommaire :**
+1. Équations de Navier-Stokes
+2. Modèles Rhéologiques
+3. Suivi d'Interface
+4. Tension Superficielle
+5. Conditions aux Limites
+6. Nombres Adimensionnels Fondamentaux
+7. Tableau Comparatif des Modèles
+8. Synthèse
+
 Ce chapitre présente les équations fondamentales utilisées dans les quatre modèles numériques. L'objectif est de comprendre les points communs (équations de Navier-Stokes, rhéologie) et les différences (discrétisation, suivi d'interface).
 
 ---

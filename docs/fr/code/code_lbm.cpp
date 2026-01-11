@@ -401,7 +401,7 @@ int main(int argc, char* argv[])
 
     // Default parameters
     string outputDir = "./output/";
-    T G = -112.0;  // Calibrated for Ag/AgCl ink wetting
+    T G = -112.0;  // Calibrated for shear-thinning ink wetting
     T gravity = -5.0e-5;
     T dropletRadius = 30.0;  // 150 µm = 30 l.u.
     T tau = 1.0;
@@ -410,7 +410,7 @@ int main(int argc, char* argv[])
     int warmupIter = 1000;
     T shiftX_mm = 0.0;  // Droplet center X shift from well center (mm)
 
-    // Carreau parameters (default: Ag/AgCl ink)
+    // Carreau parameters (default: shear-thinning ink)
     bool useCarreau = false;
     T eta0 = 1.5;       // Pa.s
     T etaInf = 0.167;   // Pa.s

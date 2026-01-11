@@ -1,8 +1,23 @@
-## Phase-Field Method Principle
+**Contents:**
+1. Phase-Field Method Principle
+2. Physical Context
+3. Mathematical Formulation
+4. System Physical Parameters
+5. Finite Element Discretization
+6. Advanced Rheological Models
+7. Fluid-Structure Interaction (FSI)
+8. Validation Results
+9. Computational Cost
+10. Open-Source Libraries
+11. References
+
+---
+
+## 1. Phase-Field Method Principle
 
 The **Phase-Field** method coupled with **Finite Elements (FEM)** is a thermodynamically consistent approach for simulating two-phase flows. Unlike explicit interface tracking methods, it represents the interface as a diffuse transition zone of finite thickness.
 
-### Diffuse Interface Concept
+### 1.1 Diffuse Interface Concept
 
 The interface between the two fluids is represented by a scalar variable, the **phase function** φ:
 
@@ -15,23 +30,23 @@ This approach offers several advantages:
 - **Natural coalescence/breakup**: topological changes are automatic
 - **Multiphysics coupling**: native integration with viscoelasticity and FSI
 
-### Variational Formulation
+### 1.2 Variational Formulation
 
 The finite element method transforms partial differential equations into an algebraic system via the **weak formulation**. The unknowns (velocity, pressure, phase) are approximated on a mesh using polynomial shape functions (Taylor-Hood P2-P1).
 
 ---
 
-## 1. PHYSICAL CONTEXT
+## 2. Physical Context
 
-### 1.1 System Under Study
+### 2.1 System Under Study
 
 The system under consideration is an incompressible two-phase flow in a microfluidic domain, comprising:
 - **Phase 1**: Ink (non-Newtonian fluid)
 - **Phase 2**: Ambient air (Newtonian fluid)
-- **Domain**: Cylindrical well with diameter D_w = 0.8 to 1.5mm and height h_w = 0.128mm
-- **Source**: Nozzle with diameter D_s = 0.2 to 0.35mm positioned at Δz = 30 μm above the well
+- **Domain**: Cylindrical micro-via with diameter D_w = 0.8 to 1.5mm and height h_w = 0.128mm
+- **Source**: Nozzle with diameter D_s = 0.2 to 0.35mm positioned at Δz = 30 μm above the micro-via
 
-### 1.2 Fundamental Assumptions
+### 2.2 Fundamental Assumptions
 
 1. Incompressible flow (∇·**v** = 0)
 2. Laminar regime (Re << 2300)
@@ -41,9 +56,9 @@ The system under consideration is an incompressible two-phase flow in a microflu
 
 ---
 
-## 2. MATHEMATICAL FORMULATION
+## 3. Mathematical Formulation
 
-### 2.1 Navier-Stokes Equations
+### 3.1 Navier-Stokes Equations
 
 The equations governing incompressible two-phase flow are:
 
@@ -80,7 +95,7 @@ $$D_{ij} = \frac{1}{2}\left(\frac{\partial v_i}{\partial x_j} + \frac{\partial v
 The shear rate is defined by:
 $$\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}} = \sqrt{2\sum_{i,j} D_{ij}D_{ij}}$$
 
-### 2.2 Carreau Rheological Model
+### 3.2 Carreau Rheological Model
 
 The ink viscosity follows the Carreau model:
 $$\eta_1(\dot{\gamma}) = \eta_{\infty} + (\eta_0 - \eta_{\infty})\left[1 + (\lambda\dot{\gamma})^2\right]^{\frac{n-1}{2}}$$
@@ -96,7 +111,7 @@ The air viscosity is constant: η₂ = 1×10⁻⁵ Pa·s
 The mixture viscosity is:
 $$\eta(\phi,\dot{\gamma}) = \eta_1(\dot{\gamma})H(\phi) + \eta_2[1-H(\phi)]$$
 
-### 2.3 Phase-Field Method
+### 3.3 Phase-Field Method
 
 #### Interface Transport
 
@@ -119,7 +134,7 @@ with:
 - κ = ∇·**n**: interface curvature
 - δ(φ) = (3/2ε)|∇φ|: Dirac delta function approximation
 
-### 2.4 Boundary Conditions
+### 3.4 Boundary Conditions
 
 #### Solid Walls (No-Slip Condition)
 $$\mathbf{v} = \mathbf{0} \quad \text{on } \Gamma_{\text{wall}}$$
@@ -144,7 +159,7 @@ with v_inlet(t) = v₀·H(t)·H(t_dispense - t) where v₀ = 0.1 m/s
 #### Outlet (Atmospheric Pressure)
 $$p = p_{\text{atm}} = 0 \quad \text{on } \Gamma_{\text{outlet}}$$
 
-### 2.5 Initial Conditions
+### 3.5 Initial Conditions
 
 At t = 0:
 - **v**(x,y,0) = **0** throughout the domain
@@ -153,9 +168,9 @@ At t = 0:
 
 ---
 
-## 3. SYSTEM PHYSICAL PARAMETERS
+## 4. System Physical Parameters
 
-### 3.1 Fluid Properties
+### 4.1 Fluid Properties
 
 | Property | Ink (Phase 1) | Air (Phase 2) | Unit |
 |----------|---------------|---------------|------|
@@ -165,7 +180,7 @@ At t = 0:
 | Relaxation time λ | 0.15 | - | s |
 | Index n | 0.7 | - | - |
 
-### 3.2 Interfacial Properties
+### 4.2 Interfacial Properties
 
 | Property | Value | Unit |
 |----------|-------|------|
@@ -173,18 +188,18 @@ At t = 0:
 | Interface thickness ε | 5×10⁻⁶ | m |
 | Interface mobility γ | 1 | - |
 
-### 3.3 System Geometry
+### 4.3 System Geometry
 
 | Element | Parameter | Value | Unit |
 |---------|-----------|-------|------|
-| Well | Diameter D_w | 0.8 to 1.5 | mm |
+| Micro-via | Diameter D_w | 0.8 to 1.5 | mm |
 | | Height h_w | 0.128 | mm |
 | | Volume V_w | 64.3 | nL |
 | Syringe | Diameter D_s | 0.20 to 0.30 | mm |
 | | Distance Δz | +30 | μm |
 | | Surface ratio | 0.8 | - | (i.e., 80% well fill)
 
-### 3.4 Process Parameters
+### 4.4 Process Parameters
 
 | Parameter | Symbol | Value | Unit |
 |-----------|--------|-------|------|
@@ -195,9 +210,9 @@ At t = 0:
 
 ---
 
-## 4. FINITE ELEMENT DISCRETIZATION
+## 5. Finite Element Discretization
 
-### 4.1 Weak Formulation
+### 5.1 Weak Formulation
 
 The finite element method is based on the **variational** (or weak) formulation of the equations. We multiply the equations by test functions and integrate over the domain.
 
@@ -215,7 +230,7 @@ where:
 - $\mathbf{w}$: velocity test function
 - $q$: pressure test function
 
-### 4.2 Mixed Finite Elements
+### 5.2 Mixed Finite Elements
 
 The choice of approximation spaces for velocity and pressure is crucial to avoid **spurious pressure modes** (non-physical oscillations).
 
@@ -260,7 +275,7 @@ where $\lambda_i$ are the barycentric coordinates of the triangle.
 
 **Advantage:** Fewer DOFs than Taylor-Hood (stability at the cost of lower accuracy).
 
-### 4.3 Stabilization for Convection
+### 5.3 Stabilization for Convection
 
 At high Reynolds numbers ($Re > 10$), standard finite element schemes suffer from **numerical instabilities** (oscillations, numerical diffusion).
 
@@ -294,9 +309,9 @@ where $\mathcal{L}$ is the adjoint operator.
 
 ---
 
-## 5. ADVANCED RHEOLOGICAL MODELS
+## 6. Advanced Rheological Models
 
-### 5.1 Herschel-Bulkley Model (Yield Stress Fluids)
+### 6.1 Herschel-Bulkley Model (Yield Stress Fluids)
 
 For inks exhibiting a **yield stress**, the Herschel-Bulkley model is:
 
@@ -316,7 +331,7 @@ $$\eta_{eff}(\dot{\gamma}) = K\dot{\gamma}^{n-1} + \tau_0 \frac{1 - e^{-m\dot{\g
 
 with $m$ a regularization parameter (typically $m = 100$ s).
 
-### 5.2 Oldroyd-B Model (Viscoelasticity)
+### 6.2 Oldroyd-B Model (Viscoelasticity)
 
 For **viscoelastic** inks (with elastic memory), the polymeric stress tensor $\boldsymbol{\tau}_p$ evolves according to:
 
@@ -335,7 +350,7 @@ The total viscosity is $\eta = \eta_s + \eta_p$.
 
 **Deborah Number:** $De = \lambda_1 \dot{\gamma}$ (measures the importance of elastic effects)
 
-### 5.3 Giesekus Model (Nonlinear)
+### 6.3 Giesekus Model (Nonlinear)
 
 For strongly nonlinear inks, the **Giesekus** model adds a quadratic term:
 
@@ -345,9 +360,9 @@ where $\alpha \in [0, 0.5]$ is the anisotropic mobility parameter.
 
 ---
 
-## 6. FLUID-STRUCTURE INTERACTION (FSI)
+## 7. Fluid-Structure Interaction (FSI)
 
-### 6.1 Piezoelectric Actuation
+### 7.1 Piezoelectric Actuation
 
 In piezoelectric print heads, ejection is caused by membrane deformation under an electric voltage.
 
@@ -366,7 +381,7 @@ where:
 - $\mathbf{e}$: piezoelectric tensor
 - $\boldsymbol{\epsilon}^S$: permittivity at constant strain
 
-### 6.2 Fluid-Solid Interface
+### 7.2 Fluid-Solid Interface
 
 At the interface between the fluid and the piezoelectric membrane:
 
@@ -376,7 +391,7 @@ $$\mathbf{v}_{fluid} = \frac{\partial \mathbf{u}_{solid}}{\partial t}$$
 **Stress Equilibrium:**
 $$\boldsymbol{\sigma}_{fluid} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solid} \cdot \mathbf{n}$$
 
-### 6.3 Moving Mesh (ALE)
+### 7.3 Moving Mesh (ALE)
 
 To handle fluid domain deformation, we use the **ALE (Arbitrary Lagrangian-Eulerian)** formulation:
 
@@ -394,9 +409,9 @@ with boundary conditions fixed on immobile boundaries.
 
 ---
 
-## 7. VALIDATION RESULTS
+## 8. Validation Results
 
-### 7.1 Hirsa & Basaran Study (2017) - Viscoelastic Inks
+### 8.1 Hirsa & Basaran Study (2017) - Viscoelastic Inks
 
 **Configuration:**
 - Solver: COMSOL Multiphysics (FEM Phase-Field)
@@ -420,7 +435,7 @@ with boundary conditions fixed on immobile boundaries.
 
 **Key Observation:** Viscoelasticity delays filament pinch-off (stabilizing effect) and reduces satellite volume by 25% compared to an equivalent Newtonian fluid.
 
-### 7.2 Patel et al. Study (2020) - Piezo Coupling
+### 8.2 Patel et al. Study (2020) - Piezo Coupling
 
 **Configuration:**
 - Solver: FEniCS + piezo model
@@ -438,7 +453,7 @@ with boundary conditions fixed on immobile boundaries.
 
 **Optimization:** 40% reduction in satellites by adjusting $\tau_{fall}/\tau_{rise} = 1.5$.
 
-### 7.3 Comparison with Other Methods
+### 8.3 Comparison with Other Methods
 
 | Criterion | FEM (Phase-Field) | VOF | LBM | SPH |
 |-----------|-------------------|-----|-----|-----|
@@ -449,9 +464,9 @@ with boundary conditions fixed on immobile boundaries.
 
 ---
 
-## 8. COMPUTATIONAL COST
+## 9. Computational Cost
 
-### 8.1 Typical Configuration
+### 9.1 Typical Configuration
 
 For a 2D axisymmetric simulation (1 ms ejection, Taylor-Hood elements):
 
@@ -461,7 +476,7 @@ For a 2D axisymmetric simulation (1 ms ejection, Taylor-Hood elements):
 | High resolution | 100k | 15–30 | 32 CPU cores |
 | Full 3D | 500k | 30–50 | 64–128 cores + 128 GB RAM |
 
-### 8.2 Scaling and Parallelization
+### 9.2 Scaling and Parallelization
 
 The FEM method is **memory-bound** and limited by the cost of linear system assembly/solving.
 
@@ -476,7 +491,7 @@ The FEM method is **memory-bound** and limited by the cost of linear system asse
 
 **GPU Limitation:** Classic FEM solvers (matrix assembly) do not significantly benefit from GPU acceleration, unlike LBM.
 
-### 8.3 Optimizations
+### 9.3 Optimizations
 
 - **Adaptive Mesh Refinement (AMR)**: Refine only near the interface ($\alpha \in [0.05, 0.95]$)
 - **Algebraic Preconditioners**: ILU, AMG for linear systems
@@ -484,7 +499,7 @@ The FEM method is **memory-bound** and limited by the cost of linear system asse
 
 ---
 
-## 9. OPEN-SOURCE LIBRARIES
+## 10. Open-Source Libraries
 
 | Library | Language | Focus | Parallelization |
 |---------|----------|-------|-----------------|
@@ -494,7 +509,7 @@ The FEM method is **memory-bound** and limited by the cost of linear system asse
 | **Firedrake** | Python | Automation, GPU | MPI, PETSc |
 | **COMSOL** | GUI/MATLAB | Commercial, multiphysics | Multi-core |
 
-### 9.1 FEniCS Example (Phase-Field)
+### 10.1 FEniCS Example (Phase-Field)
 
 ```python
 from fenics import *
@@ -522,7 +537,7 @@ solve(lhs(F) == rhs(F), w_sol, bcs)
 
 ---
 
-## 10. REFERENCES
+## 11. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
 
