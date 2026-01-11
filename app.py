@@ -2,7 +2,7 @@ import streamlit as st
 import base64
 import os
 import pandas as pd
-import google.generativeai as genai
+from groq import Groq
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Simulation Dispense", layout="wide", initial_sidebar_state="expanded")
@@ -72,7 +72,7 @@ TRANSLATIONS = {
         "chat_error": "Erreur de connexion à l'API. Vérifiez votre clé API.",
         "chat_close": "Fermer",
         "chat_clear": "Effacer",
-        "chat_api_missing": "⚠️ Clé API manquante. Configurez GOOGLE_API_KEY.",
+        "chat_api_missing": "⚠️ Clé API manquante. Configurez GROQ_API_KEY.",
         "chat_toggle": "Assistant IA",
     },
     "en": {
@@ -138,7 +138,7 @@ TRANSLATIONS = {
         "chat_error": "API connection error. Check your API key.",
         "chat_close": "Close",
         "chat_clear": "Clear",
-        "chat_api_missing": "⚠️ API key missing. Configure GOOGLE_API_KEY.",
+        "chat_api_missing": "⚠️ API key missing. Configure GROQ_API_KEY.",
         "chat_toggle": "AI Assistant",
     }
 }
@@ -673,10 +673,10 @@ nav_annex = st.sidebar.radio(
 def is_chatbot_enabled():
     """Vérifie si le chatbot doit être affiché."""
     # 1. Vérifier si la clé API existe
-    api_key = os.environ.get("GOOGLE_API_KEY")
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         try:
-            api_key = st.secrets.get("GOOGLE_API_KEY", None)
+            api_key = st.secrets.get("GROQ_API_KEY", None)
         except Exception:
             pass
     if not api_key:
@@ -713,51 +713,46 @@ Si tu ne connais pas la réponse, dis-le honnêtement.
 Réponds dans la langue de l'utilisateur (français ou anglais).
 """
 
-def configure_gemini():
-    """Configure le client Gemini si la clé API est disponible."""
-    api_key = os.environ.get("GOOGLE_API_KEY")
+def get_groq_client():
+    """Retourne le client Groq si la clé API est disponible."""
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         try:
-            api_key = st.secrets.get("GOOGLE_API_KEY", None)
+            api_key = st.secrets.get("GROQ_API_KEY", None)
         except Exception:
             pass
     if api_key:
-        genai.configure(api_key=api_key)
-        return True
-    return False
+        return Groq(api_key=api_key)
+    return None
 
-def stream_gemini_response(user_message: str):
-    """Génère la réponse de Gemini en streaming (mot par mot)."""
-    if not configure_gemini():
+def stream_groq_response(user_message: str):
+    """Génère la réponse de Groq (Llama 3) en streaming."""
+    client = get_groq_client()
+    if not client:
         yield t("chat_api_missing")
         return
 
     st.session_state.chat_messages.append({"role": "user", "content": user_message})
 
     try:
-        # Créer le modèle avec le system prompt
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            system_instruction=SYSTEM_PROMPT
-        )
-
-        # Convertir l'historique au format Gemini (role: user/model)
-        history = []
-        for msg in st.session_state.chat_messages[:-1]:  # Exclure le dernier message (current)
-            role = "model" if msg["role"] == "assistant" else "user"
-            history.append({"role": role, "parts": [msg["content"]]})
-
-        # Créer le chat avec l'historique
-        chat = model.start_chat(history=history)
+        # Préparer les messages avec le system prompt
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        messages.extend(st.session_state.chat_messages)
 
         # Générer la réponse en streaming
-        response = chat.send_message(user_message, stream=True)
+        stream = client.chat.completions.create(
+            model="llama-3.1-70b-versatile",
+            messages=messages,
+            max_tokens=1024,
+            stream=True
+        )
 
         full_response = ""
-        for chunk in response:
-            if chunk.text:
-                full_response += chunk.text
-                yield chunk.text
+        for chunk in stream:
+            if chunk.choices[0].delta.content:
+                text = chunk.choices[0].delta.content
+                full_response += text
+                yield text
 
         # Sauvegarder la réponse complète dans l'historique
         st.session_state.chat_messages.append({"role": "assistant", "content": full_response})
@@ -792,7 +787,7 @@ if is_chatbot_enabled():
                 st.markdown(prompt)
             with st.chat_message("assistant"):
                 # Streaming : affichage progressif mot par mot !
-                st.write_stream(stream_gemini_response(prompt))
+                st.write_stream(stream_groq_response(prompt))
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
