@@ -1,8 +1,13 @@
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Contents:** 1. Scientific and Industrial Context • 2. Properties of Shear-Thinning Fluids • 3. Numerical Modeling Challenges • 4. Physical System Studied • 5. Multi-Model Approach • 6. References
+</div>
+
 # Modeling of Shear-Thinning Fluid Dispensing
 
-## Scientific and Industrial Context
+## 1. Scientific and Industrial Context
 
-### Microfluidic Dispensing Technologies
+### 1.1 Microfluidic Dispensing Technologies
 
 Microfluidic dispensing encompasses a set of techniques for controlled deposition of volumes ranging from nanoliters to microliters. These processes find applications in numerous fields:
 
@@ -13,7 +18,7 @@ Microfluidic dispensing encompasses a set of techniques for controlled depositio
 - Functional coatings and thin films
 - Precision pharmaceutical dosing
 
-### Physical Mechanisms
+### 1.2 Physical Mechanisms
 
 Fluid dispensing involves several coupled physical phenomena:
 - **Two-phase flow**: fluid/air interaction at the interface
@@ -23,9 +28,9 @@ Fluid dispensing involves several coupled physical phenomena:
 
 ---
 
-## Properties of Shear-Thinning Fluids
+## 2. Properties of Shear-Thinning Fluids
 
-### Non-Newtonian Behavior
+### 2.1 Non-Newtonian Behavior
 
 Shear-thinning fluids are **non-Newtonian fluids** whose apparent viscosity decreases under shear stress. This behavior is essential for dispensing: the fluid flows easily under pressure but maintains its shape at rest.
 
@@ -35,7 +40,7 @@ $$\tau = K\dot{\gamma}^n \quad \text{with } n < 1$$
 
 where $\tau$ is the shear stress, $K$ the consistency index, $\dot{\gamma}$ the shear rate, and $n$ the behavior index.
 
-**Carreau-Yasuda model:**
+### 2.2 Carreau-Yasuda Model
 
 $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\gamma})^a]^{(1-n)/a}}$$
 
@@ -45,9 +50,9 @@ where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscositi
 
 ---
 
-## Numerical Modeling Challenges
+## 3. Numerical Modeling Challenges
 
-### Technical Issues
+### 3.1 Technical Issues
 
 | Challenge | Description | Approach |
 |-----------|-------------|----------|
@@ -59,9 +64,9 @@ where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscositi
 
 ---
 
-## Physical System Studied
+## 4. Physical System Studied
 
-### Geometric Configuration
+### 4.1 Geometric Configuration
 
 The modeled system consists of:
 - **Dispensing nozzle**: diameter 200–350 µm, positioned above the well
@@ -69,7 +74,7 @@ The modeled system consists of:
 - **Fluid**: shear-thinning ink ($\rho$ = 3000 kg/m³)
 - **Environment**: ambient temperature (~20°C) and atmospheric pressure
 
-### Simulation Parameters
+### 4.2 Simulation Parameters
 
 | Parameter | Range | Unit |
 |-----------|-------|------|
@@ -86,7 +91,7 @@ The modeled system consists of:
 
 ---
 
-## Multi-Model Approach
+## 5. Multi-Model Approach
 
 This project compares four complementary numerical methods:
 
@@ -99,6 +104,6 @@ This project compares four complementary numerical methods:
 
 ---
 
-## References
+## 6. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.

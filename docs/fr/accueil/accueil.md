@@ -1,4 +1,9 @@
-## Objectif du Projet
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Sommaire :** 1. Objectif du Projet • 2. Application Cible • 3. Navigation
+</div>
+
+## 1. Objectif du Projet
 
 Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-puits. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
 
@@ -9,7 +14,7 @@ Ce projet propose une **étude comparative de quatre méthodes numériques** pou
 
 ---
 
-## Application cible
+## 2. Application Cible
 
 Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
 
@@ -20,7 +25,7 @@ Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans d
 
 ---
 
-## Navigation
+## 3. Navigation
 
 Utilisez le menu latéral pour explorer les différents chapitres du projet:
 1. **Introduction** : Contexte scientifique et nombres adimensionnels

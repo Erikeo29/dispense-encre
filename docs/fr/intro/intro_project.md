@@ -1,8 +1,13 @@
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Sommaire :** 1. Contexte Scientifique et Industriel • 2. Propriétés des Fluides Rhéofluidifiants • 3. Défis de la Modélisation Numérique • 4. Système Physique Étudié • 5. Approche Multi-Modèles • 6. Références
+</div>
+
 # Modélisation de la Dispense de Fluides Rhéofluidifiants
 
-## Contexte Scientifique et Industriel
+## 1. Contexte Scientifique et Industriel
 
-### Technologies de Dispense Microfluidique
+### 1.1 Technologies de Dispense Microfluidique
 
 La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
 
@@ -13,7 +18,7 @@ La dispense de fluides en microfluidique englobe un ensemble de techniques perme
 - Revêtements fonctionnels et couches minces
 - Dosage pharmaceutique de précision
 
-### Mécanismes Physiques
+### 1.2 Mécanismes Physiques
 
 La dispense de fluides implique plusieurs phénomènes physiques couplés :
 - **Écoulement diphasique** : interaction fluide/air à l'interface
@@ -23,9 +28,9 @@ La dispense de fluides implique plusieurs phénomènes physiques couplés :
 
 ---
 
-## Propriétés des Fluides Rhéofluidifiants
+## 2. Propriétés des Fluides Rhéofluidifiants
 
-### Comportement Non-Newtonien
+### 2.1 Comportement Non-Newtonien
 
 Les fluides rhéofluidifiants sont des fluides **non-newtoniens** dont la viscosité apparente diminue sous l'effet d'un cisaillement. Ce comportement est essentiel pour la dispense : le fluide s'écoule facilement sous pression mais conserve sa forme au repos.
 
@@ -35,7 +40,7 @@ $$\tau = K\dot{\gamma}^n \quad \text{avec } n < 1$$
 
 où $\tau$ est la contrainte de cisaillement, $K$ l'indice de consistance, $\dot{\gamma}$ le taux de cisaillement, et $n$ l'indice de comportement.
 
-**Modèle de Carreau-Yasuda :**
+### 2.2 Modèle de Carreau-Yasuda
 
 $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\gamma})^a]^{(1-n)/a}}$$
 
@@ -45,9 +50,9 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 ---
 
-## Défis de la Modélisation Numérique
+## 3. Défis de la Modélisation Numérique
 
-### Enjeux Techniques
+### 3.1 Enjeux Techniques
 
 | Défi | Description | Approche |
 |------|-------------|----------|
@@ -59,9 +64,9 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 ---
 
-## Système Physique Étudié
+## 4. Système Physique Étudié
 
-### Configuration Géométrique
+### 4.1 Configuration Géométrique
 
 Le système modélisé consiste en :
 - **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
@@ -69,7 +74,7 @@ Le système modélisé consiste en :
 - **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³)
 - **Environnement** : température ambiante (~20°C) et pression atmosphérique
 
-### Paramètres de Simulation
+### 4.2 Paramètres de Simulation
 
 | Paramètre | Plage | Unité |
 |-----------|-------|-------|
@@ -86,7 +91,7 @@ Le système modélisé consiste en :
 
 ---
 
-## Approche Multi-Modèles
+## 5. Approche Multi-Modèles
 
 Ce projet compare quatre méthodes numériques complémentaires :
 
@@ -99,6 +104,6 @@ Ce projet compare quatre méthodes numériques complémentaires :
 
 ---
 
-## Références
+## 6. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.

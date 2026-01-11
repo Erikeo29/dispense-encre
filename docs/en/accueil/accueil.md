@@ -1,4 +1,9 @@
-## Project Objective
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Contents:** 1. Project Objective • 2. Target Application • 3. Navigation
+</div>
+
+## 1. Project Objective
 
 This project presents a **comparative study of four numerical methods** for simulating shear-thinning fluid dispensing into micro-wells. The application enables visualization and comparison of two-phase flow simulation results using different approaches:
 
@@ -9,7 +14,7 @@ This project presents a **comparative study of four numerical methods** for simu
 
 ---
 
-## Target Application
+## 2. Target Application
 
 The simulations model **shear-thinning ink dispensing** into micro-wells for electrochemical sensor fabrication. This process requires precise control of filling, wetting, and final deposit shape.
 
@@ -20,7 +25,7 @@ The simulations model **shear-thinning ink dispensing** into micro-wells for ele
 
 ---
 
-## Navigation
+## 3. Navigation
 
 Use the sidebar menu to explore the different chapters:
 1. **Introduction**: Scientific context and dimensionless numbers

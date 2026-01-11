@@ -1,8 +1,13 @@
-## Principe Mésoscopique
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Sommaire :** 1. Principe Mésoscopique • 2. Équation de Boltzmann Discrète • 3. Grilles de Discrétisation • 4. Lien avec la Viscosité • 5. Modèles Multiphasiques • 6. Gestion du Mouillage • 7. Scalabilité GPU • 8. Bibliothèques Open-Source • 9. Résultats de Validation • 10. Limitations et Solutions • 11. Coût Computationnel • 12. Références
+</div>
+
+## 1. Principe Mésoscopique
 
 La méthode **LBM (Lattice Boltzmann Method)** est une approche mésoscopique qui ne résout pas directement les équations de Navier-Stokes, mais l'**équation de Boltzmann discrétisée** sur un réseau régulier (lattice).
 
-### Concept Fondamental
+### 1.1 Concept Fondamental
 
 On suit l'évolution de **fonctions de distribution** $f_i(\mathbf{x}, t)$ représentant la probabilité de trouver des particules à la position $\mathbf{x}$ au temps $t$, se déplaçant selon des directions discrètes $\mathbf{c}_i$.
 
@@ -12,9 +17,9 @@ $$\rho = \sum_i f_i \quad \text{et} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c
 
 ---
 
-## Équation de Boltzmann Discrète
+## 2. Équation de Boltzmann Discrète
 
-### Formulation BGK
+### 2.1 Formulation BGK
 
 L'équation fondamentale est :
 
@@ -24,7 +29,7 @@ où :
 - $\Omega_i(f)$ : opérateur de collision (relaxation vers l'équilibre)
 - $F_i$ : terme de force externe
 
-### Opérateur de Collision BGK
+### 2.2 Opérateur de Collision BGK
 
 L'approximation BGK (Bhatnagar-Gross-Krook) simplifie la collision en une relaxation linéaire vers l'équilibre :
 
@@ -38,15 +43,15 @@ avec $c_s = 1/\sqrt{3}$ la vitesse du son sur le réseau et $w_i$ les poids de q
 
 ---
 
-## Grilles de Discrétisation
+## 3. Grilles de Discrétisation
 
-### Nomenclature DdQq
+### 3.1 Nomenclature DdQq
 
 La notation **DdQq** indique :
 - **d** : nombre de dimensions spatiales
 - **q** : nombre de vitesses discrètes
 
-### Grilles Courantes
+### 3.2 Grilles Courantes
 
 | Grille | Application | Vitesses |
 |--------|-------------|----------|
@@ -59,9 +64,9 @@ La notation **DdQq** indique :
 
 ---
 
-## Lien avec la Viscosité
+## 4. Lien avec la Viscosité
 
-### Relation Fondamentale
+### 4.1 Relation Fondamentale
 
 La viscosité cinématique $\nu$ est reliée au temps de relaxation $\tau$ par :
 
@@ -69,7 +74,7 @@ $$\nu = c_s^2 \left(\tau - \frac{1}{2}\right) \Delta t$$
 
 Cette relation est **fondamentale** : elle permet de modéliser des fluides de viscosités différentes en ajustant simplement $\tau$.
 
-### Adaptation aux Fluides Non-Newtoniens
+### 4.2 Adaptation aux Fluides Non-Newtoniens
 
 Pour les fluides rhéofluidifiants, $\tau$ dépend localement du taux de cisaillement $\dot{\gamma}$ :
 
@@ -79,9 +84,9 @@ où $\nu(\dot{\gamma})$ est donné par une loi rhéologique (ex. loi de puissanc
 
 ---
 
-## Modèles Multiphasiques
+## 5. Modèles Multiphasiques
 
-### Shan-Chen (Pseudopotentiel)
+### 5.1 Shan-Chen (Pseudopotentiel)
 
 Le modèle **Shan-Chen** modélise les interactions entre fluides via une **force interparticulaire** :
 
@@ -95,7 +100,7 @@ où :
 
 **Tension superficielle :** $\sigma \propto G(\psi_{max} - \psi_{min})^2$
 
-### Free Energy Model
+### 5.2 Free Energy Model
 
 Le modèle **Free Energy** est basé sur une fonctionnelle d'énergie libre :
 
@@ -110,7 +115,7 @@ $$\mathbf{F} = -\nabla \cdot \boldsymbol{\sigma}^{chem}$$
 - Contrôle plus précis de la tension superficielle
 - Moins de courants parasites
 
-### Color Gradient Model
+### 5.3 Color Gradient Model
 
 Utilise deux populations de fluides (rouge/bleu) avec une force de ségrégation :
 
@@ -120,9 +125,9 @@ où $\rho^N = (\rho^R - \rho^B)/(\rho^R + \rho^B)$ est la fraction de couleur no
 
 ---
 
-## Gestion du Mouillage
+## 6. Gestion du Mouillage
 
-### Angles de Contact
+### 6.1 Angles de Contact
 
 Les angles de contact sur les parois solides sont gérés en assignant une **densité fictive** (ou un potentiel) aux nœuds solides :
 
@@ -134,15 +139,15 @@ où $\theta_{eq}$ est l'angle de contact d'équilibre souhaité.
 
 ---
 
-## Scalabilité GPU
+## 7. Scalabilité GPU
 
-### Performance Exceptionnelle
+### 7.1 Performance Exceptionnelle
 
 La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour indépendamment lors des étapes de collision et de streaming.
 
 **Accélération typique :** x20 sur GPU vs CPU (mesuré sur NVIDIA A100)
 
-### Benchmark Li et al. (2022)
+### 7.2 Benchmark Li et al. (2022)
 
 | Configuration | Temps de calcul |
 |---------------|-----------------|
@@ -155,9 +160,9 @@ La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour
 
 ---
 
-## Bibliothèques Open-Source
+## 8. Bibliothèques Open-Source
 
-### Palabos
+### 8.1 Palabos
 
 **Palabos** (Parallel Lattice Boltzmann Solver) est la référence open-source :
 
@@ -166,7 +171,7 @@ La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour
 - **Modèles :** Shan-Chen, Free Energy, Color Gradient
 - **Documentation :** Excellente avec tutoriels
 
-### Alternatives
+### 8.2 Alternatives
 
 | Bibliothèque | Focus | GPU |
 |--------------|-------|-----|
@@ -177,9 +182,9 @@ La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour
 
 ---
 
-## Résultats de Validation
+## 9. Résultats de Validation
 
-### Étude Li et al. (2022) - Encre Rhéofluidifiante
+### 9.1 Étude Li et al. (2022) - Encre Rhéofluidifiante
 
 **Configuration :**
 - Solveur : Palabos (C++/CUDA)
@@ -199,7 +204,7 @@ La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour
 
 **Mécanisme :** La rhéofluidification réduit la viscosité dans le filament, accélérant le pincement. Le modèle Free Energy capture correctement la tension superficielle ($\sigma = 35$ mN/m).
 
-### Hybridation VOF-LBM (Thiery et al., 2023)
+### 9.2 Hybridation VOF-LBM (Thiery et al., 2023)
 
 **Objectif :** Combiner la précision interfaciale de VOF avec la scalabilité de LBM.
 
@@ -218,9 +223,9 @@ La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour
 
 ---
 
-## Limitations et Solutions
+## 10. Limitations et Solutions
 
-### Compressibilité Artificielle
+### 10.1 Compressibilité Artificielle
 
 **Problème :** La LBM simule un fluide faiblement compressible. Pour maintenir l'approximation incompressible :
 
@@ -228,7 +233,7 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 
 **Solution :** Utiliser des schémas à faible Mach (LBM à deux vitesses de relaxation, entropic LBM).
 
-### Courants Parasites
+### 10.2 Courants Parasites
 
 **Problème :** Des courants de convection artificiels apparaissent aux interfaces (Shan-Chen).
 
@@ -237,7 +242,7 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 - Isotropie améliorée des opérateurs de gradient
 - Schémas de discrétisation d'ordre supérieur
 
-### Calibration Rhéologique
+### 10.3 Calibration Rhéologique
 
 **Problème :** La relation $\nu(\tau)$ est linéaire, ce qui limite la gamme de viscosités simulables.
 
@@ -245,9 +250,9 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 
 ---
 
-## Coût Computationnel
+## 11. Coût Computationnel
 
-### Configuration Typique
+### 11.1 Configuration Typique
 
 Pour une simulation 3D (1 ms d'éjection, D3Q19) :
 
@@ -261,6 +266,6 @@ Pour une simulation 3D (1 ms d'éjection, D3Q19) :
 
 ---
 
-## Références
+## 12. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.

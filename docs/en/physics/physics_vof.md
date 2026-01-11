@@ -1,8 +1,13 @@
-## Fundamental Principle
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Contents:** 1. Fundamental Principle • 2. Fundamental Equations • 3. Interface Reconstruction Schemes • 4. Non-Newtonian Fluids • 5. OpenFOAM Configuration • 6. Advantages and Limitations • 7. Validation Results • 8. Computational Cost • 9. References
+</div>
+
+## 1. Fundamental Principle
 
 The **VOF (Volume of Fluid)** method is an Eulerian approach for interface tracking in two-phase flows. It represents the industry standard for free surface simulations, particularly in OpenFOAM with the `interFoam` solver.
 
-### Volume Fraction Concept
+### 1.1 Volume Fraction Concept
 
 The interface between the two fluids is captured by a scalar variable, the **volume fraction** $\alpha$:
 
@@ -14,9 +19,9 @@ This approach is called "diffuse interface" because the interface is not a sharp
 
 ---
 
-## Fundamental Equations
+## 2. Fundamental Equations
 
-### Transport Equation for $\alpha$
+### 2.1 Transport Equation for $\alpha$
 
 The evolution of the volume fraction is governed by the advection equation:
 
@@ -24,7 +29,7 @@ $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\alpha \mathbf{v}) = 0$$
 
 where $\mathbf{v}$ is the velocity field.
 
-### Surface Tension Force (CSF)
+### 2.2 Surface Tension Force (CSF)
 
 Surface tension is modeled via Brackbill's **Continuum Surface Force (CSF)** model:
 
@@ -34,7 +39,7 @@ where:
 - $\sigma$: surface tension [N/m]
 - $\kappa = -\nabla \cdot \left(\frac{\nabla \alpha}{|\nabla \alpha|}\right)$: interface curvature
 
-### Mixture Properties
+### 2.3 Mixture Properties
 
 Physical properties are linearly interpolated:
 
@@ -44,13 +49,13 @@ $$\eta = \alpha \eta_1 + (1-\alpha) \eta_2$$
 
 ---
 
-## Interface Reconstruction Schemes
+## 3. Interface Reconstruction Schemes
 
-### Numerical Diffusion Problem
+### 3.1 Numerical Diffusion Problem
 
 Transporting $\alpha$ by pure advection leads to **numerical diffusion** of the interface, spreading it over several cells. Several schemes exist to maintain a sharp interface:
 
-### PLIC (Piecewise Linear Interface Calculation)
+### 3.2 PLIC (Piecewise Linear Interface Calculation)
 
 The **PLIC** scheme reconstructs the interface as a plane within each cell:
 
@@ -63,13 +68,13 @@ where $\mathbf{n} = \frac{\nabla \alpha}{|\nabla \alpha|}$ is the interface norm
 - Exact mass conservation
 - Standard in OpenFOAM
 
-### Geometric VOF
+### 3.3 Geometric VOF
 
 Uses geometric algorithms to compute $\alpha$ fluxes between cells:
 - Exact calculation of fluid volumes crossing each face
 - More expensive but more accurate than algebraic schemes
 
-### Compressive VOF (OpenFOAM)
+### 3.4 Compressive VOF (OpenFOAM)
 
 OpenFOAM adds an **artificial compression** term (MULES):
 
@@ -81,9 +86,9 @@ where $\mathbf{v}_r = c_\alpha |\mathbf{v}| \mathbf{n}$ is an artificial compres
 
 ---
 
-## Adaptation for Non-Newtonian Fluids
+## 4. Adaptation for Non-Newtonian Fluids
 
-### Stress Tensor
+### 4.1 Stress Tensor
 
 For shear-thinning inks, the stress tensor $\boldsymbol{\tau}$ is modified to include shear rate $\dot{\gamma}$ dependence:
 
@@ -91,7 +96,7 @@ $$\boldsymbol{\tau} = K|\dot{\gamma}|^{n-1}\dot{\gamma}$$
 
 where $\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}}$ and $\mathbf{D} = \frac{1}{2}\left(\nabla \mathbf{v} + (\nabla \mathbf{v})^T\right)$.
 
-### Carreau Model in OpenFOAM
+### 4.2 Carreau Model in OpenFOAM
 
 The effective viscosity $\eta_{eff}$ follows the Carreau model:
 
@@ -110,9 +115,9 @@ $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda 
 
 ---
 
-## OpenFOAM Configuration
+## 5. OpenFOAM Configuration
 
-### `transportProperties` File
+### 5.1 `transportProperties` File
 
 ```cpp
 transportModel Carreau;
@@ -128,7 +133,7 @@ CarreauCoeffs
 sigma   sigma [1 0 -2 0 0 0 0] 0.04;  // Surface tension
 ```
 
-### `interFoam` Solver
+### 5.2 `interFoam` Solver
 
 The `interFoam` solver solves:
 1. Transport equation for $\alpha$ (MULES)
@@ -137,16 +142,16 @@ The `interFoam` solver solves:
 
 ---
 
-## Advantages and Limitations
+## 6. Advantages and Limitations
 
-### Strengths
+### 6.1 Strengths
 
 - **Proven robustness**: Industry standard with >25 years of development
 - **Perfect mass conservation**: Intrinsic property of the formulation
 - **Open-source implementations**: OpenFOAM, Basilisk
 - **Interface precision**: 0.1–1 µm with PLIC and adaptive mesh refinement (AMR)
 
-### Limitations
+### 6.2 Limitations
 
 - **Numerical diffusivity**: Requires expensive reconstruction schemes
 - **Memory cost**: Fine meshes required for thin interfaces
@@ -155,9 +160,9 @@ The `interFoam` solver solves:
 
 ---
 
-## Validation Results
+## 7. Validation Results
 
-### Duarte et al. Study (2019)
+### 7.1 Duarte et al. Study (2019)
 
 **Configuration:**
 - Solver: OpenFOAM (`interFoam`)
@@ -169,7 +174,7 @@ The `interFoam` solver solves:
 - Droplet velocity: 12 m/s (error < 2%)
 - Satellite formation: 8% of total volume at $t = 15$ µs
 
-### Li et al. Study (2021) - Non-Newtonian Fluids
+### 7.2 Li et al. Study (2021) - Non-Newtonian Fluids
 
 **Configuration:**
 - Power law ($n = 0.7$, $K = 0.1$ Pa·sⁿ)
@@ -187,9 +192,9 @@ The `interFoam` solver solves:
 
 ---
 
-## Computational Cost
+## 8. Computational Cost
 
-### Typical Configuration
+### 8.1 Typical Configuration
 
 For a 2D axisymmetric simulation (1 ms ejection):
 
@@ -203,6 +208,6 @@ For a 2D axisymmetric simulation (1 ms ejection):
 
 ---
 
-## References
+## 9. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.

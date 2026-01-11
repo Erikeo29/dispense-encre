@@ -1,8 +1,13 @@
-## Mesoscopic Principle
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Contents:** 1. Mesoscopic Principle • 2. Discrete Boltzmann Equation • 3. Discretization Grids • 4. Relationship with Viscosity • 5. Multiphase Models • 6. Wetting Management • 7. GPU Scalability • 8. Open-Source Libraries • 9. Validation Results • 10. Limitations and Solutions • 11. Computational Cost • 12. References
+</div>
+
+## 1. Mesoscopic Principle
 
 The **LBM (Lattice Boltzmann Method)** is a mesoscopic approach that does not directly solve the Navier-Stokes equations, but rather the **discretized Boltzmann equation** on a regular lattice.
 
-### Fundamental Concept
+### 1.1 Fundamental Concept
 
 We track the evolution of **distribution functions** $f_i(\mathbf{x}, t)$ representing the probability of finding particles at position $\mathbf{x}$ at time $t$, moving in discrete directions $\mathbf{c}_i$.
 
@@ -12,9 +17,9 @@ $$\rho = \sum_i f_i \quad \text{and} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{
 
 ---
 
-## Discrete Boltzmann Equation
+## 2. Discrete Boltzmann Equation
 
-### BGK Formulation
+### 2.1 BGK Formulation
 
 The fundamental equation is:
 
@@ -24,7 +29,7 @@ where:
 - $\Omega_i(f)$: collision operator (relaxation toward equilibrium)
 - $F_i$: external force term
 
-### BGK Collision Operator
+### 2.2 BGK Collision Operator
 
 The BGK (Bhatnagar-Gross-Krook) approximation simplifies collision as linear relaxation toward equilibrium:
 
@@ -38,15 +43,15 @@ with $c_s = 1/\sqrt{3}$ the lattice speed of sound and $w_i$ the quadrature weig
 
 ---
 
-## Discretization Grids
+## 3. Discretization Grids
 
-### DdQq Nomenclature
+### 3.1 DdQq Nomenclature
 
 The **DdQq** notation indicates:
 - **d**: number of spatial dimensions
 - **q**: number of discrete velocities
 
-### Common Grids
+### 3.2 Common Grids
 
 | Grid | Application | Velocities |
 |------|-------------|------------|
@@ -59,9 +64,9 @@ The **DdQq** notation indicates:
 
 ---
 
-## Relationship with Viscosity
+## 4. Relationship with Viscosity
 
-### Fundamental Relation
+### 4.1 Fundamental Relation
 
 Kinematic viscosity $\nu$ is related to relaxation time $\tau$ by:
 
@@ -69,7 +74,7 @@ $$\nu = c_s^2 \left(\tau - \frac{1}{2}\right) \Delta t$$
 
 This relation is **fundamental**: it allows modeling fluids of different viscosities by simply adjusting $\tau$.
 
-### Adaptation for Non-Newtonian Fluids
+### 4.2 Adaptation for Non-Newtonian Fluids
 
 For shear-thinning fluids, $\tau$ depends locally on shear rate $\dot{\gamma}$:
 
@@ -79,9 +84,9 @@ where $\nu(\dot{\gamma})$ is given by a rheological law (e.g., power law, Carrea
 
 ---
 
-## Multiphase Models
+## 5. Multiphase Models
 
-### Shan-Chen (Pseudopotential)
+### 5.1 Shan-Chen (Pseudopotential)
 
 The **Shan-Chen** model represents fluid interactions via an **interparticle force**:
 
@@ -95,7 +100,7 @@ where:
 
 **Surface Tension:** $\sigma \propto G(\psi_{max} - \psi_{min})^2$
 
-### Free Energy Model
+### 5.2 Free Energy Model
 
 The **Free Energy** model is based on a free energy functional:
 
@@ -110,7 +115,7 @@ $$\mathbf{F} = -\nabla \cdot \boldsymbol{\sigma}^{chem}$$
 - More precise surface tension control
 - Fewer spurious currents
 
-### Color Gradient Model
+### 5.3 Color Gradient Model
 
 Uses two fluid populations (red/blue) with a segregation force:
 
@@ -120,9 +125,9 @@ where $\rho^N = (\rho^R - \rho^B)/(\rho^R + \rho^B)$ is the normalized color fra
 
 ---
 
-## Wetting Management
+## 6. Wetting Management
 
-### Contact Angles
+### 6.1 Contact Angles
 
 Contact angles on solid walls are managed by assigning a **fictitious density** (or potential) to solid nodes:
 
@@ -134,15 +139,15 @@ where $\theta_{eq}$ is the desired equilibrium contact angle.
 
 ---
 
-## GPU Scalability
+## 7. GPU Scalability
 
-### Exceptional Performance
+### 7.1 Exceptional Performance
 
 LBM is **intrinsically parallel**: each node can be updated independently during collision and streaming steps.
 
 **Typical Speedup:** x20 on GPU vs CPU (measured on NVIDIA A100)
 
-### Li et al. Benchmark (2022)
+### 7.2 Li et al. Benchmark (2022)
 
 | Configuration | Computation Time |
 |---------------|------------------|
@@ -155,9 +160,9 @@ LBM is **intrinsically parallel**: each node can be updated independently during
 
 ---
 
-## Open-Source Libraries
+## 8. Open-Source Libraries
 
-### Palabos
+### 8.1 Palabos
 
 **Palabos** (Parallel Lattice Boltzmann Solver) is the open-source reference:
 
@@ -166,7 +171,7 @@ LBM is **intrinsically parallel**: each node can be updated independently during
 - **Models:** Shan-Chen, Free Energy, Color Gradient
 - **Documentation:** Excellent with tutorials
 
-### Alternatives
+### 8.2 Alternatives
 
 | Library | Focus | GPU |
 |---------|-------|-----|
@@ -177,9 +182,9 @@ LBM is **intrinsically parallel**: each node can be updated independently during
 
 ---
 
-## Validation Results
+## 9. Validation Results
 
-### Li et al. Study (2022) - Shear-Thinning Ink
+### 9.1 Li et al. Study (2022) - Shear-Thinning Ink
 
 **Configuration:**
 - Solver: Palabos (C++/CUDA)
@@ -199,7 +204,7 @@ LBM is **intrinsically parallel**: each node can be updated independently during
 
 **Mechanism:** Shear-thinning reduces viscosity in the filament, accelerating pinch-off. The Free Energy model correctly captures surface tension ($\sigma = 35$ mN/m).
 
-### VOF-LBM Hybridization (Thiery et al., 2023)
+### 9.2 VOF-LBM Hybridization (Thiery et al., 2023)
 
 **Objective:** Combine VOF interface precision with LBM scalability.
 
@@ -218,9 +223,9 @@ LBM is **intrinsically parallel**: each node can be updated independently during
 
 ---
 
-## Limitations and Solutions
+## 10. Limitations and Solutions
 
-### Artificial Compressibility
+### 10.1 Artificial Compressibility
 
 **Problem:** LBM simulates a weakly compressible fluid. To maintain the incompressible approximation:
 
@@ -228,7 +233,7 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 
 **Solution:** Use low-Mach schemes (two-relaxation-time LBM, entropic LBM).
 
-### Spurious Currents
+### 10.2 Spurious Currents
 
 **Problem:** Artificial convection currents appear at interfaces (Shan-Chen).
 
@@ -237,7 +242,7 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 - Improved isotropy of gradient operators
 - Higher-order discretization schemes
 
-### Rheological Calibration
+### 10.3 Rheological Calibration
 
 **Problem:** The $\nu(\tau)$ relation is linear, limiting the range of simulable viscosities.
 
@@ -245,9 +250,9 @@ $$Ma = \frac{u}{c_s} < 0.1$$
 
 ---
 
-## Computational Cost
+## 11. Computational Cost
 
-### Typical Configuration
+### 11.1 Typical Configuration
 
 For a 3D simulation (1 ms ejection, D3Q19):
 
@@ -261,6 +266,6 @@ For a 3D simulation (1 ms ejection, D3Q19):
 
 ---
 
-## References
+## 12. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
