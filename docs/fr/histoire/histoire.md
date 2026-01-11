@@ -357,7 +357,7 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
               ┌────────────┴────────────┐
               │                         │
          CE PROJET              APPLICATIONS
-    Dispense d'encre Ag/AgCl    INDUSTRIELLES
+    Dispense d'encre rhéofluidifiante APPLICATONS INDUSTRIELLES
 ```
 
 ---

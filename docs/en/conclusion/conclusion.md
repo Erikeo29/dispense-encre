@@ -173,7 +173,7 @@ Shear-thinning inks are increasingly used for **4D printing** (materials that ch
 - Polymers that deform under temperature or light.
 - **Modeling:** FEM coupling with thermomechanical models.
 
-#### Conductive Inks (Ag/AgCl)
+#### Conductive Inks (Shear-Thinning)
 
 - Silver or graphene nanoparticles for printed electronics.
 - **Challenges:** Complex rheology (thixotropy, viscoelasticity) + sedimentation.

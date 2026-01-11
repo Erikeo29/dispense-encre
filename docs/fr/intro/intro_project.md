@@ -7,7 +7,7 @@
 La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
 
 **Applications industrielles :**
-- Fabrication de capteurs électrochimiques (dépôt d'encres Ag/AgCl)
+- Fabrication de capteurs électrochimiques (dépôt d'encres conductrices)
 - Électronique imprimée (circuits conducteurs, antennes RFID)
 - Bioprinting et dépôt de biomatériaux
 - Revêtements fonctionnels et couches minces
@@ -41,7 +41,7 @@ $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\ga
 
 où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini, et $k$, $a$ des paramètres d'ajustement.
 
-**Exemple :** Une encre Ag/AgCl typique présente $\eta_0 = 0.5$–$5$ Pa·s (au repos) et $\eta_\infty = 0.05$ Pa·s sous fort cisaillement.
+**Exemple :** Une encre rhéofluidifiante typique présente $\eta_0 = 0.5$–$5$ Pa·s (au repos) et $\eta_\infty = 0.05$ Pa·s sous fort cisaillement.
 
 ---
 
@@ -86,7 +86,7 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
 Le système modélisé consiste en :
 - **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
 - **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm
-- **Fluide** : encre Ag/AgCl rhéofluidifiante ($\rho$ = 3000 kg/m³)
+- **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³)
 - **Environnement** : air ambiant
 
 ### Paramètres de Simulation

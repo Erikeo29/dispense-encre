@@ -96,7 +96,7 @@ $$\eta(\dot{\gamma}) = K \dot{\gamma}^{n-1}$$
 
 $$\eta(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) \left[ 1 + (\lambda \dot{\gamma})^2 \right]^{\frac{n-1}{2}}$$
 
-| Paramètre | Signification | Valeur typique (encre Ag/AgCl) |
+| Paramètre | Signification | Valeur typique (encre rhéofluidifiante) |
 |-----------|---------------|-------------------------------|
 | $\eta_0$ | Viscosité au repos | 0.5 – 5 Pa·s |
 | $\eta_\infty$ | Viscosité à fort cisaillement | 0.05 Pa·s |
@@ -232,7 +232,7 @@ $$\mathbf{F}_\sigma = \sigma \kappa \mathbf{n} \delta_s$$
 
 | Terme | Signification | Calcul |
 |-------|---------------|--------|
-| $\sigma$ | Tension superficielle | 0.04 N/m (encre Ag/AgCl) |
+| $\sigma$ | Tension superficielle | 0.04 N/m (encre) |
 | $\kappa$ | Courbure de l'interface | $\kappa = -\nabla \cdot \mathbf{n}$ |
 | $\mathbf{n}$ | Normale à l'interface | $\mathbf{n} = \nabla \alpha / |\nabla \alpha|$ (VOF) |
 | $\delta_s$ | Delta de surface | $\delta_s = |\nabla \alpha|$ (VOF) |

@@ -99,7 +99,7 @@ The effective viscosity $\eta_{eff}$ follows the Carreau model:
 
 $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda \dot{\gamma})^2]^{(n-1)/2}$$
 
-**Typical Parameters for Ag/AgCl Ink:**
+**Typical Parameters for Shear-Thinning Ink:**
 
 | Parameter | Symbol | Value | Unit |
 |-----------|--------|-------|------|

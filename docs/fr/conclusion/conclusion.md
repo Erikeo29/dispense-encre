@@ -173,7 +173,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 - Polymères qui se déforment sous l'effet de la température ou de la lumière.
 - **Modélisation :** Couplage FEM avec des modèles thermomécaniques.
 
-#### Encres Conductrices (Ag/AgCl)
+#### Encres Conductrices (Rhéofluidifiantes)
 
 - Nanoparticules d'argent ou de graphène pour l'électronique imprimée.
 - **Défis :** Rhéologie complexe (thixotropie, viscoélasticité) + sédimentation.

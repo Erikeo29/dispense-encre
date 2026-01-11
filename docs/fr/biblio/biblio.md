@@ -1,6 +1,6 @@
 # Bibliographie
 
-Cette page regroupe toutes les références bibliographiques utilisées dans ce projet de simulation de dispense d'encre Ag/AgCl.
+Cette page regroupe toutes les références bibliographiques utilisées dans ce projet de simulation de dispense d'encre rhéofluidifiante.
 
 ---
 

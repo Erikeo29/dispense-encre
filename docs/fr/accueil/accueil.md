@@ -11,7 +11,7 @@ Ce projet propose une **étude comparative de quatre méthodes numériques** pou
 
 ## Application cible
 
-Les simulations modélisent la **dispense d'une encre type Ag/AgCl** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
+Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-puits pour la fabrication de capteurs électrochimiques. Ce procédé nécessite un contrôle précis du remplissage, du mouillage et de la forme finale du dépôt.
 
 **Paramètres clés étudiés :**
 - Géométrie : diamètre puit (800–1500 µm), diamètre buse (200–350 µm)
