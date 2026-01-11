@@ -20,6 +20,7 @@ TRANSLATIONS = {
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
         "annex_pages": ["Conclusion", "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"],
         "tabs_fem": ["Physique", "Code", "Résultats de modélisation (GIF)", "Résultats de modélisation (PNG)"],
+        "tabs_lbm": ["Physique", "Code", "Résultats de modélisation (GIF)", "Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 4 modèles de Simulation",
         "sim_1": "Simulation 1",
@@ -46,6 +47,14 @@ TRANSLATIONS = {
         "lbl_time": "Temps (ms)",
         "lbl_shift_z": "Décalage Z (µm)",
         "lbl_ratio": "Ratio buse/puit",
+        # Labels LBM
+        "lbl_lbm_ratio": "Ratio surf.",
+        "lbl_lbm_ca_sub": "θ substrat (°)",
+        "lbl_lbm_ca_wall_l": "θ mur G (°)",
+        "lbl_lbm_ca_wall_r": "θ mur D (°)",
+        "lbl_lbm_ca_plat": "θ plateau G (°)",
+        "lbl_lbm_eta0": "η₀ (Pa·s)",
+        "lbl_lbm_shift": "Décalage X (µm)",
         "version_info": """**Version 0.5.0** ***(not released)***
 
 Jan 2025 - *EQU*
@@ -80,6 +89,7 @@ Jan 2025 - *EQU*
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
         "annex_pages": ["Conclusion", "Key Equations", "Glossary", "A Bit of History", "Bibliography"],
         "tabs_fem": ["Physics", "Code", "Modeling Results (GIF)", "Modeling Results (PNG)"],
+        "tabs_lbm": ["Physics", "Code", "Modeling Results (GIF)", "Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "Modeling Results"],
         "overview_title": "Overview of 4 Simulation Models Results",
         "sim_1": "Simulation 1",
@@ -106,6 +116,14 @@ Jan 2025 - *EQU*
         "lbl_time": "Time (ms)",
         "lbl_shift_z": "Offset Z (µm)",
         "lbl_ratio": "Nozzle/well ratio",
+        # Labels LBM
+        "lbl_lbm_ratio": "Surf. ratio",
+        "lbl_lbm_ca_sub": "θ substrate (°)",
+        "lbl_lbm_ca_wall_l": "θ wall L (°)",
+        "lbl_lbm_ca_wall_r": "θ wall R (°)",
+        "lbl_lbm_ca_plat": "θ platform L (°)",
+        "lbl_lbm_eta0": "η₀ (Pa·s)",
+        "lbl_lbm_shift": "Offset X (µm)",
         "version_info": """**Version 0.5.0** ***(not released)***
 
 Jan 2025 - *EQU*
@@ -310,7 +328,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 # Chemins vers les exemples visuels
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
 VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/animation_vof_93.gif")
-LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/simulation_lbm_29.gif")
+LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_001.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 
 # --- Fonctions Utilitaires ---
@@ -343,6 +361,44 @@ def load_png_mapping():
             )
             filename = row['nom fichier gif'].replace('.png', '.jpg')
             mapping[key] = os.path.join(ASSETS_PATH, "fem/png", filename)
+        return mapping
+    except Exception: return {}
+
+@st.cache_data(ttl=600)
+def load_lbm_gif_mapping():
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'lbm_gif_mapping.csv'), sep=';', encoding='utf-8')
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                float(str(row['ratio surface goutte/puit']).replace(',', '.')),
+                int(row['CA substrat (deg)']),
+                int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)']),
+                int(row['CA plateau gauche (deg)']),
+                float(str(row['Viscosite eta0 (Pa.s)']).replace(',', '.')),
+                int(row['shift X (um)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "lbm/gif", row['nom fichier gif'])
+        return mapping
+    except Exception: return {}
+
+@st.cache_data(ttl=600)
+def load_lbm_png_mapping():
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'lbm_png_mapping.csv'), sep=';', encoding='utf-8')
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                float(str(row['ratio surface goutte/puit']).replace(',', '.')),
+                int(row['CA substrat (deg)']),
+                int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)']),
+                int(row['CA plateau gauche (deg)']),
+                float(str(row['Viscosite eta0 (Pa.s)']).replace(',', '.')),
+                int(row['shift X (um)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "lbm/png", row['nom fichier png'])
         return mapping
     except Exception: return {}
 
@@ -805,19 +861,106 @@ rho   3000;  // Masse volumique [kg/m³]""", language='cpp')
 # ===== PAGE LBM =====
 elif selected_page == model_pages[2]:  # LBM
     st.title(t("title_model_3"))
-    tabs = st.tabs(t("tabs_other"))
+    tabs = st.tabs(t("tabs_lbm"))
 
-    with tabs[0]:
+    with tabs[0]:  # Physique
         st.markdown(load_file_content("physics/physics_lbm.md"))
 
-    with tabs[1]:
+    with tabs[1]:  # Code
         st.subheader("Code Source Palabos")
         st.code(load_file_content(os.path.join(DOC_PATH, "fr/code/code_lbm.cpp")), language='cpp')
 
-    with tabs[2]:
-        st.subheader("Exemple de Simulation LBM")
-        if os.path.exists(LBM_GIF_EX):
-            st.image(LBM_GIF_EX, caption="Simulation LBM - Cas 29", use_container_width=True)
+    with tabs[2]:  # GIF
+        st.subheader(t("gif_viewer"))
+
+        # Zone de sélection des paramètres
+        with st.container(border=True):
+            st.markdown(f"**{t('sim_1')}**")
+            _, c1, c2, c3, c4, c5, c6, c7, _ = st.columns([0.3, 1, 1, 1, 1, 1, 1, 1, 0.3])
+            with c1: lg1_r = st.selectbox(t("lbl_lbm_ratio"), [0.8, 1.0, 1.2], key="lg1_r", format_func=lambda x: f"{x:.1f}")
+            with c2: lg1_s = st.selectbox(t("lbl_lbm_ca_sub"), [35, 60], key="lg1_s")
+            with c3: lg1_wl = st.selectbox(t("lbl_lbm_ca_wall_l"), [15, 35, 90], key="lg1_wl")
+            with c4: lg1_wr = st.selectbox(t("lbl_lbm_ca_wall_r"), [35, 90], key="lg1_wr")
+            with c5: lg1_p = st.selectbox(t("lbl_lbm_ca_plat"), [15, 35, 90], key="lg1_p")
+            with c6: lg1_e = st.selectbox(t("lbl_lbm_eta0"), [0.5, 1.5], key="lg1_e")
+            with c7: lg1_x = st.selectbox(t("lbl_lbm_shift"), [0, -75], key="lg1_x")
+            lbm_p1 = (lg1_r, lg1_s, lg1_wl, lg1_wr, lg1_p, lg1_e, lg1_x)
+
+            st.markdown(f"**{t('sim_2')}**")
+            _, c1, c2, c3, c4, c5, c6, c7, _ = st.columns([0.3, 1, 1, 1, 1, 1, 1, 1, 0.3])
+            with c1: lg2_r = st.selectbox(t("lbl_lbm_ratio"), [0.8, 1.0, 1.2], key="lg2_r", index=2, format_func=lambda x: f"{x:.1f}")
+            with c2: lg2_s = st.selectbox(t("lbl_lbm_ca_sub"), [35, 60], key="lg2_s", index=1)
+            with c3: lg2_wl = st.selectbox(t("lbl_lbm_ca_wall_l"), [15, 35, 90], key="lg2_wl", index=1)
+            with c4: lg2_wr = st.selectbox(t("lbl_lbm_ca_wall_r"), [35, 90], key="lg2_wr", index=1)
+            with c5: lg2_p = st.selectbox(t("lbl_lbm_ca_plat"), [15, 35, 90], key="lg2_p", index=1)
+            with c6: lg2_e = st.selectbox(t("lbl_lbm_eta0"), [0.5, 1.5], key="lg2_e", index=1)
+            with c7: lg2_x = st.selectbox(t("lbl_lbm_shift"), [0, -75], key="lg2_x", index=1)
+            lbm_p2 = (lg2_r, lg2_s, lg2_wl, lg2_wr, lg2_p, lg2_e, lg2_x)
+
+            _, btn_col, _ = st.columns([1, 2, 1])
+            with btn_col:
+                if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_lbm_gif"):
+                    st.session_state.run_lbm_g = True
+                    st.session_state.p_lbm_g = (lbm_p1, lbm_p2)
+
+        # Zone d'affichage des résultats
+        if st.session_state.get('run_lbm_g', False):
+            with st.container(border=True):
+                gif_cols = st.columns(2)
+                m = load_lbm_gif_mapping()
+                for i, (col, params) in enumerate(zip(gif_cols, st.session_state.p_lbm_g)):
+                    with col:
+                        st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
+                        if params in m:
+                            st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("combo_unavailable"))
+
+    with tabs[3]:  # PNG
+        st.subheader(t("png_viewer"))
+
+        # Zone de sélection des paramètres
+        with st.container(border=True):
+            st.markdown(f"**{t('sim_1')}**")
+            _, c1, c2, c3, c4, c5, c6, c7, _ = st.columns([0.3, 1, 1, 1, 1, 1, 1, 1, 0.3])
+            with c1: lp1_r = st.selectbox(t("lbl_lbm_ratio"), [0.8, 1.0, 1.2], key="lp1_r", format_func=lambda x: f"{x:.1f}")
+            with c2: lp1_s = st.selectbox(t("lbl_lbm_ca_sub"), [35, 60], key="lp1_s")
+            with c3: lp1_wl = st.selectbox(t("lbl_lbm_ca_wall_l"), [15, 35, 90], key="lp1_wl")
+            with c4: lp1_wr = st.selectbox(t("lbl_lbm_ca_wall_r"), [35, 90], key="lp1_wr")
+            with c5: lp1_p = st.selectbox(t("lbl_lbm_ca_plat"), [15, 35, 90], key="lp1_p")
+            with c6: lp1_e = st.selectbox(t("lbl_lbm_eta0"), [0.5, 1.5], key="lp1_e")
+            with c7: lp1_x = st.selectbox(t("lbl_lbm_shift"), [0, -75], key="lp1_x")
+            lbm_png1 = (lp1_r, lp1_s, lp1_wl, lp1_wr, lp1_p, lp1_e, lp1_x)
+
+            st.markdown(f"**{t('sim_2')}**")
+            _, c1, c2, c3, c4, c5, c6, c7, _ = st.columns([0.3, 1, 1, 1, 1, 1, 1, 1, 0.3])
+            with c1: lp2_r = st.selectbox(t("lbl_lbm_ratio"), [0.8, 1.0, 1.2], key="lp2_r", index=2, format_func=lambda x: f"{x:.1f}")
+            with c2: lp2_s = st.selectbox(t("lbl_lbm_ca_sub"), [35, 60], key="lp2_s", index=1)
+            with c3: lp2_wl = st.selectbox(t("lbl_lbm_ca_wall_l"), [15, 35, 90], key="lp2_wl", index=1)
+            with c4: lp2_wr = st.selectbox(t("lbl_lbm_ca_wall_r"), [35, 90], key="lp2_wr", index=1)
+            with c5: lp2_p = st.selectbox(t("lbl_lbm_ca_plat"), [15, 35, 90], key="lp2_p", index=1)
+            with c6: lp2_e = st.selectbox(t("lbl_lbm_eta0"), [0.5, 1.5], key="lp2_e", index=1)
+            with c7: lp2_x = st.selectbox(t("lbl_lbm_shift"), [0, -75], key="lp2_x", index=1)
+            lbm_png2 = (lp2_r, lp2_s, lp2_wl, lp2_wr, lp2_p, lp2_e, lp2_x)
+
+            _, btn_col, _ = st.columns([1, 2, 1])
+            with btn_col:
+                if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_lbm_png"):
+                    st.session_state.run_lbm_p = True
+                    st.session_state.p_lbm_p = (lbm_png1, lbm_png2)
+
+        # Zone d'affichage des résultats
+        if st.session_state.get('run_lbm_p', False):
+            with st.container(border=True):
+                png_cols = st.columns(2)
+                m = load_lbm_png_mapping()
+                for i, (col, params) in enumerate(zip(png_cols, st.session_state.p_lbm_p)):
+                    with col:
+                        st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
+                        if params in m:
+                            st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
 
 # ===== PAGE SPH =====
 elif selected_page == model_pages[3]:  # SPH
