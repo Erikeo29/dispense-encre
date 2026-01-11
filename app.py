@@ -911,28 +911,44 @@ elif selected_page == model_pages[2]:  # LBM
 
         if not df_g.empty:
             with st.container(border=True):
+                # --- Simulation 1 ---
                 st.markdown(f"**{t('sim_1')}**")
-                # Sélecteurs LBM
                 c1, c2, c3, c4 = st.columns(4)
-                with c1: lbm_ratio = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r")
-                with c2: lbm_visc = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v")
-                with c3: lbm_shift = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s")
-                with c4: lbm_ca_sub = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c")
+                with c1: lbm_r1 = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r1")
+                with c2: lbm_v1 = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v1")
+                with c3: lbm_s1 = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s1")
+                with c4: lbm_c1 = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c1")
                 
-                # Autres CA (moins critiques, on peut les mettre en expander ou 2eme ligne)
-                with st.expander("Paramètres avancés (Angles de contact)"):
+                with st.expander(f"Paramètres avancés {t('sim_1')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lbm_ca_wl = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_wl")
-                    with cc2: lbm_ca_wr = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_wr")
-                    with cc3: lbm_ca_pl = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_pl")
+                    with cc1: lbm_cwl1 = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_cwl1")
+                    with cc2: lbm_cwr1 = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_cwr1")
+                    with cc3: lbm_cpl1 = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_cpl1")
+                p_lbm_1 = (lbm_r1, lbm_c1, lbm_cwl1, lbm_cwr1, lbm_cpl1, lbm_v1, lbm_s1)
 
-                p_lbm = (lbm_ratio, lbm_ca_sub, lbm_ca_wl, lbm_ca_wr, lbm_ca_pl, lbm_visc, lbm_shift)
+                st.divider()
 
+                # --- Simulation 2 ---
+                st.markdown(f"**{t('sim_2')}**")
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: lbm_r2 = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r2", index=0)
+                with c2: lbm_v2 = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v2", index=0)
+                with c3: lbm_s2 = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s2", index=0)
+                with c4: lbm_c2 = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c2", index=0)
+                
+                with st.expander(f"Paramètres avancés {t('sim_2')}"):
+                    cc1, cc2, cc3 = st.columns(3)
+                    with cc1: lbm_cwl2 = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_cwl2", index=0)
+                    with cc2: lbm_cwr2 = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_cwr2", index=0)
+                    with cc3: lbm_cpl2 = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_cpl2", index=0)
+                p_lbm_2 = (lbm_r2, lbm_c2, lbm_cwl2, lbm_cwr2, lbm_cpl2, lbm_v2, lbm_s2)
+
+                # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
                 with btn_col1:
                     if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_lbm_g"):
                         st.session_state.run_lbm_g = True
-                        st.session_state.p_lbm_g = p_lbm
+                        st.session_state.p_lbm_g = (p_lbm_1, p_lbm_2)
                 with btn_col2:
                     if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_g"):
                         st.session_state.run_lbm_g = False
@@ -940,10 +956,14 @@ elif selected_page == model_pages[2]:  # LBM
 
             if st.session_state.get('run_lbm_g', False):
                 with st.container(border=True):
-                    if st.session_state.p_lbm_g in mapping_g:
-                        st.markdown(load_media_as_base64(mapping_g[st.session_state.p_lbm_g]), unsafe_allow_html=True)
-                    else:
-                        st.warning(t("combo_unavailable"))
+                    res_cols = st.columns(2)
+                    for i, (col, params) in enumerate(zip(res_cols, st.session_state.p_lbm_g)):
+                        with col:
+                            st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
+                            if params in mapping_g:
+                                st.markdown(load_media_as_base64(mapping_g[params]), unsafe_allow_html=True)
+                            else:
+                                st.warning(t("combo_unavailable"))
         else:
             st.warning("Mapping data missing for LBM GIF.")
 
@@ -963,27 +983,44 @@ elif selected_page == model_pages[2]:  # LBM
 
         if not df_p.empty:
             with st.container(border=True):
+                # --- Simulation 1 ---
                 st.markdown(f"**{t('sim_1')}**")
-                # Sélecteurs LBM PNG
                 c1, c2, c3, c4 = st.columns(4)
-                with c1: lbm_ratio_p = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r")
-                with c2: lbm_visc_p = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v")
-                with c3: lbm_shift_p = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s")
-                with c4: lbm_ca_sub_p = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c")
+                with c1: lp_r1 = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r1")
+                with c2: lp_v1 = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v1")
+                with c3: lp_s1 = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s1")
+                with c4: lp_c1 = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c1")
                 
-                with st.expander("Paramètres avancés (Angles de contact)"):
+                with st.expander(f"Paramètres avancés {t('sim_1')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lbm_ca_wl_p = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_wl")
-                    with cc2: lbm_ca_wr_p = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_wr")
-                    with cc3: lbm_ca_pl_p = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_pl")
+                    with cc1: lp_cwl1 = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_cwl1")
+                    with cc2: lp_cwr1 = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_cwr1")
+                    with cc3: lp_cpl1 = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_cpl1")
+                pp_lbm_1 = (lp_r1, lp_c1, lp_cwl1, lp_cwr1, lp_cpl1, lp_v1, lp_s1)
 
-                p_lbm_p = (lbm_ratio_p, lbm_ca_sub_p, lbm_ca_wl_p, lbm_ca_wr_p, lbm_ca_pl_p, lbm_visc_p, lbm_shift_p)
+                st.divider()
 
+                # --- Simulation 2 ---
+                st.markdown(f"**{t('sim_2')}**")
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: lp_r2 = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r2", index=0)
+                with c2: lp_v2 = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v2", index=0)
+                with c3: lp_s2 = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s2", index=0)
+                with c4: lp_c2 = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c2", index=0)
+                
+                with st.expander(f"Paramètres avancés {t('sim_2')}"):
+                    cc1, cc2, cc3 = st.columns(3)
+                    with cc1: lp_cwl2 = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_cwl2", index=0)
+                    with cc2: lp_cwr2 = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_cwr2", index=0)
+                    with cc3: lp_cpl2 = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_cpl2", index=0)
+                pp_lbm_2 = (lp_r2, lp_c2, lp_cwl2, lp_cwr2, lp_cpl2, lp_v2, lp_s2)
+
+                # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
                 with btn_col1:
                     if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_lbm_p"):
                         st.session_state.run_lbm_p = True
-                        st.session_state.p_lbm_p = p_lbm_p
+                        st.session_state.p_lbm_p = (pp_lbm_1, pp_lbm_2)
                 with btn_col2:
                     if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_p"):
                         st.session_state.run_lbm_p = False
@@ -991,10 +1028,14 @@ elif selected_page == model_pages[2]:  # LBM
 
             if st.session_state.get('run_lbm_p', False):
                 with st.container(border=True):
-                    if st.session_state.p_lbm_p in mapping_p:
-                        st.markdown(load_media_as_base64(mapping_p[st.session_state.p_lbm_p]), unsafe_allow_html=True)
-                    else:
-                        st.warning(t("combo_unavailable"))
+                    res_cols = st.columns(2)
+                    for i, (col, params) in enumerate(zip(res_cols, st.session_state.p_lbm_p)):
+                        with col:
+                            st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
+                            if params in mapping_p:
+                                st.markdown(load_media_as_base64(mapping_p[params]), unsafe_allow_html=True)
+                            else:
+                                st.warning(t("combo_unavailable"))
         else:
             st.warning("Mapping data missing for LBM PNG.")
 
