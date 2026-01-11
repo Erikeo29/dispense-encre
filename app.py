@@ -857,8 +857,8 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
     # --- Section visuelle: Comparaison des maillages/grilles ---
     st.markdown("---")
     current_lang = st.session_state.get('lang', 'fr')
-    st.subheader("🔬 " + ("Visualisation des Approches de Discrétisation" if current_lang == "fr"
-                         else "Discretization Approaches Visualization"))
+    st.subheader("Visualisation des Approches de Discrétisation" if current_lang == "fr"
+                  else "Discretization Approaches Visualization")
 
     # Onglets pour les 4 méthodes
     mesh_tabs = st.tabs(["FEM", "VOF", "LBM", "SPH"])

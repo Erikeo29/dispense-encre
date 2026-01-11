@@ -45,26 +45,6 @@ where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscositi
 
 ---
 
-## Fundamental Dimensionless Numbers
-
-Fluid dispensing modeling involves several interdependent physical phenomena, characterized by the following dimensionless numbers:
-
-| Number | Expression | Meaning | Typical Value |
-|--------|------------|---------|---------------|
-| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Inertial vs viscous effects | 10 – 100 |
-| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Inertial forces vs surface tension | $We < 10$ |
-| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosity, surface tension, and size | $Oh < 0.5$ |
-| **Deborah** | $De = \lambda \dot{\gamma}$ | Viscoelastic effects (relaxation time $\lambda$) | Variable |
-| **Capillary** | $Ca = \frac{\eta v}{\sigma}$ | Viscosity vs capillarity | $Ca \ll 1$ |
-| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravity vs surface tension | $Bo \ll 1$ |
-
-**Physical interpretation:**
-- $Re$ between 10 and 100: laminar regime with inertial effects
-- $Oh < 0.5$: stable droplet/filament formation
-- $Bo \ll 1$: gravity negligible (dominant capillary regime)
-
----
-
 ## Numerical Modeling Challenges
 
 ### Technical Issues
@@ -87,7 +67,7 @@ The modeled system consists of:
 - **Dispensing nozzle**: diameter 200–350 µm, positioned above the well
 - **Micro-well**: diameter 800–1500 µm, depth ~130 µm
 - **Fluid**: shear-thinning ink ($\rho$ = 3000 kg/m³)
-- **Environment**: ambient air
+- **Environment**: ambient temperature (~20°C) and atmospheric pressure
 
 ### Simulation Parameters
 
@@ -95,10 +75,11 @@ The modeled system consists of:
 |-----------|-------|------|
 | Well diameter | 800 – 1500 | µm |
 | Nozzle diameter | 200 – 350 | µm |
-| Horizontal offset | 0, -75, -150 | µm |
-| Viscosity $\eta_0$ | 0.5 – 5 | Pa·s |
+| Horizontal offset (nozzle vs well center) | 0, -75, -150 | µm |
+| Viscosity $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
 | Wall contact angle | 35 – 90 | ° |
-| Electrode contact angle | 35 – 75 | ° |
+| Well bottom contact angle | 35 – 75 | ° |
+| Substrate contact angle (plateau) | 15, 35, 90 | ° |
 | Dispensing time | 20 – 40 | ms |
 
 ---

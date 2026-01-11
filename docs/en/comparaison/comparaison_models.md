@@ -85,26 +85,6 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## Precision and Experimental Validation
-
-### Average Error Comparison
-
-Based on 20 studies with experimental validation (shadowgraphy, PIV):
-
-| Criterion | VOF | FEM | LBM | SPH |
-|-----------|-----|-----|-----|-----|
-| Droplet velocity (%) | 1.2 | 0.8 | 1.8 | 2.5 |
-| Droplet diameter (%) | 2.1 | 1.5 | 3.0 | 4.2 |
-| Pinch-off time (%) | 3.5 | 2.8 | 4.0 | 5.5 |
-| Satellite volume (%) | 5.0 | 4.0 | 6.0 | 7.0 |
-
-**Analysis:**
-- **FEM** offers the best overall precision due to its ability to handle complex geometries and multiphysics coupling
-- **VOF** is accurate for interfaces but less so for complex rheology
-- **LBM** and **SPH** have higher errors due to artificial compressibility (LBM) and numerical noise (SPH)
-
----
-
 ## Adaptability to Shear-Thinning Inks
 
 ### Supported Rheological Laws
@@ -114,14 +94,10 @@ Based on 20 studies with experimental validation (shadowgraphy, PIV):
 | Newtonian | Yes | Yes | Yes | Yes |
 | Power law | Yes | Yes | Yes | Yes |
 | Carreau-Yasuda | Yes | Yes | Yes | Yes |
-| Herschel-Bulkley | No | Yes | No | Yes |
-| Oldroyd-B (viscoelastic) | No | Yes | Yes | Yes |
-| Thixotropy | No | No | No | Yes |
 
 **Analysis:**
 - **FEM** is the most versatile for complex rheology
-- **SPH** is the only one handling thixotropy thanks to its Lagrangian approach
-- **VOF** and **LBM** are limited to simple laws (power law, Carreau)
+- **VOF** and **LBM** support standard shear-thinning laws (power law, Carreau)
 
 ---
 
