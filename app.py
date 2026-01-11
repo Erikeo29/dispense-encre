@@ -18,7 +18,7 @@ TRANSLATIONS = {
         "annex_header": "Annexes",
         "gen_pages": ["Accueil", "Introduction", "Comparaison des modèles"],
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
-        "annex_pages": ["Conclusion", "Équations clés", "Lexique", "Un peu d'histoire", "Bibliographie"],
+        "annex_pages": ["Lexique", "Équations clés", "Perspectives", "Un peu d'histoire", "Bibliographie"],
         "tabs_fem": ["Physique", "Code", "Résultats de modélisation (GIF)", "Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 4 modèles de Simulation",
@@ -84,7 +84,7 @@ TRANSLATIONS = {
         "annex_header": "Appendices",
         "gen_pages": ["Home", "Introduction", "Model Comparison"],
         "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
-        "annex_pages": ["Conclusion", "Key Equations", "Glossary", "A Bit of History", "Bibliography"],
+        "annex_pages": ["Glossary", "Key Equations", "Perspectives", "A Bit of History", "Bibliography"],
         "tabs_fem": ["Physics", "Code", "Modeling Results (GIF)", "Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "Modeling Results"],
         "overview_title": "Overview of 4 Simulation Models Results",
@@ -1217,11 +1217,11 @@ elif selected_page == model_pages[3]:  # SPH
         if os.path.exists(SPH_GIF_EX):
             st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03", use_container_width=True)
 
-# ===== PAGE CONCLUSION =====
-elif selected_page == annex_pages[0]:  # Conclusion
-    st.title("Conclusion")
+# ===== PAGE LEXIQUE =====
+elif selected_page == annex_pages[0]:  # Lexique / Glossary
+    st.title(selected_page)
     st.markdown("---")
-    st.markdown(load_file_content("conclusion/conclusion.md"))
+    st.markdown(load_file_content("lexique/lexique.md"))
 
 # ===== PAGE ÉQUATIONS CLÉS =====
 elif selected_page == annex_pages[1]:  # Équations clés / Key Equations
@@ -1229,11 +1229,11 @@ elif selected_page == annex_pages[1]:  # Équations clés / Key Equations
     st.markdown("---")
     st.markdown(load_file_content("equations/equations_clef.md"))
 
-# ===== PAGE LEXIQUE =====
-elif selected_page == annex_pages[2]:  # Lexique / Glossary
-    st.title(selected_page)
+# ===== PAGE PERSPECTIVES =====
+elif selected_page == annex_pages[2]:  # Perspectives
+    st.title("Perspectives")
     st.markdown("---")
-    st.markdown(load_file_content("lexique/lexique.md"))
+    st.markdown(load_file_content("conclusion/conclusion.md"))
 
 # ===== PAGE HISTOIRE =====
 elif selected_page == annex_pages[3]:  # Un peu d'histoire / A Bit of History
