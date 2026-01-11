@@ -737,7 +737,7 @@ def stream_gemini_response(user_message: str):
     try:
         # Créer le modèle avec le system prompt
         model = genai.GenerativeModel(
-            model_name="gemini-2.0-flash",
+            model_name="gemini-1.5-flash",
             system_instruction=SYSTEM_PROMPT
         )
 
