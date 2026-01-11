@@ -741,7 +741,7 @@ def stream_groq_response(user_message: str):
 
         # Générer la réponse en streaming
         stream = client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.3-70b-versatile",
             messages=messages,
             max_tokens=1024,
             stream=True
