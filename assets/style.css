@@ -1,0 +1,151 @@
+/* ==========================================================================
+   Streamlit Dispense App - Custom CSS Styles
+   Style Académique v0.5.0
+   ========================================================================== */
+
+/* --- Masquer éléments Streamlit natifs --- */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+.stDeployButton {display: none;}
+
+/* --- Style académique général --- */
+.main {
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+h1, h2, h3 {
+    color: #004b87;
+}
+
+/* --- Onglets (Tabs) plus visibles --- */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+}
+.stTabs [data-baseweb="tab"] {
+    height: 50px;
+    padding: 10px 24px;
+    background-color: #f0f2f6;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    font-size: 16px;
+}
+.stTabs [aria-selected="true"] {
+    background-color: #004b87;
+    color: white;
+}
+
+/* --- Boutons de navigation flottants (haut/bas) --- */
+.nav-button {
+    position: fixed;
+    right: 30px;
+    z-index: 9999;
+    background-color: #004b87;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.nav-button:hover {
+    background-color: #003366;
+    transform: scale(1.1);
+}
+.back-to-top {
+    bottom: calc(50% + 30px);
+}
+.scroll-to-bottom {
+    bottom: calc(50% - 30px);
+}
+
+/* --- Bouton chatbot flottant --- */
+.chat-toggle-btn {
+    bottom: calc(50% - 90px);
+    background-color: #28a745;
+}
+.chat-toggle-btn:hover {
+    background-color: #218838;
+}
+
+/* --- Style du popover chatbot --- */
+[data-testid="stPopover"] {
+    max-width: 500px !important;
+}
+[data-testid="stPopover"] > div {
+    padding: 0 !important;
+}
+
+/* --- Messages du chat --- */
+.chat-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* --- Sidebar: Espacement radio buttons --- */
+[data-testid="stSidebar"] .stRadio > div {
+    gap: 6px;
+}
+
+/* --- Sidebar: Améliorer visibilité radio buttons --- */
+[data-testid="stSidebar"] .stRadio > div > label > div:first-child {
+    border: 2px solid #666;
+}
+
+/* --- Sidebar: Réduire espace séparateurs --- */
+[data-testid="stSidebar"] hr {
+    margin: 4px 0;
+}
+
+/* --- Sidebar: Réduire espace sous subheaders --- */
+[data-testid="stSidebar"] [data-testid="stSubheader"] {
+    margin-bottom: -10px;
+}
+
+/* --- Sidebar: Réduire espace paragraphes markdown --- */
+[data-testid="stSidebar"] [data-testid="stMarkdown"] p {
+    margin-bottom: 0.3rem;
+}
+
+/* --- Sidebar: Réduire espace listes --- */
+[data-testid="stSidebar"] [data-testid="stMarkdown"] ul {
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+
+/* --- Sidebar: Bouton popover Chatbot --- */
+[data-testid="stSidebar"] [data-testid="stPopover"] > button {
+    background-color: #004b87;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+[data-testid="stSidebar"] [data-testid="stPopover"] > button:hover {
+    background-color: #003366;
+    color: white;
+}
+[data-testid="stSidebar"] [data-testid="stPopover"] > button:active {
+    background-color: #002244;
+    color: white;
+}
+
+/* --- Boutons Réinitialiser (secondary) en ROUGE --- */
+button[kind="secondary"] {
+    background-color: #dc3545 !important;
+    color: white !important;
+    border: 1px solid #dc3545 !important;
+}
+button[kind="secondary"]:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+button[kind="secondary"]:active {
+    background-color: #a71d2a !important;
+}
