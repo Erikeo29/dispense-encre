@@ -45,26 +45,6 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 ---
 
-## Nombres Adimensionnels Fondamentaux
-
-La modélisation de la dispense de fluides implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
-
-| Nombre | Expression | Signification | Valeur typique |
-|--------|------------|---------------|----------------|
-| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Effets inertiels vs visqueux | 10 – 100 |
-| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We < 10$ |
-| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.5$ |
-| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques (temps de relaxation $\lambda$) | Variable |
-| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ |
-| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ |
-
-**Interprétation physique :**
-- $Re$ entre 10 et 100 : régime laminaire avec effets inertiels
-- $Oh < 0.5$ : formation de gouttes/filaments stables
-- $Bo \ll 1$ : gravité négligeable (régime capillaire dominant)
-
----
-
 ## Défis de la Modélisation Numérique
 
 ### Enjeux Techniques
@@ -87,7 +67,7 @@ Le système modélisé consiste en :
 - **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
 - **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm
 - **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³)
-- **Environnement** : air ambiant
+- **Environnement** : température ambiante (~20°C) et pression atmosphérique
 
 ### Paramètres de Simulation
 
@@ -95,10 +75,11 @@ Le système modélisé consiste en :
 |-----------|-------|-------|
 | Diamètre puit | 800 – 1500 | µm |
 | Diamètre buse | 200 – 350 | µm |
-| Décalage horizontal | 0, -75, -150 | µm |
-| Viscosité $\eta_0$ | 0.5 – 5 | Pa·s |
+| Décalage horizontal (buse vs centre puit) | 0, -75, -150 | µm |
+| Viscosité $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
 | Angle de contact paroi | 35 – 90 | ° |
-| Angle de contact électrode | 35 – 75 | ° |
+| Angle de contact fond du puit | 35 – 75 | ° |
+| Angle de contact substrat (plateau) | 15, 35, 90 | ° |
 | Temps de dispense | 20 – 40 | ms |
 
 ---

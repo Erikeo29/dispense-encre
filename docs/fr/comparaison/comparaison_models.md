@@ -85,26 +85,6 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Précision et Validation Expérimentale
-
-### Comparaison des Erreurs Moyennes
-
-Basé sur 20 études avec validation expérimentale (shadowgraphy, PIV) :
-
-| Critère | VOF | FEM | LBM | SPH |
-|---------|-----|-----|-----|-----|
-| Vitesse de la goutte (%) | 1.2 | 0.8 | 1.8 | 2.5 |
-| Diamètre de la goutte (%) | 2.1 | 1.5 | 3.0 | 4.2 |
-| Temps de pincement (%) | 3.5 | 2.8 | 4.0 | 5.5 |
-| Volume des satellites (%) | 5.0 | 4.0 | 6.0 | 7.0 |
-
-**Analyse :**
-- **FEM** offre la meilleure précision globale grâce à sa capacité à gérer les géométries complexes et les couplages multiphysiques
-- **VOF** est précis pour les interfaces mais moins pour la rhéologie complexe
-- **LBM** et **SPH** ont des erreurs plus élevées en raison de la compressibilité artificielle (LBM) et du bruit numérique (SPH)
-
----
-
 ## Adaptabilité aux Encres Rhéofluidifiantes
 
 ### Lois Rhéologiques Supportées
@@ -114,14 +94,10 @@ Basé sur 20 études avec validation expérimentale (shadowgraphy, PIV) :
 | Newtonien | Oui | Oui | Oui | Oui |
 | Loi de puissance | Oui | Oui | Oui | Oui |
 | Carreau-Yasuda | Oui | Oui | Oui | Oui |
-| Herschel-Bulkley | Non | Oui | Non | Oui |
-| Oldroyd-B (viscoélastique) | Non | Oui | Oui | Oui |
-| Thixotropie | Non | Non | Non | Oui |
 
 **Analyse :**
 - **FEM** est le plus polyvalent pour la rhéologie complexe
-- **SPH** est le seul à gérer la thixotropie grâce à son approche lagrangienne
-- **VOF** et **LBM** sont limités aux lois simples (loi de puissance, Carreau)
+- **VOF** et **LBM** supportent les lois rhéofluidifiantes standard (loi de puissance, Carreau)
 
 ---
 

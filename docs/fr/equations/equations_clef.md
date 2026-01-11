@@ -279,9 +279,29 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-## 6. Tableau Comparatif des Modèles
+## 6. Nombres Adimensionnels Fondamentaux
 
-### 6.1 Équations Résolues
+La modélisation de la dispense de fluides implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
+
+| Nombre | Expression | Signification | Valeur typique |
+|--------|------------|---------------|----------------|
+| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Effets inertiels vs visqueux | 10 – 100 |
+| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We < 10$ |
+| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.5$ |
+| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques (temps de relaxation $\lambda$) | Variable |
+| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ |
+| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ |
+
+**Interprétation physique :**
+- $Re$ entre 10 et 100 : régime laminaire avec effets inertiels
+- $Oh < 0.5$ : formation de gouttes/filaments stables
+- $Bo \ll 1$ : gravité négligeable (régime capillaire dominant)
+
+---
+
+## 7. Tableau Comparatif des Modèles
+
+### 7.1 Équations Résolues
 
 | Équation | FEM | VOF | LBM | SPH |
 |----------|:---:|:---:|:---:|:---:|
@@ -293,7 +313,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.2 Discrétisation
+### 7.2 Discrétisation
 
 | Aspect | FEM | VOF | LBM | SPH |
 |--------|-----|-----|-----|-----|
@@ -304,7 +324,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.3 Avantages et Limitations
+### 7.3 Avantages et Limitations
 
 | Critère | FEM | VOF | LBM | SPH |
 |---------|-----|-----|-----|-----|
@@ -316,7 +336,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.4 Quand Utiliser Chaque Méthode
+### 7.4 Quand Utiliser Chaque Méthode
 
 | Situation | Méthode Recommandée | Justification |
 |-----------|---------------------|---------------|
@@ -330,7 +350,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-## 7. Synthèse : De Navier-Stokes aux Méthodes
+## 8. Synthèse : De Navier-Stokes aux Méthodes
 
 ```
                     ÉQUATIONS PHYSIQUES

@@ -279,9 +279,29 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-## 6. Model Comparison Table
+## 6. Fundamental Dimensionless Numbers
 
-### 6.1 Equations Solved
+Fluid dispensing modeling involves several interdependent physical phenomena, characterized by the following dimensionless numbers:
+
+| Number | Expression | Meaning | Typical Value |
+|--------|------------|---------|---------------|
+| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Inertial vs viscous effects | 10 – 100 |
+| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Inertial forces vs surface tension | $We < 10$ |
+| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosity, surface tension, and size | $Oh < 0.5$ |
+| **Deborah** | $De = \lambda \dot{\gamma}$ | Viscoelastic effects (relaxation time $\lambda$) | Variable |
+| **Capillary** | $Ca = \frac{\eta v}{\sigma}$ | Viscosity vs capillarity | $Ca \ll 1$ |
+| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravity vs surface tension | $Bo \ll 1$ |
+
+**Physical interpretation:**
+- $Re$ between 10 and 100: laminar regime with inertial effects
+- $Oh < 0.5$: stable droplet/filament formation
+- $Bo \ll 1$: gravity negligible (dominant capillary regime)
+
+---
+
+## 7. Model Comparison Table
+
+### 7.1 Equations Solved
 
 | Equation | FEM | VOF | LBM | SPH |
 |----------|:---:|:---:|:---:|:---:|
@@ -293,7 +313,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.2 Discretization
+### 7.2 Discretization
 
 | Aspect | FEM | VOF | LBM | SPH |
 |--------|-----|-----|-----|-----|
@@ -304,7 +324,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.3 Advantages and Limitations
+### 7.3 Advantages and Limitations
 
 | Criterion | FEM | VOF | LBM | SPH |
 |-----------|-----|-----|-----|-----|
@@ -316,7 +336,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-### 6.4 When to Use Each Method
+### 7.4 When to Use Each Method
 
 | Situation | Recommended Method | Justification |
 |-----------|---------------------|---------------|
@@ -330,7 +350,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-## 7. Summary: From Navier-Stokes to Methods
+## 8. Summary: From Navier-Stokes to Methods
 
 ```
                     PHYSICAL EQUATIONS
