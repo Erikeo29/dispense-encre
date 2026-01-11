@@ -1,8 +1,23 @@
-## Principe de la Méthode Phase-Field
+**Sommaire :**
+1. Principe de la Méthode Phase-Field
+2. Contexte Physique
+3. Formulation Mathématique
+4. Paramètres Physiques du Système
+5. Discrétisation par Éléments Finis
+6. Modèles Rhéologiques Avancés
+7. Couplage Fluide-Structure (FSI)
+8. Résultats de Validation
+9. Coût Computationnel
+10. Bibliothèques Open-Source
+11. Références
+
+---
+
+## 1. Principe de la Méthode Phase-Field
 
 La méthode **Phase-Field** (ou champ de phase) couplée aux **Éléments Finis (FEM)** est une approche thermodynamiquement consistante pour la simulation d'écoulements diphasiques. Contrairement aux méthodes de suivi d'interface explicite, elle représente l'interface comme une zone de transition diffuse d'épaisseur finie.
 
-### Concept d'Interface Diffuse
+### 1.1 Concept d'Interface Diffuse
 
 L'interface entre les deux fluides est représentée par une variable scalaire, la **fonction de phase** φ :
 
@@ -15,23 +30,23 @@ Cette approche offre plusieurs avantages :
 - **Coalescence/rupture naturelles** : les changements topologiques sont automatiques
 - **Couplage multiphysique** : intégration native avec la viscoélasticité et le FSI
 
-### Formulation Variationnelle
+### 1.2 Formulation Variationnelle
 
 La méthode des éléments finis transforme les équations aux dérivées partielles en un système algébrique via la **formulation faible**. Les inconnues (vitesse, pression, phase) sont approximées sur un maillage par des fonctions de forme polynomiales (Taylor-Hood P2-P1).
 
 ---
 
-## 1. CONTEXTE PHYSIQUE
+## 2. Contexte Physique
 
-### 1.1 Système étudié
+### 2.1 Système étudié
 
 Le système considéré est un écoulement diphasique incompressible dans un domaine microfluidique, comprenant :
 - **Phase 1** : Encre (fluide non-Newtonien)
 - **Phase 2** : Air ambiant (fluide Newtonien)
-- **Domaine** : Puit cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
-- **Source** : Buse de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du puit
+- **Domaine** : Micro-via cylindrique de diamètre D_w = 0.8 à 1.5mm et hauteur h_w = 0.128mm
+- **Source** : Buse de diamètre D_s = 0.2 à 0.35mm positionnée à Δz = 30 μm au-dessus du micro-via
 
-### 1.2 Hypothèses fondamentales
+### 2.2 Hypothèses fondamentales
 
 1. Écoulement incompressible (∇·**v** = 0)
 2. Régime laminaire (Re << 2300)
@@ -41,9 +56,9 @@ Le système considéré est un écoulement diphasique incompressible dans un dom
 
 ---
 
-## 2. FORMULATION MATHÉMATIQUE
+## 3. Formulation Mathématique
 
-### 2.1 Équations de Navier-Stokes
+### 3.1 Équations de Navier-Stokes
 
 Les équations gouvernant l'écoulement diphasique incompressible s'écrivent :
 
@@ -64,7 +79,7 @@ où :
 - p est la pression [Pa]
 - **τ** est le tenseur des contraintes visqueuses défini ci-après
 - **g** = (0, -9.81) m/s² est l'accélération gravitationnelle
-- **F**_σ est la force volumique de tension de surface définie en section 2.3
+- **F**_σ est la force volumique de tension de surface définie en section 3.3
 
 #### Tenseur des contraintes visqueuses
 
@@ -80,7 +95,7 @@ $$D_{ij} = \frac{1}{2}\left(\frac{\partial v_i}{\partial x_j} + \frac{\partial v
 Le taux de cisaillement est défini par :
 $$\dot{\gamma} = \sqrt{2\mathbf{D}:\mathbf{D}} = \sqrt{2\sum_{i,j} D_{ij}D_{ij}}$$
 
-### 2.2 Modèle rhéologique de Carreau
+### 3.2 Modèle rhéologique de Carreau
 
 La viscosité de l'encre suit le modèle de Carreau :
 $$\eta_1(\dot{\gamma}) = \eta_{\infty} + (\eta_0 - \eta_{\infty})\left[1 + (\lambda\dot{\gamma})^2\right]^{\frac{n-1}{2}}$$
@@ -96,7 +111,7 @@ La viscosité de l'air est constante : η₂ = 1×10⁻⁵ Pa·s
 La viscosité du mélange s'écrit :
 $$\eta(\phi,\dot{\gamma}) = \eta_1(\dot{\gamma})H(\phi) + \eta_2[1-H(\phi)]$$
 
-### 2.3 Méthode Phase-Field
+### 3.3 Méthode Phase-Field
 
 #### Transport de l'interface
 
@@ -119,7 +134,7 @@ avec :
 - κ = ∇·**n** : courbure de l'interface
 - δ(φ) = (3/2ε)|∇φ| : approximation de la fonction delta de Dirac
 
-### 2.4 Conditions aux limites
+### 3.4 Conditions aux limites
 
 #### Parois solides (condition de non-glissement)
 $$\mathbf{v} = \mathbf{0} \quad \text{sur } \Gamma_{\text{paroi}}$$
@@ -144,18 +159,18 @@ avec v_inlet(t) = v₀·H(t)·H(t_dispense - t) où v₀ = 0.1 m/s
 #### Sortie (pression atmosphérique)
 $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
-### 2.5 Conditions initiales
+### 3.5 Conditions initiales
 
 À t = 0 :
 - **v**(x,y,0) = **0** dans tout le domaine
-- φ(x,y,0) = -1 (air) dans le puit
+- φ(x,y,0) = -1 (air) dans le micro-via
 - φ(x,y,0) = 1 (encre) dans la seringue
 
 ---
 
-## 3. PARAMÈTRES PHYSIQUES DU SYSTÈME
+## 4. Paramètres Physiques du Système
 
-### 3.1 Propriétés des fluides
+### 4.1 Propriétés des fluides
 
 | Propriété | Encre (Phase 1) | Air (Phase 2) | Unité |
 |-----------|-------------------------|---------------|-------|
@@ -165,7 +180,7 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 | Temps relaxation λ | 0.15 | - | s |
 | Indice n | 0.7 | - | - |
 
-### 3.2 Propriétés interfaciales
+### 4.2 Propriétés interfaciales
 
 | Propriété | Valeur | Unité |
 |-----------|--------|-------|
@@ -173,18 +188,18 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 | Épaisseur interface ε | 5×10⁻⁶ | m |
 | Mobilité interface γ | 1 | - |
 
-### 3.3 Géométrie du système
+### 4.3 Géométrie du système
 
 | Élément | Paramètre | Valeur | Unité |
 |---------|-----------|--------|-------|
-| Puit | Diamètre D_w | 0.8 à 1.5 | mm |
+| Micro-via | Diamètre D_w | 0.8 à 1.5 | mm |
 | | Hauteur h_w | 0.128 | mm |
 | | Volume V_w | 64.3 | nL |
 | Seringue | Diamètre D_s | 0.20 à 0.30 | mm |
 | | Distance Δz | +30 | μm |
-| | Ratio surface | 0.8 | - | (soit 80% du remplissage du well)
+| | Ratio surface | 0.8 | - | (soit 80% du remplissage du micro-via)
 
-### 3.4 Paramètres de process
+### 4.4 Paramètres de process
 
 | Paramètre | Symbole | Valeur | Unité |
 |-----------|---------|--------|-------|
@@ -195,9 +210,9 @@ $$p = p_{\text{atm}} = 0 \quad \text{sur } \Gamma_{\text{outlet}}$$
 
 ---
 
-## 4. DISCRÉTISATION PAR ÉLÉMENTS FINIS
+## 5. Discrétisation par Éléments Finis
 
-### 4.1 Formulation Faible
+### 5.1 Formulation Faible
 
 La méthode des éléments finis repose sur la **formulation variationnelle** (ou faible) des équations. On multiplie les équations par des fonctions test et on intègre sur le domaine.
 
@@ -215,7 +230,7 @@ où :
 - $\mathbf{w}$ : fonction test pour la vitesse
 - $q$ : fonction test pour la pression
 
-### 4.2 Éléments Finis Mixtes
+### 5.2 Éléments Finis Mixtes
 
 Le choix des espaces d'approximation pour la vitesse et la pression est crucial pour éviter les **modes parasites de pression** (oscillations non physiques).
 
@@ -260,7 +275,7 @@ où $\lambda_i$ sont les coordonnées barycentriques du triangle.
 
 **Avantage :** Moins de DOFs que Taylor-Hood (stabilité au prix d'une précision moindre).
 
-### 4.3 Stabilisation pour la Convection
+### 5.3 Stabilisation pour la Convection
 
 À nombre de Reynolds élevé ($Re > 10$), les schémas éléments finis standards souffrent d'**instabilités numériques** (oscillations, diffusion numérique).
 
@@ -294,9 +309,9 @@ où $\mathcal{L}$ est l'opérateur adjoint.
 
 ---
 
-## 5. MODÈLES RHÉOLOGIQUES AVANCÉS
+## 6. Modèles Rhéologiques Avancés
 
-### 5.1 Modèle de Herschel-Bulkley (Fluides à Seuil)
+### 6.1 Modèle de Herschel-Bulkley (Fluides à Seuil)
 
 Pour les encres présentant un **seuil d'écoulement** (yield stress), le modèle de Herschel-Bulkley s'écrit :
 
@@ -316,7 +331,7 @@ $$\eta_{eff}(\dot{\gamma}) = K\dot{\gamma}^{n-1} + \tau_0 \frac{1 - e^{-m\dot{\g
 
 avec $m$ un paramètre de régularisation (typiquement $m = 100$ s).
 
-### 5.2 Modèle Oldroyd-B (Viscoélasticité)
+### 6.2 Modèle Oldroyd-B (Viscoélasticité)
 
 Pour les encres **viscoélastiques** (avec mémoire élastique), le tenseur des contraintes polymériques $\boldsymbol{\tau}_p$ évolue selon :
 
@@ -335,7 +350,7 @@ La viscosité totale est $\eta = \eta_s + \eta_p$.
 
 **Nombre de Deborah :** $De = \lambda_1 \dot{\gamma}$ (mesure l'importance des effets élastiques)
 
-### 5.3 Modèle Giesekus (Non-linéaire)
+### 6.3 Modèle Giesekus (Non-linéaire)
 
 Pour les encres fortement non-linéaires, le modèle **Giesekus** ajoute un terme quadratique :
 
@@ -345,9 +360,9 @@ où $\alpha \in [0, 0.5]$ est le paramètre de mobilité anisotrope.
 
 ---
 
-## 6. COUPLAGE FLUIDE-STRUCTURE (FSI)
+## 7. Couplage Fluide-Structure (FSI)
 
-### 6.1 Actionnement Piézoélectrique
+### 7.1 Actionnement Piézoélectrique
 
 Dans les têtes d'impression piézoélectriques, l'éjection est provoquée par la déformation d'une membrane sous l'effet d'une tension électrique.
 
@@ -366,7 +381,7 @@ où :
 - $\mathbf{e}$ : tenseur piézoélectrique
 - $\boldsymbol{\epsilon}^S$ : permittivité à déformation constante
 
-### 6.2 Interface Fluide-Solide
+### 7.2 Interface Fluide-Solide
 
 À l'interface entre le fluide et la membrane piézoélectrique :
 
@@ -376,7 +391,7 @@ $$\mathbf{v}_{fluide} = \frac{\partial \mathbf{u}_{solide}}{\partial t}$$
 **Équilibre des contraintes :**
 $$\boldsymbol{\sigma}_{fluide} \cdot \mathbf{n} = \boldsymbol{\sigma}_{solide} \cdot \mathbf{n}$$
 
-### 6.3 Maillage Mobile (ALE)
+### 7.3 Maillage Mobile (ALE)
 
 Pour gérer la déformation du domaine fluide, on utilise la formulation **ALE (Arbitrary Lagrangian-Eulerian)** :
 
@@ -394,9 +409,9 @@ avec conditions aux limites fixées sur les frontières immobiles.
 
 ---
 
-## 7. RÉSULTATS DE VALIDATION
+## 8. Résultats de Validation
 
-### 7.1 Étude Hirsa & Basaran (2017) - Encres Viscoélastiques
+### 8.1 Étude Hirsa & Basaran (2017) - Encres Viscoélastiques
 
 **Configuration :**
 - Solveur : COMSOL Multiphysics (FEM Phase-Field)
@@ -420,7 +435,7 @@ avec conditions aux limites fixées sur les frontières immobiles.
 
 **Observation clé :** La viscoélasticité retarde le pincement du filament (effet stabilisant) et réduit le volume des satellites de 25 % par rapport à un fluide newtonien équivalent.
 
-### 7.2 Étude Patel et al. (2020) - Couplage Piézo
+### 8.2 Étude Patel et al. (2020) - Couplage Piézo
 
 **Configuration :**
 - Solveur : FEniCS + modèle piézo
@@ -438,7 +453,7 @@ avec conditions aux limites fixées sur les frontières immobiles.
 
 **Optimisation :** Réduction des satellites de 40 % en ajustant $\tau_{fall}/\tau_{rise} = 1.5$.
 
-### 7.3 Comparaison avec Autres Méthodes
+### 8.3 Comparaison avec Autres Méthodes
 
 | Critère | FEM (Phase-Field) | VOF | LBM | SPH |
 |---------|-------------------|-----|-----|-----|
@@ -449,9 +464,9 @@ avec conditions aux limites fixées sur les frontières immobiles.
 
 ---
 
-## 8. COÛT COMPUTATIONNEL
+## 9. Coût Computationnel
 
-### 8.1 Configuration Typique
+### 9.1 Configuration Typique
 
 Pour une simulation 2D axisymétrique (1 ms d'éjection, éléments Taylor-Hood) :
 
@@ -461,7 +476,7 @@ Pour une simulation 2D axisymétrique (1 ms d'éjection, éléments Taylor-Hood)
 | Haute résolution | 100k | 15–30 | 32 cœurs CPU |
 | 3D complet | 500k | 30–50 | 64–128 cœurs + 128 GB RAM |
 
-### 8.2 Scaling et Parallélisation
+### 9.2 Scaling et Parallélisation
 
 La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/résolution des systèmes linéaires.
 
@@ -476,7 +491,7 @@ La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/ré
 
 **Limitation GPU :** Les solveurs FEM classiques (assemblage matriciel) ne bénéficient pas significativement de l'accélération GPU, contrairement à LBM.
 
-### 8.3 Optimisations
+### 9.3 Optimisations
 
 - **Maillage adaptatif (AMR)** : Raffiner uniquement près de l'interface ($\alpha \in [0.05, 0.95]$)
 - **Préconditionneurs algébriques** : ILU, AMG pour les systèmes linéaires
@@ -484,7 +499,7 @@ La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/ré
 
 ---
 
-## 9. BIBLIOTHÈQUES OPEN-SOURCE
+## 10. Bibliothèques Open-Source
 
 | Bibliothèque | Langage | Focus | Parallélisation |
 |--------------|---------|-------|-----------------|
@@ -494,7 +509,7 @@ La méthode FEM est **limitée par la mémoire** et le coût de l'assemblage/ré
 | **Firedrake** | Python | Automatisation, GPU | MPI, PETSc |
 | **COMSOL** | GUI/MATLAB | Commercial, multiphysique | Multi-cœurs |
 
-### 9.1 Exemple FEniCS (Phase-Field)
+### 10.1 Exemple FEniCS (Phase-Field)
 
 ```python
 from fenics import *
@@ -522,7 +537,7 @@ solve(lhs(F) == rhs(F), w_sol, bcs)
 
 ---
 
-## 10. RÉFÉRENCES
+## 11. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
 

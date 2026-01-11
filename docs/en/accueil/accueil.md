@@ -7,7 +7,7 @@
 
 ## 1. Project Objective
 
-This project presents a **comparative study of four numerical methods** for simulating shear-thinning fluid dispensing into micro-wells. The application enables visualization and comparison of two-phase flow simulation results using different approaches:
+This project presents a **comparative study of four numerical methods** for simulating shear-thinning fluid dispensing into micro-via. The application enables visualization and comparison of two-phase flow simulation results using different approaches:
 
 - **FEM / Phase-Field**: Finite Element Method with phase-field interface tracking
 - **VOF (Volume of Fluid)**: Industrial standard Eulerian method (OpenFOAM)
@@ -18,12 +18,12 @@ This project presents a **comparative study of four numerical methods** for simu
 
 ## 2. Target Application
 
-The simulations model **shear-thinning ink dispensing** into micro-wells for electrochemical sensor fabrication. This process requires precise control of filling, wetting, and final deposit shape.
+The simulations model **shear-thinning ink dispensing** into micro-via.
 
 **Key parameters studied:**
-- Geometry: well diameter (800–1500 µm), nozzle diameter (200–350 µm)
+- Geometry: micro-via diameter (800–1500 µm), nozzle diameter (200–350 µm)
 - Rheology: variable viscosity (Carreau model)
-- Wetting: contact angles on well bottom, vertical walls, and substrate surface.
+- Wetting: contact angles on micro-via bottom, vertical walls, and substrate surface.
 
 ---
 

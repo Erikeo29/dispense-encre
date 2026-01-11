@@ -1,4 +1,12 @@
-## Artificial Intelligence and Hybrid Modeling
+**Contents:**
+1. Artificial Intelligence and Hybrid Modeling
+2. Quantum Computing
+3. 4D Printing and Smart Inks
+4. Research Opportunities
+
+---
+
+## 1. Artificial Intelligence and Hybrid Modeling
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -22,7 +30,7 @@
 
 ---
 
-## Quantum Computing
+## 2. Quantum Computing
 
 Quantum computing could revolutionize complex flow modeling:
 
@@ -37,7 +45,7 @@ Quantum computing could revolutionize complex flow modeling:
 
 ---
 
-## 4D Printing and Smart Inks
+## 3. 4D Printing and Smart Inks
 
 Shear-thinning inks are increasingly used for **4D printing** (materials that change shape after printing):
 
@@ -53,7 +61,7 @@ Shear-thinning inks are increasingly used for **4D printing** (materials that ch
 
 ---
 
-## Research Opportunities
+## 4. Research Opportunities
 
 ### Rheology-Interface Coupling
 

@@ -1,3 +1,13 @@
+**Contents:**
+1. Navier-Stokes Equations
+2. Rheological Models
+3. Interface Tracking
+4. Surface Tension
+5. Boundary Conditions
+6. Fundamental Dimensionless Numbers
+7. Model Comparison Table
+8. Summary
+
 This chapter presents the fundamental equations used in the four numerical models. The goal is to understand the commonalities (Navier-Stokes equations, rheology) and differences (discretization, interface tracking).
 
 ---

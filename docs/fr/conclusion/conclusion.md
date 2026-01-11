@@ -1,4 +1,12 @@
-## Intelligence Artificielle et Modélisation Hybride
+**Sommaire :**
+1. Intelligence Artificielle et Modélisation Hybride
+2. Calcul Quantique
+3. Impression 4D et Encres Intelligentes
+4. Opportunités de Recherche
+
+---
+
+## 1. Intelligence Artificielle et Modélisation Hybride
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -22,7 +30,7 @@ Les **modèles de substitution** remplacent les simulations coûteuses par des r
 
 ---
 
-## Calcul Quantique
+## 2. Calcul Quantique
 
 Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
 
@@ -37,7 +45,7 @@ Le calcul quantique pourrait révolutionner la modélisation des écoulements co
 
 ---
 
-## Impression 4D et Encres Intelligentes
+## 3. Impression 4D et Encres Intelligentes
 
 Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impression 4D** (matériaux qui changent de forme après impression) :
 
@@ -53,7 +61,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 
 ---
 
-## Opportunités de Recherche
+## 4. Opportunités de Recherche
 
 ### Couplage Rhéologie-Interface
 

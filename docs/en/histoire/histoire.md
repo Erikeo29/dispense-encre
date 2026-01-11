@@ -1,3 +1,12 @@
+**Contents:**
+1. Fathers of Fluid Mechanics
+2. Rheology Pioneers
+3. Founders of Statistical Mechanics
+4. Creators of Numerical Methods
+5. Inventors of Modern Methods
+6. Chronological Table
+7. Scientific Lineage Diagram
+
 This fluid dispensing simulation project builds upon centuries of scientific discoveries. This page pays tribute to the scientists whose foundational work made modern numerical modeling of two-phase flows possible.
 
 ---
