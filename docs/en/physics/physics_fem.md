@@ -1,60 +1,27 @@
-Two-Phase Simulation Approach in a Microfluidic Domain
+## Phase-Field Method Principle
+
+The **Phase-Field** method coupled with **Finite Elements (FEM)** is a thermodynamically consistent approach for simulating two-phase flows. Unlike explicit interface tracking methods, it represents the interface as a diffuse transition zone of finite thickness.
+
+### Diffuse Interface Concept
+
+The interface between the two fluids is represented by a scalar variable, the **phase function** φ:
+
+- φ = +1: Pure Fluid 1 (ink)
+- φ = -1: Pure Fluid 2 (air)
+- -1 < φ < +1: Interface zone (continuous transition)
+
+This approach offers several advantages:
+- **Thermodynamic consistency**: φ evolution minimizes a free energy
+- **Natural coalescence/breakup**: topological changes are automatic
+- **Multiphysics coupling**: native integration with viscoelasticity and FSI
+
+### Variational Formulation
+
+The finite element method transforms partial differential equations into an algebraic system via the **weak formulation**. The unknowns (velocity, pressure, phase) are approximated on a mesh using polynomial shape functions (Taylor-Hood P2-P1).
 
 ---
 
-## NOMENCLATURE
-
-### Latin Symbols
-| Symbol | Definition | Unit |
-|--------|------------|------|
-| **D** | Rate of deformation tensor | s⁻¹ |
-| **F** | Force vector | N/m³ |
-| **g** | Gravitational acceleration vector (0, -9.81) | m/s² |
-| **H** | Heaviside function | - |
-| **n** | Unit normal vector | - |
-| **p** | Pressure | Pa |
-| **t** | Time | s |
-| **T** | Final simulation time | s |
-| **v** | Velocity vector (u, v) | m/s |
-
-### Greek Symbols
-| Symbol | Definition | Unit |
-|--------|------------|------|
-| **γ̇** | Shear rate | s⁻¹ |
-| **ε** | Diffuse interface thickness | m |
-| **η** | Dynamic viscosity | Pa·s |
-| **θ** | Contact angle | rad |
-| **κ** | Interface curvature | m⁻¹ |
-| **λ** | Relaxation time (Carreau model) | s |
-| **μ** | Dynamic viscosity (alternative notation) | Pa·s |
-| **ρ** | Density | kg/m³ |
-| **σ** | Surface tension | N/m |
-| **τ** | Viscous stress tensor | Pa |
-| **φ** | Level-set function | - |
-| **Ω** | Computational spatial domain | - |
-| **∂Ω** | Domain boundary | - |
-| **∇** | Gradient operator | m⁻¹ |
-
-### Subscripts
-| Subscript | Meaning |
-|-----------|---------|
-| 0 | Rest or initial value |
-| ∞ | Infinite shear value |
-| 1 | Phase 1 (ink) |
-| 2 | Phase 2 (air) |
-| σ | Related to surface tension |
-
-### Dimensionless Numbers
-| Number | Definition | Expression |
-|--------|------------|------------|
-| **Re** | Reynolds | ρvL/μ |
-| **Ca** | Capillary | μv/σ |
-| **We** | Weber | ρv²L/σ |
-| **Bo** | Bond | ρgL²/σ |
-
----
-
-## 1. INTRODUCTION AND PHYSICAL CONTEXT
+## 1. PHYSICAL CONTEXT
 
 ### 1.1 System Under Study
 

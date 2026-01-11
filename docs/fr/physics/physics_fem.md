@@ -1,60 +1,27 @@
-Approche par simulation diphasique en domaine microfluidique
+## Principe de la Méthode Phase-Field
+
+La méthode **Phase-Field** (ou champ de phase) couplée aux **Éléments Finis (FEM)** est une approche thermodynamiquement consistante pour la simulation d'écoulements diphasiques. Contrairement aux méthodes de suivi d'interface explicite, elle représente l'interface comme une zone de transition diffuse d'épaisseur finie.
+
+### Concept d'Interface Diffuse
+
+L'interface entre les deux fluides est représentée par une variable scalaire, la **fonction de phase** φ :
+
+- φ = +1 : Fluide 1 (encre) pur
+- φ = -1 : Fluide 2 (air) pur
+- -1 < φ < +1 : Zone d'interface (transition continue)
+
+Cette approche offre plusieurs avantages :
+- **Consistance thermodynamique** : l'évolution de φ minimise une énergie libre
+- **Coalescence/rupture naturelles** : les changements topologiques sont automatiques
+- **Couplage multiphysique** : intégration native avec la viscoélasticité et le FSI
+
+### Formulation Variationnelle
+
+La méthode des éléments finis transforme les équations aux dérivées partielles en un système algébrique via la **formulation faible**. Les inconnues (vitesse, pression, phase) sont approximées sur un maillage par des fonctions de forme polynomiales (Taylor-Hood P2-P1).
 
 ---
 
-## NOMENCLATURE
-
-### Symboles latins
-| Symbole | Définition | Unité |
-|---------|------------|-------|
-| **D** | Tenseur des taux de déformation | s⁻¹ |
-| **F** | Vecteur force | N/m³ |
-| **g** | Vecteur accélération gravitationnelle (0, -9.81) | m/s² |
-| **H** | Fonction de Heaviside | - |
-| **n** | Vecteur normal unitaire | - |
-| **p** | Pression | Pa |
-| **t** | Temps | s |
-| **T** | Temps final de simulation | s |
-| **v** | Vecteur vitesse (u, v) | m/s |
-
-### Symboles grecs
-| Symbole | Définition | Unité |
-|---------|------------|-------|
-| **γ̇** | Taux de cisaillement | s⁻¹ |
-| **ε** | Épaisseur de l'interface diffuse | m |
-| **η** | Viscosité dynamique | Pa·s |
-| **θ** | Angle de contact | rad |
-| **κ** | Courbure de l'interface | m⁻¹ |
-| **λ** | Temps de relaxation (modèle de Carreau) | s |
-| **μ** | Viscosité dynamique (notation alternative) | Pa·s |
-| **ρ** | Masse volumique | kg/m³ |
-| **σ** | Tension de surface | N/m |
-| **τ** | Tenseur des contraintes visqueuses | Pa |
-| **φ** | Fonction level-set | - |
-| **Ω** | Domaine spatial de calcul | - |
-| **∂Ω** | Frontière du domaine | - |
-| **∇** | Opérateur gradient | m⁻¹ |
-
-### Indices
-| Indice | Signification |
-|--------|--------------|
-| 0 | Valeur au repos ou initiale |
-| ∞ | Valeur à cisaillement infini |
-| 1 | Phase 1 (encre) |
-| 2 | Phase 2 (air) |
-| σ | Relatif à la tension de surface |
-
-### Nombres adimensionnels
-| Nombre | Définition | Expression |
-|--------|------------|------------|
-| **Re** | Reynolds | ρvL/μ |
-| **Ca** | Capillaire | μv/σ |
-| **We** | Weber | ρv²L/σ |
-| **Bo** | Bond | ρgL²/σ |
-
----
-
-## 1. INTRODUCTION ET CONTEXTE PHYSIQUE
+## 1. CONTEXTE PHYSIQUE
 
 ### 1.1 Système étudié
 
