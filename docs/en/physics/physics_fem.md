@@ -1,5 +1,4 @@
-# Modeling Ink Dispensing into a Micro-Well
-## Two-Phase Simulation Approach in a Microfluidic Domain
+Two-Phase Simulation Approach in a Microfluidic Domain
 
 ---
 

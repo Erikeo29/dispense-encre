@@ -1,5 +1,3 @@
-# Volume of Fluid (VOF) Method
-
 ## Fundamental Principle
 
 The **VOF (Volume of Fluid)** method is an Eulerian approach for interface tracking in two-phase flows. It represents the industry standard for free surface simulations, particularly in OpenFOAM with the `interFoam` solver.

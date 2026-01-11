@@ -1,5 +1,3 @@
-# Méthode Volume of Fluid (VOF)
-
 ## Principe Fondamental
 
 La méthode **VOF (Volume of Fluid)** est une approche eulérienne pour le suivi d'interfaces dans les écoulements diphasiques. Elle représente le standard industriel pour les simulations à surface libre, notamment dans OpenFOAM avec le solveur `interFoam`.

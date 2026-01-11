@@ -1,5 +1,3 @@
-# Smoothed Particle Hydrodynamics (SPH) Method
-
 ## Lagrangian Meshless Principle
 
 The **SPH (Smoothed Particle Hydrodynamics)** method is a **Lagrangian** and **meshless** approach where the fluid is represented by a set of mobile particles carrying physical properties (mass, velocity, pressure).
