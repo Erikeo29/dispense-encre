@@ -1,7 +1,9 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Project Objective
+2. Target Application
+3. Navigation
 
-**Contents:** 1. Project Objective • 2. Target Application • 3. Navigation
-</div>
+---
 
 ## 1. Project Objective
 

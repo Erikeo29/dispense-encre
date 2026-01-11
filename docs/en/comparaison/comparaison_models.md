@@ -1,7 +1,15 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Performance Summary
+2. Global Comparison Table
+3. Discretization Approaches
+4. Detailed Hardware Requirements
+5. Adaptability to Shear-Thinning Inks
+6. Critical Analysis by Model
+7. Common Challenges and Solutions
+8. Recommendations by Application
+9. References
 
-**Contents:** 1. Performance Summary • 2. Global Comparison Table • 3. Discretization Approaches • 4. Detailed Hardware Requirements • 5. Adaptability to Shear-Thinning Inks • 6. Critical Analysis by Model • 7. Common Challenges and Solutions • 8. Recommendations by Application • 9. References
-</div>
+---
 
 ## 1. Performance Summary
 

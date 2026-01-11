@@ -1,7 +1,19 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Lagrangian Meshless Principle
+2. Smoothing Kernels
+3. Equations of Motion
+4. Artificial Viscosity
+5. Surface Tension
+6. Boundary Conditions
+7. Non-Newtonian Fluids
+8. Validation Results
+9. Unique Advantages
+10. Limitations and Solutions
+11. Computational Cost
+12. Open-Source Libraries
+13. References
 
-**Contents:** 1. Lagrangian Meshless Principle • 2. Smoothing Kernels • 3. Equations of Motion • 4. Artificial Viscosity • 5. Surface Tension • 6. Boundary Conditions • 7. Non-Newtonian Fluids • 8. Validation Results • 9. Unique Advantages • 10. Limitations and Solutions • 11. Computational Cost • 12. Open-Source Libraries • 13. References
-</div>
+---
 
 ## 1. Lagrangian Meshless Principle
 

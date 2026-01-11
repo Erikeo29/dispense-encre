@@ -1,7 +1,12 @@
-<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+**Contents:**
+1. Scientific and Industrial Context
+2. Properties of Shear-Thinning Fluids
+3. Numerical Modeling Challenges
+4. Physical System Studied
+5. Multi-Model Approach
+6. References
 
-**Contents:** 1. Scientific and Industrial Context • 2. Properties of Shear-Thinning Fluids • 3. Numerical Modeling Challenges • 4. Physical System Studied • 5. Multi-Model Approach • 6. References
-</div>
+---
 
 # Modeling of Shear-Thinning Fluid Dispensing
 
