@@ -1,8 +1,17 @@
+**Contents:**
+1. Finite Element Method (FEM) / Phase-Field
+2. Volume of Fluid (VOF)
+3. Lattice Boltzmann Method (LBM)
+4. Smoothed Particle Hydrodynamics (SPH)
+5. Rheology and Wetting
+6. General Works
+7. Online Resources
+
 This page gathers all bibliographic references used in this shear-thinning ink dispensing simulation project.
 
 ---
 
-## Finite Element Method (FEM) / Phase-Field
+## 1. Finite Element Method (FEM) / Phase-Field
 
 1. **Jacqmin, D.** (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
    - Foundational paper on phase-field modeling for two-phase flows.
@@ -24,7 +33,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## Volume of Fluid (VOF)
+## 2. Volume of Fluid (VOF)
 
 7. **Hirt, C. W., & Nichols, B. D.** (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
    - Foundational paper of the VOF method.
@@ -40,7 +49,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## Lattice Boltzmann Method (LBM)
+## 3. Lattice Boltzmann Method (LBM)
 
 11. **Chen, S., & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
     - Comprehensive review of the LBM method.
@@ -59,7 +68,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## Smoothed Particle Hydrodynamics (SPH)
+## 4. Smoothed Particle Hydrodynamics (SPH)
 
 16. **Monaghan, J. J.** (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
     - Foundational review of the SPH method.
@@ -78,7 +87,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## Rheology and Wetting
+## 5. Rheology and Wetting
 
 21. **Barnes, H. A.** (1997). *Thixotropy—a review*. Journal of Non-Newtonian Fluid Mechanics, 70(1-2), 1-33.
     - Review on thixotropy of complex fluids.
@@ -91,7 +100,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## General Works
+## 6. General Works
 
 24. **Basaran, O. A., Gao, H., & Bhat, P. P.** (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
     - Comprehensive review of non-standard droplet ejection mechanisms.
@@ -101,7 +110,7 @@ This page gathers all bibliographic references used in this shear-thinning ink d
 
 ---
 
-## Online Resources
+## 7. Online Resources
 
 - [OpenFOAM Documentation](https://openfoam.org)
 - [FEniCS Project](https://fenicsproject.org)

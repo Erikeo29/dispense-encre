@@ -6,7 +6,15 @@
 /* --- Masquer éléments Streamlit natifs --- */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
+header {visibility: hidden;}
 .stDeployButton {display: none;}
+
+/* --- Masquer badges GitHub/Fork (Streamlit Cloud) --- */
+.viewerBadge_container__1QSob {display: none !important;}
+.viewerBadge_link__qRIco {display: none !important;}
+[data-testid="stToolbar"] {display: none !important;}
+[data-testid="stDecoration"] {display: none !important;}
+.stApp > header {display: none !important;}
 
 /* --- Style académique général --- */
 .main {

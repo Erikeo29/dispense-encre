@@ -1,8 +1,17 @@
+**Sommaire :**
+1. Méthode des Éléments Finis (FEM) / Phase-Field
+2. Volume of Fluid (VOF)
+3. Lattice Boltzmann Method (LBM)
+4. Smoothed Particle Hydrodynamics (SPH)
+5. Rhéologie et Mouillage
+6. Ouvrages Généraux
+7. Ressources en Ligne
+
 Cette page regroupe toutes les références bibliographiques utilisées dans ce projet de simulation de dispense d'encre rhéofluidifiante.
 
 ---
 
-## Méthode des Éléments Finis (FEM) / Phase-Field
+## 1. Méthode des Éléments Finis (FEM) / Phase-Field
 
 1. **Jacqmin, D.** (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
    - Article fondateur du modèle de champ de phase pour les écoulements diphasiques.
@@ -24,7 +33,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Volume of Fluid (VOF)
+## 2. Volume of Fluid (VOF)
 
 7. **Hirt, C. W., & Nichols, B. D.** (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
    - Article fondateur de la méthode VOF.
@@ -40,7 +49,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Lattice Boltzmann Method (LBM)
+## 3. Lattice Boltzmann Method (LBM)
 
 11. **Chen, S., & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
     - Revue complète de la méthode LBM.
@@ -59,7 +68,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Smoothed Particle Hydrodynamics (SPH)
+## 4. Smoothed Particle Hydrodynamics (SPH)
 
 16. **Monaghan, J. J.** (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
     - Revue fondamentale de la méthode SPH.
@@ -78,7 +87,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Rhéologie et Mouillage
+## 5. Rhéologie et Mouillage
 
 21. **Barnes, H. A.** (1997). *Thixotropy—a review*. Journal of Non-Newtonian Fluid Mechanics, 70(1-2), 1-33.
     - Revue sur la thixotropie des fluides complexes.
@@ -91,7 +100,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Ouvrages Généraux
+## 6. Ouvrages Généraux
 
 24. **Basaran, O. A., Gao, H., & Bhat, P. P.** (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
     - Revue complète des mécanismes d'éjection de gouttes non standards.
@@ -101,7 +110,7 @@ Cette page regroupe toutes les références bibliographiques utilisées dans ce 
 
 ---
 
-## Ressources en Ligne
+## 7. Ressources en Ligne
 
 - [OpenFOAM Documentation](https://openfoam.org)
 - [FEniCS Project](https://fenicsproject.org)
