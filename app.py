@@ -320,7 +320,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 # Chemins vers les exemples visuels
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
 VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/animation_vof_93.gif")
-LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/simulation_lbm_29.gif")
+LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_029.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 
 # --- Fonctions Utilitaires ---
@@ -757,7 +757,18 @@ elif selected_page == model_pages[0]:  # FEM
                             st.warning(t("combo_unavailable"))
 
     with tabs[3]:  # PNG
-        st.subheader(t("png_viewer"))
+        # Layout Titre + Popover
+        c_title, c_pop = st.columns([0.7, 0.3])
+        with c_title:
+            st.subheader(t("png_viewer"))
+        with c_pop:
+            # Popover pour voir les simulations disponibles sans scroller
+            with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                try:
+                    df_mapping = pd.read_csv(os.path.join(DATA_PATH, 'fem_png_mapping.csv'), sep=';', encoding='utf-8')
+                    st.dataframe(df_mapping, use_container_width=True, hide_index=True)
+                except Exception:
+                    st.error("Données non trouvées")
 
         # Zone de sélection des paramètres (colonnes réduites avec espaceurs)
         with st.container(border=True):
@@ -781,11 +792,16 @@ elif selected_page == model_pages[0]:  # FEM
             with c6: p2_r = st.selectbox(t("lbl_ratio"), [0.6,0.8], index=1, key="p2_r")
             png2 = (p2_t, p2_v, p2_x, p2_z, p2_a, p2_r)
 
-            _, btn_col, _ = st.columns([1, 2, 1])
-            with btn_col:
-                if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png"):
+            # Boutons Afficher (Bleu) et Réinitialiser (Rouge/Gris)
+            _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+            with btn_col1:
+                if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png_launch"):
                     st.session_state.run_p = True
                     st.session_state.p_p = (png1, png2)
+            with btn_col2:
+                if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_png_reset"):
+                    st.session_state.run_p = False
+                    st.rerun()
 
         # Zone d'affichage des résultats
         if st.session_state.get('run_p', False):
