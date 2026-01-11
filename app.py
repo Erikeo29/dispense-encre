@@ -900,55 +900,122 @@ elif selected_page == model_pages[2]:  # LBM
         with c_title:
             st.subheader(t("gif_viewer"))
         
-        mapping_g, df_g = load_lbm_gif_mapping()
+        _, df_g_origin = load_lbm_gif_mapping()
         
         with c_pop:
             with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                if not df_g.empty:
-                    st.dataframe(df_g, use_container_width=True, hide_index=True)
+                if not df_g_origin.empty:
+                    st.dataframe(df_g_origin, use_container_width=True, hide_index=True)
                 else:
                     st.error("Data not found")
 
-        if not df_g.empty:
+        if not df_g_origin.empty:
             with st.container(border=True):
-                # --- Simulation 1 ---
+                # --- Simulation 1 (Cascading Filters) ---
                 st.markdown(f"**{t('sim_1')}**")
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: lbm_r1 = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r1")
-                with c2: lbm_v1 = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v1")
-                with c3: lbm_s1 = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s1")
-                with c4: lbm_c1 = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c1")
+                df_1 = df_g_origin.copy()
                 
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: 
+                    # 1. Ratio
+                    opts_r1 = sorted(df_1['ratio surface goutte/puit'].unique())
+                    lbm_r1 = st.selectbox("Ratio", opts_r1, key="l_r1")
+                    df_1 = df_1[df_1['ratio surface goutte/puit'] == lbm_r1]
+                
+                with c2: 
+                    # 2. Viscosité
+                    opts_v1 = sorted(df_1['Viscosite eta0 (Pa.s)'].unique())
+                    lbm_v1 = st.selectbox(t("lbl_viscosity"), opts_v1, key="l_v1")
+                    df_1 = df_1[df_1['Viscosite eta0 (Pa.s)'] == lbm_v1]
+                
+                with c3: 
+                    # 3. Shift
+                    opts_s1 = sorted(df_1['shift X (um)'].unique())
+                    lbm_s1 = st.selectbox(t("lbl_shift_x"), opts_s1, key="l_s1")
+                    df_1 = df_1[df_1['shift X (um)'] == lbm_s1]
+                
+                with c4: 
+                    # 4. CA Substrat
+                    opts_c1 = sorted(df_1['CA substrat (deg)'].unique())
+                    lbm_c1 = st.selectbox(t("lbl_ca_gold"), opts_c1, key="l_c1")
+                    df_1 = df_1[df_1['CA substrat (deg)'] == lbm_c1]
+
+                # Paramètres avancés (dépendants du reste)
                 with st.expander(f"Paramètres avancés {t('sim_1')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lbm_cwl1 = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_cwl1")
-                    with cc2: lbm_cwr1 = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_cwr1")
-                    with cc3: lbm_cpl1 = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_cpl1")
-                p_lbm_1 = (lbm_r1, lbm_c1, lbm_cwl1, lbm_cwr1, lbm_cpl1, lbm_v1, lbm_s1)
+                    with cc1: 
+                        opts_wl1 = sorted(df_1['CA mur gauche (deg)'].unique())
+                        lbm_cwl1 = st.selectbox("CA Mur Gauche", opts_wl1, key="l_cwl1")
+                        df_1 = df_1[df_1['CA mur gauche (deg)'] == lbm_cwl1]
+                    with cc2: 
+                        opts_wr1 = sorted(df_1['CA mur droit (deg)'].unique())
+                        lbm_cwr1 = st.selectbox("CA Mur Droit", opts_wr1, key="l_cwr1")
+                        df_1 = df_1[df_1['CA mur droit (deg)'] == lbm_cwr1]
+                    with cc3: 
+                        opts_pl1 = sorted(df_1['CA plateau gauche (deg)'].unique())
+                        lbm_cpl1 = st.selectbox("CA Plateau", opts_pl1, key="l_cpl1")
+                        df_1 = df_1[df_1['CA plateau gauche (deg)'] == lbm_cpl1]
+                
+                # Résultat Sim 1 : Nom de fichier
+                file_1 = None
+                if not df_1.empty:
+                    file_1 = os.path.join(ASSETS_PATH, "lbm/gif", df_1.iloc[0]['nom fichier gif'])
 
                 st.divider()
 
-                # --- Simulation 2 ---
+                # --- Simulation 2 (Cascading Filters) ---
                 st.markdown(f"**{t('sim_2')}**")
+                df_2 = df_g_origin.copy()
+                
                 c1, c2, c3, c4 = st.columns(4)
-                with c1: lbm_r2 = st.selectbox("Ratio", sorted(df_g['ratio surface goutte/puit'].unique()), key="l_r2", index=0)
-                with c2: lbm_v2 = st.selectbox(t("lbl_viscosity"), sorted(df_g['Viscosite eta0 (Pa.s)'].unique()), key="l_v2", index=0)
-                with c3: lbm_s2 = st.selectbox(t("lbl_shift_x"), sorted(df_g['shift X (um)'].unique()), key="l_s2", index=0)
-                with c4: lbm_c2 = st.selectbox(t("lbl_ca_gold"), sorted(df_g['CA substrat (deg)'].unique()), key="l_c2", index=0)
+                with c1:
+                    opts_r2 = sorted(df_2['ratio surface goutte/puit'].unique())
+                    # Essayer de sélectionner un index différent par défaut si possible
+                    idx_r2 = 1 if len(opts_r2) > 1 else 0
+                    lbm_r2 = st.selectbox("Ratio", opts_r2, key="l_r2", index=idx_r2)
+                    df_2 = df_2[df_2['ratio surface goutte/puit'] == lbm_r2]
+                
+                with c2:
+                    opts_v2 = sorted(df_2['Viscosite eta0 (Pa.s)'].unique())
+                    lbm_v2 = st.selectbox(t("lbl_viscosity"), opts_v2, key="l_v2")
+                    df_2 = df_2[df_2['Viscosite eta0 (Pa.s)'] == lbm_v2]
+                
+                with c3:
+                    opts_s2 = sorted(df_2['shift X (um)'].unique())
+                    lbm_s2 = st.selectbox(t("lbl_shift_x"), opts_s2, key="l_s2")
+                    df_2 = df_2[df_2['shift X (um)'] == lbm_s2]
+                
+                with c4:
+                    opts_c2 = sorted(df_2['CA substrat (deg)'].unique())
+                    lbm_c2 = st.selectbox(t("lbl_ca_gold"), opts_c2, key="l_c2")
+                    df_2 = df_2[df_2['CA substrat (deg)'] == lbm_c2]
                 
                 with st.expander(f"Paramètres avancés {t('sim_2')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lbm_cwl2 = st.selectbox("CA Mur Gauche", sorted(df_g['CA mur gauche (deg)'].unique()), key="l_cwl2", index=0)
-                    with cc2: lbm_cwr2 = st.selectbox("CA Mur Droit", sorted(df_g['CA mur droit (deg)'].unique()), key="l_cwr2", index=0)
-                    with cc3: lbm_cpl2 = st.selectbox("CA Plateau", sorted(df_g['CA plateau gauche (deg)'].unique()), key="l_cpl2", index=0)
-                p_lbm_2 = (lbm_r2, lbm_c2, lbm_cwl2, lbm_cwr2, lbm_cpl2, lbm_v2, lbm_s2)
+                    with cc1:
+                        opts_wl2 = sorted(df_2['CA mur gauche (deg)'].unique())
+                        lbm_cwl2 = st.selectbox("CA Mur Gauche", opts_wl2, key="l_cwl2")
+                        df_2 = df_2[df_2['CA mur gauche (deg)'] == lbm_cwl2]
+                    with cc2:
+                        opts_wr2 = sorted(df_2['CA mur droit (deg)'].unique())
+                        lbm_cwr2 = st.selectbox("CA Mur Droit", opts_wr2, key="l_cwr2")
+                        df_2 = df_2[df_2['CA mur droit (deg)'] == lbm_cwr2]
+                    with cc3:
+                        opts_pl2 = sorted(df_2['CA plateau gauche (deg)'].unique())
+                        lbm_cpl2 = st.selectbox("CA Plateau", opts_pl2, key="l_cpl2")
+                        df_2 = df_2[df_2['CA plateau gauche (deg)'] == lbm_cpl2]
+
+                # Résultat Sim 2
+                file_2 = None
+                if not df_2.empty:
+                    file_2 = os.path.join(ASSETS_PATH, "lbm/gif", df_2.iloc[0]['nom fichier gif'])
 
                 # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
                 with btn_col1:
                     if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_lbm_g"):
                         st.session_state.run_lbm_g = True
-                        st.session_state.p_lbm_g = (p_lbm_1, p_lbm_2)
+                        st.session_state.files_lbm_g = (file_1, file_2)
                 with btn_col2:
                     if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_g"):
                         st.session_state.run_lbm_g = False
@@ -957,13 +1024,23 @@ elif selected_page == model_pages[2]:  # LBM
             if st.session_state.get('run_lbm_g', False):
                 with st.container(border=True):
                     res_cols = st.columns(2)
-                    for i, (col, params) in enumerate(zip(res_cols, st.session_state.p_lbm_g)):
-                        with col:
-                            st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
-                            if params in mapping_g:
-                                st.markdown(load_media_as_base64(mapping_g[params]), unsafe_allow_html=True)
-                            else:
-                                st.warning(t("combo_unavailable"))
+                    files = st.session_state.files_lbm_g
+                    
+                    # Sim 1
+                    with res_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files[0] and os.path.exists(files[0]):
+                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+                    
+                    # Sim 2
+                    with res_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files[1] and os.path.exists(files[1]):
+                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
         else:
             st.warning("Mapping data missing for LBM GIF.")
 
@@ -972,55 +1049,95 @@ elif selected_page == model_pages[2]:  # LBM
         with c_title:
             st.subheader(t("png_viewer"))
         
-        mapping_p, df_p = load_lbm_png_mapping()
+        _, df_p_origin = load_lbm_png_mapping()
         
         with c_pop:
             with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                if not df_p.empty:
-                    st.dataframe(df_p, use_container_width=True, hide_index=True)
+                if not df_p_origin.empty:
+                    st.dataframe(df_p_origin, use_container_width=True, hide_index=True)
                 else:
                     st.error("Data not found")
 
-        if not df_p.empty:
+        if not df_p_origin.empty:
             with st.container(border=True):
-                # --- Simulation 1 ---
+                # --- Simulation 1 (Cascading PNG) ---
                 st.markdown(f"**{t('sim_1')}**")
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: lp_r1 = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r1")
-                with c2: lp_v1 = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v1")
-                with c3: lp_s1 = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s1")
-                with c4: lp_c1 = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c1")
+                df_p1 = df_p_origin.copy()
                 
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: 
+                    lbm_rp1 = st.selectbox("Ratio", sorted(df_p1['ratio surface goutte/puit'].unique()), key="lp_r1")
+                    df_p1 = df_p1[df_p1['ratio surface goutte/puit'] == lbm_rp1]
+                with c2: 
+                    lbm_vp1 = st.selectbox(t("lbl_viscosity"), sorted(df_p1['Viscosite eta0 (Pa.s)'].unique()), key="lp_v1")
+                    df_p1 = df_p1[df_p1['Viscosite eta0 (Pa.s)'] == lbm_vp1]
+                with c3: 
+                    lbm_sp1 = st.selectbox(t("lbl_shift_x"), sorted(df_p1['shift X (um)'].unique()), key="lp_s1")
+                    df_p1 = df_p1[df_p1['shift X (um)'] == lbm_sp1]
+                with c4: 
+                    lbm_cp1 = st.selectbox(t("lbl_ca_gold"), sorted(df_p1['CA substrat (deg)'].unique()), key="lp_c1")
+                    df_p1 = df_p1[df_p1['CA substrat (deg)'] == lbm_cp1]
+
                 with st.expander(f"Paramètres avancés {t('sim_1')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lp_cwl1 = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_cwl1")
-                    with cc2: lp_cwr1 = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_cwr1")
-                    with cc3: lp_cpl1 = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_cpl1")
-                pp_lbm_1 = (lp_r1, lp_c1, lp_cwl1, lp_cwr1, lp_cpl1, lp_v1, lp_s1)
+                    with cc1: 
+                        lbm_wlp1 = st.selectbox("CA Mur Gauche", sorted(df_p1['CA mur gauche (deg)'].unique()), key="lp_wl1")
+                        df_p1 = df_p1[df_p1['CA mur gauche (deg)'] == lbm_wlp1]
+                    with cc2: 
+                        lbm_wrp1 = st.selectbox("CA Mur Droit", sorted(df_p1['CA mur droit (deg)'].unique()), key="lp_wr1")
+                        df_p1 = df_p1[df_p1['CA mur droit (deg)'] == lbm_wrp1]
+                    with cc3: 
+                        lbm_plp1 = st.selectbox("CA Plateau", sorted(df_p1['CA plateau gauche (deg)'].unique()), key="lp_pl1")
+                        df_p1 = df_p1[df_p1['CA plateau gauche (deg)'] == lbm_plp1]
+                
+                file_p1 = None
+                if not df_p1.empty:
+                    file_p1 = os.path.join(ASSETS_PATH, "lbm/png", df_p1.iloc[0]['nom fichier png'])
 
                 st.divider()
 
-                # --- Simulation 2 ---
+                # --- Simulation 2 (Cascading PNG) ---
                 st.markdown(f"**{t('sim_2')}**")
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: lp_r2 = st.selectbox("Ratio", sorted(df_p['ratio surface goutte/puit'].unique()), key="lp_r2", index=0)
-                with c2: lp_v2 = st.selectbox(t("lbl_viscosity"), sorted(df_p['Viscosite eta0 (Pa.s)'].unique()), key="lp_v2", index=0)
-                with c3: lp_s2 = st.selectbox(t("lbl_shift_x"), sorted(df_p['shift X (um)'].unique()), key="lp_s2", index=0)
-                with c4: lp_c2 = st.selectbox(t("lbl_ca_gold"), sorted(df_p['CA substrat (deg)'].unique()), key="lp_c2", index=0)
+                df_p2 = df_p_origin.copy()
                 
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: 
+                    opts_rp2 = sorted(df_p2['ratio surface goutte/puit'].unique())
+                    idx_rp2 = 1 if len(opts_rp2) > 1 else 0
+                    lbm_rp2 = st.selectbox("Ratio", opts_rp2, key="lp_r2", index=idx_rp2)
+                    df_p2 = df_p2[df_p2['ratio surface goutte/puit'] == lbm_rp2]
+                with c2: 
+                    lbm_vp2 = st.selectbox(t("lbl_viscosity"), sorted(df_p2['Viscosite eta0 (Pa.s)'].unique()), key="lp_v2")
+                    df_p2 = df_p2[df_p2['Viscosite eta0 (Pa.s)'] == lbm_vp2]
+                with c3: 
+                    lbm_sp2 = st.selectbox(t("lbl_shift_x"), sorted(df_p2['shift X (um)'].unique()), key="lp_s2")
+                    df_p2 = df_p2[df_p2['shift X (um)'] == lbm_sp2]
+                with c4: 
+                    lbm_cp2 = st.selectbox(t("lbl_ca_gold"), sorted(df_p2['CA substrat (deg)'].unique()), key="lp_c2")
+                    df_p2 = df_p2[df_p2['CA substrat (deg)'] == lbm_cp2]
+
                 with st.expander(f"Paramètres avancés {t('sim_2')}"):
                     cc1, cc2, cc3 = st.columns(3)
-                    with cc1: lp_cwl2 = st.selectbox("CA Mur Gauche", sorted(df_p['CA mur gauche (deg)'].unique()), key="lp_cwl2", index=0)
-                    with cc2: lp_cwr2 = st.selectbox("CA Mur Droit", sorted(df_p['CA mur droit (deg)'].unique()), key="lp_cwr2", index=0)
-                    with cc3: lp_cpl2 = st.selectbox("CA Plateau", sorted(df_p['CA plateau gauche (deg)'].unique()), key="lp_cpl2", index=0)
-                pp_lbm_2 = (lp_r2, lp_c2, lp_cwl2, lp_cwr2, lp_cpl2, lp_v2, lp_s2)
+                    with cc1: 
+                        lbm_wlp2 = st.selectbox("CA Mur Gauche", sorted(df_p2['CA mur gauche (deg)'].unique()), key="lp_wl2")
+                        df_p2 = df_p2[df_p2['CA mur gauche (deg)'] == lbm_wlp2]
+                    with cc2: 
+                        lbm_wrp2 = st.selectbox("CA Mur Droit", sorted(df_p2['CA mur droit (deg)'].unique()), key="lp_wr2")
+                        df_p2 = df_p2[df_p2['CA mur droit (deg)'] == lbm_wrp2]
+                    with cc3: 
+                        lbm_plp2 = st.selectbox("CA Plateau", sorted(df_p2['CA plateau gauche (deg)'].unique()), key="lp_pl2")
+                        df_p2 = df_p2[df_p2['CA plateau gauche (deg)'] == lbm_plp2]
+
+                file_p2 = None
+                if not df_p2.empty:
+                    file_p2 = os.path.join(ASSETS_PATH, "lbm/png", df_p2.iloc[0]['nom fichier png'])
 
                 # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
                 with btn_col1:
                     if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_lbm_p"):
                         st.session_state.run_lbm_p = True
-                        st.session_state.p_lbm_p = (pp_lbm_1, pp_lbm_2)
+                        st.session_state.files_lbm_p = (file_p1, file_p2)
                 with btn_col2:
                     if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_lbm_p"):
                         st.session_state.run_lbm_p = False
@@ -1029,13 +1146,21 @@ elif selected_page == model_pages[2]:  # LBM
             if st.session_state.get('run_lbm_p', False):
                 with st.container(border=True):
                     res_cols = st.columns(2)
-                    for i, (col, params) in enumerate(zip(res_cols, st.session_state.p_lbm_p)):
-                        with col:
-                            st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
-                            if params in mapping_p:
-                                st.markdown(load_media_as_base64(mapping_p[params]), unsafe_allow_html=True)
-                            else:
-                                st.warning(t("combo_unavailable"))
+                    files_p = st.session_state.files_lbm_p
+                    
+                    with res_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files_p[0] and os.path.exists(files_p[0]):
+                            st.markdown(load_media_as_base64(files_p[0]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+                    
+                    with res_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files_p[1] and os.path.exists(files_p[1]):
+                            st.markdown(load_media_as_base64(files_p[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
         else:
             st.warning("Mapping data missing for LBM PNG.")
 
