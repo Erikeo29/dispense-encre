@@ -357,7 +357,7 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
               ┌────────────┴────────────┐
               │                         │
          THIS PROJECT              INDUSTRIAL
-    Ag/AgCl ink dispensing         APPLICATIONS
+    Shear-Thinning Ink Dispensing         APPLICATIONS
 ```
 
 ---

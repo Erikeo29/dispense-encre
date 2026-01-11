@@ -48,14 +48,18 @@ TRANSLATIONS = {
         "lbl_time": "Temps (ms)",
         "lbl_shift_z": "Décalage Z (µm)",
         "lbl_ratio": "Ratio buse/puit",
-        "version_info": """**Version 0.5.0** ***(not released)***
-
-Jan 2025 - *EQU*
+        # Labels LBM avancés
+        "lbl_adv_params": "Paramètres avancés",
+        "lbl_ca_wall_l": "CA Mur Gauche (°)",
+        "lbl_ca_wall_r": "CA Mur Droit (°)",
+        "lbl_ca_plateau": "CA Plateau (°)",
+        "lbl_ratio_drop": "Ratio goutte/puit",
+        "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
 
 **Nouveautés :**
 - Support bilingue FR/EN
 - Bibliographie
-- Style académique
+- Assistant IA
 - Navigation améliorée""",
         "caption_fem": "Méthode des éléments finis - Python/FEniCS",
         "caption_vof": "Volume of Fluid - C++/OpenFOAM",
@@ -110,14 +114,18 @@ Jan 2025 - *EQU*
         "lbl_time": "Time (ms)",
         "lbl_shift_z": "Offset Z (µm)",
         "lbl_ratio": "Nozzle/well ratio",
-        "version_info": """**Version 0.5.0** ***(not released)***
-
-Jan 2025 - *EQU*
+        # Labels LBM advanced
+        "lbl_adv_params": "Advanced Parameters",
+        "lbl_ca_wall_l": "CA Wall Left (°)",
+        "lbl_ca_wall_r": "CA Wall Right (°)",
+        "lbl_ca_plateau": "CA Plateau (°)",
+        "lbl_ratio_drop": "Drop/Well Ratio",
+        "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
 
 **New Features:**
 - Bilingual support FR/EN
 - Bibliography
-- Academic style
+- AI Assistant
 - Improved navigation""",
         "caption_fem": "Finite Element Method - Python/FEniCS",
         "caption_vof": "Volume of Fluid - C++/OpenFOAM",
@@ -146,150 +154,18 @@ def t(key):
     lang = get_language()
     return TRANSLATIONS[lang].get(key, key)
 
-# --- Styles CSS personnalisés (Style Académique) ---
-custom_css = """
-<style>
-/* Masquer éléments Streamlit (sauf toolbar pour bouton sidebar) */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-.stDeployButton {display: none;}
+# --- Styles CSS personnalisés (chargés depuis fichier externe) ---
+def load_custom_css():
+    """Charge le CSS depuis assets/style.css et retourne le HTML complet."""
+    css_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "style.css")
+    try:
+        with open(css_path, 'r', encoding='utf-8') as f:
+            css_content = f.read()
+    except FileNotFoundError:
+        css_content = ""  # Fallback si fichier non trouvé
 
-/* Style académique */
-.main {
-    font-family: 'Georgia', 'Times New Roman', serif;
-}
-h1, h2, h3 {
-    color: #004b87;
-}
-
-/* Onglets plus visibles */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-}
-.stTabs [data-baseweb="tab"] {
-    height: 50px;
-    padding: 10px 24px;
-    background-color: #f0f2f6;
-    border-radius: 8px 8px 0 0;
-    font-weight: 600;
-    font-size: 16px;
-}
-.stTabs [aria-selected="true"] {
-    background-color: #004b87;
-    color: white;
-}
-
-/* Boutons de navigation - SVG flèche blanche sur fond bleu */
-.nav-button {
-    position: fixed;
-    right: 30px;
-    z-index: 9999;
-    background-color: #004b87;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-.nav-button:hover {
-    background-color: #003366;
-    transform: scale(1.1);
-}
-.back-to-top {
-    bottom: calc(50% + 30px);
-}
-.scroll-to-bottom {
-    bottom: calc(50% - 30px);
-}
-
-/* Bouton chatbot flottant */
-.chat-toggle-btn {
-    bottom: calc(50% - 90px);
-    background-color: #28a745;
-}
-.chat-toggle-btn:hover {
-    background-color: #218838;
-}
-
-/* Style du popover chatbot */
-[data-testid="stPopover"] {
-    max-width: 500px !important;
-}
-[data-testid="stPopover"] > div {
-    padding: 0 !important;
-}
-
-/* Messages du chat */
-.chat-container {
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-/* Espacement des radio buttons dans la sidebar */
-[data-testid="stSidebar"] .stRadio > div {
-    gap: 6px;
-}
-
-/* Améliorer la visibilité des radio buttons */
-[data-testid="stSidebar"] .stRadio > div > label > div:first-child {
-    border: 2px solid #666;
-}
-
-/* Réduire l'espace des séparateurs dans la sidebar */
-[data-testid="stSidebar"] hr {
-    margin: 4px 0;
-}
-
-/* Réduire l'espace sous les subheaders de la sidebar */
-[data-testid="stSidebar"] [data-testid="stSubheader"] {
-    margin-bottom: -10px;
-}
-
-/* Réduire l'espace des paragraphes markdown dans la sidebar */
-[data-testid="stSidebar"] [data-testid="stMarkdown"] p {
-    margin-bottom: 0.3rem;
-}
-
-/* Réduire l'espace des listes dans la sidebar */
-[data-testid="stSidebar"] [data-testid="stMarkdown"] ul {
-    margin-top: 0;
-    margin-bottom: 0.3rem;
-}
-
-/* Style spécifique pour le bouton du popover Chatbot dans la sidebar */
-[data-testid="stSidebar"] [data-testid="stPopover"] > button {
-    background-color: #004b87;
-    color: white;
-    border: none;
-    font-weight: bold;
-}
-[data-testid="stSidebar"] [data-testid="stPopover"] > button:hover {
-    background-color: #003366;
-    color: white;
-}
-[data-testid="stSidebar"] [data-testid="stPopover"] > button:active {
-    background-color: #002244;
-    color: white;
-}
-
-/* Style "Rouge" pour le bouton Réinitialiser (hack CSS basé sur l'ordre ou le texte si possible) 
-   Note: Cibler par texte est difficile en CSS pur sans structure stable. 
-   On utilise une classe générique pour les boutons secondaires ici. 
-   Pour un vrai bouton rouge, on compte sur le fait qu'il est "Secondary" et on le laisse gris/blanc 
-   pour contraster avec le bleu "Primary". */
-
-</style>
-
+    # HTML des boutons de navigation (reste ici car c'est du balisage)
+    nav_buttons_html = """
 <!-- Bouton retour en haut - SVG avec flèche vers le haut -->
 <a href="#top" class="nav-button back-to-top" title="Retour en haut / Back to top">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -304,7 +180,9 @@ h1, h2, h3 {
 </a>
 <div id="top"></div>
 """
-st.markdown(custom_css, unsafe_allow_html=True)
+    return f"<style>{css_content}</style>{nav_buttons_html}"
+
+st.markdown(load_custom_css(), unsafe_allow_html=True)
 
 # --- Chemins Absolus Robustes (Compatible Cloud) ---
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -326,35 +204,44 @@ SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 # --- Fonctions Utilitaires ---
 
 @st.cache_data(ttl=600)
-def load_gif_mapping():
+def load_fem_gif_mapping():
+    """Charge le mapping FEM GIF et retourne (mapping_dict, DataFrame)."""
     try:
         df = pd.read_csv(os.path.join(DATA_PATH, 'fem_gif_mapping.csv'), sep=';', encoding='utf-8')
+        # Convertir les virgules en points pour les floats
+        df['viscosity'] = df["Viscosité de l'encre (Pa.s)"].apply(lambda x: float(str(x).replace(',', '.')))
         mapping = {}
         for _, row in df.iterrows():
             key = (
                 int(row['diamètre du puit (µm)']), int(row['diamètre de la buse (µm)']),
-                int(row['shift buse en x (µm)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')),
+                int(row['shift buse en x (µm)']), row['viscosity'],
                 int(row['CA wall right']), int(row['CA gold'])
             )
             mapping[key] = os.path.join(ASSETS_PATH, "fem/gif", row['nom fichier gif'])
-        return mapping
-    except Exception: return {}
+        return mapping, df
+    except Exception:
+        return {}, pd.DataFrame()
 
 @st.cache_data(ttl=600)
-def load_png_mapping():
+def load_fem_png_mapping():
+    """Charge le mapping FEM PNG et retourne (mapping_dict, DataFrame)."""
     try:
         df = pd.read_csv(os.path.join(DATA_PATH, 'fem_png_mapping.csv'), sep=';', encoding='utf-8')
+        # Convertir les virgules en points pour les floats
+        df['viscosity'] = df["Viscosité de l'encre (Pa.s)"].apply(lambda x: float(str(x).replace(',', '.')))
+        df['remplissage_f'] = df['remplissage'].apply(lambda x: float(str(x).replace(',', '.')))
         mapping = {}
         for _, row in df.iterrows():
             key = (
-                int(row['temps dispense (ms)']), float(str(row["Viscosité de l'encre (Pa.s)"]).replace(',', '.')),
+                int(row['temps dispense (ms)']), row['viscosity'],
                 int(row['shift buse en x (µm)']), int(row['shift buse en z (µm)']),
-                int(row['CA gold']), float(str(row['remplissage']).replace(',', '.'))
+                int(row['CA gold']), row['remplissage_f']
             )
             filename = row['nom fichier gif'].replace('.png', '.jpg')
             mapping[key] = os.path.join(ASSETS_PATH, "fem/png", filename)
-        return mapping
-    except Exception: return {}
+        return mapping, df
+    except Exception:
+        return {}, pd.DataFrame()
 
 @st.cache_data(ttl=600)
 def load_lbm_gif_mapping():
@@ -443,29 +330,282 @@ def display_smart_markdown(content):
     else:
         st.markdown(content)
 
+def render_lbm_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
+                                  sim_num: int, file_type: str = "gif") -> str | None:
+    """
+    Génère les filtres en cascade pour LBM (7 paramètres sur une ligne).
+
+    Args:
+        df_origin: DataFrame source avec toutes les combinaisons
+        key_prefix: Préfixe pour les clés des widgets (ex: "lg" pour LBM GIF)
+        sim_num: 1 ou 2 (pour l'index par défaut différent)
+        file_type: "gif" ou "png"
+
+    Returns:
+        Chemin complet du fichier ou None si non trouvé
+    """
+    df = df_origin.copy()
+    default_idx = 0 if sim_num == 1 else (1 if len(df) > 1 else 0)
+
+    # Colonnes pour les filtres
+    col_ratio = 'ratio surface goutte/puit'
+    col_visc = 'Viscosite eta0 (Pa.s)'
+    col_shift = 'shift X (um)'
+    col_ca_sub = 'CA substrat (deg)'
+    col_ca_wl = 'CA mur gauche (deg)'
+    col_ca_wr = 'CA mur droit (deg)'
+    col_ca_pl = 'CA plateau gauche (deg)'
+    col_file = 'nom fichier gif' if file_type == "gif" else 'nom fichier png'
+
+    st.markdown(f"**{t('sim_1') if sim_num == 1 else t('sim_2')}**")
+
+    # 7 paramètres sur une seule ligne
+    c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
+
+    with c1:
+        opts = sorted(df[col_ratio].unique())
+        idx = min(default_idx, len(opts) - 1)
+        val_ratio = st.selectbox(t("lbl_ratio_drop"), opts, key=f"{key_prefix}_r{sim_num}", index=idx)
+        df = df[df[col_ratio] == val_ratio]
+
+    with c2:
+        opts = sorted(df[col_visc].unique())
+        val_visc = st.selectbox(t("lbl_viscosity"), opts, key=f"{key_prefix}_v{sim_num}")
+        df = df[df[col_visc] == val_visc]
+
+    with c3:
+        opts = sorted(df[col_shift].unique())
+        val_shift = st.selectbox(t("lbl_shift_x"), opts, key=f"{key_prefix}_s{sim_num}")
+        df = df[df[col_shift] == val_shift]
+
+    with c4:
+        opts = sorted(df[col_ca_sub].unique())
+        val_ca_sub = st.selectbox(t("lbl_ca_gold"), opts, key=f"{key_prefix}_c{sim_num}")
+        df = df[df[col_ca_sub] == val_ca_sub]
+
+    with c5:
+        opts = sorted(df[col_ca_wl].unique())
+        val_wl = st.selectbox(t("lbl_ca_wall_l"), opts, key=f"{key_prefix}_wl{sim_num}")
+        df = df[df[col_ca_wl] == val_wl]
+
+    with c6:
+        opts = sorted(df[col_ca_wr].unique())
+        val_wr = st.selectbox(t("lbl_ca_wall_r"), opts, key=f"{key_prefix}_wr{sim_num}")
+        df = df[df[col_ca_wr] == val_wr]
+
+    with c7:
+        opts = sorted(df[col_ca_pl].unique())
+        val_pl = st.selectbox(t("lbl_ca_plateau"), opts, key=f"{key_prefix}_pl{sim_num}")
+        df = df[df[col_ca_pl] == val_pl]
+
+    # Retourner le chemin du fichier
+    if not df.empty:
+        subdir = f"lbm/{file_type}"
+        return os.path.join(ASSETS_PATH, subdir, df.iloc[0][col_file])
+    return None
+
+
+def render_fem_gif_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
+                                      sim_num: int) -> str | None:
+    """
+    Génère les filtres en cascade pour FEM GIF (6 paramètres sur une ligne).
+
+    Args:
+        df_origin: DataFrame source avec toutes les combinaisons
+        key_prefix: Préfixe pour les clés des widgets (ex: "fg" pour FEM GIF)
+        sim_num: 1 ou 2 (pour l'index par défaut différent)
+
+    Returns:
+        Chemin complet du fichier ou None si non trouvé
+    """
+    df = df_origin.copy()
+    default_idx = 0 if sim_num == 1 else (1 if len(df) > 1 else 0)
+
+    # Colonnes pour les filtres
+    col_well = 'diamètre du puit (µm)'
+    col_nozzle = 'diamètre de la buse (µm)'
+    col_shift = 'shift buse en x (µm)'
+    col_visc = 'viscosity'  # Colonne convertie en float
+    col_ca_wall = 'CA wall right'
+    col_ca_gold = 'CA gold'
+    col_file = 'nom fichier gif'
+
+    st.markdown(f"**{t('sim_1') if sim_num == 1 else t('sim_2')}**")
+
+    # 6 paramètres sur une seule ligne (avec espaceurs)
+    _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+
+    with c1:
+        opts = sorted(df[col_well].unique())
+        idx = min(default_idx, len(opts) - 1)
+        val_well = st.selectbox(t("lbl_well"), opts, key=f"{key_prefix}_w{sim_num}", index=idx)
+        df = df[df[col_well] == val_well]
+
+    with c2:
+        opts = sorted(df[col_nozzle].unique())
+        val_nozzle = st.selectbox(t("lbl_nozzle"), opts, key=f"{key_prefix}_n{sim_num}")
+        df = df[df[col_nozzle] == val_nozzle]
+
+    with c3:
+        opts = sorted(df[col_shift].unique(), reverse=True)  # 0, -75, -150
+        val_shift = st.selectbox(t("lbl_shift_x"), opts, key=f"{key_prefix}_s{sim_num}")
+        df = df[df[col_shift] == val_shift]
+
+    with c4:
+        opts = sorted(df[col_visc].unique(), reverse=True)  # 5.0, 1.5
+        val_visc = st.selectbox(t("lbl_viscosity"), opts, key=f"{key_prefix}_v{sim_num}")
+        df = df[df[col_visc] == val_visc]
+
+    with c5:
+        opts = sorted(df[col_ca_wall].unique(), reverse=True)  # 90, 35
+        val_ca_wall = st.selectbox(t("lbl_ca_wall"), opts, key=f"{key_prefix}_cw{sim_num}")
+        df = df[df[col_ca_wall] == val_ca_wall]
+
+    with c6:
+        opts = sorted(df[col_ca_gold].unique())
+        val_ca_gold = st.selectbox(t("lbl_ca_gold"), opts, key=f"{key_prefix}_cg{sim_num}")
+        df = df[df[col_ca_gold] == val_ca_gold]
+
+    # Retourner le chemin du fichier
+    if not df.empty:
+        return os.path.join(ASSETS_PATH, "fem/gif", df.iloc[0][col_file])
+    return None
+
+
+def render_fem_png_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
+                                      sim_num: int) -> str | None:
+    """
+    Génère les filtres en cascade pour FEM PNG (6 paramètres sur une ligne).
+
+    Args:
+        df_origin: DataFrame source avec toutes les combinaisons
+        key_prefix: Préfixe pour les clés des widgets (ex: "fp" pour FEM PNG)
+        sim_num: 1 ou 2 (pour l'index par défaut différent)
+
+    Returns:
+        Chemin complet du fichier ou None si non trouvé
+    """
+    df = df_origin.copy()
+    default_idx = 0 if sim_num == 1 else (1 if len(df) > 1 else 0)
+
+    # Colonnes pour les filtres
+    col_time = 'temps dispense (ms)'
+    col_visc = 'viscosity'
+    col_shift_x = 'shift buse en x (µm)'
+    col_shift_z = 'shift buse en z (µm)'
+    col_ca_gold = 'CA gold'
+    col_ratio = 'remplissage_f'
+    col_file = 'nom fichier gif'
+
+    st.markdown(f"**{t('sim_1') if sim_num == 1 else t('sim_2')}**")
+
+    # 6 paramètres sur une seule ligne (avec espaceurs)
+    _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
+
+    with c1:
+        opts = sorted(df[col_time].unique())
+        idx = min(default_idx, len(opts) - 1)
+        val_time = st.selectbox(t("lbl_time"), opts, key=f"{key_prefix}_t{sim_num}", index=idx)
+        df = df[df[col_time] == val_time]
+
+    with c2:
+        opts = sorted(df[col_visc].unique())
+        val_visc = st.selectbox(t("lbl_viscosity"), opts, key=f"{key_prefix}_v{sim_num}")
+        df = df[df[col_visc] == val_visc]
+
+    with c3:
+        opts = sorted(df[col_shift_x].unique(), reverse=True)
+        val_shift_x = st.selectbox(t("lbl_shift_x"), opts, key=f"{key_prefix}_sx{sim_num}")
+        df = df[df[col_shift_x] == val_shift_x]
+
+    with c4:
+        opts = sorted(df[col_shift_z].unique(), reverse=True)
+        val_shift_z = st.selectbox(t("lbl_shift_z"), opts, key=f"{key_prefix}_sz{sim_num}")
+        df = df[df[col_shift_z] == val_shift_z]
+
+    with c5:
+        opts = sorted(df[col_ca_gold].unique())
+        val_ca_gold = st.selectbox(t("lbl_ca_gold"), opts, key=f"{key_prefix}_cg{sim_num}")
+        df = df[df[col_ca_gold] == val_ca_gold]
+
+    with c6:
+        opts = sorted(df[col_ratio].unique())
+        val_ratio = st.selectbox(t("lbl_ratio"), opts, key=f"{key_prefix}_r{sim_num}")
+        df = df[df[col_ratio] == val_ratio]
+
+    # Retourner le chemin du fichier
+    if not df.empty:
+        filename = df.iloc[0][col_file].replace('.png', '.jpg')
+        return os.path.join(ASSETS_PATH, "fem/png", filename)
+    return None
+
+
 # --- Callbacks pour Navigation ---
 def on_change_gen():
-    st.session_state.nav_model = None
-    st.session_state.nav_annex = None
+    # Récupérer l'index sélectionné depuis le widget
+    selected = st.session_state.get('_radio_gen')
+    if selected is not None:
+        gen_pages = TRANSLATIONS[st.session_state.get('lang', 'fr')]["gen_pages"]
+        try:
+            st.session_state.nav_gen_idx = gen_pages.index(selected)
+        except ValueError:
+            st.session_state.nav_gen_idx = 0
+    st.session_state.nav_model_idx = None
+    st.session_state.nav_annex_idx = None
 
 def on_change_model():
-    st.session_state.nav_gen = None
-    st.session_state.nav_annex = None
+    selected = st.session_state.get('_radio_model')
+    if selected is not None:
+        model_pages = TRANSLATIONS[st.session_state.get('lang', 'fr')]["model_pages"]
+        try:
+            st.session_state.nav_model_idx = model_pages.index(selected)
+        except ValueError:
+            st.session_state.nav_model_idx = 0
+    st.session_state.nav_gen_idx = None
+    st.session_state.nav_annex_idx = None
 
 def on_change_annex():
-    st.session_state.nav_gen = None
-    st.session_state.nav_model = None
+    selected = st.session_state.get('_radio_annex')
+    if selected is not None:
+        annex_pages = TRANSLATIONS[st.session_state.get('lang', 'fr')]["annex_pages"]
+        try:
+            st.session_state.nav_annex_idx = annex_pages.index(selected)
+        except ValueError:
+            st.session_state.nav_annex_idx = 0
+    st.session_state.nav_gen_idx = None
+    st.session_state.nav_model_idx = None
 
-# --- Initialisation des États ---
-if 'nav_gen' not in st.session_state: st.session_state.nav_gen = t("gen_pages")[0]
-if 'nav_model' not in st.session_state: st.session_state.nav_model = None
-if 'nav_annex' not in st.session_state: st.session_state.nav_annex = None
+# --- Initialisation Centralisée des États ---
+# Toutes les variables session_state sont initialisées ici pour éviter KeyError
+DEFAULT_SESSION_STATES = {
+    # Navigation (stocke l'INDEX, pas le texte - indépendant de la langue)
+    'nav_gen_idx': 0,     # Index dans gen_pages (0 = Accueil/Home par défaut)
+    'nav_model_idx': None,
+    'nav_annex_idx': None,
+    # FEM Visualization
+    'run_g': False,           # GIF viewer actif
+    'run_p': False,           # PNG viewer actif
+    'files_fem_g': (None, None),  # Fichiers GIF (sim1, sim2)
+    'files_fem_p': (None, None),  # Fichiers PNG (sim1, sim2)
+    # LBM Visualization
+    'run_lbm_g': False,
+    'run_lbm_p': False,
+    'files_lbm_g': (None, None),
+    'files_lbm_p': (None, None),
+    # Chatbot
+    'chat_messages': [],
+}
 
-# Initialisation des états LBM (pour éviter AttributeError)
-if 'run_lbm_g' not in st.session_state: st.session_state.run_lbm_g = False
-if 'files_lbm_g' not in st.session_state: st.session_state.files_lbm_g = (None, None)
-if 'run_lbm_p' not in st.session_state: st.session_state.run_lbm_p = False
-if 'files_lbm_p' not in st.session_state: st.session_state.files_lbm_p = (None, None)
+for key, default in DEFAULT_SESSION_STATES.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+# Initialisation spéciale : Accueil (index 0) au tout premier chargement
+# (quand aucun groupe n'est sélectionné)
+if (st.session_state.nav_gen_idx is None and
+    st.session_state.nav_model_idx is None and
+    st.session_state.nav_annex_idx is None):
+    st.session_state.nav_gen_idx = 0
 
 # --- Barre Latérale ---
 
@@ -480,31 +620,8 @@ lang_selection = st.sidebar.radio(
 )
 new_lang = "fr" if "FR" in lang_selection else "en"
 
-# Si la langue change, convertir la sélection actuelle
+# Si la langue change, simplement rerun (les index sont indépendants de la langue)
 if new_lang != old_lang:
-    # Trouver l'index de la page actuelle dans l'ancienne langue
-    old_gen_pages = TRANSLATIONS[old_lang]["gen_pages"]
-    old_model_pages = TRANSLATIONS[old_lang]["model_pages"]
-    old_annex_pages = TRANSLATIONS[old_lang]["annex_pages"]
-    new_gen_pages = TRANSLATIONS[new_lang]["gen_pages"]
-    new_model_pages = TRANSLATIONS[new_lang]["model_pages"]
-    new_annex_pages = TRANSLATIONS[new_lang]["annex_pages"]
-
-    if st.session_state.nav_gen and st.session_state.nav_gen in old_gen_pages:
-        idx = old_gen_pages.index(st.session_state.nav_gen)
-        st.session_state.nav_gen = new_gen_pages[idx]
-    elif st.session_state.nav_model and st.session_state.nav_model in old_model_pages:
-        idx = old_model_pages.index(st.session_state.nav_model)
-        st.session_state.nav_model = new_model_pages[idx]
-    elif st.session_state.nav_annex and st.session_state.nav_annex in old_annex_pages:
-        idx = old_annex_pages.index(st.session_state.nav_annex)
-        st.session_state.nav_annex = new_annex_pages[idx]
-    else:
-        # Par défaut, sélectionner Accueil/Home
-        st.session_state.nav_gen = new_gen_pages[0]
-        st.session_state.nav_model = None
-        st.session_state.nav_annex = None
-
     st.session_state.lang = new_lang
     st.rerun()
 
@@ -513,12 +630,18 @@ st.session_state.lang = new_lang
 st.sidebar.title(t("sidebar_title"))
 st.sidebar.markdown("---")
 
-# Navigation par groupes avec callbacks (style electrochemistry)
+# Navigation par groupes avec callbacks
+# Les index sont stockés dans session_state (indépendants de la langue)
+gen_pages = t("gen_pages")
+model_pages = t("model_pages")
+annex_pages = t("annex_pages")
+
 st.sidebar.subheader(t("gen_header"))
 nav_gen = st.sidebar.radio(
     "Nav Gen",
-    t("gen_pages"),
-    key="nav_gen",
+    gen_pages,
+    key="_radio_gen",
+    index=st.session_state.nav_gen_idx,
     on_change=on_change_gen,
     label_visibility="collapsed"
 )
@@ -527,9 +650,9 @@ st.sidebar.markdown("---")
 st.sidebar.subheader(t("models_header"))
 nav_model = st.sidebar.radio(
     "Nav Models",
-    t("model_pages"),
-    key="nav_model",
-    index=None,
+    model_pages,
+    key="_radio_model",
+    index=st.session_state.nav_model_idx,
     on_change=on_change_model,
     label_visibility="collapsed"
 )
@@ -538,9 +661,9 @@ st.sidebar.markdown("---")
 st.sidebar.subheader(t("annex_header"))
 nav_annex = st.sidebar.radio(
     "Nav Annex",
-    t("annex_pages"),
-    key="nav_annex",
-    index=None,
+    annex_pages,
+    key="_radio_annex",
+    index=st.session_state.nav_annex_idx,
     on_change=on_change_annex,
     label_visibility="collapsed"
 )
@@ -630,10 +753,6 @@ def stream_claude_response(user_message: str):
         error_msg = f"{t('chat_error')} ({str(e)[:50]}...)"
         yield error_msg
 
-# Initialiser l'historique du chat
-if "chat_messages" not in st.session_state:
-    st.session_state.chat_messages = []
-
 # Interface chatbot dans la sidebar (seulement si activé)
 if is_chatbot_enabled():
     st.sidebar.markdown("---")
@@ -666,22 +785,19 @@ st.sidebar.markdown("---")
 st.sidebar.markdown(t("version_info"))
 
 # --- Déterminer la page active ---
+# Priorité : modèles > annexes > général
 selected_page = None
-if nav_model:
-    selected_page = nav_model
-elif nav_annex:
-    selected_page = nav_annex
-elif nav_gen:
-    selected_page = nav_gen
+if st.session_state.nav_model_idx is not None:
+    selected_page = model_pages[st.session_state.nav_model_idx]
+elif st.session_state.nav_annex_idx is not None:
+    selected_page = annex_pages[st.session_state.nav_annex_idx]
+elif st.session_state.nav_gen_idx is not None:
+    selected_page = gen_pages[st.session_state.nav_gen_idx]
 else:
-    selected_page = t("gen_pages")[0]  # Default: Accueil/Home
+    selected_page = gen_pages[0]  # Default: Accueil/Home
 
 # --- Pages ---
-
-# Mapping pour les pages (indépendant de la langue)
-gen_pages = t("gen_pages")
-model_pages = t("model_pages")
-annex_pages = t("annex_pages")
+# (gen_pages, model_pages, annex_pages déjà définis avant les radios)
 
 # ===== PAGE ACCUEIL =====
 if selected_page == gen_pages[0]:  # Accueil / Home
@@ -730,6 +846,79 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
     st.markdown("---")
     st.markdown(load_file_content("comparaison/comparaison_models.md"))
 
+    # --- Section visuelle: Comparaison des maillages/grilles ---
+    st.markdown("---")
+    current_lang = st.session_state.get('lang', 'fr')
+    st.subheader("🔬 " + ("Visualisation des Approches de Discrétisation" if current_lang == "fr"
+                         else "Discretization Approaches Visualization"))
+
+    # Onglets pour les 4 méthodes
+    mesh_tabs = st.tabs(["FEM", "VOF", "LBM", "SPH"])
+
+    mesh_images = {
+        "FEM": os.path.join(ASSETS_PATH, "comparaison", "mesh_fem.png"),
+        "VOF": os.path.join(ASSETS_PATH, "comparaison", "mesh_vof.png"),
+        "LBM": os.path.join(ASSETS_PATH, "comparaison", "mesh_lbm.png"),
+        "SPH": os.path.join(ASSETS_PATH, "comparaison", "mesh_sph.png"),
+    }
+
+    droplet_images = {
+        "FEM": os.path.join(ASSETS_PATH, "comparaison", "droplet_fem.png"),
+        "VOF": os.path.join(ASSETS_PATH, "comparaison", "droplet_vof.png"),
+        "LBM": os.path.join(ASSETS_PATH, "comparaison", "droplet_lbm.png"),
+        "SPH": os.path.join(ASSETS_PATH, "comparaison", "droplet_sph.png"),
+    }
+
+    mesh_captions = {
+        "fr": {
+            "FEM": "Maillage triangulaire adaptatif (Eulérien)",
+            "VOF": "Maillage hexaédrique avec raffinement AMR (Eulérien)",
+            "LBM": "Grille uniforme 5 µm = 1 l.u. (Eulérien)",
+            "SPH": "Particules discrètes avec rayon d'influence h (Lagrangien)",
+        },
+        "en": {
+            "FEM": "Adaptive triangular mesh (Eulerian)",
+            "VOF": "Hexahedral mesh with AMR refinement (Eulerian)",
+            "LBM": "Uniform grid 5 µm = 1 l.u. (Eulerian)",
+            "SPH": "Discrete particles with influence radius h (Lagrangian)",
+        }
+    }
+
+    droplet_captions = {
+        "fr": {
+            "FEM": "Champ de phase φ : encre (+1) / air (-1)",
+            "VOF": "Fraction volumique α : encre (1) / air (0)",
+            "LBM": "Densité ρ : liquide (~458 l.u.) / air (~90 l.u.)",
+            "SPH": "Particules d'encre étalées dans le puits",
+        },
+        "en": {
+            "FEM": "Phase field φ: ink (+1) / air (-1)",
+            "VOF": "Volume fraction α: ink (1) / air (0)",
+            "LBM": "Density ρ: liquid (~458 l.u.) / air (~90 l.u.)",
+            "SPH": "Ink particles spread in the well",
+        }
+    }
+
+    for i, method in enumerate(["FEM", "VOF", "LBM", "SPH"]):
+        with mesh_tabs[i]:
+            col_mesh, col_droplet = st.columns(2)
+
+            with col_mesh:
+                st.markdown(f"**{'Maillage vide' if current_lang == 'fr' else 'Empty Mesh'}**")
+                img_path = mesh_images[method]
+                if os.path.exists(img_path):
+                    st.image(img_path, caption=mesh_captions[current_lang][method], use_container_width=True)
+                else:
+                    st.warning(f"Image non disponible: {img_path}")
+
+            with col_droplet:
+                st.markdown(f"**{'Avec goutte (état final)' if current_lang == 'fr' else 'With Droplet (final state)'}**")
+                droplet_path = droplet_images[method]
+                if os.path.exists(droplet_path):
+                    st.image(droplet_path, caption=droplet_captions[current_lang][method], use_container_width=True)
+                else:
+                    st.warning(f"Image non disponible: {droplet_path}")
+
 # ===== PAGE FEM =====
 elif selected_page == model_pages[0]:  # FEM
     st.title(t("title_model_1"))
@@ -746,120 +935,112 @@ elif selected_page == model_pages[0]:  # FEM
         c_title, c_pop = st.columns([0.7, 0.3])
         with c_title:
             st.subheader(t("gif_viewer"))
+
+        _, df_fem_gif = load_fem_gif_mapping()
+
         with c_pop:
-            # Popover pour voir les simulations disponibles sans scroller
             with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                try:
-                    df_mapping = pd.read_csv(os.path.join(DATA_PATH, 'fem_gif_mapping.csv'), sep=';', encoding='utf-8')
-                    st.dataframe(df_mapping, use_container_width=True, hide_index=True)
-                except Exception:
+                if not df_fem_gif.empty:
+                    st.dataframe(df_fem_gif, use_container_width=True, hide_index=True)
+                else:
                     st.error("Données non trouvées")
 
-        # Zone de sélection des paramètres (colonnes réduites avec espaceurs)
-        with st.container(border=True):
-            st.markdown(f"**{t('sim_1')}**")
-            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
-            with c1: g1_d = st.selectbox(t("lbl_well"), [800,1000,1500], key="g1_d")
-            with c2: g1_b = st.selectbox(t("lbl_nozzle"), [200,250,300], key="g1_b")
-            with c3: g1_s = st.selectbox(t("lbl_shift_x"), [0,-75,-150], key="g1_s")
-            with c4: g1_v = st.selectbox(t("lbl_viscosity"), [5.0,1.5], key="g1_v")
-            with c5: g1_a = st.selectbox(t("lbl_ca_wall"), [90,35], key="g1_a")
-            with c6: g1_o = st.selectbox(t("lbl_ca_gold"), [35,75], key="g1_o")
-            p1 = (g1_d, g1_b, g1_s, g1_v, g1_a, g1_o)
-
-            st.markdown(f"**{t('sim_2')}**")
-            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
-            with c1: g2_d = st.selectbox(t("lbl_well"), [800,1000,1500], key="g2_d", index=1)
-            with c2: g2_b = st.selectbox(t("lbl_nozzle"), [200,250,300], key="g2_b", index=1)
-            with c3: g2_s = st.selectbox(t("lbl_shift_x"), [0,-75,-150], key="g2_s", index=1)
-            with c4: g2_v = st.selectbox(t("lbl_viscosity"), [5.0,1.5], key="g2_v", index=1)
-            with c5: g2_a = st.selectbox(t("lbl_ca_wall"), [90,35], key="g2_a", index=1)
-            with c6: g2_o = st.selectbox(t("lbl_ca_gold"), [35,75], key="g2_o", index=1)
-            p2 = (g2_d, g2_b, g2_s, g2_v, g2_a, g2_o)
-
-            # Boutons Lancer (Bleu) et Réinitialiser (Rouge/Gris)
-            _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
-            with btn_col1:
-                if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_gif_launch"):
-                    st.session_state.run_g = True
-                    st.session_state.p_g = (p1, p2)
-            with btn_col2:
-                if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_gif_reset"):
-                    st.session_state.run_g = False
-                    st.rerun()
-
-        # Zone d'affichage des résultats
-        if st.session_state.get('run_g', False):
+        if not df_fem_gif.empty:
             with st.container(border=True):
-                gif_cols = st.columns(2)
-                m = load_gif_mapping()
-                for i, (col, params) in enumerate(zip(gif_cols, st.session_state.p_g)):
-                    with col:
-                        st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
-                        if params in m:
-                            st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                # Simulation 1 - Filtres en cascade
+                file_g1 = render_fem_gif_cascading_filters(df_fem_gif, "fg", 1)
+                st.divider()
+                # Simulation 2 - Filtres en cascade
+                file_g2 = render_fem_gif_cascading_filters(df_fem_gif, "fg", 2)
+
+                # Boutons
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_gif_launch"):
+                        st.session_state.run_g = True
+                        st.session_state.files_fem_g = (file_g1, file_g2)
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_gif_reset"):
+                        st.session_state.run_g = False
+                        st.rerun()
+
+            # Zone d'affichage des résultats
+            if st.session_state.get('run_g', False):
+                with st.container(border=True):
+                    gif_cols = st.columns(2)
+                    files = st.session_state.get('files_fem_g', (None, None))
+
+                    with gif_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files[0] and os.path.exists(files[0]):
+                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
                         else:
-                            st.warning(t("combo_unavailable"))
+                            st.warning(t("image_unavailable"))
+
+                    with gif_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files[1] and os.path.exists(files[1]):
+                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+        else:
+            st.warning("Mapping data missing for FEM GIF.")
 
     with tabs[3]:  # PNG
         # Layout Titre + Popover
         c_title, c_pop = st.columns([0.7, 0.3])
         with c_title:
             st.subheader(t("png_viewer"))
+
+        _, df_fem_png = load_fem_png_mapping()
+
         with c_pop:
-            # Popover pour voir les simulations disponibles sans scroller
             with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                try:
-                    df_mapping = pd.read_csv(os.path.join(DATA_PATH, 'fem_png_mapping.csv'), sep=';', encoding='utf-8')
-                    st.dataframe(df_mapping, use_container_width=True, hide_index=True)
-                except Exception:
+                if not df_fem_png.empty:
+                    st.dataframe(df_fem_png, use_container_width=True, hide_index=True)
+                else:
                     st.error("Données non trouvées")
 
-        # Zone de sélection des paramètres (colonnes réduites avec espaceurs)
-        with st.container(border=True):
-            st.markdown(f"**{t('sim_1')}**")
-            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
-            with c1: p1_t = st.selectbox(t("lbl_time"), [20,40], key="p1_t")
-            with c2: p1_v = st.selectbox(t("lbl_viscosity"), [0.05,0.5,1.5,5.0], index=2, key="p1_v")
-            with c3: p1_x = st.selectbox(t("lbl_shift_x"), [0,-75], key="p1_x")
-            with c4: p1_z = st.selectbox(t("lbl_shift_z"), [0,-30], key="p1_z")
-            with c5: p1_a = st.selectbox(t("lbl_ca_gold"), [15,35,75], key="p1_a")
-            with c6: p1_r = st.selectbox(t("lbl_ratio"), [0.6,0.8], key="p1_r")
-            png1 = (p1_t, p1_v, p1_x, p1_z, p1_a, p1_r)
-
-            st.markdown(f"**{t('sim_2')}**")
-            _, c1, c2, c3, c4, c5, c6, _ = st.columns([0.5, 1, 1, 1, 1, 1, 1, 0.5])
-            with c1: p2_t = st.selectbox(t("lbl_time"), [20,40], key="p2_t", index=1)
-            with c2: p2_v = st.selectbox(t("lbl_viscosity"), [0.05,0.5,1.5,5.0], index=3, key="p2_v")
-            with c3: p2_x = st.selectbox(t("lbl_shift_x"), [0,-75], key="p2_x", index=1)
-            with c4: p2_z = st.selectbox(t("lbl_shift_z"), [0,-30], key="p2_z", index=1)
-            with c5: p2_a = st.selectbox(t("lbl_ca_gold"), [15,35,75], index=1, key="p2_a")
-            with c6: p2_r = st.selectbox(t("lbl_ratio"), [0.6,0.8], index=1, key="p2_r")
-            png2 = (p2_t, p2_v, p2_x, p2_z, p2_a, p2_r)
-
-            # Boutons Afficher (Bleu) et Réinitialiser (Rouge/Gris)
-            _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
-            with btn_col1:
-                if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png_launch"):
-                    st.session_state.run_p = True
-                    st.session_state.p_p = (png1, png2)
-            with btn_col2:
-                if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_png_reset"):
-                    st.session_state.run_p = False
-                    st.rerun()
-
-        # Zone d'affichage des résultats
-        if st.session_state.get('run_p', False):
+        if not df_fem_png.empty:
             with st.container(border=True):
-                png_cols = st.columns(2)
-                m = load_png_mapping()
-                for i, (col, params) in enumerate(zip(png_cols, st.session_state.p_p)):
-                    with col:
-                        st.subheader(f"{t('sim_1') if i==0 else t('sim_2')}")
-                        if params in m:
-                            st.markdown(load_media_as_base64(m[params]), unsafe_allow_html=True)
+                # Simulation 1 - Filtres en cascade
+                file_p1 = render_fem_png_cascading_filters(df_fem_png, "fp", 1)
+                st.divider()
+                # Simulation 2 - Filtres en cascade
+                file_p2 = render_fem_png_cascading_filters(df_fem_png, "fp", 2)
+
+                # Boutons
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png_launch"):
+                        st.session_state.run_p = True
+                        st.session_state.files_fem_p = (file_p1, file_p2)
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_png_reset"):
+                        st.session_state.run_p = False
+                        st.rerun()
+
+            # Zone d'affichage des résultats
+            if st.session_state.get('run_p', False):
+                with st.container(border=True):
+                    png_cols = st.columns(2)
+                    files = st.session_state.get('files_fem_p', (None, None))
+
+                    with png_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files[0] and os.path.exists(files[0]):
+                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
                         else:
                             st.warning(t("image_unavailable"))
+
+                    with png_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files[1] and os.path.exists(files[1]):
+                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+        else:
+            st.warning("Mapping data missing for FEM PNG.")
 
 # ===== PAGE VOF =====
 elif selected_page == model_pages[1]:  # VOF
@@ -899,7 +1080,7 @@ elif selected_page == model_pages[2]:  # LBM
 
     with tabs[1]:
         st.subheader("Code Source Palabos")
-        st.code(load_file_content(os.path.join(DOC_PATH, "fr/code/code_lbm.cpp")), language='cpp')
+        st.code(load_file_content("code/code_lbm.cpp"), language='cpp')
 
     with tabs[2]:  # GIF
         c_title, c_pop = st.columns([0.7, 0.3])
@@ -917,104 +1098,11 @@ elif selected_page == model_pages[2]:  # LBM
 
         if not df_g_origin.empty:
             with st.container(border=True):
-                # --- Simulation 1 (Cascading Filters) ---
-                st.markdown(f"**{t('sim_1')}**")
-                df_1 = df_g_origin.copy()
-                
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: 
-                    # 1. Ratio
-                    opts_r1 = sorted(df_1['ratio surface goutte/puit'].unique())
-                    lbm_r1 = st.selectbox("Ratio", opts_r1, key="l_r1")
-                    df_1 = df_1[df_1['ratio surface goutte/puit'] == lbm_r1]
-                
-                with c2: 
-                    # 2. Viscosité
-                    opts_v1 = sorted(df_1['Viscosite eta0 (Pa.s)'].unique())
-                    lbm_v1 = st.selectbox(t("lbl_viscosity"), opts_v1, key="l_v1")
-                    df_1 = df_1[df_1['Viscosite eta0 (Pa.s)'] == lbm_v1]
-                
-                with c3: 
-                    # 3. Shift
-                    opts_s1 = sorted(df_1['shift X (um)'].unique())
-                    lbm_s1 = st.selectbox(t("lbl_shift_x"), opts_s1, key="l_s1")
-                    df_1 = df_1[df_1['shift X (um)'] == lbm_s1]
-                
-                with c4: 
-                    # 4. CA Substrat
-                    opts_c1 = sorted(df_1['CA substrat (deg)'].unique())
-                    lbm_c1 = st.selectbox(t("lbl_ca_gold"), opts_c1, key="l_c1")
-                    df_1 = df_1[df_1['CA substrat (deg)'] == lbm_c1]
-
-                # Paramètres avancés (dépendants du reste)
-                with st.expander(f"Paramètres avancés {t('sim_1')}"):
-                    cc1, cc2, cc3 = st.columns(3)
-                    with cc1: 
-                        opts_wl1 = sorted(df_1['CA mur gauche (deg)'].unique())
-                        lbm_cwl1 = st.selectbox("CA Mur Gauche", opts_wl1, key="l_cwl1")
-                        df_1 = df_1[df_1['CA mur gauche (deg)'] == lbm_cwl1]
-                    with cc2: 
-                        opts_wr1 = sorted(df_1['CA mur droit (deg)'].unique())
-                        lbm_cwr1 = st.selectbox("CA Mur Droit", opts_wr1, key="l_cwr1")
-                        df_1 = df_1[df_1['CA mur droit (deg)'] == lbm_cwr1]
-                    with cc3: 
-                        opts_pl1 = sorted(df_1['CA plateau gauche (deg)'].unique())
-                        lbm_cpl1 = st.selectbox("CA Plateau", opts_pl1, key="l_cpl1")
-                        df_1 = df_1[df_1['CA plateau gauche (deg)'] == lbm_cpl1]
-                
-                # Résultat Sim 1 : Nom de fichier
-                file_1 = None
-                if not df_1.empty:
-                    file_1 = os.path.join(ASSETS_PATH, "lbm/gif", df_1.iloc[0]['nom fichier gif'])
-
+                # Simulation 1 - Filtres en cascade
+                file_1 = render_lbm_cascading_filters(df_g_origin, "lg", 1, "gif")
                 st.divider()
-
-                # --- Simulation 2 (Cascading Filters) ---
-                st.markdown(f"**{t('sim_2')}**")
-                df_2 = df_g_origin.copy()
-                
-                c1, c2, c3, c4 = st.columns(4)
-                with c1:
-                    opts_r2 = sorted(df_2['ratio surface goutte/puit'].unique())
-                    # Essayer de sélectionner un index différent par défaut si possible
-                    idx_r2 = 1 if len(opts_r2) > 1 else 0
-                    lbm_r2 = st.selectbox("Ratio", opts_r2, key="l_r2", index=idx_r2)
-                    df_2 = df_2[df_2['ratio surface goutte/puit'] == lbm_r2]
-                
-                with c2:
-                    opts_v2 = sorted(df_2['Viscosite eta0 (Pa.s)'].unique())
-                    lbm_v2 = st.selectbox(t("lbl_viscosity"), opts_v2, key="l_v2")
-                    df_2 = df_2[df_2['Viscosite eta0 (Pa.s)'] == lbm_v2]
-                
-                with c3:
-                    opts_s2 = sorted(df_2['shift X (um)'].unique())
-                    lbm_s2 = st.selectbox(t("lbl_shift_x"), opts_s2, key="l_s2")
-                    df_2 = df_2[df_2['shift X (um)'] == lbm_s2]
-                
-                with c4:
-                    opts_c2 = sorted(df_2['CA substrat (deg)'].unique())
-                    lbm_c2 = st.selectbox(t("lbl_ca_gold"), opts_c2, key="l_c2")
-                    df_2 = df_2[df_2['CA substrat (deg)'] == lbm_c2]
-                
-                with st.expander(f"Paramètres avancés {t('sim_2')}"):
-                    cc1, cc2, cc3 = st.columns(3)
-                    with cc1:
-                        opts_wl2 = sorted(df_2['CA mur gauche (deg)'].unique())
-                        lbm_cwl2 = st.selectbox("CA Mur Gauche", opts_wl2, key="l_cwl2")
-                        df_2 = df_2[df_2['CA mur gauche (deg)'] == lbm_cwl2]
-                    with cc2:
-                        opts_wr2 = sorted(df_2['CA mur droit (deg)'].unique())
-                        lbm_cwr2 = st.selectbox("CA Mur Droit", opts_wr2, key="l_cwr2")
-                        df_2 = df_2[df_2['CA mur droit (deg)'] == lbm_cwr2]
-                    with cc3:
-                        opts_pl2 = sorted(df_2['CA plateau gauche (deg)'].unique())
-                        lbm_cpl2 = st.selectbox("CA Plateau", opts_pl2, key="l_cpl2")
-                        df_2 = df_2[df_2['CA plateau gauche (deg)'] == lbm_cpl2]
-
-                # Résultat Sim 2
-                file_2 = None
-                if not df_2.empty:
-                    file_2 = os.path.join(ASSETS_PATH, "lbm/gif", df_2.iloc[0]['nom fichier gif'])
+                # Simulation 2 - Filtres en cascade
+                file_2 = render_lbm_cascading_filters(df_g_origin, "lg", 2, "gif")
 
                 # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
@@ -1066,77 +1154,11 @@ elif selected_page == model_pages[2]:  # LBM
 
         if not df_p_origin.empty:
             with st.container(border=True):
-                # --- Simulation 1 (Cascading PNG) ---
-                st.markdown(f"**{t('sim_1')}**")
-                df_p1 = df_p_origin.copy()
-                
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: 
-                    lbm_rp1 = st.selectbox("Ratio", sorted(df_p1['ratio surface goutte/puit'].unique()), key="lp_r1")
-                    df_p1 = df_p1[df_p1['ratio surface goutte/puit'] == lbm_rp1]
-                with c2: 
-                    lbm_vp1 = st.selectbox(t("lbl_viscosity"), sorted(df_p1['Viscosite eta0 (Pa.s)'].unique()), key="lp_v1")
-                    df_p1 = df_p1[df_p1['Viscosite eta0 (Pa.s)'] == lbm_vp1]
-                with c3: 
-                    lbm_sp1 = st.selectbox(t("lbl_shift_x"), sorted(df_p1['shift X (um)'].unique()), key="lp_s1")
-                    df_p1 = df_p1[df_p1['shift X (um)'] == lbm_sp1]
-                with c4: 
-                    lbm_cp1 = st.selectbox(t("lbl_ca_gold"), sorted(df_p1['CA substrat (deg)'].unique()), key="lp_c1")
-                    df_p1 = df_p1[df_p1['CA substrat (deg)'] == lbm_cp1]
-
-                with st.expander(f"Paramètres avancés {t('sim_1')}"):
-                    cc1, cc2, cc3 = st.columns(3)
-                    with cc1: 
-                        lbm_wlp1 = st.selectbox("CA Mur Gauche", sorted(df_p1['CA mur gauche (deg)'].unique()), key="lp_wl1")
-                        df_p1 = df_p1[df_p1['CA mur gauche (deg)'] == lbm_wlp1]
-                    with cc2: 
-                        lbm_wrp1 = st.selectbox("CA Mur Droit", sorted(df_p1['CA mur droit (deg)'].unique()), key="lp_wr1")
-                        df_p1 = df_p1[df_p1['CA mur droit (deg)'] == lbm_wrp1]
-                    with cc3: 
-                        lbm_plp1 = st.selectbox("CA Plateau", sorted(df_p1['CA plateau gauche (deg)'].unique()), key="lp_pl1")
-                        df_p1 = df_p1[df_p1['CA plateau gauche (deg)'] == lbm_plp1]
-                
-                file_p1 = None
-                if not df_p1.empty:
-                    file_p1 = os.path.join(ASSETS_PATH, "lbm/png", df_p1.iloc[0]['nom fichier png'])
-
+                # Simulation 1 - Filtres en cascade
+                file_p1 = render_lbm_cascading_filters(df_p_origin, "lp", 1, "png")
                 st.divider()
-
-                # --- Simulation 2 (Cascading PNG) ---
-                st.markdown(f"**{t('sim_2')}**")
-                df_p2 = df_p_origin.copy()
-                
-                c1, c2, c3, c4 = st.columns(4)
-                with c1: 
-                    opts_rp2 = sorted(df_p2['ratio surface goutte/puit'].unique())
-                    idx_rp2 = 1 if len(opts_rp2) > 1 else 0
-                    lbm_rp2 = st.selectbox("Ratio", opts_rp2, key="lp_r2", index=idx_rp2)
-                    df_p2 = df_p2[df_p2['ratio surface goutte/puit'] == lbm_rp2]
-                with c2: 
-                    lbm_vp2 = st.selectbox(t("lbl_viscosity"), sorted(df_p2['Viscosite eta0 (Pa.s)'].unique()), key="lp_v2")
-                    df_p2 = df_p2[df_p2['Viscosite eta0 (Pa.s)'] == lbm_vp2]
-                with c3: 
-                    lbm_sp2 = st.selectbox(t("lbl_shift_x"), sorted(df_p2['shift X (um)'].unique()), key="lp_s2")
-                    df_p2 = df_p2[df_p2['shift X (um)'] == lbm_sp2]
-                with c4: 
-                    lbm_cp2 = st.selectbox(t("lbl_ca_gold"), sorted(df_p2['CA substrat (deg)'].unique()), key="lp_c2")
-                    df_p2 = df_p2[df_p2['CA substrat (deg)'] == lbm_cp2]
-
-                with st.expander(f"Paramètres avancés {t('sim_2')}"):
-                    cc1, cc2, cc3 = st.columns(3)
-                    with cc1: 
-                        lbm_wlp2 = st.selectbox("CA Mur Gauche", sorted(df_p2['CA mur gauche (deg)'].unique()), key="lp_wl2")
-                        df_p2 = df_p2[df_p2['CA mur gauche (deg)'] == lbm_wlp2]
-                    with cc2: 
-                        lbm_wrp2 = st.selectbox("CA Mur Droit", sorted(df_p2['CA mur droit (deg)'].unique()), key="lp_wr2")
-                        df_p2 = df_p2[df_p2['CA mur droit (deg)'] == lbm_wrp2]
-                    with cc3: 
-                        lbm_plp2 = st.selectbox("CA Plateau", sorted(df_p2['CA plateau gauche (deg)'].unique()), key="lp_pl2")
-                        df_p2 = df_p2[df_p2['CA plateau gauche (deg)'] == lbm_plp2]
-
-                file_p2 = None
-                if not df_p2.empty:
-                    file_p2 = os.path.join(ASSETS_PATH, "lbm/png", df_p2.iloc[0]['nom fichier png'])
+                # Simulation 2 - Filtres en cascade
+                file_p2 = render_lbm_cascading_filters(df_p_origin, "lp", 2, "png")
 
                 # Boutons
                 _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
@@ -1180,7 +1202,7 @@ elif selected_page == model_pages[3]:  # SPH
 
     with tabs[1]:
         st.subheader("Code Source PySPH")
-        st.code(load_file_content(os.path.join(DOC_PATH, "fr/code/code_sph.py")), language='python')
+        st.code(load_file_content("code/code_sph.py"), language='python')
 
     with tabs[2]:
         st.subheader("Exemple de Simulation SPH")

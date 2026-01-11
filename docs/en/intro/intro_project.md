@@ -7,7 +7,7 @@
 Microfluidic dispensing encompasses a set of techniques for controlled deposition of volumes ranging from nanoliters to microliters. These processes find applications in numerous fields:
 
 **Industrial applications:**
-- Electrochemical sensor fabrication (Ag/AgCl ink deposition)
+- Electrochemical sensor fabrication (conductive ink deposition)
 - Printed electronics (conductive circuits, RFID antennas)
 - Bioprinting and biomaterial deposition
 - Functional coatings and thin films
@@ -41,7 +41,7 @@ $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\ga
 
 where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscosities, and $k$, $a$ are fitting parameters.
 
-**Example:** A typical Ag/AgCl ink exhibits $\eta_0 = 0.5$–$5$ Pa·s (at rest) and $\eta_\infty = 0.05$ Pa·s under high shear.
+**Example:** A typical shear-thinning ink exhibits $\eta_0 = 0.5$–$5$ Pa·s (at rest) and $\eta_\infty = 0.05$ Pa·s under high shear.
 
 ---
 
@@ -86,7 +86,7 @@ Fluid dispensing modeling involves several interdependent physical phenomena, ch
 The modeled system consists of:
 - **Dispensing nozzle**: diameter 200–350 µm, positioned above the well
 - **Micro-well**: diameter 800–1500 µm, depth ~130 µm
-- **Fluid**: shear-thinning Ag/AgCl ink ($\rho$ = 3000 kg/m³)
+- **Fluid**: shear-thinning ink ($\rho$ = 3000 kg/m³)
 - **Environment**: ambient air
 
 ### Simulation Parameters

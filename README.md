@@ -2,7 +2,7 @@
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://dispense-encre.streamlit.app/)
 
-Streamlit application for visualization and comparison of numerical simulations of shear-thinning fluid dispensing (Ag/AgCl ink) into micro-wells.
+Streamlit application for visualization and comparison of numerical simulations of shear-thinning fluid dispensing into micro-wells.
 
 ## Compared Models
 

@@ -18,6 +18,52 @@ This section presents a comprehensive comparison of the four numerical methods f
 
 ---
 
+## Discretization Approaches: Eulerian vs Lagrangian
+
+### Fundamental Concept
+
+Numerical methods for fluid simulation are divided into two main families based on their treatment of space:
+
+| Approach | Description | Methods |
+|----------|-------------|---------|
+| **Eulerian** | **Fixed** mesh/grid in space. The fluid "flows through" the cells. | FEM, VOF, LBM |
+| **Lagrangian** | **Mobile** particles that move with the fluid. No fixed mesh. | SPH |
+
+### Visualization of the 4 Approaches
+
+The images below illustrate the different discretization structures used by each method, on a comparable geometry (well: 0.8 mm × 0.13 mm):
+
+#### FEM - Adaptive Triangular Mesh
+- **Type**: Eulerian
+- **Elements**: Triangles of variable size (1-10 µm)
+- **Advantage**: Local refinement near critical zones (walls, interface)
+
+#### VOF - Hexahedral Mesh with AMR
+- **Type**: Eulerian
+- **Elements**: Rectangular cells with Adaptive Mesh Refinement (AMR)
+- **Advantage**: Strict mass conservation, industrial robustness
+
+#### LBM - Uniform Grid
+- **Type**: Eulerian
+- **Elements**: Regular Cartesian grid (1 cell = 5 µm = 1 l.u.)
+- **Advantage**: Simplicity, excellent GPU parallelization
+
+#### SPH - Discrete Particles
+- **Type**: Lagrangian
+- **Elements**: Particles (~1000) with influence radius h
+- **Advantage**: No mesh to deform, suited for large deformations
+
+### Practical Implications
+
+| Aspect | Eulerian (FEM/VOF/LBM) | Lagrangian (SPH) |
+|--------|------------------------|------------------|
+| **Interface** | Reconstruction needed (VOF: PLIC, FEM: Phase-Field) | Implicit via particle density |
+| **Deformations** | Limited (remeshing if excessive) | Natural |
+| **Mass conservation** | By construction (VOF) or adjustment | Via particle summation |
+| **Parallelization** | Excellent (especially LBM) | Good but more complex |
+
+---
+
 ## Detailed Hardware Requirements
 
 ### Typical Configuration per Model

@@ -1,6 +1,6 @@
 # Bibliography
 
-This page gathers all bibliographic references used in this Ag/AgCl ink dispensing simulation project.
+This page gathers all bibliographic references used in this shear-thinning ink dispensing simulation project.
 
 ---
 

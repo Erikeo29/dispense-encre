@@ -96,7 +96,7 @@ $$\eta(\dot{\gamma}) = K \dot{\gamma}^{n-1}$$
 
 $$\eta(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) \left[ 1 + (\lambda \dot{\gamma})^2 \right]^{\frac{n-1}{2}}$$
 
-| Parameter | Meaning | Typical value (Ag/AgCl ink) |
+| Parameter | Meaning | Typical value (shear-thinning ink) |
 |-----------|---------|----------------------------|
 | $\eta_0$ | Zero-shear viscosity | 0.5 – 5 Pa·s |
 | $\eta_\infty$ | Infinite-shear viscosity | 0.05 Pa·s |
@@ -232,7 +232,7 @@ $$\mathbf{F}_\sigma = \sigma \kappa \mathbf{n} \delta_s$$
 
 | Term | Meaning | Calculation |
 |------|---------|-------------|
-| $\sigma$ | Surface tension | 0.04 N/m (Ag/AgCl ink) |
+| $\sigma$ | Surface tension | 0.04 N/m (ink) |
 | $\kappa$ | Interface curvature | $\kappa = -\nabla \cdot \mathbf{n}$ |
 | $\mathbf{n}$ | Interface normal | $\mathbf{n} = \nabla \alpha / |\nabla \alpha|$ (VOF) |
 | $\delta_s$ | Surface delta | $\delta_s = |\nabla \alpha|$ (VOF) |

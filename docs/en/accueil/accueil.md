@@ -11,7 +11,7 @@ This project presents a **comparative study of four numerical methods** for simu
 
 ## Target Application
 
-The simulations model **Ag/AgCl ink dispensing** into micro-wells for electrochemical sensor fabrication. This process requires precise control of filling, wetting, and final deposit shape.
+The simulations model **shear-thinning ink dispensing** into micro-wells for electrochemical sensor fabrication. This process requires precise control of filling, wetting, and final deposit shape.
 
 **Key parameters studied:**
 - Geometry: well diameter (800–1500 µm), nozzle diameter (200–350 µm)

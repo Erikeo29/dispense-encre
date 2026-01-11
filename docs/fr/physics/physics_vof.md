@@ -99,7 +99,7 @@ La viscosité effective $\eta_{eff}$ suit le modèle de Carreau :
 
 $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda \dot{\gamma})^2]^{(n-1)/2}$$
 
-**Paramètres typiques pour encre Ag/AgCl :**
+**Paramètres typiques pour encre rhéofluidifiante :**
 
 | Paramètre | Symbole | Valeur | Unité |
 |-----------|---------|--------|-------|

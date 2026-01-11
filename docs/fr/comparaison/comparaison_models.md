@@ -18,6 +18,52 @@ Cette section présente une comparaison exhaustive des quatre méthodes numériq
 
 ---
 
+## Approches de Discrétisation : Eulérien vs Lagrangien
+
+### Concept Fondamental
+
+Les méthodes numériques pour la simulation de fluides se divisent en deux grandes familles selon leur traitement de l'espace :
+
+| Approche | Description | Méthodes |
+|----------|-------------|----------|
+| **Eulérienne** | Maillage/grille **fixe** dans l'espace. Le fluide "traverse" les cellules. | FEM, VOF, LBM |
+| **Lagrangienne** | Particules **mobiles** qui se déplacent avec le fluide. Pas de maillage fixe. | SPH |
+
+### Visualisation des 4 Approches
+
+Les images ci-dessous illustrent les différentes structures de discrétisation utilisées par chaque méthode, sur une géométrie comparable (puit de 0.8 mm × 0.13 mm) :
+
+#### FEM - Maillage Triangulaire Adaptatif
+- **Type** : Eulérien
+- **Éléments** : Triangles de taille variable (1-10 µm)
+- **Avantage** : Raffinement local près des zones critiques (parois, interface)
+
+#### VOF - Maillage Hexaédrique avec AMR
+- **Type** : Eulérien
+- **Éléments** : Cellules rectangulaires avec raffinement adaptatif (AMR)
+- **Avantage** : Conservation de masse stricte, robustesse industrielle
+
+#### LBM - Grille Uniforme
+- **Type** : Eulérien
+- **Éléments** : Grille cartésienne régulière (1 cellule = 5 µm = 1 l.u.)
+- **Avantage** : Simplicité, parallélisation GPU excellente
+
+#### SPH - Particules Discrètes
+- **Type** : Lagrangien
+- **Éléments** : Particules (~1000) avec rayon d'influence h
+- **Avantage** : Pas de maillage à déformer, adapté aux grandes déformations
+
+### Implications Pratiques
+
+| Aspect | Eulérien (FEM/VOF/LBM) | Lagrangien (SPH) |
+|--------|------------------------|------------------|
+| **Interface** | Reconstruction nécessaire (VOF: PLIC, FEM: Phase-Field) | Implicite via densité de particules |
+| **Déformations** | Limitées (remaillage si excessif) | Naturelles |
+| **Conservation masse** | Par construction (VOF) ou ajustement | Via sommation des particules |
+| **Parallélisation** | Excellente (surtout LBM) | Bonne mais plus complexe |
+
+---
+
 ## Besoins Hardware Détaillés
 
 ### Configuration Typique par Modèle
