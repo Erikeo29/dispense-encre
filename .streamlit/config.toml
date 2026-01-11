@@ -13,3 +13,11 @@ gatherUsageStats = false
 showSidebarNavigation = false
 # Mode minimal pour la toolbar
 toolbarMode = "minimal"
+
+[server]
+# Désactiver les fonctionnalités de partage
+enableStaticServing = true
+
+[ui]
+# Masquer le footer Streamlit (si disponible)
+hideTopBar = true
