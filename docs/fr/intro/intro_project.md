@@ -76,6 +76,8 @@ Le système modélisé consiste en :
 | Diamètre puit | 800 – 1500 | µm |
 | Diamètre buse | 200 – 350 | µm |
 | Décalage horizontal (buse vs centre puit) | 0, -75, -150 | µm |
+| Décalage vertical (buse vs haut du puit) | -30, 0, 30, 60 | µm |
+| Viscosité zéro cisaillement $\eta_0$ | 0.5, 1.5, 5 | Pa·s |
 | Viscosité $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
 | Angle de contact paroi | 35 – 90 | ° |
 | Angle de contact fond du puit | 35 – 75 | ° |

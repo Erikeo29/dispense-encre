@@ -76,6 +76,8 @@ The modeled system consists of:
 | Well diameter | 800 – 1500 | µm |
 | Nozzle diameter | 200 – 350 | µm |
 | Horizontal offset (nozzle vs well center) | 0, -75, -150 | µm |
+| Vertical offset (nozzle vs well top) | -30, 0, 30, 60 | µm |
+| Zero-shear viscosity $\eta_0$ | 0.5, 1.5, 5 | Pa·s |
 | Viscosity $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
 | Wall contact angle | 35 – 90 | ° |
 | Well bottom contact angle | 35 – 75 | ° |
