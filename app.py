@@ -461,6 +461,12 @@ if 'nav_gen' not in st.session_state: st.session_state.nav_gen = t("gen_pages")[
 if 'nav_model' not in st.session_state: st.session_state.nav_model = None
 if 'nav_annex' not in st.session_state: st.session_state.nav_annex = None
 
+# Initialisation des états LBM (pour éviter AttributeError)
+if 'run_lbm_g' not in st.session_state: st.session_state.run_lbm_g = False
+if 'files_lbm_g' not in st.session_state: st.session_state.files_lbm_g = (None, None)
+if 'run_lbm_p' not in st.session_state: st.session_state.run_lbm_p = False
+if 'files_lbm_p' not in st.session_state: st.session_state.files_lbm_p = (None, None)
+
 # --- Barre Latérale ---
 
 # Sélecteur de langue avec conservation de la page
