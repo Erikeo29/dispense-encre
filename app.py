@@ -868,7 +868,11 @@ elif selected_page == model_pages[2]:  # LBM
 
     with tabs[1]:  # Code
         st.subheader("Code Source Palabos")
-        st.code(load_file_content(os.path.join(DOC_PATH, "fr/code/code_lbm.cpp")), language='cpp')
+        try:
+            with open(LBM_SRC, 'r', encoding='utf-8') as f:
+                st.code(f.read(), language='cpp')
+        except Exception:
+            st.error("Code LBM non disponible")
 
     with tabs[2]:  # GIF
         st.subheader(t("gif_viewer"))

@@ -92,7 +92,7 @@ const T platformLeft_phys = 0.2;   // Left platform ends at x = 0.2 mm
 const T wellStart_phys = 0.2;      // Well bottom starts at x = 0.2 mm (thin wall)
 const T wellEnd_phys = 1.0;        // Well bottom ends at x = 1.0 mm (right wall)
 const T domainWidth_phys = 1.2;    // Total domain width
-const T domainHeight_phys = 0.63;  // -0.13 to 0.5 mm
+const T domainHeight_phys = 0.80;  // Extended height to prevent boundary effects on droplet
 
 // Lattice dimensions
 const plint wellDepth = (plint)(wellDepth_phys / dx);  // 26 l.u.
@@ -102,23 +102,25 @@ const plint wellEndX = (plint)(wellEnd_phys / dx);  // 200 l.u. (right wall at x
 const plint nx = (plint)(domainWidth_phys / dx);  // 240 l.u.
 const plint ny = (plint)(domainHeight_phys / dx);  // 126 l.u.
 
-// Contact angles (degrees)
-const T theta_wellBottom = 30.0;
-const T theta_leftWall = 45.0;       // Reaches near top (y=25)
-const T theta_rightWall = 90.0;
-const T theta_leftPlatform = 41.0;   // Fine-tuned spreading
-const T theta_rightPlatform = 90.0;  // Neutral
+// Contact angles (degrees) - Default values, can be overridden via CLI
+T theta_wellBottom = 30.0;        // Well bottom (substrate)
+T theta_leftWall = 45.0;          // Left vertical wall
+T theta_rightWall = 90.0;         // Right vertical wall
+T theta_leftPlatform = 41.0;      // Left platform (critical for migration)
+T theta_rightPlatform = 90.0;     // Right platform (neutral)
 
 // =============================================================================
 // Wall region enumeration
 // =============================================================================
 enum WallRegion {
     WALL_NONE = 0,
-    WALL_LEFT_PLATFORM,
+    WALL_LEFT_PLATFORM,        // Surface horizontale du plateau gauche (angle de contact)
+    WALL_LEFT_PLATFORM_SOLID,  // Zone solide interne sous le plateau gauche (neutre)
     WALL_LEFT_VERTICAL,
     WALL_BOTTOM,
     WALL_RIGHT_VERTICAL,
-    WALL_RIGHT_PLATFORM,
+    WALL_RIGHT_PLATFORM,       // Surface horizontale du plateau droit (angle de contact)
+    WALL_RIGHT_PLATFORM_SOLID, // Zone solide interne sous le plateau droit (neutre)
     WALL_TOP,
     WALL_SIDE
 };
@@ -157,10 +159,12 @@ WallRegion getWallRegion(plint iX, plint iY) {
     if (iX == wellEndX && iY < wellDepth) return WALL_RIGHT_VERTICAL;
 
     // Left platform solid region (x < wellStartX, y < wellDepth)
-    if (iX < wellStartX && iY < wellDepth) return WALL_LEFT_PLATFORM;
+    // This is INTERNAL solid - must NOT have contact angle applied!
+    if (iX < wellStartX && iY < wellDepth) return WALL_LEFT_PLATFORM_SOLID;
 
     // Right platform solid region (x > wellEndX, y < wellDepth)
-    if (iX > wellEndX && iY < wellDepth) return WALL_RIGHT_PLATFORM;
+    // This is INTERNAL solid - must NOT have contact angle applied!
+    if (iX > wellEndX && iY < wellDepth) return WALL_RIGHT_PLATFORM_SOLID;
 
     return WALL_NONE;
 }
@@ -173,6 +177,22 @@ T computeWallDensity(T theta, T rhoGas, T rhoLiq) {
         return rhoGas * (180.0 - theta) / 90.0;
     } else {
         return rhoGas + (rhoLiq - rhoGas) * (90.0 - theta) / 90.0;
+    }
+}
+
+// =============================================================================
+// Function to mask internal solid cells for visualization
+// This prevents showing high wall density in solid regions as "liquid"
+// =============================================================================
+void maskInternalSolids(MultiScalarField2D<T>& rho, T rhoGas) {
+    for (plint iX = 0; iX < nx; ++iX) {
+        for (plint iY = 0; iY < ny; ++iY) {
+            WallRegion region = getWallRegion(iX, iY);
+            // Mask internal solid regions (not surface cells)
+            if (region == WALL_LEFT_PLATFORM_SOLID || region == WALL_RIGHT_PLATFORM_SOLID) {
+                rho.get(iX, iY) = rhoGas;  // Show as gas/empty
+            }
+        }
     }
 }
 
@@ -388,6 +408,7 @@ int main(int argc, char* argv[])
     int maxIter = 50000;
     int saveIter = 500;
     int warmupIter = 1000;
+    T shiftX_mm = 0.0;  // Droplet center X shift from well center (mm)
 
     // Carreau parameters (default: Ag/AgCl ink)
     bool useCarreau = false;
@@ -433,6 +454,20 @@ int main(int argc, char* argv[])
         } else if (arg == "--rho" && i + 1 < argc) {
             rho_phys = atof(argv[++i]);
         }
+        // Contact angles (degrees)
+        else if (arg == "--theta-wellBottom" && i + 1 < argc) {
+            theta_wellBottom = atof(argv[++i]);
+        } else if (arg == "--theta-leftWall" && i + 1 < argc) {
+            theta_leftWall = atof(argv[++i]);
+        } else if (arg == "--theta-rightWall" && i + 1 < argc) {
+            theta_rightWall = atof(argv[++i]);
+        } else if (arg == "--theta-leftPlatform" && i + 1 < argc) {
+            theta_leftPlatform = atof(argv[++i]);
+        } else if (arg == "--theta-rightPlatform" && i + 1 < argc) {
+            theta_rightPlatform = atof(argv[++i]);
+        } else if (arg == "--shiftX" && i + 1 < argc) {
+            shiftX_mm = atof(argv[++i]);
+        }
     }
 
     // Set up global Carreau parameters
@@ -457,8 +492,9 @@ int main(int argc, char* argv[])
     const T rho_light = 85.0;   // Gas phase equilibrium density
 
     // Droplet center in lattice units
-    // Physical: (0.6 mm, 0.3 mm) -> Lattice: (120, wellDepth + 60) = (120, 86)
-    T dropletCenterX = 0.6 / dx;  // 120 l.u.
+    // Physical: (0.6 mm + shiftX, 0.3 mm) -> Lattice: (120 + shift_lu, wellDepth + 60)
+    // Well center is at 0.6 mm, shiftX allows offsetting (negative = toward left platform)
+    T dropletCenterX = (0.6 + shiftX_mm) / dx;  // Default: 120 l.u., with shift
     T dropletCenterY = wellDepth + 0.3 / dx;  // 26 + 60 = 86 l.u.
 
     pcout << "============================================" << endl;
@@ -470,6 +506,7 @@ int main(int argc, char* argv[])
     pcout << "Well depth: " << wellDepth << " l.u. (" << wellDepth * dx << " mm)" << endl;
     pcout << "Well width: " << (wellEndX - wellStartX) << " l.u. (" << (wellEndX - wellStartX) * dx << " mm)" << endl;
     pcout << "Droplet center: (" << dropletCenterX << ", " << dropletCenterY << ") l.u." << endl;
+    pcout << "Droplet shift X: " << shiftX_mm << " mm (" << shiftX_mm / dx << " l.u.)" << endl;
     pcout << "Droplet radius: " << dropletRadius << " l.u. (" << dropletRadius * dx << " mm)" << endl;
     pcout << "Contact angles:" << endl;
     pcout << "  Well bottom: " << theta_wellBottom << " deg" << endl;
@@ -506,10 +543,12 @@ int main(int argc, char* argv[])
     pcout << "Setting up cavity geometry..." << endl;
 
     // Iterate over all cells and set BounceBack for wall regions
+    // IMPORTANT: Exclude top boundary (WALL_TOP) to use open outlet condition
+    // This prevents artificial compression of the droplet during equilibration
     for (plint iX = 0; iX < nx; ++iX) {
         for (plint iY = 0; iY < ny; ++iY) {
             WallRegion region = getWallRegion(iX, iY);
-            if (region != WALL_NONE) {
+            if (region != WALL_NONE && region != WALL_TOP) {
                 defineDynamics(lattice, Box2D(iX, iX, iY, iY),
                                new BounceBack<T, DESCRIPTOR>(rho_neutral));
             }
@@ -529,18 +568,13 @@ int main(int argc, char* argv[])
             G, new interparticlePotential::PsiShanChen94<T>(psi0, rho0)),
         lattice.getBoundingBox(), lattice, 0);
 
-    // Add Carreau rheology processor (applies after collision)
-    if (useCarreau) {
-        integrateProcessingFunctional(
-            new CarreauRheologyProcessor<T, DESCRIPTOR>(omega),
-            lattice.getBoundingBox(), lattice, 1);
-        pcout << "Carreau rheology processor integrated." << endl;
-    }
+    // NOTE: Carreau rheology is added AFTER warmup to allow proper spherical equilibration
+    // (high viscosity at rest would prevent droplet from relaxing to equilibrium shape)
 
     lattice.initialize();
 
-    // Phase 1: Equilibration without gravity
-    pcout << "Phase 1: Equilibrating phases (no gravity)..." << endl;
+    // Phase 1: Equilibration without gravity (Newtonian - no Carreau yet)
+    pcout << "Phase 1: Equilibrating phases (no gravity, Newtonian)..." << endl;
     for (int iT = 0; iT < warmupIter; ++iT) {
         lattice.collideAndStream();
         if (iT % 500 == 0) {
@@ -573,13 +607,22 @@ int main(int argc, char* argv[])
     // Save initial state
     {
         std::unique_ptr<MultiScalarField2D<T>> rho(computeDensity(lattice));
+        maskInternalSolids(*rho, rhoGas);  // Hide internal solid regions
         VtkImageOutput2D<T> vtkOut("droplet_0", 1.0);
         vtkOut.writeData<float>(*rho, "density", 1.0);
         pcout << "Initial state saved" << endl;
     }
 
-    // Phase 2: Add gravity
-    pcout << "Phase 2: Adding gravity g=" << gravity << endl;
+    // Phase 2: Add Carreau rheology (now that droplet is spherical)
+    if (useCarreau) {
+        integrateProcessingFunctional(
+            new CarreauRheologyProcessor<T, DESCRIPTOR>(omega),
+            lattice.getBoundingBox(), lattice, 1);
+        pcout << "Carreau rheology processor integrated (after equilibration)." << endl;
+    }
+
+    // Phase 3: Add gravity
+    pcout << "Phase 3: Adding gravity g=" << gravity << endl;
     integrateProcessingFunctional(
         new SetGravityForce<T, DESCRIPTOR>(0.0, gravity),
         lattice.getBoundingBox(), lattice, 2);
@@ -624,6 +667,10 @@ int main(int argc, char* argv[])
                     for (plint iY = 0; iY < ny; ++iY) {
                         WallRegion region = getWallRegion(iX, iY);
                         if (region == WALL_NONE || wallActivated[iX][iY]) continue;
+
+                        // Skip internal solid regions - they should NEVER get contact angle
+                        // Only surface cells need wetting properties
+                        if (region == WALL_LEFT_PLATFORM_SOLID || region == WALL_RIGHT_PLATFORM_SOLID) continue;
 
                         // Check if liquid is adjacent to this wall cell
                         bool liquidNearby = false;
@@ -685,6 +732,7 @@ int main(int argc, char* argv[])
             pcout << "Iter " << iT << " - rho: [" << computeMin(*rho)
                   << ", " << computeMax(*rho) << "]" << endl;
 
+            maskInternalSolids(*rho, rhoGas);  // Hide internal solid regions before saving
             string filename = "droplet_" + util::val2str(iT);
             VtkImageOutput2D<T> vtkOut(filename, 1.0);
             vtkOut.writeData<float>(*rho, "density", 1.0);
