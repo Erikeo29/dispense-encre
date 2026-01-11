@@ -1,10 +1,15 @@
-## Synthèse des Performances
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Sommaire :** 1. Synthèse des Performances • 2. Tableau Comparatif Global • 3. Approches de Discrétisation • 4. Besoins Hardware Détaillés • 5. Adaptabilité aux Encres Rhéofluidifiantes • 6. Analyse Critique par Modèle • 7. Défis Communs et Solutions • 8. Recommandations par Application • 9. Références
+</div>
+
+## 1. Synthèse des Performances
 
 Cette section présente une comparaison exhaustive des quatre méthodes numériques pour la simulation de dispense de microgouttes d'encre rhéofluidifiante, basée sur une méta-analyse de 62 études publiées entre 2010 et 2025.
 
 ---
 
-## Tableau Comparatif Global
+## 2. Tableau Comparatif Global
 
 | Critère | VOF | FEM | LBM | SPH |
 |---------|-----|-----|-----|-----|
@@ -18,9 +23,9 @@ Cette section présente une comparaison exhaustive des quatre méthodes numériq
 
 ---
 
-## Approches de Discrétisation : Eulérien vs Lagrangien
+## 3. Approches de Discrétisation : Eulérien vs Lagrangien
 
-### Concept Fondamental
+### 3.1 Concept Fondamental
 
 Les méthodes numériques pour la simulation de fluides se divisent en deux grandes familles selon leur traitement de l'espace :
 
@@ -29,7 +34,7 @@ Les méthodes numériques pour la simulation de fluides se divisent en deux gran
 | **Eulérienne** | Maillage/grille **fixe** dans l'espace. Le fluide "traverse" les cellules. | FEM, VOF, LBM |
 | **Lagrangienne** | Particules **mobiles** qui se déplacent avec le fluide. Pas de maillage fixe. | SPH |
 
-### Visualisation des 4 Approches
+### 3.2 Visualisation des 4 Approches
 
 Les images ci-dessous illustrent les différentes structures de discrétisation utilisées par chaque méthode, sur une géométrie comparable (puit de 0.8 mm × 0.13 mm) :
 
@@ -53,7 +58,7 @@ Les images ci-dessous illustrent les différentes structures de discrétisation 
 - **Éléments** : Particules (~1000) avec rayon d'influence h
 - **Avantage** : Pas de maillage à déformer, adapté aux grandes déformations
 
-### Implications Pratiques
+### 3.3 Implications Pratiques
 
 | Aspect | Eulérien (FEM/VOF/LBM) | Lagrangien (SPH) |
 |--------|------------------------|------------------|
@@ -64,9 +69,9 @@ Les images ci-dessous illustrent les différentes structures de discrétisation 
 
 ---
 
-## Besoins Hardware Détaillés
+## 4. Besoins Hardware Détaillés
 
-### Configuration Typique par Modèle
+### 4.1 Configuration Typique par Modèle
 
 Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
@@ -77,7 +82,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 | **LBM** | 4–8 | A100 (40 GB) | 8–16 | 1–5 |
 | **SPH** | 8–16 | RTX 4090 (24 GB) | 32–64 | 5–20 |
 
-### Analyse de la Scalabilité
+### 4.2 Analyse de la Scalabilité
 
 - **LBM** : le plus efficace sur GPU, avec une accélération x20 vs CPU
 - **FEM** : limité par les CPU multi-cœurs et la mémoire
@@ -85,9 +90,9 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Adaptabilité aux Encres Rhéofluidifiantes
+## 5. Adaptabilité aux Encres Rhéofluidifiantes
 
-### Lois Rhéologiques Supportées
+### 5.1 Lois Rhéologiques Supportées
 
 | Loi Rhéologique | VOF | FEM | LBM | SPH |
 |-----------------|-----|-----|-----|-----|
@@ -101,9 +106,9 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Analyse Critique par Modèle
+## 6. Analyse Critique par Modèle
 
-### VOF (Volume of Fluid)
+### 6.1 VOF (Volume of Fluid)
 
 **Principe :** Méthode eulérienne pour le suivi d'interfaces, où la fraction volumique $\alpha$ ($0 \leq \alpha \leq 1$) représente la proportion de fluide dans chaque cellule.
 
@@ -120,7 +125,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-### FEM (Finite Element Method / Phase-Field)
+### 6.2 FEM (Finite Element Method / Phase-Field)
 
 **Principe :** Discrétisation du domaine en éléments finis avec formulation faible. L'interface est représentée par un champ de phase $\phi$ d'épaisseur finie $\varepsilon$.
 
@@ -136,7 +141,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-### LBM (Lattice Boltzmann Method)
+### 6.3 LBM (Lattice Boltzmann Method)
 
 **Principe :** Méthode mésoscopique discrétisant l'équation de Boltzmann sur une grille régulière (D2Q9, D3Q19). Les grandeurs macroscopiques sont obtenues par moments statistiques.
 
@@ -152,7 +157,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-### SPH (Smoothed Particle Hydrodynamics)
+### 6.4 SPH (Smoothed Particle Hydrodynamics)
 
 **Principe :** Méthode lagrangienne sans maillage où le fluide est discrétisé en particules mobiles. Les équations de Navier-Stokes sont résolues via des noyaux d'interpolation (ex. cubic spline).
 
@@ -168,9 +173,9 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Défis Communs et Solutions
+## 7. Défis Communs et Solutions
 
-### Problèmes Identifiés
+### 7.1 Problèmes Identifiés
 
 | Défi | Modèles concernés | Solution |
 |------|-------------------|----------|
@@ -179,7 +184,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 | **Coût computationnel** | FEM | Parallélisation sur CPU multi-cœurs + hybridation (FEM-SPH) |
 | **Compressibilité artificielle** | LBM | Schémas à faible Mach (LBM à deux vitesses de relaxation) |
 
-### Solutions Innovantes
+### 7.2 Solutions Innovantes
 
 **Hybridation :**
 - **VOF-LBM** : Combine la précision interfaciale de VOF avec la scalabilité de LBM (Thiery et al., 2023)
@@ -191,9 +196,9 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Recommandations par Application
+## 8. Recommandations par Application
 
-### Pour l'Industrie
+### 8.1 Pour l'Industrie
 
 | Application | Modèle recommandé | Hardware | Justification |
 |-------------|-------------------|----------|---------------|
@@ -201,7 +206,7 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 | Impression haute résolution (> 2400 dpi) | Hybride VOF-LBM | GPU A100 (40 GB) | Précision interfaciale + scalabilité |
 | Encres viscoélastiques | FEM (COMSOL) | CPU 64–128 cœurs + 128 GB RAM | Capacité à gérer les lois rhéologiques complexes |
 
-### Pour la R&D Académique
+### 8.2 Pour la R&D Académique
 
 | Application | Modèle recommandé | Justification |
 |-------------|-------------------|---------------|
@@ -211,6 +216,6 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
 ---
 
-## Références
+## 9. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.

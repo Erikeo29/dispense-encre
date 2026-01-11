@@ -1,8 +1,13 @@
-## Principe Lagrangien Sans Maillage
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Sommaire :** 1. Principe Lagrangien Sans Maillage • 2. Noyaux de Lissage • 3. Équations du Mouvement • 4. Viscosité Artificielle • 5. Tension Superficielle • 6. Conditions aux Limites • 7. Fluides Non-Newtoniens • 8. Résultats de Validation • 9. Avantages Uniques • 10. Limitations et Solutions • 11. Coût Computationnel • 12. Bibliothèques Open-Source • 13. Références
+</div>
+
+## 1. Principe Lagrangien Sans Maillage
 
 La méthode **SPH (Smoothed Particle Hydrodynamics)** est une approche **lagrangienne** et **sans maillage (meshless)** où le fluide est représenté par un ensemble de particules mobiles transportant les propriétés physiques (masse, vitesse, pression).
 
-### Concept Fondamental
+### 1.1 Concept Fondamental
 
 Contrairement aux méthodes sur grille (VOF, FEM), il n'y a pas de connexions fixes entre les points de discrétisation. La valeur d'une propriété scalaire $A$ en une position $\mathbf{r}$ est calculée par **interpolation** sur les particules voisines :
 
@@ -16,16 +21,16 @@ où :
 
 ---
 
-## Noyaux de Lissage
+## 2. Noyaux de Lissage
 
-### Fonction du Noyau
+### 2.1 Fonction du Noyau
 
 Le noyau $W(r, h)$ doit satisfaire plusieurs propriétés :
 - **Normalisation** : $\int W(r, h) dV = 1$
 - **Limite delta** : $\lim_{h \to 0} W(r, h) = \delta(r)$
 - **Support compact** : $W(r, h) = 0$ pour $r > \kappa h$ (typiquement $\kappa = 2$)
 
-### Noyaux Courants
+### 2.2 Noyaux Courants
 
 **Cubic Spline (M₄) :**
 
@@ -49,9 +54,9 @@ Très stable pour les écoulements à haute vitesse.
 
 ---
 
-## Équations du Mouvement
+## 3. Équations du Mouvement
 
-### Équation de Quantité de Mouvement
+### 3.1 Équation de Quantité de Mouvement
 
 L'équation de mouvement pour une particule $a$ est :
 
@@ -62,7 +67,7 @@ où :
 - $\Pi_{ab}$ : terme de **viscosité artificielle**
 - $\mathbf{f}_\sigma$ : force de tension superficielle
 
-### Équation d'État
+### 3.2 Équation d'État
 
 La pression est calculée par une équation d'état faiblement compressible :
 
@@ -72,13 +77,13 @@ avec $c_0$ la vitesse du son numérique (typiquement $c_0 = 10 \cdot v_{max}$) e
 
 ---
 
-## Viscosité Artificielle
+## 4. Viscosité Artificielle
 
-### Nécessité
+### 4.1 Nécessité
 
 La SPH standard souffre d'instabilités numériques, notamment des **oscillations de pression** et des **instabilités tensorielles**. La viscosité artificielle stabilise le schéma.
 
-### Formulation de Monaghan
+### 4.2 Formulation de Monaghan
 
 | Condition | Expression de $\Pi_{ab}$ |
 |-----------|--------------------------|
@@ -93,9 +98,9 @@ $$\mu_{ab} = \frac{h \mathbf{v}_{ab} \cdot \mathbf{r}_{ab}}{|\mathbf{r}_{ab}|^2 
 
 ---
 
-## Tension Superficielle
+## 5. Tension Superficielle
 
-### Modèle de Morris (CSF)
+### 5.1 Modèle de Morris (CSF)
 
 La méthode **Continuum Surface Force (CSF)** adaptée à SPH ajoute une force volumique basée sur la courbure de l'interface :
 
@@ -105,13 +110,13 @@ où :
 - $\mathbf{n} = \nabla c$ : normale calculée par le gradient du **champ de couleur** $c$ (1 dans l'encre, 0 ailleurs)
 - $\kappa = -\nabla \cdot \mathbf{n}$ : courbure de l'interface
 
-### Calcul de la Courbure en SPH
+### 5.2 Calcul de la Courbure en SPH
 
 $$\kappa_a = -\frac{1}{|\mathbf{n}_a|} \sum_b \frac{m_b}{\rho_b} (\mathbf{n}_b - \mathbf{n}_a) \cdot \nabla_a W_{ab}$$
 
 **Limitation :** La méthode CSF introduit du bruit numérique, surtout aux interfaces fines.
 
-### Modèle de Pairwise Force
+### 5.3 Modèle de Pairwise Force
 
 Alternative plus stable basée sur les forces interparticulaires :
 
@@ -121,13 +126,13 @@ avec $s_{ab}$ un coefficient de tension dépendant des types de particules.
 
 ---
 
-## Conditions aux Limites
+## 6. Conditions aux Limites
 
-### Problématique
+### 6.1 Problématique
 
 Gérer des parois solides étanches est **difficile** en SPH car les particules n'ont pas de connexions fixes. Plusieurs approches existent :
 
-### Particules Fantômes (Adami et al., 2012)
+### 6.2 Particules Fantômes (Adami et al., 2012)
 
 Les parois sont constituées de plusieurs couches de **particules fantômes (dummy particles)** fixes :
 
@@ -139,7 +144,7 @@ Les parois sont constituées de plusieurs couches de **particules fantômes (dum
 
 $$p_{wall} = \frac{\sum_f p_f W_{wf} + (\mathbf{g} - \mathbf{a}_{wall}) \cdot \sum_f \rho_f \mathbf{r}_{wf} W_{wf}}{\sum_f W_{wf}}$$
 
-### Particules Répulsives (Lennard-Jones)
+### 6.3 Particules Répulsives (Lennard-Jones)
 
 Force répulsive de type Lennard-Jones pour empêcher la pénétration :
 
@@ -149,9 +154,9 @@ avec $n_1 = 12$, $n_2 = 4$ typiquement.
 
 ---
 
-## Adaptation aux Fluides Non-Newtoniens
+## 7. Adaptation aux Fluides Non-Newtoniens
 
-### Fluides Rhéofluidifiants
+### 7.1 Fluides Rhéofluidifiants
 
 Le tenseur des contraintes est calculé avec une viscosité dépendant du taux de cisaillement :
 
@@ -161,7 +166,7 @@ où $\dot{\gamma}_a$ est le taux de cisaillement de la particule $a$, calculé p
 
 $$\dot{\gamma}_a = \sqrt{2\mathbf{D}_a : \mathbf{D}_a}$$
 
-### Fluides Thixotropes (Modèle de Moore)
+### 7.2 Fluides Thixotropes (Modèle de Moore)
 
 **Avantage unique de SPH :** Grâce à son approche lagrangienne, SPH peut naturellement gérer la **thixotropie** (dépendance temporelle de la viscosité).
 
@@ -177,7 +182,7 @@ $$\eta(\dot{\gamma}, \lambda) = \eta_\infty + (\eta_0 - \eta_\infty) \lambda^m \
 
 **Étude Pourquie et al. (2024) :** Première étude SPH systématique pour les encres thixotropes, montrant une augmentation de 25 % du temps de pincement pour $\tau_{thix} = 1$ ms.
 
-### Fluides Viscoélastiques (Intégrale Temporelle)
+### 7.3 Fluides Viscoélastiques (Intégrale Temporelle)
 
 Le tenseur des contraintes est calculé via une intégrale de mémoire :
 
@@ -187,9 +192,9 @@ où $G(t)$ est le module de relaxation.
 
 ---
 
-## Résultats de Validation
+## 8. Résultats de Validation
 
-### Étude Pourquie et al. (2024) - Encre Thixotrope
+### 8.1 Étude Pourquie et al. (2024) - Encre Thixotrope
 
 **Configuration :**
 - Solveur : PySPH (Python/GPU)
@@ -205,7 +210,7 @@ où $G(t)$ est le module de relaxation.
 - Erreur sur la forme de la goutte : < 3 % vs expérimental
 - Temps de calcul : 4 h sur RTX 4090
 
-### Étude Markesteijn et al. (2023) - Multi-Gouttes et Coalescence
+### 8.2 Étude Markesteijn et al. (2023) - Multi-Gouttes et Coalescence
 
 **Configuration :**
 - Solveur : DualSPHysics
@@ -224,9 +229,9 @@ où $G(t)$ est le module de relaxation.
 
 ---
 
-## Avantages Uniques pour la Dispense
+## 9. Avantages Uniques pour la Dispense
 
-### Surface Libre
+### 9.1 Surface Libre
 
 La SPH est **imbattable** pour gérer les surfaces libres complexes :
 - Ruptures de jet
@@ -235,17 +240,17 @@ La SPH est **imbattable** pour gérer les surfaces libres complexes :
 
 **Raison :** Pas de maillage à déformer ou à raffiner.
 
-### Advection Exacte
+### 9.2 Advection Exacte
 
 Le terme convectif non-linéaire $(\mathbf{u} \cdot \nabla)\mathbf{u}$ est traité **exactement** par le mouvement des particules, éliminant la diffusion numérique des méthodes eulériennes.
 
-### Coalescence Naturelle
+### 9.3 Coalescence Naturelle
 
 La fusion de gouttes est gérée **naturellement** : les particules de deux gouttes proches interagissent simplement via les noyaux SPH.
 
 ---
 
-## Limitations et Solutions
+## 10. Limitations et Solutions
 
 | Limitation | Description | Solution |
 |------------|-------------|----------|
@@ -256,9 +261,9 @@ La fusion de gouttes est gérée **naturellement** : les particules de deux gout
 
 ---
 
-## Coût Computationnel
+## 11. Coût Computationnel
 
-### Configuration Typique
+### 11.1 Configuration Typique
 
 Pour une simulation 3D (1 ms d'éjection, 10⁶ particules) :
 
@@ -272,7 +277,7 @@ Pour une simulation 3D (1 ms d'éjection, 10⁶ particules) :
 
 ---
 
-## Bibliothèques Open-Source
+## 12. Bibliothèques Open-Source
 
 | Bibliothèque | Langage | GPU | Focus |
 |--------------|---------|-----|-------|
@@ -283,6 +288,6 @@ Pour une simulation 3D (1 ms d'éjection, 10⁶ particules) :
 
 ---
 
-## Références
+## 13. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.

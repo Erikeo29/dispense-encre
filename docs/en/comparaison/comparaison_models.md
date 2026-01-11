@@ -1,10 +1,15 @@
-## Performance Summary
+<div style="font-size: 0.9em; line-height: 1.3; background: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 1em;">
+
+**Contents:** 1. Performance Summary • 2. Global Comparison Table • 3. Discretization Approaches • 4. Detailed Hardware Requirements • 5. Adaptability to Shear-Thinning Inks • 6. Critical Analysis by Model • 7. Common Challenges and Solutions • 8. Recommendations by Application • 9. References
+</div>
+
+## 1. Performance Summary
 
 This section presents a comprehensive comparison of the four numerical methods for simulating shear-thinning ink microdroplet dispensing, based on a meta-analysis of 62 studies published between 2010 and 2025.
 
 ---
 
-## Global Comparison Table
+## 2. Global Comparison Table
 
 | Criterion | VOF | FEM | LBM | SPH |
 |-----------|-----|-----|-----|-----|
@@ -18,9 +23,9 @@ This section presents a comprehensive comparison of the four numerical methods f
 
 ---
 
-## Discretization Approaches: Eulerian vs Lagrangian
+## 3. Discretization Approaches: Eulerian vs Lagrangian
 
-### Fundamental Concept
+### 3.1 Fundamental Concept
 
 Numerical methods for fluid simulation are divided into two main families based on their treatment of space:
 
@@ -29,7 +34,7 @@ Numerical methods for fluid simulation are divided into two main families based 
 | **Eulerian** | **Fixed** mesh/grid in space. The fluid "flows through" the cells. | FEM, VOF, LBM |
 | **Lagrangian** | **Mobile** particles that move with the fluid. No fixed mesh. | SPH |
 
-### Visualization of the 4 Approaches
+### 3.2 Visualization of the 4 Approaches
 
 The images below illustrate the different discretization structures used by each method, on a comparable geometry (well: 0.8 mm × 0.13 mm):
 
@@ -53,7 +58,7 @@ The images below illustrate the different discretization structures used by each
 - **Elements**: Particles (~1000) with influence radius h
 - **Advantage**: No mesh to deform, suited for large deformations
 
-### Practical Implications
+### 3.3 Practical Implications
 
 | Aspect | Eulerian (FEM/VOF/LBM) | Lagrangian (SPH) |
 |--------|------------------------|------------------|
@@ -64,9 +69,9 @@ The images below illustrate the different discretization structures used by each
 
 ---
 
-## Detailed Hardware Requirements
+## 4. Detailed Hardware Requirements
 
-### Typical Configuration per Model
+### 4.1 Typical Configuration per Model
 
 For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
@@ -77,7 +82,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 | **LBM** | 4–8 | A100 (40 GB) | 8–16 | 1–5 |
 | **SPH** | 8–16 | RTX 4090 (24 GB) | 32–64 | 5–20 |
 
-### Scalability Analysis
+### 4.2 Scalability Analysis
 
 - **LBM**: Most efficient on GPU, with x20 speedup vs CPU
 - **FEM**: Limited by multi-core CPUs and memory
@@ -85,9 +90,9 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## Adaptability to Shear-Thinning Inks
+## 5. Adaptability to Shear-Thinning Inks
 
-### Supported Rheological Laws
+### 5.1 Supported Rheological Laws
 
 | Rheological Law | VOF | FEM | LBM | SPH |
 |-----------------|-----|-----|-----|-----|
@@ -101,9 +106,9 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## Critical Analysis by Model
+## 6. Critical Analysis by Model
 
-### VOF (Volume of Fluid)
+### 6.1 VOF (Volume of Fluid)
 
 **Principle:** Eulerian method for interface tracking, where the volume fraction $\alpha$ ($0 \leq \alpha \leq 1$) represents the fluid proportion in each cell.
 
@@ -120,7 +125,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-### FEM (Finite Element Method / Phase-Field)
+### 6.2 FEM (Finite Element Method / Phase-Field)
 
 **Principle:** Domain discretization into finite elements with weak formulation. The interface is represented by a phase field $\phi$ with finite thickness $\varepsilon$.
 
@@ -136,7 +141,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-### LBM (Lattice Boltzmann Method)
+### 6.3 LBM (Lattice Boltzmann Method)
 
 **Principle:** Mesoscopic method discretizing the Boltzmann equation on a regular grid (D2Q9, D3Q19). Macroscopic quantities are obtained through statistical moments.
 
@@ -152,7 +157,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-### SPH (Smoothed Particle Hydrodynamics)
+### 6.4 SPH (Smoothed Particle Hydrodynamics)
 
 **Principle:** Meshless Lagrangian method where the fluid is discretized into mobile particles. Navier-Stokes equations are solved via interpolation kernels (e.g., cubic spline).
 
@@ -168,9 +173,9 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## Common Challenges and Solutions
+## 7. Common Challenges and Solutions
 
-### Identified Problems
+### 7.1 Identified Problems
 
 | Challenge | Affected models | Solution |
 |-----------|-----------------|----------|
@@ -179,7 +184,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 | **Computational cost** | FEM | Multi-core CPU parallelization + hybridization (FEM-SPH) |
 | **Artificial compressibility** | LBM | Low-Mach schemes (two-relaxation-time LBM) |
 
-### Innovative Solutions
+### 7.2 Innovative Solutions
 
 **Hybridization:**
 - **VOF-LBM**: Combines VOF interface precision with LBM scalability (Thiery et al., 2023)
@@ -191,9 +196,9 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## Recommendations by Application
+## 8. Recommendations by Application
 
-### For Industry
+### 8.1 For Industry
 
 | Application | Recommended model | Hardware | Justification |
 |-------------|-------------------|----------|---------------|
@@ -201,7 +206,7 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 | High-resolution printing (> 2400 dpi) | Hybrid VOF-LBM | GPU A100 (40 GB) | Interface precision + scalability |
 | Viscoelastic inks | FEM (COMSOL) | CPU 64–128 cores + 128 GB RAM | Ability to handle complex rheological laws |
 
-### For Academic R&D
+### 8.2 For Academic R&D
 
 | Application | Recommended model | Justification |
 |-------------|-------------------|---------------|
@@ -211,6 +216,6 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
 ---
 
-## References
+## 9. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
