@@ -244,6 +244,45 @@ def load_fem_png_mapping():
         return {}, pd.DataFrame()
 
 @st.cache_data(ttl=600)
+def load_vof_gif_mapping():
+    """Charge le mapping VOF GIF et retourne (mapping_dict, DataFrame)."""
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'vof_gif_mapping.csv'), sep=';', encoding='utf-8')
+        # Convertir les virgules en points pour les floats
+        df['ratio'] = df['ratio surface goutte/puit'].apply(lambda x: float(str(x).replace(',', '.')))
+        df['viscosity'] = df['Viscosite eta0 (Pa.s)'].apply(lambda x: float(str(x).replace(',', '.')))
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                row['ratio'], row['viscosity'],
+                int(row['CA substrat (deg)']), int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "vof/gif", row['nom fichier gif'])
+        return mapping, df
+    except Exception:
+        return {}, pd.DataFrame()
+
+@st.cache_data(ttl=600)
+def load_vof_png_mapping():
+    """Charge le mapping VOF PNG et retourne (mapping_dict, DataFrame)."""
+    try:
+        df = pd.read_csv(os.path.join(DATA_PATH, 'vof_png_mapping.csv'), sep=';', encoding='utf-8')
+        df['ratio'] = df['ratio surface goutte/puit'].apply(lambda x: float(str(x).replace(',', '.')))
+        df['viscosity'] = df['Viscosite eta0 (Pa.s)'].apply(lambda x: float(str(x).replace(',', '.')))
+        mapping = {}
+        for _, row in df.iterrows():
+            key = (
+                row['ratio'], row['viscosity'],
+                int(row['CA substrat (deg)']), int(row['CA mur gauche (deg)']),
+                int(row['CA mur droit (deg)'])
+            )
+            mapping[key] = os.path.join(ASSETS_PATH, "vof/png", row['nom fichier png'])
+        return mapping, df
+    except Exception:
+        return {}, pd.DataFrame()
+
+@st.cache_data(ttl=600)
 def load_lbm_gif_mapping():
     try:
         df = pd.read_csv(os.path.join(DATA_PATH, 'lbm_gif_mapping.csv'), sep=';', encoding='utf-8')
@@ -472,6 +511,69 @@ def render_fem_gif_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
     return None
 
 
+def render_vof_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
+                                  sim_num: int, file_type: str = "gif") -> str | None:
+    """
+    Génère les filtres en cascade pour VOF (5 paramètres sur une ligne).
+
+    Args:
+        df_origin: DataFrame source avec toutes les combinaisons
+        key_prefix: Préfixe pour les clés des widgets (ex: "vg" pour VOF GIF)
+        sim_num: 1 ou 2 (pour l'index par défaut différent)
+        file_type: "gif" ou "png"
+
+    Returns:
+        Chemin complet du fichier ou None si non trouvé
+    """
+    df = df_origin.copy()
+    default_idx = 0 if sim_num == 1 else (1 if len(df) > 1 else 0)
+
+    # Colonnes pour les filtres
+    col_ratio = 'ratio'
+    col_visc = 'viscosity'
+    col_ca_sub = 'CA substrat (deg)'
+    col_ca_wl = 'CA mur gauche (deg)'
+    col_ca_wr = 'CA mur droit (deg)'
+    col_file = 'nom fichier gif' if file_type == "gif" else 'nom fichier png'
+
+    st.markdown(f"**{t('sim_1') if sim_num == 1 else t('sim_2')}**")
+
+    # 5 paramètres sur une seule ligne (avec espaceurs)
+    _, c1, c2, c3, c4, c5, _ = st.columns([0.5, 1, 1, 1, 1, 1, 0.5])
+
+    with c1:
+        opts = sorted(df[col_ratio].unique())
+        idx = min(default_idx, len(opts) - 1)
+        val_ratio = st.selectbox(t("lbl_ratio_drop"), opts, key=f"{key_prefix}_r{sim_num}", index=idx)
+        df = df[df[col_ratio] == val_ratio]
+
+    with c2:
+        opts = sorted(df[col_visc].unique())
+        val_visc = st.selectbox(t("lbl_viscosity"), opts, key=f"{key_prefix}_v{sim_num}")
+        df = df[df[col_visc] == val_visc]
+
+    with c3:
+        opts = sorted(df[col_ca_sub].unique())
+        val_ca_sub = st.selectbox(t("lbl_ca_gold"), opts, key=f"{key_prefix}_cs{sim_num}")
+        df = df[df[col_ca_sub] == val_ca_sub]
+
+    with c4:
+        opts = sorted(df[col_ca_wl].unique())
+        val_wl = st.selectbox(t("lbl_ca_wall_l"), opts, key=f"{key_prefix}_wl{sim_num}")
+        df = df[df[col_ca_wl] == val_wl]
+
+    with c5:
+        opts = sorted(df[col_ca_wr].unique())
+        val_wr = st.selectbox(t("lbl_ca_wall_r"), opts, key=f"{key_prefix}_wr{sim_num}")
+        df = df[df[col_ca_wr] == val_wr]
+
+    # Retourner le chemin du fichier
+    if not df.empty:
+        subdir = f"vof/{file_type}"
+        return os.path.join(ASSETS_PATH, subdir, df.iloc[0][col_file])
+    return None
+
+
 def render_fem_png_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
                                       sim_num: int) -> str | None:
     """
@@ -592,6 +694,11 @@ DEFAULT_SESSION_STATES = {
     'run_lbm_p': False,
     'files_lbm_g': (None, None),
     'files_lbm_p': (None, None),
+    # VOF Visualization
+    'run_vof_g': False,
+    'run_vof_p': False,
+    'files_vof_g': (None, None),
+    'files_vof_p': (None, None),
     # Chatbot
     'chat_messages': [],
 }
@@ -1053,12 +1160,12 @@ elif selected_page == model_pages[0]:  # FEM
 # ===== PAGE VOF =====
 elif selected_page == model_pages[1]:  # VOF
     st.title(t("title_model_2"))
-    tabs = st.tabs(t("tabs_other"))
+    tabs = st.tabs(t("tabs_fem"))
 
-    with tabs[0]:
+    with tabs[0]:  # Physique
         st.markdown(load_file_content("physics/physics_vof.md"))
 
-    with tabs[1]:
+    with tabs[1]:  # Code
         st.subheader("Configuration OpenFOAM")
         st.code("""// transportProperties
 transportModel Carreau;
@@ -1073,10 +1180,115 @@ CarreauCoeffs {
 sigma 0.04;  // Tension de surface [N/m]
 rho   3000;  // Masse volumique [kg/m³]""", language='cpp')
 
-    with tabs[2]:
-        st.subheader("Exemple de Simulation VOF")
-        if os.path.exists(VOF_GIF_EX):
-            st.image(VOF_GIF_EX, caption="Simulation VOF - Cas 93", use_container_width=True)
+    with tabs[2]:  # GIF
+        c_title, c_pop = st.columns([0.7, 0.3])
+        with c_title:
+            st.subheader(t("gif_viewer"))
+
+        _, df_vof_gif = load_vof_gif_mapping()
+
+        with c_pop:
+            with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                if not df_vof_gif.empty:
+                    st.dataframe(df_vof_gif, use_container_width=True, hide_index=True)
+                else:
+                    st.error("Data not found")
+
+        if not df_vof_gif.empty:
+            with st.container(border=True):
+                # Simulation 1 - Filtres en cascade
+                file_1 = render_vof_cascading_filters(df_vof_gif, "vg", 1, "gif")
+                st.divider()
+                # Simulation 2 - Filtres en cascade
+                file_2 = render_vof_cascading_filters(df_vof_gif, "vg", 2, "gif")
+
+                # Boutons
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_vof_g"):
+                        st.session_state.run_vof_g = True
+                        st.session_state.files_vof_g = (file_1, file_2)
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_vof_g"):
+                        st.session_state.run_vof_g = False
+                        st.rerun()
+
+            if st.session_state.get('run_vof_g', False):
+                with st.container(border=True):
+                    res_cols = st.columns(2)
+                    files = st.session_state.files_vof_g
+
+                    # Sim 1
+                    with res_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files[0] and os.path.exists(files[0]):
+                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+
+                    # Sim 2
+                    with res_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files[1] and os.path.exists(files[1]):
+                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+        else:
+            st.warning("Mapping data missing for VOF GIF.")
+
+    with tabs[3]:  # PNG
+        c_title, c_pop = st.columns([0.7, 0.3])
+        with c_title:
+            st.subheader(t("png_viewer"))
+
+        _, df_vof_png = load_vof_png_mapping()
+
+        with c_pop:
+            with st.popover(t("lbl_avail_sims"), use_container_width=True):
+                if not df_vof_png.empty:
+                    st.dataframe(df_vof_png, use_container_width=True, hide_index=True)
+                else:
+                    st.error("Data not found")
+
+        if not df_vof_png.empty:
+            with st.container(border=True):
+                # Simulation 1 - Filtres en cascade
+                file_p1 = render_vof_cascading_filters(df_vof_png, "vp", 1, "png")
+                st.divider()
+                # Simulation 2 - Filtres en cascade
+                file_p2 = render_vof_cascading_filters(df_vof_png, "vp", 2, "png")
+
+                # Boutons
+                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
+                with btn_col1:
+                    if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_vof_p"):
+                        st.session_state.run_vof_p = True
+                        st.session_state.files_vof_p = (file_p1, file_p2)
+                with btn_col2:
+                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="rst_vof_p"):
+                        st.session_state.run_vof_p = False
+                        st.rerun()
+
+            if st.session_state.get('run_vof_p', False):
+                with st.container(border=True):
+                    res_cols = st.columns(2)
+                    files_p = st.session_state.files_vof_p
+
+                    with res_cols[0]:
+                        st.subheader(t("sim_1"))
+                        if files_p[0] and os.path.exists(files_p[0]):
+                            st.markdown(load_media_as_base64(files_p[0]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+
+                    with res_cols[1]:
+                        st.subheader(t("sim_2"))
+                        if files_p[1] and os.path.exists(files_p[1]):
+                            st.markdown(load_media_as_base64(files_p[1]), unsafe_allow_html=True)
+                        else:
+                            st.warning(t("image_unavailable"))
+        else:
+            st.warning("Mapping data missing for VOF PNG.")
 
 # ===== PAGE LBM =====
 elif selected_page == model_pages[2]:  # LBM
