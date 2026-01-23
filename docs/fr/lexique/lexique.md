@@ -1,47 +1,58 @@
 **Sommaire :**
-1. Acronymes des Méthodes Numériques
-2. Acronymes des Schémas Numériques
-3. Nombres Adimensionnels
-4. Symboles Physiques
-5. Termes Techniques
-6. Logiciels et Bibliothèques
-7. Acronymes Hardware
-8. Abréviations Courantes
-9. Unités SI
+
+**A. Physique**
+1. Unités SI et Préfixes
+2. Nombres Adimensionnels
+3. Symboles Physiques
+4. Termes de Rhéologie
+5. Termes de Mécanique des Fluides
+
+**B. Méthodes Numériques**
+6. Acronymes des Méthodes
+7. Acronymes des Schémas Numériques
+8. Termes Numériques
+9. Logiciels et Bibliothèques
+
+**C. Hardware**
+10. Acronymes Hardware
+
+**D. Techniques et Applications**
+11. Procédés de Dispense
+12. Caractérisation Expérimentale
+13. Couplages et Intelligence Artificielle
 
 ---
 
-## 1. Acronymes des Méthodes Numériques
+# A. Physique
 
-| Acronyme | Signification | Description |
-|----------|---------------|-------------|
-| **FEM** | Finite Element Method | Méthode des éléments finis |
-| **VOF** | Volume of Fluid | Méthode de suivi d'interface eulérienne |
-| **LBM** | Lattice Boltzmann Method | Méthode de Boltzmann sur réseau |
-| **SPH** | Smoothed Particle Hydrodynamics | Hydrodynamique des particules lissées |
-| **CFD** | Computational Fluid Dynamics | Mécanique des fluides numérique |
-| **DNS** | Direct Numerical Simulation | Simulation numérique directe |
+## 1. Unités SI et Préfixes
+
+| Grandeur | Unité | Symbole |
+|----------|-------|---------|
+| Longueur | mètre | m |
+| Masse | kilogramme | kg |
+| Temps | seconde | s |
+| Force | newton | N |
+| Pression | pascal | Pa |
+| Viscosité dynamique | pascal-seconde | Pa·s |
+| Tension superficielle | newton par mètre | N/m |
+| Énergie | joule | J |
+| Puissance | watt | W |
+
+### Préfixes
+
+| Préfixe | Symbole | Facteur |
+|---------|---------|---------|
+| micro | µ | 10$^{-6}$ |
+| milli | m | 10$^{-3}$ |
+| kilo | k | 10$^{3}$ |
+| méga | M | 10$^{6}$ |
+| giga | G | 10$^{9}$ |
+| téra | T | 10$^{12}$ |
 
 ---
 
-## 2. Acronymes des Schémas Numériques
-
-| Acronyme | Signification | Contexte |
-|----------|---------------|----------|
-| **PLIC** | Piecewise Linear Interface Calculation | Reconstruction d'interface VOF |
-| **CSF** | Continuum Surface Force | Modèle de tension superficielle |
-| **BGK** | Bhatnagar-Gross-Krook | Opérateur de collision LBM |
-| **MRT** | Multiple Relaxation Time | Schéma LBM multi-relaxation |
-| **SUPG** | Streamline Upwind Petrov-Galerkin | Stabilisation FEM convection |
-| **PSPG** | Pressure Stabilizing Petrov-Galerkin | Stabilisation FEM pression |
-| **GLS** | Galerkin Least-Squares | Stabilisation FEM combinée |
-| **ALE** | Arbitrary Lagrangian-Eulerian | Maillage mobile |
-| **AMR** | Adaptive Mesh Refinement | Maillage adaptatif |
-| **MULES** | Multidimensional Universal Limiter | Limiteur OpenFOAM pour VOF |
-
----
-
-## 3. Nombres Adimensionnels
+## 2. Nombres Adimensionnels
 
 | Symbole | Nom | Expression | Signification physique |
 |---------|-----|------------|------------------------|
@@ -55,7 +66,7 @@
 
 ---
 
-## 4. Symboles Physiques
+## 3. Symboles Physiques
 
 ### Propriétés des Fluides
 
@@ -91,9 +102,7 @@
 
 ---
 
-## 5. Termes Techniques
-
-### Rhéologie
+## 4. Termes de Rhéologie
 
 | Terme | Définition |
 |-------|------------|
@@ -105,7 +114,9 @@
 | **Fluide non-newtonien** | Viscosité dépendante du cisaillement |
 | **Yield stress** | Contrainte seuil d'écoulement |
 
-### Mécanique des Fluides
+---
+
+## 5. Termes de Mécanique des Fluides
 
 | Terme | Définition |
 |-------|------------|
@@ -118,7 +129,41 @@
 | **Satellite** | Goutte secondaire formée lors de la rupture |
 | **Coalescence** | Fusion de deux gouttes |
 
-### Méthodes Numériques
+---
+
+# B. Méthodes Numériques
+
+## 6. Acronymes des Méthodes
+
+| Acronyme | Signification | Description |
+|----------|---------------|-------------|
+| **FEM** | Finite Element Method | Méthode des éléments finis |
+| **VOF** | Volume of Fluid | Méthode de suivi d'interface eulérienne |
+| **LBM** | Lattice Boltzmann Method | Méthode de Boltzmann sur réseau |
+| **SPH** | Smoothed Particle Hydrodynamics | Hydrodynamique des particules lissées |
+| **CFD** | Computational Fluid Dynamics | Mécanique des fluides numérique |
+| **DNS** | Direct Numerical Simulation | Simulation numérique directe |
+
+---
+
+## 7. Acronymes des Schémas Numériques
+
+| Acronyme | Signification | Contexte |
+|----------|---------------|----------|
+| **PLIC** | Piecewise Linear Interface Calculation | Reconstruction d'interface VOF |
+| **CSF** | Continuum Surface Force | Modèle de tension superficielle |
+| **BGK** | Bhatnagar-Gross-Krook | Opérateur de collision LBM |
+| **MRT** | Multiple Relaxation Time | Schéma LBM multi-relaxation |
+| **SUPG** | Streamline Upwind Petrov-Galerkin | Stabilisation FEM convection |
+| **PSPG** | Pressure Stabilizing Petrov-Galerkin | Stabilisation FEM pression |
+| **GLS** | Galerkin Least-Squares | Stabilisation FEM combinée |
+| **ALE** | Arbitrary Lagrangian-Eulerian | Maillage mobile |
+| **AMR** | Adaptive Mesh Refinement | Maillage adaptatif |
+| **MULES** | Multidimensional Universal Limiter | Limiteur OpenFOAM pour VOF |
+
+---
+
+## 8. Termes Numériques
 
 | Terme | Définition |
 |-------|------------|
@@ -133,7 +178,7 @@
 
 ---
 
-## 6. Logiciels et Bibliothèques
+## 9. Logiciels et Bibliothèques
 
 | Nom | Type | Langage | Méthode |
 |-----|------|---------|---------|
@@ -148,7 +193,9 @@
 
 ---
 
-## 7. Acronymes Hardware
+# C. Hardware
+
+## 10. Acronymes Hardware
 
 | Acronyme | Signification | Description |
 |----------|---------------|-------------|
@@ -163,41 +210,31 @@
 
 ---
 
-## 8. Abréviations Courantes
+# D. Techniques et Applications
 
-| Abréviation | Signification |
-|-------------|---------------|
-| **DOD** | Drop-on-Demand (éjection à la demande) |
-| **CIJ** | Continuous Inkjet (jet continu) |
-| **PIV** | Particle Image Velocimetry |
-| **OCT** | Optical Coherence Tomography |
-| **PINN** | Physics-Informed Neural Networks |
-| **IA** | Intelligence Artificielle |
-| **FSI** | Fluid-Structure Interaction |
+## 11. Procédés de Dispense
+
+| Abréviation | Signification | Description |
+|-------------|---------------|-------------|
+| **DOD** | Drop-on-Demand | Éjection de gouttes à la demande (piézo ou thermique). Utilisé pour la dispense de précision, bio-impression. |
+| **CIJ** | Continuous Inkjet | Jet continu avec déviation électrostatique des gouttes non désirées. Utilisé pour le marquage industriel. |
 
 ---
 
-## 9. Unités SI
+## 12. Caractérisation Expérimentale
 
-| Grandeur | Unité | Symbole |
-|----------|-------|---------|
-| Longueur | mètre | m |
-| Masse | kilogramme | kg |
-| Temps | seconde | s |
-| Force | newton | N |
-| Pression | pascal | Pa |
-| Viscosité dynamique | pascal-seconde | Pa·s |
-| Tension superficielle | newton par mètre | N/m |
-| Énergie | joule | J |
-| Puissance | watt | W |
+| Abréviation | Signification | Description |
+|-------------|---------------|-------------|
+| **PIV** | Particle Image Velocimetry | Vélocimétrie par images de particules. Mesure de champs de vitesse 2D/3D. |
+| **OCT** | Optical Coherence Tomography | Tomographie par cohérence optique. Imagerie sub-surfacique non invasive. |
 
-### Préfixes
+---
 
-| Préfixe | Symbole | Facteur |
-|---------|---------|---------|
-| micro | µ | 10$^{-6}$ |
-| milli | m | 10$^{-3}$ |
-| kilo | k | 10$^{3}$ |
-| méga | M | 10$^{6}$ |
-| giga | G | 10$^{9}$ |
-| téra | T | 10$^{12}$ |
+## 13. Couplages et Intelligence Artificielle
+
+| Abréviation | Signification | Description |
+|-------------|---------------|-------------|
+| **FSI** | Fluid-Structure Interaction | Couplage fluide-structure. Interaction entre écoulement et déformation solide. |
+| **PINN** | Physics-Informed Neural Networks | Réseaux de neurones intégrant des équations physiques comme contraintes. |
+| **IA** | Intelligence Artificielle | Ensemble des techniques d'apprentissage automatique appliquées à la simulation. |
+

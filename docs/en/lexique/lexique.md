@@ -1,47 +1,58 @@
 **Contents:**
-1. Numerical Method Acronyms
-2. Numerical Scheme Acronyms
-3. Dimensionless Numbers
-4. Physical Symbols
-5. Technical Terms
-6. Software and Libraries
-7. Hardware Acronyms
-8. Common Abbreviations
-9. SI Units
+
+**A. Physics**
+1. SI Units and Prefixes
+2. Dimensionless Numbers
+3. Physical Symbols
+4. Rheology Terms
+5. Fluid Mechanics Terms
+
+**B. Numerical Methods**
+6. Method Acronyms
+7. Numerical Scheme Acronyms
+8. Numerical Terms
+9. Software and Libraries
+
+**C. Hardware**
+10. Hardware Acronyms
+
+**D. Techniques and Applications**
+11. Dispensing Processes
+12. Experimental Characterization
+13. Couplings and Artificial Intelligence
 
 ---
 
-## 1. Numerical Method Acronyms
+# A. Physics
 
-| Acronym | Full Name | Description |
-|---------|-----------|-------------|
-| **FEM** | Finite Element Method | Finite element method |
-| **VOF** | Volume of Fluid | Eulerian interface tracking method |
-| **LBM** | Lattice Boltzmann Method | Lattice Boltzmann method |
-| **SPH** | Smoothed Particle Hydrodynamics | Smoothed particle hydrodynamics |
-| **CFD** | Computational Fluid Dynamics | Computational fluid mechanics |
-| **DNS** | Direct Numerical Simulation | Direct numerical simulation |
+## 1. SI Units and Prefixes
+
+| Quantity | Unit | Symbol |
+|----------|------|--------|
+| Length | meter | m |
+| Mass | kilogram | kg |
+| Time | second | s |
+| Force | newton | N |
+| Pressure | pascal | Pa |
+| Dynamic viscosity | pascal-second | Pa·s |
+| Surface tension | newton per meter | N/m |
+| Energy | joule | J |
+| Power | watt | W |
+
+### Prefixes
+
+| Prefix | Symbol | Factor |
+|--------|--------|--------|
+| micro | µ | 10$^{-6}$ |
+| milli | m | 10$^{-3}$ |
+| kilo | k | 10$^{3}$ |
+| mega | M | 10$^{6}$ |
+| giga | G | 10$^{9}$ |
+| tera | T | 10$^{12}$ |
 
 ---
 
-## 2. Numerical Scheme Acronyms
-
-| Acronym | Full Name | Context |
-|---------|-----------|---------|
-| **PLIC** | Piecewise Linear Interface Calculation | VOF interface reconstruction |
-| **CSF** | Continuum Surface Force | Surface tension model |
-| **BGK** | Bhatnagar-Gross-Krook | LBM collision operator |
-| **MRT** | Multiple Relaxation Time | Multi-relaxation LBM scheme |
-| **SUPG** | Streamline Upwind Petrov-Galerkin | FEM convection stabilization |
-| **PSPG** | Pressure Stabilizing Petrov-Galerkin | FEM pressure stabilization |
-| **GLS** | Galerkin Least-Squares | Combined FEM stabilization |
-| **ALE** | Arbitrary Lagrangian-Eulerian | Moving mesh |
-| **AMR** | Adaptive Mesh Refinement | Adaptive meshing |
-| **MULES** | Multidimensional Universal Limiter | OpenFOAM limiter for VOF |
-
----
-
-## 3. Dimensionless Numbers
+## 2. Dimensionless Numbers
 
 | Symbol | Name | Expression | Physical Meaning |
 |--------|------|------------|------------------|
@@ -55,7 +66,7 @@
 
 ---
 
-## 4. Physical Symbols
+## 3. Physical Symbols
 
 ### Fluid Properties
 
@@ -91,9 +102,7 @@
 
 ---
 
-## 5. Technical Terms
-
-### Rheology
+## 4. Rheology Terms
 
 | Term | Definition |
 |------|------------|
@@ -105,7 +114,9 @@
 | **Non-Newtonian fluid** | Shear-dependent viscosity |
 | **Yield stress** | Flow threshold stress |
 
-### Fluid Mechanics
+---
+
+## 5. Fluid Mechanics Terms
 
 | Term | Definition |
 |------|------------|
@@ -118,7 +129,41 @@
 | **Satellite** | Secondary droplet formed during breakup |
 | **Coalescence** | Merging of two droplets |
 
-### Numerical Methods
+---
+
+# B. Numerical Methods
+
+## 6. Method Acronyms
+
+| Acronym | Full Name | Description |
+|---------|-----------|-------------|
+| **FEM** | Finite Element Method | Finite element method |
+| **VOF** | Volume of Fluid | Eulerian interface tracking method |
+| **LBM** | Lattice Boltzmann Method | Lattice Boltzmann method |
+| **SPH** | Smoothed Particle Hydrodynamics | Smoothed particle hydrodynamics |
+| **CFD** | Computational Fluid Dynamics | Computational fluid mechanics |
+| **DNS** | Direct Numerical Simulation | Direct numerical simulation |
+
+---
+
+## 7. Numerical Scheme Acronyms
+
+| Acronym | Full Name | Context |
+|---------|-----------|---------|
+| **PLIC** | Piecewise Linear Interface Calculation | VOF interface reconstruction |
+| **CSF** | Continuum Surface Force | Surface tension model |
+| **BGK** | Bhatnagar-Gross-Krook | LBM collision operator |
+| **MRT** | Multiple Relaxation Time | Multi-relaxation LBM scheme |
+| **SUPG** | Streamline Upwind Petrov-Galerkin | FEM convection stabilization |
+| **PSPG** | Pressure Stabilizing Petrov-Galerkin | FEM pressure stabilization |
+| **GLS** | Galerkin Least-Squares | Combined FEM stabilization |
+| **ALE** | Arbitrary Lagrangian-Eulerian | Moving mesh |
+| **AMR** | Adaptive Mesh Refinement | Adaptive meshing |
+| **MULES** | Multidimensional Universal Limiter | OpenFOAM limiter for VOF |
+
+---
+
+## 8. Numerical Terms
 
 | Term | Definition |
 |------|------------|
@@ -133,7 +178,7 @@
 
 ---
 
-## 6. Software and Libraries
+## 9. Software and Libraries
 
 | Name | Type | Language | Method |
 |------|------|----------|--------|
@@ -148,7 +193,9 @@
 
 ---
 
-## 7. Hardware Acronyms
+# C. Hardware
+
+## 10. Hardware Acronyms
 
 | Acronym | Full Name | Description |
 |---------|-----------|-------------|
@@ -163,41 +210,31 @@
 
 ---
 
-## 8. Common Abbreviations
+# D. Techniques and Applications
 
-| Abbreviation | Meaning |
-|--------------|---------|
-| **DOD** | Drop-on-Demand |
-| **CIJ** | Continuous Inkjet |
-| **PIV** | Particle Image Velocimetry |
-| **OCT** | Optical Coherence Tomography |
-| **PINN** | Physics-Informed Neural Networks |
-| **AI** | Artificial Intelligence |
-| **FSI** | Fluid-Structure Interaction |
+## 11. Dispensing Processes
+
+| Abbreviation | Full Name | Description |
+|--------------|-----------|-------------|
+| **DOD** | Drop-on-Demand | On-demand droplet ejection (piezo or thermal). Used for precision dispensing, bioprinting. |
+| **CIJ** | Continuous Inkjet | Continuous jet with electrostatic deflection of unwanted droplets. Used for industrial marking. |
 
 ---
 
-## 9. SI Units
+## 12. Experimental Characterization
 
-| Quantity | Unit | Symbol |
-|----------|------|--------|
-| Length | meter | m |
-| Mass | kilogram | kg |
-| Time | second | s |
-| Force | newton | N |
-| Pressure | pascal | Pa |
-| Dynamic viscosity | pascal-second | Pa·s |
-| Surface tension | newton per meter | N/m |
-| Energy | joule | J |
-| Power | watt | W |
+| Abbreviation | Full Name | Description |
+|--------------|-----------|-------------|
+| **PIV** | Particle Image Velocimetry | Particle image velocimetry. 2D/3D velocity field measurement. |
+| **OCT** | Optical Coherence Tomography | Optical coherence tomography. Non-invasive sub-surface imaging. |
 
-### Prefixes
+---
 
-| Prefix | Symbol | Factor |
-|--------|--------|--------|
-| micro | µ | 10$^{-6}$ |
-| milli | m | 10$^{-3}$ |
-| kilo | k | 10$^{3}$ |
-| mega | M | 10$^{6}$ |
-| giga | G | 10$^{9}$ |
-| tera | T | 10$^{12}$ |
+## 13. Couplings and Artificial Intelligence
+
+| Abbreviation | Full Name | Description |
+|--------------|-----------|-------------|
+| **FSI** | Fluid-Structure Interaction | Fluid-structure coupling. Interaction between flow and solid deformation. |
+| **PINN** | Physics-Informed Neural Networks | Neural networks integrating physical equations as constraints. |
+| **AI** | Artificial Intelligence | Machine learning techniques applied to simulation. |
+
