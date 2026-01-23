@@ -197,7 +197,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 
 # Chemins vers les exemples visuels
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
-VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/animation_vof_93.gif")
+VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/vof_007.gif")
 LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_029.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 
@@ -959,13 +959,11 @@ elif selected_page == gen_pages[1]:  # Introduction
 elif selected_page == gen_pages[2]:  # Comparaison des modèles
     st.title(selected_page)
     st.markdown("---")
+    # Partie 1: Sections 1-3.3
     st.markdown(load_file_content("comparaison/comparaison_models.md"))
 
-    # --- Section visuelle: Comparaison des maillages/grilles ---
-    st.markdown("---")
+    # --- Section visuelle: Visualisation des maillages (après 3.3) ---
     current_lang = st.session_state.get('lang', 'fr')
-    st.subheader("Visualisation des Approches de Discrétisation" if current_lang == "fr"
-                  else "Discretization Approaches Visualization")
 
     # Onglets pour les 4 méthodes
     mesh_tabs = st.tabs(["FEM", "VOF", "LBM", "SPH"])
@@ -1033,6 +1031,9 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
                     st.image(droplet_path, caption=droplet_captions[current_lang][method], use_container_width=True)
                 else:
                     st.warning(f"Image non disponible: {droplet_path}")
+
+    # Partie 2: Sections 4-9 (après les images)
+    st.markdown(load_file_content("comparaison/comparaison_models_part2.md"))
 
 # ===== PAGE FEM =====
 elif selected_page == model_pages[0]:  # FEM
