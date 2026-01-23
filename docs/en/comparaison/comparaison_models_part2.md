@@ -1,134 +1,77 @@
 ---
 
-## 4. Adaptability to Shear-Thinning Inks
+## 3. Critical Analysis by Model
 
-### 4.1 Supported Rheological Laws
+### 3.1 VOF (Volume of Fluid)
 
-| Rheological Law | VOF | FEM | LBM | SPH |
-|-----------------|-----|-----|-----|-----|
-| Newtonian | Yes | Yes | Yes | Yes |
-| Power law | Yes | Yes | Yes | Yes |
-| Carreau-Yasuda | Yes | Yes | Yes | Yes |
+**Principle:** Volume fraction $\alpha$ ($0 \leq \alpha \leq 1$) represents the fluid proportion in each cell.
 
-**Analysis:**
-- **FEM** is the most versatile for complex rheology
-- **VOF** and **LBM** support standard shear-thinning laws (power law, Carreau)
-
----
-
-## 5. Critical Analysis by Model
-
-### 5.1 VOF (Volume of Fluid)
-
-**Principle:** Eulerian method for interface tracking, where the volume fraction $\alpha$ ($0 \leq \alpha \leq 1$) represents the fluid proportion in each cell.
-
-**Strengths:**
-- Proven robustness (industry standard)
-- Perfect mass conservation
-- Mature open-source implementations (OpenFOAM, Basilisk)
-- High interface precision (0.1–1 µm with PLIC)
-
-**Limitations:**
-- Numerical diffusivity at fine interfaces
-- High memory cost for fine meshes
-- Difficulty handling multiple coalescences
+| Strengths | Limitations |
+|-----------|-------------|
+| Proven robustness (industry standard) | Numerical diffusivity at fine interfaces |
+| Perfect mass conservation | High memory cost for fine meshes |
+| Mature open-source implementations (OpenFOAM, Basilisk) | Multiple coalescences difficult |
+| Interface precision 0.1–1 µm with PLIC | |
 
 ---
 
-### 5.2 FEM (Finite Element Method / Phase-Field)
+### 3.2 FEM / Phase-Field
 
-**Principle:** Domain discretization into finite elements with weak formulation. The interface is represented by a phase field $\phi$ with finite thickness $\varepsilon$.
+**Principle:** Finite elements with weak formulation. Interface represented by phase field $\phi$ with thickness $\varepsilon$.
 
-**Strengths:**
-- High local precision (0.05–0.5 µm with adaptive elements)
-- Ability to handle complex geometries and multiphysics coupling
-- Powerful commercial implementations (COMSOL, Ansys)
-
-**Limitations:**
-- High computational cost for 3D deformable meshes
-- Difficulty handling free interfaces without hybrid methods
-- Sensitivity to stabilization parameters
+| Strengths | Limitations |
+|-----------|-------------|
+| Local precision 0.05–0.5 µm | High computational cost in 3D |
+| Complex geometries and multiphysics coupling | Free interfaces difficult without hybridization |
+| Commercial implementations (COMSOL, Ansys) | Sensitivity to stabilization parameters |
 
 ---
 
-### 5.3 LBM (Lattice Boltzmann Method)
+### 3.3 LBM (Lattice Boltzmann)
 
-**Principle:** Mesoscopic method discretizing the Boltzmann equation on a regular grid (D2Q9, D3Q19). Macroscopic quantities are obtained through statistical moments.
+**Principle:** Discretized Boltzmann equation on regular grid (D2Q9, D3Q19). Macroscopic quantities via statistical moments.
 
-**Strengths:**
-- Exceptional GPU scalability (x20 speedup vs CPU)
-- Suited for parallel flows and complex geometries
-- High-performance open-source implementations (Palabos, waLBerla)
-
-**Limitations:**
-- Artificial compressibility (Mach number $Ma < 0.1$ required)
-- Difficulty modeling interfaces with sub-micron precision
-- Delicate calibration of rheological parameters
+| Strengths | Limitations |
+|-----------|-------------|
+| Exceptional GPU scalability (x20 vs CPU) | Artificial compressibility ($Ma < 0.1$) |
+| Massive parallelization | Sub-micron precision difficult |
+| Open-source implementations (Palabos, waLBerla) | Delicate rheological calibration |
 
 ---
 
-### 5.4 SPH (Smoothed Particle Hydrodynamics)
+### 3.4 SPH (Smoothed Particle Hydrodynamics)
 
-**Principle:** Meshless Lagrangian method where the fluid is discretized into mobile particles. Navier-Stokes equations are solved via interpolation kernels (e.g., cubic spline).
+**Principle:** Meshless method with mobile particles. Navier-Stokes solved via interpolation kernels (cubic spline).
 
-**Strengths:**
-- Adaptability to extreme deformations (coalescence, fragmentation)
-- No mesh → no distortion problems
-- Open-source implementations (DualSPHysics, PySPH)
-
-**Limitations:**
-- Numerical noise in pressure and velocity fields
-- Stress tensor instability at high velocity
-- High memory cost for 3D simulations
+| Strengths | Limitations |
+|-----------|-------------|
+| Extreme deformations (coalescence, fragmentation) | Numerical noise (pressure, velocity) |
+| No mesh → no distortion | Stress tensor instability at high velocity |
+| Open-source (DualSPHysics, PySPH) | High memory cost in 3D |
 
 ---
 
-## 6. Common Challenges and Solutions
+## 4. Summary Table
 
-### 6.1 Identified Problems
+| Criterion | VOF | FEM | LBM | SPH |
+|-----------|-----|-----|-----|-----|
+| **Interface precision** | 0.1–1 µm | 0.05–0.5 µm | 0.2–2 µm | 0.5–5 µm |
+| **Computation time** | 2–10 h | 10–50 h | 1–5 h | 5–20 h |
+| **Mass conservation** | Perfect | Adjustment | Approximate | Summation |
+| **Carreau rheology** | ✓ | ✓ | ✓ | ✓ |
+| **GPU parallelization** | Good | Limited | Excellent | Good |
+| **Ease of use** | High | Medium | Medium | Medium |
+| **Industrial maturity** | Very high | High | Medium | Low |
 
-| Challenge | Affected models | Solution |
-|-----------|-----------------|----------|
-| **Numerical diffusivity** | VOF, LBM | Reconstruction schemes (PLIC for VOF, Free Energy for LBM) |
-| **Stress tensor instability** | SPH | Higher-order kernels (quintic spline) + artificial viscosity |
-| **Computational cost** | FEM | Multi-core CPU parallelization + hybridization (FEM-SPH) |
-| **Artificial compressibility** | LBM | Low-Mach schemes (two-relaxation-time LBM) |
-
-### 6.2 Innovative Solutions
-
-**Hybridization:**
-- **VOF-LBM**: Combines VOF interface precision with LBM scalability (Thiery et al., 2023)
-- **FEM-SPH**: Uses FEM for rheology and SPH for interfaces (Patel et al., 2024)
-
-**Machine Learning:**
-- **PINN (Physics-Informed Neural Networks)**: Accelerates VOF simulations by learning interface dynamics (Raissi et al., 2020)
-- **Surrogate Models**: Replaces expensive simulations with trained neural networks
+**Recommendations:**
+- **Standard inkjet** (< 1200 dpi) → **VOF** (robustness + precision)
+- **High resolution** (> 2400 dpi) → **Hybrid VOF-LBM** (precision + speed)
+- **Viscoelastic inks** → **FEM** (complex rheological laws)
+- **Academic R&D** → **SPH** (flexibility, new physics)
 
 ---
 
-## 7. Recommendations by Application
-
-### 7.1 For Industry
-
-| Application | Recommended model | Hardware | Justification |
-|-------------|-------------------|----------|---------------|
-| Standard inkjet printing (< 1200 dpi) | VOF (OpenFOAM) | GPU RTX 3080–4090 | Robustness and interface precision |
-| High-resolution printing (> 2400 dpi) | Hybrid VOF-LBM | GPU A100 (40 GB) | Interface precision + scalability |
-| Viscoelastic inks | FEM (COMSOL) | CPU 64–128 cores + 128 GB RAM | Ability to handle complex rheological laws |
-
-### 7.2 For Academic R&D
-
-| Application | Recommended model | Justification |
-|-------------|-------------------|---------------|
-| Fundamental rheology studies | SPH (PySPH) | Flexibility and thixotropy handling capability |
-| Hybrid model development | VOF-SPH, FEM-LBM | Combine advantages of each method |
-| AI integration | PINN + VOF/FEM | Accelerate simulations and optimize parameters |
-
----
-
-## 8. Detailed Hardware Requirements
-
-### 8.1 Typical Configuration per Model
+## 5. Hardware Requirements
 
 For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 
@@ -139,14 +82,13 @@ For a standard simulation (1 ms ejection, 10⁶ cells/particles):
 | **LBM** | 4–8 | A100 (40 GB) | 8–16 | 1–5 |
 | **SPH** | 8–16 | RTX 4090 (24 GB) | 32–64 | 5–20 |
 
-### 8.2 Scalability Analysis
-
-- **LBM**: Most efficient on GPU, with x20 speedup vs CPU
-- **FEM**: Limited by multi-core CPUs and memory
-- **VOF and SPH**: Good compromise for consumer GPUs
+**Scalability:**
+- **LBM**: most efficient on GPU (x20 vs CPU)
+- **FEM**: limited by multi-core CPUs and memory
+- **VOF / SPH**: good compromise for consumer GPUs
 
 ---
 
-## 9. References
+## 6. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.

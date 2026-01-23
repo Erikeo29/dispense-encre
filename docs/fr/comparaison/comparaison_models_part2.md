@@ -1,134 +1,77 @@
 ---
 
-## 4. Adaptabilité aux Encres Rhéofluidifiantes
+## 3. Analyse Critique par Modèle
 
-### 4.1 Lois Rhéologiques Supportées
+### 3.1 VOF (Volume of Fluid)
 
-| Loi Rhéologique | VOF | FEM | LBM | SPH |
-|-----------------|-----|-----|-----|-----|
-| Newtonien | Oui | Oui | Oui | Oui |
-| Loi de puissance | Oui | Oui | Oui | Oui |
-| Carreau-Yasuda | Oui | Oui | Oui | Oui |
+**Principe :** Fraction volumique $\alpha$ ($0 \leq \alpha \leq 1$) représente la proportion de fluide dans chaque cellule.
 
-**Analyse :**
-- **FEM** est le plus polyvalent pour la rhéologie complexe
-- **VOF** et **LBM** supportent les lois rhéofluidifiantes standard (loi de puissance, Carreau)
-
----
-
-## 5. Analyse Critique par Modèle
-
-### 5.1 VOF (Volume of Fluid)
-
-**Principe :** Méthode eulérienne pour le suivi d'interfaces, où la fraction volumique $\alpha$ ($0 \leq \alpha \leq 1$) représente la proportion de fluide dans chaque cellule.
-
-**Points forts :**
-- Robustesse éprouvée (standard industriel)
-- Conservation de masse parfaite
-- Implémentations open-source matures (OpenFOAM, Basilisk)
-- Précision interfaciale élevée (0.1–1 µm avec PLIC)
-
-**Limitations :**
-- Diffusivité numérique aux interfaces fines
-- Coût mémoire élevé pour les maillages fins
-- Difficulté à gérer les coalescences multiples
+| Points forts | Limitations |
+|--------------|-------------|
+| Robustesse éprouvée (standard industriel) | Diffusivité numérique aux interfaces fines |
+| Conservation de masse parfaite | Coût mémoire élevé pour maillages fins |
+| Implémentations open-source matures (OpenFOAM, Basilisk) | Coalescences multiples difficiles |
+| Précision interfaciale 0.1–1 µm avec PLIC | |
 
 ---
 
-### 5.2 FEM (Finite Element Method / Phase-Field)
+### 3.2 FEM / Phase-Field
 
-**Principe :** Discrétisation du domaine en éléments finis avec formulation faible. L'interface est représentée par un champ de phase $\phi$ d'épaisseur finie $\varepsilon$.
+**Principe :** Éléments finis avec formulation faible. Interface représentée par un champ de phase $\phi$ d'épaisseur $\varepsilon$.
 
-**Points forts :**
-- Précision locale élevée (0.05–0.5 µm avec éléments adaptatifs)
-- Capacité à gérer des géométries complexes et des couplages multiphysiques
-- Implémentations commerciales puissantes (COMSOL, Ansys)
-
-**Limitations :**
-- Coût computationnel élevé pour les maillages 3D déformables
-- Difficulté à gérer les interfaces libres sans méthodes hybrides
-- Sensibilité aux paramètres de stabilisation
+| Points forts | Limitations |
+|--------------|-------------|
+| Précision locale 0.05–0.5 µm | Coût computationnel élevé en 3D |
+| Géométries complexes et couplage multiphysique | Interfaces libres difficiles sans hybridation |
+| Implémentations commerciales (COMSOL, Ansys) | Sensibilité aux paramètres de stabilisation |
 
 ---
 
-### 5.3 LBM (Lattice Boltzmann Method)
+### 3.3 LBM (Lattice Boltzmann)
 
-**Principe :** Méthode mésoscopique discrétisant l'équation de Boltzmann sur une grille régulière (D2Q9, D3Q19). Les grandeurs macroscopiques sont obtenues par moments statistiques.
+**Principe :** Équation de Boltzmann discrétisée sur grille régulière (D2Q9, D3Q19). Grandeurs macroscopiques par moments statistiques.
 
-**Points forts :**
-- Scalabilité GPU exceptionnelle (accélération x20 vs CPU)
-- Adapté aux écoulements parallèles et aux géométries complexes
-- Implémentations open-source performantes (Palabos, waLBerla)
-
-**Limitations :**
-- Compressibilité artificielle (nombre de Mach $Ma < 0.1$ requis)
-- Difficulté à modéliser les interfaces avec une précision sub-micronique
-- Calibration délicate des paramètres rhéologiques
+| Points forts | Limitations |
+|--------------|-------------|
+| Scalabilité GPU exceptionnelle (x20 vs CPU) | Compressibilité artificielle ($Ma < 0.1$) |
+| Parallélisation massive | Précision sub-micronique difficile |
+| Implémentations open-source (Palabos, waLBerla) | Calibration rhéologique délicate |
 
 ---
 
-### 5.4 SPH (Smoothed Particle Hydrodynamics)
+### 3.4 SPH (Smoothed Particle Hydrodynamics)
 
-**Principe :** Méthode lagrangienne sans maillage où le fluide est discrétisé en particules mobiles. Les équations de Navier-Stokes sont résolues via des noyaux d'interpolation (ex. cubic spline).
+**Principe :** Méthode sans maillage avec particules mobiles. Navier-Stokes résolues via noyaux d'interpolation (cubic spline).
 
-**Points forts :**
-- Adaptabilité aux déformations extrêmes (coalescence, fragmentation)
-- Pas de maillage → pas de problèmes de distorsion
-- Implémentations open-source (DualSPHysics, PySPH)
-
-**Limitations :**
-- Bruit numérique dans les champs de pression et de vitesse
-- Instabilité du tenseur des contraintes à haute vitesse
-- Coût mémoire élevé pour les simulations 3D
+| Points forts | Limitations |
+|--------------|-------------|
+| Déformations extrêmes (coalescence, fragmentation) | Bruit numérique (pression, vitesse) |
+| Pas de maillage → pas de distorsion | Instabilité tenseur contraintes haute vitesse |
+| Open-source (DualSPHysics, PySPH) | Coût mémoire élevé en 3D |
 
 ---
 
-## 6. Défis Communs et Solutions
+## 4. Tableau de Synthèse
 
-### 6.1 Problèmes Identifiés
+| Critère | VOF | FEM | LBM | SPH |
+|---------|-----|-----|-----|-----|
+| **Précision interfaciale** | 0.1–1 µm | 0.05–0.5 µm | 0.2–2 µm | 0.5–5 µm |
+| **Temps de calcul** | 2–10 h | 10–50 h | 1–5 h | 5–20 h |
+| **Conservation masse** | Parfaite | Ajustement | Approximative | Sommation |
+| **Rhéologie Carreau** | ✓ | ✓ | ✓ | ✓ |
+| **Parallélisation GPU** | Bonne | Limitée | Excellente | Bonne |
+| **Facilité d'utilisation** | Élevée | Moyenne | Moyenne | Moyenne |
+| **Maturité industrielle** | Très haute | Haute | Moyenne | Faible |
 
-| Défi | Modèles concernés | Solution |
-|------|-------------------|----------|
-| **Diffusivité numérique** | VOF, LBM | Schémas de reconstruction (PLIC pour VOF, Free Energy pour LBM) |
-| **Instabilité tenseur contraintes** | SPH | Noyaux d'ordre supérieur (quintic spline) + viscosité artificielle |
-| **Coût computationnel** | FEM | Parallélisation sur CPU multi-cœurs + hybridation (FEM-SPH) |
-| **Compressibilité artificielle** | LBM | Schémas à faible Mach (LBM à deux vitesses de relaxation) |
-
-### 6.2 Solutions Innovantes
-
-**Hybridation :**
-- **VOF-LBM** : Combine la précision interfaciale de VOF avec la scalabilité de LBM (Thiery et al., 2023)
-- **FEM-SPH** : Utilise FEM pour la rhéologie et SPH pour les interfaces (Patel et al., 2024)
-
-**Apprentissage automatique :**
-- **PINN (Physics-Informed Neural Networks)** : Accélère les simulations VOF en apprenant la dynamique interfaciale (Raissi et al., 2020)
-- **Surrogate Models** : Remplace les simulations coûteuses par des réseaux de neurones entraînés
+**Recommandations :**
+- **Inkjet standard** (< 1200 dpi) → **VOF** (robustesse + précision)
+- **Haute résolution** (> 2400 dpi) → **Hybride VOF-LBM** (précision + vitesse)
+- **Encres viscoélastiques** → **FEM** (lois rhéologiques complexes)
+- **R&D académique** → **SPH** (flexibilité, nouvelles physiques)
 
 ---
 
-## 7. Recommandations par Application
-
-### 7.1 Pour l'Industrie
-
-| Application | Modèle recommandé | Hardware | Justification |
-|-------------|-------------------|----------|---------------|
-| Impression inkjet standard (< 1200 dpi) | VOF (OpenFOAM) | GPU RTX 3080–4090 | Robustesse et précision interfaciale |
-| Impression haute résolution (> 2400 dpi) | Hybride VOF-LBM | GPU A100 (40 GB) | Précision interfaciale + scalabilité |
-| Encres viscoélastiques | FEM (COMSOL) | CPU 64–128 cœurs + 128 GB RAM | Capacité à gérer les lois rhéologiques complexes |
-
-### 7.2 Pour la R&D Académique
-
-| Application | Modèle recommandé | Justification |
-|-------------|-------------------|---------------|
-| Études fondamentales sur la rhéologie | SPH (PySPH) | Flexibilité et capacité à gérer la thixotropie |
-| Développement de modèles hybrides | VOF-SPH, FEM-LBM | Combiner les avantages de chaque méthode |
-| Intégration de l'IA | PINN + VOF/FEM | Accélérer les simulations et optimiser les paramètres |
-
----
-
-## 8. Besoins Hardware Détaillés
-
-### 8.1 Configuration Typique par Modèle
+## 5. Besoins Hardware
 
 Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 
@@ -139,14 +82,13 @@ Pour une simulation standard (1 ms d'éjection, 10⁶ cellules/particules) :
 | **LBM** | 4–8 | A100 (40 GB) | 8–16 | 1–5 |
 | **SPH** | 8–16 | RTX 4090 (24 GB) | 32–64 | 5–20 |
 
-### 8.2 Analyse de la Scalabilité
-
-- **LBM** : le plus efficace sur GPU, avec une accélération x20 vs CPU
-- **FEM** : limité par les CPU multi-cœurs et la mémoire
-- **VOF et SPH** : bon compromis pour les GPU grand public
+**Scalabilité :**
+- **LBM** : le plus efficace sur GPU (x20 vs CPU)
+- **FEM** : limité par CPU multi-cœurs et mémoire
+- **VOF / SPH** : bon compromis GPU grand public
 
 ---
 
-## 9. Références
+## 6. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
