@@ -10,48 +10,48 @@
 
 ## 1. Principe Général des 4 Modèles
 
-Cette section présente les quatre méthodes numériques utilisées pour simuler la dispense d'encre rhéofluidifiante dans des micro-puits. Chaque méthode a ses forces et ses faiblesses selon le contexte d'utilisation.
+Cette section présente les quatre méthodes numériques utilisées pour simuler la dispense d'encre rhéofluidifiante dans des micro-puits.
 
-| Modèle | Principe en une phrase | Ce qui le distingue |
-|--------|------------------------|---------------------|
-| **FEM** | Découpe le domaine en petits triangles/tétraèdres et résout les équations sur chaque élément | Très précis localement, idéal pour coupler plusieurs physiques (thermique, électrique...) |
-| **VOF** | Suit l'interface encre/air via une fraction volumique $\alpha$ (0 = air, 1 = encre) | Référence industrielle, conserve parfaitement la masse, très robuste |
-| **LBM** | Simule le fluide comme des "paquets de particules" sur une grille régulière | Extrêmement rapide sur GPU, parallélisation naturelle |
-| **SPH** | Représente le fluide par des particules qui se déplacent librement | Gère naturellement les grandes déformations et la fragmentation |
+| Modèle | Principe | Caractéristique principale |
+|--------|----------|---------------------------|
+| **FEM** | Discrétisation en éléments finis avec champ de phase $\phi$ pour le suivi d'interface | Précision locale élevée, couplage multiphysique natif |
+| **VOF** | Suivi d'interface via fraction volumique $\alpha \in [0,1]$ sur maillage eulérien | Standard industriel, conservation de masse rigoureuse |
+| **LBM** | Résolution de l'équation de Boltzmann sur grille régulière | Parallélisation GPU optimale, rapidité de calcul |
+| **SPH** | Méthode particulaire lagrangienne sans maillage | Gestion naturelle des grandes déformations |
 
 ---
 
 ## 2. Approches de Discrétisation : Eulérien vs Lagrangien
 
-### 2.1 Deux grandes familles
+### 2.1 Classification des méthodes
 
-En simulation numérique, on distingue deux philosophies fondamentales :
+Les méthodes numériques pour la simulation de fluides se divisent en deux familles selon le traitement de l'espace :
 
-| Approche | Comment ça marche ? | Avantage principal | Méthodes |
-|----------|---------------------|-------------------|----------|
-| **Eulérienne** | Le maillage reste **fixe**, le fluide "coule à travers" les cellules | Simple à implémenter, stable | FEM, VOF, LBM |
-| **Lagrangienne** | Les particules **bougent avec** le fluide, pas de maillage fixe | Suit naturellement les déformations | SPH |
+| Approche | Principe | Avantage | Méthodes |
+|----------|----------|----------|----------|
+| **Eulérienne** | Maillage fixe, le fluide traverse les cellules | Stabilité, implémentation directe | FEM, VOF, LBM |
+| **Lagrangienne** | Particules mobiles suivant le fluide | Suivi naturel des déformations | SPH |
 
-**Analogie :** Imaginez observer une rivière. L'approche eulérienne revient à placer des capteurs fixes sur les berges. L'approche lagrangienne revient à suivre des bouchons qui flottent sur l'eau.
+L'approche eulérienne observe le fluide depuis un référentiel fixe, tandis que l'approche lagrangienne suit les éléments de fluide dans leur mouvement.
 
 ### 2.2 Visualisation des 4 Approches
 
-Les images ci-dessous montrent comment chaque méthode "voit" la même géométrie (puit de 800 µm × 130 µm) :
+Les figures ci-dessous illustrent les structures de discrétisation sur une géométrie de référence (puit : 800 µm × 130 µm) :
 
 #### FEM - Maillage Triangulaire Adaptatif
-- Petits triangles là où c'est important (interface, parois), grands triangles ailleurs
-- Taille des éléments : 1 à 10 µm selon la zone
+- Éléments triangulaires de taille variable (1-10 µm)
+- Raffinement local aux zones critiques (interface, parois)
 
-#### VOF - Maillage Rectangulaire
-- Cellules carrées/rectangulaires uniformes ou avec raffinement local (AMR)
-- Chaque cellule contient une fraction d'encre entre 0 et 1
+#### VOF - Maillage Hexaédrique
+- Cellules rectangulaires uniformes ou avec raffinement adaptatif (AMR)
+- Fraction volumique $\alpha$ dans chaque cellule
 
 #### LBM - Grille Uniforme
-- Grille régulière très simple (ici : 1 cellule = 5 µm)
-- La physique émerge des collisions entre "paquets de particules"
+- Grille cartésienne régulière (résolution : 5 µm/cellule)
+- Propriétés macroscopiques obtenues par moments statistiques
 
-#### SPH - Nuage de Particules
-- Environ 1000 particules mobiles
-- Chaque particule "influence" ses voisines dans un rayon h
+#### SPH - Distribution Particulaire
+- Ensemble de particules (~1000) avec rayon d'influence h
+- Interpolation via noyaux (cubic spline, Wendland)
 
 
