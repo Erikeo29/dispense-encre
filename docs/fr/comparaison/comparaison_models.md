@@ -10,38 +10,48 @@
 
 ## 1. Principe Général des 4 Modèles
 
-Cette section présente les quatre méthodes numériques utilisées pour simuler la dispense d'encre rhéofluidifiante dans des micro-puits.
+Cette section présente les quatre méthodes numériques utilisées pour simuler la dispense d'encre rhéofluidifiante dans des micro-puits. Chaque méthode a ses forces et ses faiblesses selon le contexte d'utilisation.
 
-| Modèle | Principe | Highlights |
-|--------|----------|------------|
-| **FEM** | Éléments finis avec champ de phase $\phi$ pour suivre l'interface | Précision locale exceptionnelle (0.05 µm), couplage multiphysique natif |
-| **VOF** | Fraction volumique $\alpha \in [0,1]$ sur maillage eulérien fixe | Standard industriel, conservation de masse parfaite, robuste |
-| **LBM** | Équation de Boltzmann discrétisée sur grille régulière | Scalabilité GPU x20, parallélisation massive, très rapide |
-| **SPH** | Particules mobiles sans maillage, noyaux d'interpolation | Grandes déformations naturelles, coalescence/fragmentation facile |
+| Modèle | Principe en une phrase | Ce qui le distingue |
+|--------|------------------------|---------------------|
+| **FEM** | Découpe le domaine en petits triangles/tétraèdres et résout les équations sur chaque élément | Très précis localement, idéal pour coupler plusieurs physiques (thermique, électrique...) |
+| **VOF** | Suit l'interface encre/air via une fraction volumique $\alpha$ (0 = air, 1 = encre) | Référence industrielle, conserve parfaitement la masse, très robuste |
+| **LBM** | Simule le fluide comme des "paquets de particules" sur une grille régulière | Extrêmement rapide sur GPU, parallélisation naturelle |
+| **SPH** | Représente le fluide par des particules qui se déplacent librement | Gère naturellement les grandes déformations et la fragmentation |
 
 ---
 
 ## 2. Approches de Discrétisation : Eulérien vs Lagrangien
 
-### 2.1 Concept Fondamental
+### 2.1 Deux grandes familles
 
-| Approche | Description | Méthodes |
-|----------|-------------|----------|
-| **Eulérienne** | Maillage **fixe** dans l'espace. Le fluide traverse les cellules. | FEM, VOF, LBM |
-| **Lagrangienne** | Particules **mobiles** qui suivent le fluide. Pas de maillage. | SPH |
+En simulation numérique, on distingue deux philosophies fondamentales :
+
+| Approche | Comment ça marche ? | Avantage principal | Méthodes |
+|----------|---------------------|-------------------|----------|
+| **Eulérienne** | Le maillage reste **fixe**, le fluide "coule à travers" les cellules | Simple à implémenter, stable | FEM, VOF, LBM |
+| **Lagrangienne** | Les particules **bougent avec** le fluide, pas de maillage fixe | Suit naturellement les déformations | SPH |
+
+**Analogie :** Imaginez observer une rivière. L'approche eulérienne revient à placer des capteurs fixes sur les berges. L'approche lagrangienne revient à suivre des bouchons qui flottent sur l'eau.
 
 ### 2.2 Visualisation des 4 Approches
 
-Les images ci-dessous illustrent les structures de discrétisation sur une géométrie comparable (puit 0.8 mm × 0.13 mm) :
+Les images ci-dessous montrent comment chaque méthode "voit" la même géométrie (puit de 800 µm × 130 µm) :
 
 #### FEM - Maillage Triangulaire Adaptatif
-- Triangles de taille variable (1-10 µm), raffinement près des parois et de l'interface
+- Petits triangles là où c'est important (interface, parois), grands triangles ailleurs
+- Taille des éléments : 1 à 10 µm selon la zone
 
-#### VOF - Maillage Hexaédrique
-- Cellules rectangulaires avec raffinement adaptatif (AMR)
+#### VOF - Maillage Rectangulaire
+- Cellules carrées/rectangulaires uniformes ou avec raffinement local (AMR)
+- Chaque cellule contient une fraction d'encre entre 0 et 1
 
 #### LBM - Grille Uniforme
-- Grille cartésienne régulière (1 cellule = 5 µm = 1 l.u.)
+- Grille régulière très simple (ici : 1 cellule = 5 µm)
+- La physique émerge des collisions entre "paquets de particules"
 
-#### SPH - Particules Discrètes
-- ~1000 particules avec rayon d'influence h
+#### SPH - Nuage de Particules
+- Environ 1000 particules mobiles
+- Chaque particule "influence" ses voisines dans un rayon h
+
+

@@ -962,10 +962,13 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
     # Partie 1: Sections 1-3.3
     st.markdown(load_file_content("comparaison/comparaison_models.md"))
 
-    # --- Section visuelle: Visualisation des maillages (après 3.3) ---
+    # --- Section visuelle: Visualisation des maillages (après section 2) ---
+    # Espacement avant les onglets
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
     current_lang = st.session_state.get('lang', 'fr')
 
-    # Onglets pour les 4 méthodes
+    # Onglets pour les 4 méthodes (ordre cohérent: FEM, VOF, LBM, SPH)
     mesh_tabs = st.tabs(["FEM", "VOF", "LBM", "SPH"])
 
     mesh_images = {
