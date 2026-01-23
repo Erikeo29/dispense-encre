@@ -8,8 +8,8 @@ Méthode des éléments finis avec formulation faible des équations de Navier-S
 
 | Avantages | Limitations |
 |-----------|-------------|
-| Précision interfaciale : 0.05–0.5 µm | Temps de calcul élevé en 3D |
-| Maillage adaptatif selon le gradient de $\phi$ | Consommation mémoire importante |
+| Précision interfaciale : 0.05–0.5 µm | Temps de calcul plus long que VOF/LBM |
+| Maillage adaptatif selon le gradient de $\phi$ | Consommation mémoire importante en 3D |
 | Couplage multiphysique natif | Sensibilité aux paramètres de stabilisation |
 | Logiciels : COMSOL (commercial), FEniCS (open-source) | |
 
@@ -34,7 +34,7 @@ Méthode mésoscopique résolvant l'équation de Boltzmann discrétisée sur gri
 
 | Avantages | Limitations |
 |-----------|-------------|
-| Parallélisation GPU exceptionnelle (facteur ×20) | Compressibilité artificielle (contrainte Ma < 0.1) |
+| Parallélisation GPU exceptionnelle (facteur ×10-20) | Compressibilité artificielle (contrainte Ma < 0.1) |
 | Algorithme local (chaque nœud indépendant) | Précision sub-micronique difficile |
 | Pas de maillage complexe à générer | Calibration rhéologique délicate |
 | Logiciels : Palabos (open-source), waLBerla | Documentation moins fournie que VOF |
@@ -59,10 +59,10 @@ Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules do
 | Critère | FEM | VOF | LBM | SPH |
 |---------|-----|-----|-----|-----|
 | **Précision interface** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Temps de calcul typique** | 10–50 h | 2–10 h | 1–5 h | 5–20 h |
+| **Temps de calcul (ordre de grandeur)** | 10–50 h | 2–10 h | 1–5 h | 2–20 h |
 | **Conservation masse** | Ajustement numérique | Rigoureuse | Approximative | Par sommation |
 | **Rhéologie Carreau** | Natif | Natif | Implémentable | Implémentable |
-| **Accélération GPU** | Limitée | Bonne | Excellente (×20) | Bonne |
+| **Accélération GPU** | Limitée | Bonne | Excellente (×10-20) | Bonne (×10-15) |
 | **Courbe d'apprentissage** | Moyenne (GUI disponible) | Élevée (C++, CLI) | Élevée (physique spécifique) | Moyenne (Python) |
 | **Maturité industrielle** | Haute | Très haute | Moyenne | En développement |
 | **Coût logiciel** | COMSOL ~10k€/an, FEniCS gratuit | OpenFOAM gratuit | Palabos gratuit | PySPH gratuit |
@@ -80,31 +80,30 @@ Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules do
 
 ## 5. Besoins Hardware
 
-### 5.1 Ressources par modèle
+### 5.1 Ordres de grandeur
 
-Pour une simulation de référence (1 ms de dispense, ~10⁶ cellules/particules) :
+Les temps de calcul dépendent fortement de la résolution et de la durée simulée. Pour une simulation 2D typique de dispense (20-40 ms de temps physique) :
 
-| Modèle | Processeur | Carte graphique | Mémoire vive | Temps estimé |
-|--------|------------|-----------------|--------------|--------------|
-| **FEM** | 64-128 cœurs | Peu exploitée | 64-128 Go | 10-50 h |
-| **VOF** | 16-32 cœurs | Accélération possible | 16-32 Go | 2-10 h |
-| **LBM** | 4-8 cœurs | Indispensable (haute gamme) | 8-16 Go | 1-5 h |
-| **SPH** | 8-16 cœurs | Recommandée | 32-64 Go | 5-20 h |
+| Modèle | Processeur | Carte graphique | Mémoire vive | Temps (ordre de grandeur) |
+|--------|------------|-----------------|--------------|---------------------------|
+| **FEM** | 8-32 cœurs | Peu exploitée | 16-64 Go | Quelques heures à dizaines d'heures |
+| **VOF** | 8-16 cœurs | Accélération utile | 8-32 Go | Quelques heures |
+| **LBM** | 4-8 cœurs | Fortement recommandée | 8-16 Go | 1-5 heures |
+| **SPH** | 8-16 cœurs | Recommandée | 16-64 Go | Quelques heures |
 
-### 5.2 Configurations types
+### 5.2 Configurations indicatives
 
-| Gamme | Configuration | Budget indicatif | Utilisation |
-|-------|---------------|------------------|-------------|
-| **Entrée** | PC bureau, GPU 8 Go VRAM (ex: GTX 1660) | 1 000–2 000 € | LBM/SPH simples, VOF maillage grossier |
-| **Intermédiaire** | Workstation, GPU 12-16 Go VRAM (ex: RTX 3080) | 3 000–6 000 € | VOF, LBM, SPH standard |
-| **Haute performance** | Serveur multi-cœurs ou GPU 24+ Go (ex: RTX 4090, A100) | 10 000–30 000 € | FEM 3D, études paramétriques |
+| Gamme | Configuration type | Budget indicatif | Utilisation |
+|-------|-------------------|------------------|-------------|
+| **Station de travail** | 12-32 cœurs, 32-64 Go RAM, GPU 8-16 Go VRAM | 3 000–8 000 € | Toutes méthodes en 2D, études paramétriques |
+| **Serveur de calcul** | 64+ cœurs, 128+ Go RAM | 10 000–30 000 € | FEM/VOF 3D, grandes séries |
 | **Cloud** | AWS, Google Cloud, Azure | 1-10 €/h | Calculs ponctuels intensifs |
 
-### 5.3 Considérations pratiques
+### 5.3 Remarques pratiques
 
-- **LBM** exploite de manière optimale les architectures GPU : une carte graphique à 500 € peut égaler un serveur CPU à 5 000 €
-- **FEM** nécessite principalement des ressources CPU et mémoire : le recours au cloud ou à des clusters de calcul est souvent préférable
-- **VOF** et **SPH** offrent un bon compromis et fonctionnent efficacement sur des stations de travail modernes
+- **LBM** exploite efficacement les GPU : une carte graphique grand public peut offrir des performances comparables à un serveur multi-cœurs
+- **FEM** et **VOF** peuvent être exécutés sur des stations de travail pour des cas 2D ; le cloud est utile pour les études 3D ou les grandes séries paramétriques
+- **SPH** fonctionne bien sur station de travail avec GPU
 
 ---
 

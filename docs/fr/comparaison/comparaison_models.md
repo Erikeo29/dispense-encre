@@ -36,22 +36,22 @@ L'approche eulérienne observe le fluide depuis un référentiel fixe, tandis qu
 
 ### 2.2 Visualisation des 4 Approches
 
-Les figures ci-dessous illustrent les structures de discrétisation sur une géométrie de référence (puit : 800 µm × 130 µm) :
+Les figures ci-dessous illustrent les structures de discrétisation utilisées **dans cette étude** sur la géométrie de référence (puit : 800 µm × 130 µm) :
 
 #### FEM - Maillage Triangulaire Adaptatif
-- Éléments triangulaires de taille variable (1-10 µm)
+- Éléments triangulaires de taille variable (1-10 µm dans cette étude)
 - Raffinement local aux zones critiques (interface, parois)
 
 #### VOF - Maillage Hexaédrique
-- Cellules rectangulaires uniformes ou avec raffinement adaptatif (AMR)
+- Cellules rectangulaires (résolution ~5 µm dans cette étude)
 - Fraction volumique $\alpha$ dans chaque cellule
 
 #### LBM - Grille Uniforme
-- Grille cartésienne régulière (résolution : 5 µm/cellule)
+- Grille cartésienne régulière (5 µm/cellule dans cette étude)
 - Propriétés macroscopiques obtenues par moments statistiques
 
 #### SPH - Distribution Particulaire
-- Ensemble de particules (~1000) avec rayon d'influence h
+- Environ 1000 particules dans cette étude (valeur dépendante de la résolution souhaitée)
 - Interpolation via noyaux (cubic spline, Wendland)
 
 

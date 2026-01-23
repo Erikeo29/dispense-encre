@@ -8,8 +8,8 @@ Finite element method with weak formulation of Navier-Stokes equations. The ink/
 
 | Advantages | Limitations |
 |------------|-------------|
-| Interface precision: 0.05–0.5 µm | High computation time in 3D |
-| Adaptive mesh following $\phi$ gradient | Significant memory consumption |
+| Interface precision: 0.05–0.5 µm | Longer computation time than VOF/LBM |
+| Adaptive mesh following $\phi$ gradient | Significant memory consumption in 3D |
 | Native multiphysics coupling | Sensitivity to stabilization parameters |
 | Software: COMSOL (commercial), FEniCS (open-source) | |
 
@@ -34,7 +34,7 @@ Mesoscopic method solving the discretized Boltzmann equation on a regular grid (
 
 | Advantages | Limitations |
 |------------|-------------|
-| Exceptional GPU parallelization (factor ×20) | Artificial compressibility (constraint Ma < 0.1) |
+| Exceptional GPU parallelization (factor ×10-20) | Artificial compressibility (constraint Ma < 0.1) |
 | Local algorithm (each node independent) | Sub-micron precision difficult |
 | No complex mesh generation required | Delicate rheological calibration |
 | Software: Palabos (open-source), waLBerla | Less extensive documentation than VOF |
@@ -59,10 +59,10 @@ Meshless Lagrangian method. The fluid is discretized into particles whose proper
 | Criterion | FEM | VOF | LBM | SPH |
 |-----------|-----|-----|-----|-----|
 | **Interface precision** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Typical computation time** | 10–50 h | 2–10 h | 1–5 h | 5–20 h |
+| **Computation time (order of magnitude)** | 10–50 h | 2–10 h | 1–5 h | 2–20 h |
 | **Mass conservation** | Numerical adjustment | Rigorous | Approximate | By summation |
 | **Carreau rheology** | Native | Native | Implementable | Implementable |
-| **GPU acceleration** | Limited | Good | Excellent (×20) | Good |
+| **GPU acceleration** | Limited | Good | Excellent (×10-20) | Good (×10-15) |
 | **Learning curve** | Medium (GUI available) | Steep (C++, CLI) | Steep (specific physics) | Medium (Python) |
 | **Industrial maturity** | High | Very high | Medium | Developing |
 | **Software cost** | COMSOL ~€10k/year, FEniCS free | OpenFOAM free | Palabos free | PySPH free |
@@ -80,31 +80,30 @@ Meshless Lagrangian method. The fluid is discretized into particles whose proper
 
 ## 5. Hardware Requirements
 
-### 5.1 Resources by model
+### 5.1 Orders of magnitude
 
-For a reference simulation (1 ms dispensing, ~10⁶ cells/particles):
+Computation times strongly depend on resolution and simulated duration. For a typical 2D dispensing simulation (20-40 ms physical time):
 
-| Model | Processor | Graphics card | RAM | Estimated time |
-|-------|-----------|---------------|-----|----------------|
-| **FEM** | 64-128 cores | Underutilized | 64-128 GB | 10-50 h |
-| **VOF** | 16-32 cores | Acceleration possible | 16-32 GB | 2-10 h |
-| **LBM** | 4-8 cores | Essential (high-end) | 8-16 GB | 1-5 h |
-| **SPH** | 8-16 cores | Recommended | 32-64 GB | 5-20 h |
+| Model | Processor | Graphics card | RAM | Time (order of magnitude) |
+|-------|-----------|---------------|-----|---------------------------|
+| **FEM** | 8-32 cores | Underutilized | 16-64 GB | Several hours to tens of hours |
+| **VOF** | 8-16 cores | Useful acceleration | 8-32 GB | Several hours |
+| **LBM** | 4-8 cores | Strongly recommended | 8-16 GB | 1-5 hours |
+| **SPH** | 8-16 cores | Recommended | 16-64 GB | Several hours |
 
-### 5.2 Typical configurations
+### 5.2 Indicative configurations
 
-| Range | Configuration | Indicative budget | Usage |
-|-------|---------------|-------------------|-------|
-| **Entry** | Desktop PC, GPU 8 GB VRAM (e.g., GTX 1660) | €1,000–2,000 | Simple LBM/SPH, coarse VOF mesh |
-| **Intermediate** | Workstation, GPU 12-16 GB VRAM (e.g., RTX 3080) | €3,000–6,000 | Standard VOF, LBM, SPH |
-| **High performance** | Multi-core server or GPU 24+ GB (e.g., RTX 4090, A100) | €10,000–30,000 | 3D FEM, parametric studies |
+| Range | Typical configuration | Indicative budget | Usage |
+|-------|----------------------|-------------------|-------|
+| **Workstation** | 12-32 cores, 32-64 GB RAM, GPU 8-16 GB VRAM | €3,000–8,000 | All methods in 2D, parametric studies |
+| **Compute server** | 64+ cores, 128+ GB RAM | €10,000–30,000 | FEM/VOF 3D, large series |
 | **Cloud** | AWS, Google Cloud, Azure | €1-10/h | Intensive one-off calculations |
 
-### 5.3 Practical considerations
+### 5.3 Practical remarks
 
-- **LBM** optimally exploits GPU architectures: a €500 graphics card can match a €5,000 CPU server
-- **FEM** primarily requires CPU and memory resources: cloud computing or compute clusters are often preferable
-- **VOF** and **SPH** offer a good compromise and run efficiently on modern workstations
+- **LBM** efficiently exploits GPUs: a consumer graphics card can offer performance comparable to a multi-core server
+- **FEM** and **VOF** can be run on workstations for 2D cases; cloud is useful for 3D studies or large parametric series
+- **SPH** runs well on workstations with GPU
 
 ---
 

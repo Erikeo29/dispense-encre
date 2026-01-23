@@ -36,22 +36,22 @@ The Eulerian approach observes the fluid from a fixed reference frame, while the
 
 ### 2.2 Visualization of the 4 Approaches
 
-The figures below illustrate the discretization structures on a reference geometry (well: 800 µm × 130 µm):
+The figures below illustrate the discretization structures used **in this study** on the reference geometry (well: 800 µm × 130 µm):
 
 #### FEM - Adaptive Triangular Mesh
-- Triangular elements of variable size (1-10 µm)
+- Triangular elements of variable size (1-10 µm in this study)
 - Local refinement at critical zones (interface, walls)
 
 #### VOF - Hexahedral Mesh
-- Uniform rectangular cells or with adaptive mesh refinement (AMR)
+- Rectangular cells (resolution ~5 µm in this study)
 - Volume fraction $\alpha$ in each cell
 
 #### LBM - Uniform Grid
-- Regular Cartesian grid (resolution: 5 µm/cell)
+- Regular Cartesian grid (5 µm/cell in this study)
 - Macroscopic properties obtained via statistical moments
 
 #### SPH - Particle Distribution
-- Particle ensemble (~1000) with influence radius h
+- Approximately 1000 particles in this study (value depends on desired resolution)
 - Interpolation via kernels (cubic spline, Wendland)
 
 
