@@ -2,8 +2,8 @@
 1. Principe Général des 4 Modèles
 2. Approches de Discrétisation
 3. Analyse Critique par Modèle
-4. Tableau de Synthèse
-5. Besoins Hardware
+4. Besoins Hardware
+5. Tableau de Synthèse
 6. Références
 
 ---

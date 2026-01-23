@@ -54,12 +54,42 @@ Meshless Lagrangian method. The fluid is discretized into particles whose proper
 
 ---
 
-## 4. Summary Table
+## 4. Hardware Requirements
+
+### 4.1 Orders of magnitude
+
+Computation times depend on resolution and simulated duration. For a typical 2D dispensing simulation (20-40 ms physical time):
+
+| Model | Processor | Graphics card | RAM | Time |
+|-------|-----------|---------------|-----|------|
+| **FEM** | 8-16 cores | Underutilized | 16-32 GB | 5-30 h |
+| **VOF** | 8-16 cores | Useful acceleration | 8-16 GB | 2-10 h |
+| **LBM** | 4-8 cores | Strongly recommended | 8-16 GB | 1-5 h |
+| **SPH** | 8-16 cores | Recommended | 16-32 GB | 2-10 h |
+
+### 4.2 Indicative configurations
+
+| Range | Typical configuration | Indicative budget | Usage |
+|-------|----------------------|-------------------|-------|
+| **Standard PC** | 8-12 cores, 16-32 GB RAM | €800–1,500 | Simple VOF/LBM, 2D SPH |
+| **Upgraded PC** | 12-16 cores, 32-64 GB RAM, GPU 8 GB | €1,500–3,000 | 2D FEM, parametric studies |
+| **Server** | 32+ cores, 128+ GB RAM | €5,000–15,000 | 3D FEM/VOF, large series |
+| **Cloud** | AWS, Google Cloud, Azure | €1-5/h | Intensive one-off calculations |
+
+### 4.3 Practical remarks
+
+- **LBM** efficiently exploits GPUs: a consumer graphics card significantly accelerates computations
+- **FEM** and **VOF** run on standard PCs for 2D cases
+- Cloud is useful for 3D studies or large parametric series
+
+---
+
+## 5. Summary Table
 
 | Criterion | FEM | VOF | LBM | SPH |
 |-----------|-----|-----|-----|-----|
 | **Interface precision** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Computation time (order of magnitude)** | 10–50 h | 2–10 h | 1–5 h | 2–20 h |
+| **2D computation time** | 5–30 h | 2–10 h | 1–5 h | 2–10 h |
 | **Mass conservation** | Numerical adjustment | Rigorous | Approximate | By summation |
 | **Carreau rheology** | Native | Native | Implementable | Implementable |
 | **GPU acceleration** | Limited | Good | Excellent (×10-20) | Good (×10-15) |
@@ -75,35 +105,6 @@ Meshless Lagrangian method. The fluid is discretized into particles whose proper
 | Multiphysics coupling | FEM (COMSOL, FEniCS) | Native coupling architecture |
 | Intensive parametric studies | LBM (Palabos) | Optimal GPU performance |
 | Fundamental research | SPH (PySPH) | Flexibility for new physics |
-
----
-
-## 5. Hardware Requirements
-
-### 5.1 Orders of magnitude
-
-Computation times strongly depend on resolution and simulated duration. For a typical 2D dispensing simulation (20-40 ms physical time):
-
-| Model | Processor | Graphics card | RAM | Time (order of magnitude) |
-|-------|-----------|---------------|-----|---------------------------|
-| **FEM** | 8-32 cores | Underutilized | 16-64 GB | Several hours to tens of hours |
-| **VOF** | 8-16 cores | Useful acceleration | 8-32 GB | Several hours |
-| **LBM** | 4-8 cores | Strongly recommended | 8-16 GB | 1-5 hours |
-| **SPH** | 8-16 cores | Recommended | 16-64 GB | Several hours |
-
-### 5.2 Indicative configurations
-
-| Range | Typical configuration | Indicative budget | Usage |
-|-------|----------------------|-------------------|-------|
-| **Workstation** | 12-32 cores, 32-64 GB RAM, GPU 8-16 GB VRAM | €3,000–8,000 | All methods in 2D, parametric studies |
-| **Compute server** | 64+ cores, 128+ GB RAM | €10,000–30,000 | FEM/VOF 3D, large series |
-| **Cloud** | AWS, Google Cloud, Azure | €1-10/h | Intensive one-off calculations |
-
-### 5.3 Practical remarks
-
-- **LBM** efficiently exploits GPUs: a consumer graphics card can offer performance comparable to a multi-core server
-- **FEM** and **VOF** can be run on workstations for 2D cases; cloud is useful for 3D studies or large parametric series
-- **SPH** runs well on workstations with GPU
 
 ---
 

@@ -2,8 +2,8 @@
 1. Overview of the 4 Models
 2. Discretization Approaches
 3. Critical Analysis by Model
-4. Summary Table
-5. Hardware Requirements
+4. Hardware Requirements
+5. Summary Table
 6. References
 
 ---
