@@ -1,305 +1,128 @@
 **Contents:**
-1. Lagrangian Meshless Principle
-2. Smoothing Kernels
-3. Equations of Motion
-4. Artificial Viscosity
-5. Surface Tension
-6. Boundary Conditions
-7. Non-Newtonian Fluids
-8. Validation Results
-9. Unique Advantages
-10. Limitations and Solutions
-11. Computational Cost
-12. Open-Source Libraries
-13. References
+1. Method Principle
+2. Fundamental Equations
+3. Mathematical Formulation
+4. Advantages and Limitations
+5. Computational Cost
+6. Open-Source Libraries
+7. References
 
 ---
 
-## 1. Lagrangian Meshless Principle
+## 1. Method Principle
 
-The **SPH (Smoothed Particle Hydrodynamics)** method is a **Lagrangian** and **meshless** approach where the fluid is represented by a set of mobile particles carrying physical properties (mass, velocity, pressure).
+The **SPH (Smoothed Particle Hydrodynamics)** method is a **Lagrangian** and **meshless** approach where the fluid is represented by a set of mobile particles carrying physical properties.
 
-### 1.1 Fundamental Concept
+### Main Variable: Particles
 
-Unlike grid-based methods (VOF, FEM), there are no fixed connections between discretization points. The value of a scalar property $A$ at position $\mathbf{r}$ is calculated by **interpolation** over neighboring particles:
+Unlike grid-based methods (VOF, FEM, LBM), there are no fixed connections between points. The value of a property A at position **r** is calculated by **interpolation**:
 
 $$A(\mathbf{r}) = \sum_b m_b \frac{A_b}{\rho_b} W(|\mathbf{r} - \mathbf{r}_b|, h)$$
 
-where:
-- $m_b$: mass of particle $b$
-- $\rho_b$: density of particle $b$
-- $W$: **smoothing kernel**
-- $h$: **smoothing length**
+where W is the **smoothing kernel** and h the **smoothing length**.
+
+**Key Advantage:** Natural handling of complex free surfaces (breakup, splashing) without mesh deformation.
 
 ---
 
-## 2. Smoothing Kernels
+## 2. Fundamental Equations
 
-### 2.1 Kernel Function
-
-The kernel $W(r, h)$ must satisfy several properties:
-- **Normalization**: $\int W(r, h) dV = 1$
-- **Delta limit**: $\lim_{h \to 0} W(r, h) = \delta(r)$
-- **Compact support**: $W(r, h) = 0$ for $r > \kappa h$ (typically $\kappa = 2$)
-
-### 2.2 Common Kernels
-
-**Cubic Spline (M₄):**
-
-| Domain | Expression |
-|--------|------------|
-| $0 \leq q < 1$ | $W(q) = \frac{\sigma_d}{h^d} \left(1 - \frac{3}{2}q^2 + \frac{3}{4}q^3\right)$ |
-| $1 \leq q < 2$ | $W(q) = \frac{\sigma_d}{h^d} \cdot \frac{1}{4}(2-q)^3$ |
-| $q \geq 2$ | $W(q) = 0$ |
-
-with $q = r/h$ and $\sigma_d$ the dimensional normalization factor.
-
-**Quintic Spline (M₆):**
-
-More accurate but more expensive, reduces tensile instabilities.
-
-**Wendland C4:**
-
-$$W(q) = \frac{\sigma_d}{h^d} (1-q/2)^6 (35q^2/12 + 3q + 1) \quad \text{for } q < 2$$
-
-Very stable for high-velocity flows.
-
----
-
-## 3. Equations of Motion
-
-### 3.1 Momentum Equation
-
-The equation of motion for particle $a$ is:
+### 2.1 Momentum Equation
 
 $$m_a \frac{d\mathbf{v}_a}{dt} = -\sum_b m_b \left(\frac{p_a}{\rho_a^2} + \frac{p_b}{\rho_b^2} + \Pi_{ab}\right) \nabla_a W_{ab} + \mathbf{f}_\sigma$$
 
 where:
-- $p_a, p_b$: pressures of particles $a$ and $b$
-- $\Pi_{ab}$: **artificial viscosity** term
-- $\mathbf{f}_\sigma$: surface tension force
+- p_a, p_b = particle pressures
+- Π_ab = artificial viscosity term
+- **f**_σ = surface tension force
 
-### 3.2 Equation of State
-
-Pressure is calculated by a weakly compressible equation of state:
+### 2.2 Equation of State (Weakly Compressible)
 
 $$p = c_0^2 (\rho - \rho_0) \quad \text{or} \quad p = B\left[\left(\frac{\rho}{\rho_0}\right)^\gamma - 1\right]$$
 
-with $c_0$ the numerical speed of sound (typically $c_0 = 10 \cdot v_{max}$) and $\gamma = 7$ for liquids.
+with c_0 = 10·v_max (numerical speed of sound) and γ = 7 for liquids.
 
----
-
-## 4. Artificial Viscosity
-
-### 4.1 Necessity
-
-Standard SPH suffers from numerical instabilities, including **pressure oscillations** and **tensile instabilities**. Artificial viscosity stabilizes the scheme.
-
-### 4.2 Monaghan Formulation
-
-| Condition | Expression for $\Pi_{ab}$ |
-|-----------|---------------------------|
-| $\mathbf{v}_{ab} \cdot \mathbf{r}_{ab} < 0$ | $\Pi_{ab} = \frac{-\alpha \bar{c}_{ab} \mu_{ab} + \beta \mu_{ab}^2}{\bar{\rho}_{ab}}$ |
-| otherwise | $\Pi_{ab} = 0$ |
-
-with:
-
-$$\mu_{ab} = \frac{h \mathbf{v}_{ab} \cdot \mathbf{r}_{ab}}{|\mathbf{r}_{ab}|^2 + \epsilon h^2}$$
-
-**Typical Parameters:** $\alpha = 0.1$, $\beta = 0$, $\epsilon = 0.01$
-
----
-
-## 5. Surface Tension
-
-### 5.1 Morris Model (CSF)
-
-The **Continuum Surface Force (CSF)** method adapted for SPH adds a body force based on interface curvature:
+### 2.3 Surface Tension (Adapted CSF)
 
 $$\mathbf{F}_{st} = -\sigma \kappa \mathbf{n}$$
 
-where:
-- $\mathbf{n} = \nabla c$: normal calculated from the **color field** gradient $c$ (1 in ink, 0 elsewhere)
-- $\kappa = -\nabla \cdot \mathbf{n}$: interface curvature
-
-### 5.2 Curvature Calculation in SPH
-
-$$\kappa_a = -\frac{1}{|\mathbf{n}_a|} \sum_b \frac{m_b}{\rho_b} (\mathbf{n}_b - \mathbf{n}_a) \cdot \nabla_a W_{ab}$$
-
-**Limitation:** The CSF method introduces numerical noise, especially at thin interfaces.
-
-### 5.3 Pairwise Force Model
-
-A more stable alternative based on interparticle forces:
-
-$$\mathbf{F}_{st,a} = -\sigma \sum_b s_{ab} \frac{\mathbf{r}_{ab}}{|\mathbf{r}_{ab}|} W_{ab}$$
-
-with $s_{ab}$ a tension coefficient depending on particle types.
+where **n** = ∇c is the normal calculated from the color field gradient c.
 
 ---
 
-## 6. Boundary Conditions
+## 3. Mathematical Formulation
 
-### 6.1 Problem
+### 3.1 Cubic Spline Smoothing Kernel
 
-Managing watertight solid walls is **difficult** in SPH because particles have no fixed connections. Several approaches exist:
+| Domain | Expression |
+|--------|------------|
+| 0 ≤ q < 1 | W(q) = σ_d/h^d · (1 - 3q²/2 + 3q³/4) |
+| 1 ≤ q < 2 | W(q) = σ_d/h^d · (2-q)³/4 |
+| q ≥ 2 | W(q) = 0 |
 
-### 6.2 Ghost Particles (Adami et al., 2012)
+with q = r/h and σ_d the normalization factor.
 
-Walls consist of several layers of **fixed ghost (dummy) particles**:
+### 3.2 Artificial Viscosity (Monaghan)
 
-1. These particles exert a **repulsive pressure** calculated dynamically
-2. They impose the **no-slip** condition
-3. Properties (pressure, velocity) are extrapolated from the fluid
+| Condition | Π_ab |
+|-----------|------|
+| **v**_ab · **r**_ab < 0 | Π_ab = (-α c̄_ab μ_ab + β μ_ab²) / ρ̄_ab |
+| otherwise | Π_ab = 0 |
 
-**Pressure Extrapolation:**
+**Typical parameters:** α = 0.1, β = 0
 
-$$p_{wall} = \frac{\sum_f p_f W_{wf} + (\mathbf{g} - \mathbf{a}_{wall}) \cdot \sum_f \rho_f \mathbf{r}_{wf} W_{wf}}{\sum_f W_{wf}}$$
+### 3.3 Boundary Conditions (Ghost Particles)
 
-### 6.3 Repulsive Particles (Lennard-Jones)
+Walls are made of layers of fixed **ghost particles** that:
+- Exert a repulsive pressure
+- Impose the no-slip condition
+- Extrapolate properties from the fluid
 
-Lennard-Jones-type repulsive force to prevent penetration:
+### 3.4 Non-Newtonian Fluids
 
-$$\mathbf{F}_{rep} = D \left[\left(\frac{r_0}{r}\right)^{n_1} - \left(\frac{r_0}{r}\right)^{n_2}\right] \frac{\mathbf{r}}{r^2}$$
-
-with $n_1 = 12$, $n_2 = 4$ typically.
-
----
-
-## 7. Adaptation for Non-Newtonian Fluids
-
-### 7.1 Shear-Thinning Fluids
-
-The stress tensor is calculated with a shear rate-dependent viscosity:
+The stress tensor depends on the shear rate:
 
 $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 
-where $\dot{\gamma}_a$ is the shear rate of particle $a$, calculated by:
-
-$$\dot{\gamma}_a = \sqrt{2\mathbf{D}_a : \mathbf{D}_a}$$
-
-### 7.2 Thixotropic Fluids (Moore Model)
-
-**Unique SPH Advantage:** Thanks to its Lagrangian approach, SPH can naturally handle **thixotropy** (time-dependent viscosity).
-
-The structure parameter $\lambda$ evolves according to:
-
-$$\lambda(t) = \lambda_0 + (1 - \lambda_0) e^{-t/\tau_{thix}}$$
-
-where $\tau_{thix}$ is the restructuring time.
-
-The viscosity becomes:
-
-$$\eta(\dot{\gamma}, \lambda) = \eta_\infty + (\eta_0 - \eta_\infty) \lambda^m \cdot f(\dot{\gamma})$$
-
-**Pourquie et al. Study (2024):** First systematic SPH study for thixotropic inks, showing a 25% increase in pinch-off time for $\tau_{thix} = 1$ ms.
-
-### 7.3 Viscoelastic Fluids (Time Integral)
-
-The stress tensor is calculated via a memory integral:
-
-$$\boldsymbol{\tau}_a = \int_0^t G(t - t') \dot{\gamma}_a(t') dt'$$
-
-where $G(t)$ is the relaxation modulus.
+**SPH Advantage:** Natural handling of **thixotropy** (time-dependent viscosity) thanks to the Lagrangian approach.
 
 ---
 
-## 8. Validation Results
+## 4. Advantages and Limitations
 
-### 8.1 Pourquie et al. Study (2024) - Thixotropic Ink
-
-**Configuration:**
-- Solver: PySPH (Python/GPU)
-- Kernel: Cubic spline, $h = 1.2\Delta x$
-- Rheology: Power law ($n = 0.6$, $K = 0.08$ Pa·sⁿ) + thixotropy
-
-**Conditions:**
-- $D = 25$ µm
-- $v_{max} = 15$ m/s
-- $We = 4.2$
-
-**Results:**
-- Droplet shape error: < 3% vs experimental
-- Computation time: 4 h on RTX 4090
-
-### 8.2 Markesteijn et al. Study (2023) - Multi-Droplet and Coalescence
-
-**Configuration:**
-- Solver: DualSPHysics
-- Number of particles: 10⁶
-- Ejection frequency: 10–50 kHz
-
-**Results:**
-
-| Frequency (kHz) | In-flight Coalescence | Satellites (%) | Jet Stability |
-|-----------------|----------------------|----------------|---------------|
-| 10 | No | 8 | Good |
-| 30 | Partial | 15 | Medium |
-| 50 | Yes | 30 | Poor |
-
-**Mechanism:** At high frequency, droplets don't have time to fully detach before the next ejection. Coalescence reduces spatial resolution.
+| Advantages | Limitations |
+|------------|-------------|
+| Complex free surfaces (breakup, splashing) | Numerical noise (pressure oscillations) |
+| Exact advection (no numerical diffusion) | Difficult boundary conditions |
+| Natural coalescence | High memory cost (10⁶ particles) |
+| Native thixotropy (Lagrangian) | Instabilities at high velocity (> 20 m/s) |
+| GPU scalability (x10-x15) | Delicate calibration (h, α) |
 
 ---
 
-## 9. Unique Advantages for Dispensing
+## 5. Computational Cost
 
-### 9.1 Free Surface
+| Configuration | Particles | Time | Hardware |
+|---------------|-----------|------|----------|
+| 2D standard | 100k | 2–4 h | 8 CPU cores |
+| 3D standard | 1M | 5–10 h | RTX 4090 (24 GB) |
+| 3D high resolution | 5M | 4–8 h | 4× A100 (40 GB) |
 
-SPH is **unbeatable** for handling complex free surfaces:
-- Jet breakup
-- Satellite formation
-- Violent splashing
-
-**Reason:** No mesh to deform or refine.
-
-### 9.2 Exact Advection
-
-The nonlinear convective term $(\mathbf{u} \cdot \nabla)\mathbf{u}$ is treated **exactly** by particle motion, eliminating numerical diffusion of Eulerian methods.
-
-### 9.3 Natural Coalescence
-
-Droplet merging is handled **naturally**: particles from two nearby droplets simply interact via SPH kernels.
+**GPU Acceleration:** x10–x15 vs CPU for simulations > 500k particles.
 
 ---
 
-## 10. Limitations and Solutions
-
-| Limitation | Description | Solution |
-|------------|-------------|----------|
-| **Numerical noise** | Oscillations in pressure/velocity fields | Higher-order kernels (quintic spline) |
-| **Tensile instability** | Instability for $v > 20$ m/s | Artificial viscosity + correction terms |
-| **Boundary conditions** | Walls difficult to handle | Ghost particles (Adami) |
-| **Memory cost** | 10⁶ particles = 32–64 GB RAM | GPU with high memory (A100, RTX 4090) |
-
----
-
-## 11. Computational Cost
-
-### 11.1 Typical Configuration
-
-For a 3D simulation (1 ms ejection, 10⁶ particles):
-
-| Configuration | Particles | Time (h) | Hardware |
-|---------------|-----------|----------|----------|
-| Standard | 100k | 2–4 | 8 CPU cores |
-| High resolution | 1M | 5–10 | RTX 4090 (24 GB) |
-| Multi-GPU | 5M | 4–8 | 4× A100 (40 GB) |
-
-**GPU Scaling:** x10–x15 speedup vs CPU for simulations > 500k particles.
-
----
-
-## 12. Open-Source Libraries
+## 6. Open-Source Libraries
 
 | Library | Language | GPU | Focus |
 |---------|----------|-----|-------|
-| **PySPH** | Python/Cython | CUDA (OpenCL) | Flexibility, rapid prototyping |
+| **PySPH** | Python/Cython | CUDA, OpenCL | Flexibility, prototyping |
 | **DualSPHysics** | C++/CUDA | Native CUDA | Performance, coastal applications |
 | **GPUSPH** | C++/CUDA | CUDA | Geophysical flows |
 | **SPHinXsys** | C++ | OpenMP | Multiphysics coupling |
 
 ---
 
-## 13. References
+## 7. References
 
 > **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.

@@ -1,282 +1,130 @@
 **Sommaire :**
-1. Principe Mésoscopique
-2. Équation de Boltzmann Discrète
-3. Grilles de Discrétisation
-4. Lien avec la Viscosité
-5. Modèles Multiphasiques
-6. Gestion du Mouillage
-7. Scalabilité GPU
-8. Bibliothèques Open-Source
-9. Résultats de Validation
-10. Limitations et Solutions
-11. Coût Computationnel
-12. Références
+1. Principe de la Méthode
+2. Équations Fondamentales
+3. Formulation Mathématique
+4. Avantages et Limitations
+5. Coût Computationnel
+6. Bibliothèques Open-Source
+7. Références
 
 ---
 
-## 1. Principe Mésoscopique
+## 1. Principe de la Méthode
 
-La méthode **LBM (Lattice Boltzmann Method)** est une approche mésoscopique qui ne résout pas directement les équations de Navier-Stokes, mais l'**équation de Boltzmann discrétisée** sur un réseau régulier (lattice).
+La méthode **LBM (Lattice Boltzmann Method)** est une approche **mésoscopique** qui ne résout pas directement les équations de Navier-Stokes, mais l'**équation de Boltzmann discrétisée** sur un réseau régulier (lattice).
 
-### 1.1 Concept Fondamental
+### Variable principale : Fonctions de distribution f_i
 
-On suit l'évolution de **fonctions de distribution** $f_i(\mathbf{x}, t)$ représentant la probabilité de trouver des particules à la position $\mathbf{x}$ au temps $t$, se déplaçant selon des directions discrètes $\mathbf{c}_i$.
+On suit l'évolution de fonctions de distribution f_i(**x**, t) représentant la probabilité de trouver des particules à la position **x** se déplaçant selon des directions discrètes **c**_i.
 
-Les grandeurs macroscopiques (densité $\rho$, vitesse $\mathbf{u}$) sont obtenues par **moments statistiques** :
+Les grandeurs macroscopiques sont obtenues par **moments statistiques** :
 
 $$\rho = \sum_i f_i \quad \text{et} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c}_i$$
 
+**Avantage clé :** Parallélisation massive sur GPU (chaque nœud est indépendant).
+
 ---
 
-## 2. Équation de Boltzmann Discrète
+## 2. Équations Fondamentales
 
-### 2.1 Formulation BGK
+### 2.1 Équation de Boltzmann discrète (BGK)
 
-L'équation fondamentale est :
-
-$$f_i(\mathbf{x} + \mathbf{c}_i \Delta t, t + \Delta t) - f_i(\mathbf{x}, t) = \Omega_i(f) + F_i$$
+$$f_i(\mathbf{x} + \mathbf{c}_i \Delta t, t + \Delta t) - f_i(\mathbf{x}, t) = -\frac{1}{\tau}(f_i - f_i^{eq}) + F_i$$
 
 où :
-- $\Omega_i(f)$ : opérateur de collision (relaxation vers l'équilibre)
-- $F_i$ : terme de force externe
+- τ = temps de relaxation
+- f_i^eq = distribution d'équilibre de Maxwell-Boltzmann
+- F_i = terme de force externe
 
-### 2.2 Opérateur de Collision BGK
-
-L'approximation BGK (Bhatnagar-Gross-Krook) simplifie la collision en une relaxation linéaire vers l'équilibre :
-
-$$\Omega_i = -\frac{1}{\tau}(f_i - f_i^{eq})$$
-
-où $\tau$ est le **temps de relaxation** et $f_i^{eq}$ la distribution d'équilibre de Maxwell-Boltzmann discrétisée :
+### 2.2 Distribution d'équilibre
 
 $$f_i^{eq} = w_i \rho \left[1 + \frac{\mathbf{c}_i \cdot \mathbf{u}}{c_s^2} + \frac{(\mathbf{c}_i \cdot \mathbf{u})^2}{2c_s^4} - \frac{\mathbf{u}^2}{2c_s^2}\right]$$
 
-avec $c_s = 1/\sqrt{3}$ la vitesse du son sur le réseau et $w_i$ les poids de quadrature.
+avec c_s = 1/√3 la vitesse du son sur le réseau et w_i les poids de quadrature.
 
----
-
-## 3. Grilles de Discrétisation
-
-### 3.1 Nomenclature DdQq
-
-La notation **DdQq** indique :
-- **d** : nombre de dimensions spatiales
-- **q** : nombre de vitesses discrètes
-
-### 3.2 Grilles Courantes
-
-| Grille | Application | Vitesses |
-|--------|-------------|----------|
-| **D2Q9** | 2D standard | 9 directions (repos + 4 axes + 4 diagonales) |
-| **D3Q15** | 3D économique | 15 directions |
-| **D3Q19** | 3D standard | 19 directions (bon compromis précision/coût) |
-| **D3Q27** | 3D haute précision | 27 directions (cube complet) |
-
-**Choix typique pour l'inkjet :** D3Q19 avec $\Delta x = 0.3$ µm
-
----
-
-## 4. Lien avec la Viscosité
-
-### 4.1 Relation Fondamentale
-
-La viscosité cinématique $\nu$ est reliée au temps de relaxation $\tau$ par :
+### 2.3 Lien viscosité - temps de relaxation
 
 $$\nu = c_s^2 \left(\tau - \frac{1}{2}\right) \Delta t$$
 
-Cette relation est **fondamentale** : elle permet de modéliser des fluides de viscosités différentes en ajustant simplement $\tau$.
-
-### 4.2 Adaptation aux Fluides Non-Newtoniens
-
-Pour les fluides rhéofluidifiants, $\tau$ dépend localement du taux de cisaillement $\dot{\gamma}$ :
-
-$$\tau(\dot{\gamma}) = \frac{1}{2} + \frac{\nu(\dot{\gamma})}{c_s^2 \Delta t}$$
-
-où $\nu(\dot{\gamma})$ est donné par une loi rhéologique (ex. loi de puissance, Carreau).
+Cette relation permet de modéliser des fluides de viscosités différentes en ajustant τ.
 
 ---
 
-## 5. Modèles Multiphasiques
+## 3. Formulation Mathématique
 
-### 5.1 Shan-Chen (Pseudopotentiel)
+### 3.1 Grilles de discrétisation (DdQq)
 
-Le modèle **Shan-Chen** modélise les interactions entre fluides via une **force interparticulaire** :
+| Grille | Dimensions | Vitesses | Application |
+|--------|------------|----------|-------------|
+| **D2Q9** | 2D | 9 | Standard 2D |
+| **D3Q19** | 3D | 19 | Standard 3D (bon compromis) |
+| **D3Q27** | 3D | 27 | Haute précision |
+
+**Choix typique :** D3Q19 avec Δx = 0.3–5 µm
+
+### 3.2 Modèle multiphasique Shan-Chen
+
+La force interparticulaire modélise les interactions entre fluides :
 
 $$\mathbf{F}_{int}(\mathbf{x}) = -G\psi(\mathbf{x}) \sum_i w_i \psi(\mathbf{x} + \mathbf{c}_i \Delta t) \mathbf{c}_i$$
 
-où :
-- $G$ : paramètre d'interaction (contrôle la tension superficielle)
-- $\psi(\mathbf{x})$ : fonction de pseudopotentiel dépendant de la densité locale
+où G contrôle la tension superficielle et ψ est le pseudopotentiel.
 
-**Séparation de phase :** Cette force provoque une séparation spontanée des phases (comme eau/huile) sans suivi explicite de l'interface.
+**Tension superficielle :** σ ∝ G(ψ_max - ψ_min)²
 
-**Tension superficielle :** $\sigma \propto G(\psi_{max} - \psi_{min})^2$
+### 3.3 Fluides non-Newtoniens
 
-### 5.2 Free Energy Model
+Pour les fluides rhéofluidifiants, τ dépend localement du taux de cisaillement :
 
-Le modèle **Free Energy** est basé sur une fonctionnelle d'énergie libre :
+$$\tau(\dot{\gamma}) = \frac{1}{2} + \frac{\nu(\dot{\gamma})}{c_s^2 \Delta t}$$
 
-$$\mathcal{F} = \int_V \left[\psi(\rho) + \frac{\kappa}{2}|\nabla\rho|^2\right] dV$$
+### 3.4 Gestion du mouillage
 
-La force d'interface est dérivée du gradient d'énergie :
-
-$$\mathbf{F} = -\nabla \cdot \boldsymbol{\sigma}^{chem}$$
-
-**Avantages vs Shan-Chen :**
-- Meilleure stabilité pour les grands ratios de densité
-- Contrôle plus précis de la tension superficielle
-- Moins de courants parasites
-
-### 5.3 Color Gradient Model
-
-Utilise deux populations de fluides (rouge/bleu) avec une force de ségrégation :
-
-$$\mathbf{F}_{seg} = A|\nabla \rho^N| \mathbf{n}$$
-
-où $\rho^N = (\rho^R - \rho^B)/(\rho^R + \rho^B)$ est la fraction de couleur normalisée.
-
----
-
-## 6. Gestion du Mouillage
-
-### 6.1 Angles de Contact
-
-Les angles de contact sur les parois solides sont gérés en assignant une **densité fictive** (ou un potentiel) aux nœuds solides :
+Les angles de contact sont gérés par une **densité fictive** aux nœuds solides :
 
 $$\rho_{solid} = \rho_0 + \Delta \rho \cdot \cos(\theta_{eq})$$
 
-où $\theta_{eq}$ est l'angle de contact d'équilibre souhaité.
-
-**Avantage majeur :** Le mouillage est géré **naturellement** sans conditions aux limites explicites complexes, ce qui est idéal pour les géométries complexes (micro-puits, rugosité).
+Le mouillage est géré naturellement sans conditions aux limites explicites.
 
 ---
 
-## 7. Scalabilité GPU
+## 4. Avantages et Limitations
 
-### 7.1 Performance Exceptionnelle
-
-La LBM est **intrinsèquement parallèle** : chaque nœud peut être mis à jour indépendamment lors des étapes de collision et de streaming.
-
-**Accélération typique :** x20 sur GPU vs CPU (mesuré sur NVIDIA A100)
-
-### 7.2 Benchmark Li et al. (2022)
-
-| Configuration | Temps de calcul |
-|---------------|-----------------|
-| CPU (20 h) | Référence |
-| GPU A100 (1 GPU) | 2 h |
-| GPU A100 (4 GPUs) | 35 min |
-| GPU A100 (16 GPUs) | 10 min |
-
-**Scalabilité quasi-linéaire** jusqu'à 16 GPUs.
+| Avantages | Limitations |
+|-----------|-------------|
+| Scalabilité GPU exceptionnelle (x20) | Compressibilité artificielle (Ma < 0.1) |
+| Parallélisation intrinsèque | Courants parasites aux interfaces |
+| Mouillage naturel (géométries complexes) | Calibration rhéologique délicate |
+| Coalescence/rupture automatiques | Mémoire GPU limitante en 3D |
+| Précision interfaciale ~1 µm | Rapport de densité limité (~1000) |
 
 ---
 
-## 8. Bibliothèques Open-Source
+## 5. Coût Computationnel
 
-### 8.1 Palabos
+| Configuration | Grille | Temps | Hardware |
+|---------------|--------|-------|----------|
+| 2D standard (D2Q9) | 1000² | 1–2 h | 4 cœurs CPU |
+| 3D standard (D3Q19) | 300³ | 1–2 h | 1× A100 GPU |
+| 3D haute résolution | 500³ | 0.5–1 h | 4× A100 GPU |
 
-**Palabos** (Parallel Lattice Boltzmann Solver) est la référence open-source :
+**Scalabilité GPU :** Quasi-linéaire jusqu'à 16 GPUs.
 
-- **Langage :** C++ orienté objet
-- **Parallélisation :** MPI natif, excellent scaling sur clusters
-- **Modèles :** Shan-Chen, Free Energy, Color Gradient
-- **Documentation :** Excellente avec tutoriels
-
-### 8.2 Alternatives
-
-| Bibliothèque | Focus | GPU |
-|--------------|-------|-----|
-| **OpenLB** | Ingénierie, applications industrielles | OpenMP/CUDA |
-| **waLBerla** | HPC extrême, millions de cœurs | CUDA native |
-| **Sailfish** | GPU natif, Python interface | CUDA prioritaire |
-| **Musubi** | Couplage multiphysique | MPI |
+**Mémoire GPU :** ~16 GB pour 300³ nœuds en D3Q19.
 
 ---
 
-## 9. Résultats de Validation
+## 6. Bibliothèques Open-Source
 
-### 9.1 Étude Li et al. (2022) - Encre Rhéofluidifiante
-
-**Configuration :**
-- Solveur : Palabos (C++/CUDA)
-- Grille : D3Q19, $\Delta x = 0.3$ µm
-- Interface : Free Energy (Shan-Chen)
-- Rhéologie : MRT avec $\tau(\dot{\gamma})$, $n = 0.72$
-
-**Conditions :**
-- $Re = 40$, $We = 3.5$
-- $T = 298$ K
-- Hardware : NVIDIA A100 GPU
-
-**Résultats :**
-- Vitesse maximale de la goutte : 15.2 m/s (expérimental : 15.0 m/s)
-- Diamètre de la goutte : 28 µm (erreur < 2 %)
-- Temps de calcul : 2 h (vs 20 h sur CPU)
-
-**Mécanisme :** La rhéofluidification réduit la viscosité dans le filament, accélérant le pincement. Le modèle Free Energy capture correctement la tension superficielle ($\sigma = 35$ mN/m).
-
-### 9.2 Hybridation VOF-LBM (Thiery et al., 2023)
-
-**Objectif :** Combiner la précision interfaciale de VOF avec la scalabilité de LBM.
-
-**Méthodologie :**
-- VOF (PLIC) pour le suivi d'interface
-- LBM (D2Q9) pour la résolution de Navier-Stokes
-- Couplage : transfert de $\alpha$ et $\mathbf{v}$ entre les deux méthodes
-
-**Résultats :**
-
-| Modèle | Précision (µm) | Temps (h) | Scalabilité GPU |
-|--------|----------------|-----------|-----------------|
-| VOF seul | 0.5 | 10 | Moyenne |
-| LBM seul | 1.2 | 2 | Excellente |
-| Hybride VOF-LBM | 0.3 | 3 | Bonne |
+| Bibliothèque | Langage | GPU | Focus |
+|--------------|---------|-----|-------|
+| **Palabos** | C++ | MPI | Référence open-source, tutoriels |
+| **OpenLB** | C++ | CUDA/OpenMP | Applications industrielles |
+| **waLBerla** | C++ | CUDA | HPC extrême, millions de cœurs |
+| **Sailfish** | Python/CUDA | CUDA natif | Interface Python |
 
 ---
 
-## 10. Limitations et Solutions
-
-### 10.1 Compressibilité Artificielle
-
-**Problème :** La LBM simule un fluide faiblement compressible. Pour maintenir l'approximation incompressible :
-
-$$Ma = \frac{u}{c_s} < 0.1$$
-
-**Solution :** Utiliser des schémas à faible Mach (LBM à deux vitesses de relaxation, entropic LBM).
-
-### 10.2 Courants Parasites
-
-**Problème :** Des courants de convection artificiels apparaissent aux interfaces (Shan-Chen).
-
-**Solutions :**
-- Modèle Free Energy (réduit les courants parasites de 90 %)
-- Isotropie améliorée des opérateurs de gradient
-- Schémas de discrétisation d'ordre supérieur
-
-### 10.3 Calibration Rhéologique
-
-**Problème :** La relation $\nu(\tau)$ est linéaire, ce qui limite la gamme de viscosités simulables.
-
-**Solution :** Matrices de relaxation multiple (MRT) avec des temps de relaxation séparés pour les moments impairs et pairs.
-
----
-
-## 11. Coût Computationnel
-
-### 11.1 Configuration Typique
-
-Pour une simulation 3D (1 ms d'éjection, D3Q19) :
-
-| Configuration | Grille | Temps (h) | Hardware |
-|---------------|--------|-----------|----------|
-| Standard | 100³ nœuds | 4–8 | 4 cœurs CPU |
-| Haute résolution | 300³ nœuds | 1–2 | A100 GPU |
-| Multi-GPU | 500³ nœuds | 0.5–1 | 4× A100 |
-
-**Mémoire GPU :** ~16 GB pour 300³ nœuds en D3Q19 (19 distributions × 8 bytes × 27M nœuds)
-
----
-
-## 12. Références
+## 7. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
