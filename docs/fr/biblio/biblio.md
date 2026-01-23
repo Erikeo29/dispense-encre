@@ -7,113 +7,87 @@
 6. Ouvrages Généraux
 7. Ressources en Ligne
 
-Cette page regroupe toutes les références bibliographiques utilisées dans ce projet de simulation de dispense d'encre rhéofluidifiante.
+Cette page regroupe les références bibliographiques utilisées dans ce projet. **Tous les liens pointent vers des ressources en accès libre.**
 
 ---
 
 ## 1. Méthode des Éléments Finis (FEM) / Phase-Field
 
-1. **Jacqmin, D.** (1999). *Calculation of two-phase Navier-Stokes flows using phase-field modeling*. Journal of Computational Physics, 155(1), 96-127. [DOI:10.1006/jcph.1999.6332](https://doi.org/10.1006/jcph.1999.6332)
-   - Article fondateur du modèle de champ de phase pour les écoulements diphasiques.
-
-2. **Yue, P., Feng, J. J., Liu, C., & Shen, J.** (2004). *A diffuse-interface method for simulating two-phase flows of complex fluids*. Journal of Fluid Mechanics, 515, 293-317. [DOI:10.1017/S0022112004000370](https://doi.org/10.1017/S0022112004000370)
+1. **Yue, P., Feng, J. J., Liu, C., & Shen, J.** (2004). *A diffuse-interface method for simulating two-phase flows of complex fluids*. Journal of Fluid Mechanics, 515, 293-317. [PDF gratuit (ResearchGate)](https://www.researchgate.net/publication/231965731_A_diffuse-interface_method_of_simulating_two-phase_flows_of_complex_fluids)
    - Extension du modèle de champ de phase aux fluides complexes.
 
-3. **Brooks, A. N., & Hughes, T. J. R.** (1982). *Streamline upwind/Petrov-Galerkin formulations for convection dominated flows*. Computer Methods in Applied Mechanics and Engineering, 32(1-3), 199-259. [DOI:10.1016/0045-7825(82)90071-8](https://doi.org/10.1016/0045-7825(82)90071-8)
-   - Formulation SUPG pour la stabilisation des éléments finis.
+2. **Tezduyar, T. E.** (1992). *Stabilized finite element formulations for incompressible flow computations*. Advances in Applied Mechanics, 28, 1-44. [PDF gratuit (TAFSM)](https://tafsm.org/PUB_PRE/jALL/j32-AAM-Stab92.pdf)
+   - Méthodes de stabilisation SUPG/PSPG pour les écoulements incompressibles.
 
-4. **Tezduyar, T. E.** (1991). *Stabilized finite element formulations for incompressible flow computations*. Advances in Applied Mechanics, 28, 1-44.
-   - Méthodes de stabilisation pour les écoulements incompressibles.
-
-5. **Logg, A., Mardal, K.-A., & Wells, G.** (Eds.). (2012). *Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book*. Springer. ISBN: 978-3-642-23098-1.
+3. **Logg, A., Mardal, K.-A., & Wells, G.** (Eds.). (2012). *Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book*. Springer. [PDF gratuit (FEniCS Project)](http://launchpad.net/fenics-book/trunk/final/+download/fenics-book-2011-10-27-final.pdf)
    - Documentation complète du framework FEniCS.
-
-6. **Basaran, O. A.** (2002). *Small-scale free surface flows with breakup: Drop formation and emerging applications*. AIChE Journal, 48(9), 1842-1848. [DOI:10.1002/aic.690480902](https://doi.org/10.1002/aic.690480902)
-   - Revue sur la formation de gouttes et les surfaces libres.
 
 ---
 
 ## 2. Volume of Fluid (VOF)
 
-7. **Hirt, C. W., & Nichols, B. D.** (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [DOI:10.1016/0021-9991(81)90145-5](https://doi.org/10.1016/0021-9991(81)90145-5)
+4. **Hirt, C. W., & Nichols, B. D.** (1981). *Volume of fluid (VOF) method for the dynamics of free boundaries*. Journal of Computational Physics, 39(1), 201-225. [PDF gratuit (SJTU)](https://dcwan.sjtu.edu.cn/PlugIns/ckfinder/userfiles/files/Hirt%20%E5%92%8C%20Nichols%20-%201981%20-%20Volume%20of%20fluid%20(VOF)%20method%20for%20the%20dynamics%20of%20f(1).pdf)
    - Article fondateur de la méthode VOF.
 
-8. **Brackbill, J. U., Kothe, D. B., & Zemach, C.** (1992). *A continuum method for modeling surface tension*. Journal of Computational Physics, 100(2), 335-354. [DOI:10.1016/0021-9991(92)90240-Y](https://doi.org/10.1016/0021-9991(92)90240-Y)
+5. **Brackbill, J. U., Kothe, D. B., & Zemach, C.** (1992). *A continuum method for modeling surface tension*. Journal of Computational Physics, 100(2), 335-354. [PDF gratuit (Sorbonne/LJLL)](https://www.ljll.fr/~frey/papers/Navier-Stokes/Brackbill%20J.U.,%20A%20continuum%20method%20for%20modeling%20surface%20tension.pdf)
    - Modèle CSF (Continuum Surface Force) pour la tension de surface.
 
-9. **Popinet, S.** (2009). *An accurate adaptive solver for surface-tension-driven interfacial flows*. Journal of Computational Physics, 228(16), 5838-5866. [DOI:10.1016/j.jcp.2009.04.042](https://doi.org/10.1016/j.jcp.2009.04.042)
-   - Solveur adaptatif de haute précision pour les écoulements interfaciaux.
+6. **Popinet, S.** (2009). *An accurate adaptive solver for surface-tension-driven interfacial flows*. Journal of Computational Physics, 228(16), 5838-5866. [PDF gratuit (HAL Science)](https://hal.science/hal-01445445)
+   - Solveur adaptatif de haute précision pour les écoulements interfaciaux (Basilisk/Gerris).
 
-10. **Jasak, H.** (1996). *Error Analysis and Estimation for the Finite Volume Method with Applications to Fluid Flows*. PhD Thesis, Imperial College London.
-    - Fondements théoriques de la méthode des volumes finis dans OpenFOAM.
+7. **Jasak, H.** (1996). *Error Analysis and Estimation for the Finite Volume Method with Applications to Fluid Flows*. PhD Thesis, Imperial College London. [PDF gratuit (Imperial College)](https://spiral.imperial.ac.uk/handle/10044/1/8335)
+   - Fondements théoriques de la méthode des volumes finis dans OpenFOAM.
 
 ---
 
 ## 3. Lattice Boltzmann Method (LBM)
 
-11. **Chen, S., & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [DOI:10.1146/annurev.fluid.30.1.329](https://doi.org/10.1146/annurev.fluid.30.1.329)
-    - Revue complète de la méthode LBM.
+8. **Chen, S., & Doolen, G. D.** (1998). *Lattice Boltzmann method for fluid flows*. Annual Review of Fluid Mechanics, 30(1), 329-364. [PDF gratuit (UC eScholarship)](https://escholarship.org/content/qt8vf0g3zk/qt8vf0g3zk_noSplash_d3843a251a7f7e13bb8782f13ecc40a0.pdf)
+   - Revue complète de la méthode LBM.
 
-12. **Shan, X., & Chen, H.** (1993). *Lattice Boltzmann model for simulating flows with multiple phases and components*. Physical Review E, 47(3), 1815. [DOI:10.1103/PhysRevE.47.1815](https://doi.org/10.1103/PhysRevE.47.1815)
-    - Modèle Shan-Chen pour les écoulements multiphasiques.
+9. **Shan, X., & Chen, H.** (1993). *Lattice Boltzmann model for simulating flows with multiple phases and components*. Physical Review E, 47(3), 1815. [ResearchGate](https://www.researchgate.net/publication/13329506_Lattice_Boltzmann_Model_for_Simulating_Flows_with_Multiple_Phases_and_Components)
+   - Modèle Shan-Chen pour les écoulements multiphasiques (article milestone PRE).
 
-13. **Krüger, T., Kusumaatmaja, H., Kuzmin, A., Shardt, O., Silva, G., & Viggen, E. M.** (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. ISBN: 978-3-319-44649-3. [DOI:10.1007/978-3-319-44649-3](https://doi.org/10.1007/978-3-319-44649-3)
+10. **Krüger, T., et al.** (2017). *The Lattice Boltzmann Method: Principles and Practice*. Springer. [PDF gratuit (Academia.edu)](https://www.academia.edu/40196538/Graduate_Texts_in_Physics_The_Lattice_Boltzmann_Method_Principles_and_Practice)
     - Ouvrage de référence complet sur la méthode LBM.
 
-14. **Huang, H., Sukop, M., & Lu, X.** (2015). *Multiphase Lattice Boltzmann Methods: Theory and Application*. Wiley-Blackwell. ISBN: 978-1-118-97133-8.
-    - Applications multiphasiques de la méthode LBM.
-
-15. **Fakhari, A., & Rahimian, M. H.** (2010). *Phase-field modeling by the method of lattice Boltzmann equations*. Physical Review E, 81(3), 036707. [DOI:10.1103/PhysRevE.81.036707](https://doi.org/10.1103/PhysRevE.81.036707)
+11. **Fakhari, A., & Rahimian, M. H.** (2010). *Phase-field modeling by the method of lattice Boltzmann equations*. Physical Review E, 81(3), 036707. [ResearchGate](https://www.researchgate.net/publication/43020969_Phase-field_modeling_by_the_method_of_lattice_Boltzmann_equations)
     - Couplage LBM et modèle de champ de phase.
 
 ---
 
 ## 4. Smoothed Particle Hydrodynamics (SPH)
 
-16. **Monaghan, J. J.** (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [DOI:10.1088/0034-4885/68/8/R01](https://doi.org/10.1088/0034-4885/68/8/R01)
-    - Revue fondamentale de la méthode SPH.
+12. **Monaghan, J. J.** (2005). *Smoothed particle hydrodynamics*. Reports on Progress in Physics, 68(8), 1703-1759. [PDF gratuit (U Toronto)](https://planets.utsc.utoronto.ca/~pawel/PHYD57/monaghan-sph2005.pdf)
+    - Revue fondamentale de la méthode SPH par son créateur.
 
-17. **Morris, J. P., Fox, P. J., & Zhu, Y.** (1997). *Modeling low Reynolds number incompressible flows using SPH*. Journal of Computational Physics, 136(1), 214-226. [DOI:10.1006/jcph.1997.5776](https://doi.org/10.1006/jcph.1997.5776)
-    - SPH pour les écoulements à faible nombre de Reynolds.
+13. **Adami, S., Hu, X. Y., & Adams, N. A.** (2012). *A generalized wall boundary condition for smoothed particle hydrodynamics*. Journal of Computational Physics, 231(21), 7057-7075. [PDF gratuit (Academia.edu)](https://www.academia.edu/4728278/A_generalized_wall_boundary_condition_for_smoothed_particle_hydrodynamics)
+    - Conditions aux limites généralisées pour SPH.
 
-18. **Adami, S., Hu, X. Y., & Adams, N. A.** (2012). *A generalized wall boundary condition for smoothed particle hydrodynamics*. Journal of Computational Physics, 231(21), 7057-7075. [DOI:10.1016/j.jcp.2012.05.005](https://doi.org/10.1016/j.jcp.2012.05.005)
-    - Conditions aux limites pour SPH.
-
-19. **Liu, M. B., & Liu, G. R.** (2010). *Smoothed Particle Hydrodynamics (SPH): an Overview and Recent Developments*. Archives of Computational Methods in Engineering, 17, 25-76. [DOI:10.1007/s11831-010-9040-7](https://doi.org/10.1007/s11831-010-9040-7)
+14. **Liu, M. B., & Liu, G. R.** (2010). *Smoothed Particle Hydrodynamics (SPH): an Overview and Recent Developments*. Archives of Computational Methods in Engineering, 17, 25-76. [PDF gratuit (Semantic Scholar)](https://www.semanticscholar.org/paper/Smoothed-Particle-Hydrodynamics-(SPH):-an-Overview-Liu-Liu/6ae2960b7cbeab3e1969033b343dbe3594c99cb3)
     - Revue des développements récents en SPH.
-
-20. **Violeau, D.** (2012). *Fluid Mechanics and the SPH Method: Theory and Applications*. Oxford University Press. ISBN: 978-0-19-965552-6.
-    - Ouvrage complet sur la méthode SPH.
 
 ---
 
 ## 5. Rhéologie et Mouillage
 
-21. **Barnes, H. A.** (1997). *Thixotropy—a review*. Journal of Non-Newtonian Fluid Mechanics, 70(1-2), 1-33.
-    - Revue sur la thixotropie des fluides complexes.
-
-22. **de Gennes, P. G.** (1985). *Wetting: statics and dynamics*. Reviews of Modern Physics, 57(3), 827.
-    - Fondements théoriques du mouillage.
-
-23. **Owens, R. G., & Phillips, T. N.** (2002). *Computational Rheology*. Imperial College Press.
-    - Référence pour la modélisation numérique des fluides non-newtoniens.
+15. **de Gennes, P. G.** (1985). *Wetting: statics and dynamics*. Reviews of Modern Physics, 57(3), 827-863. [PDF gratuit (UC Irvine)](https://www.physics.uci.edu/~taborek/publications/other/deGennesWettingReview.pdf)
+    - Article fondateur sur la physique du mouillage (Prix Nobel 1991).
 
 ---
 
 ## 6. Ouvrages Généraux
 
-24. **Basaran, O. A., Gao, H., & Bhat, P. P.** (2013). *Nonstandard inkjets*. Annual Review of Fluid Mechanics, 45, 85-113.
-    - Revue complète des mécanismes d'éjection de gouttes non standards.
-
-25. **Derby, B.** (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414.
+16. **Derby, B.** (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414. [PDF gratuit (U Manchester)](https://pure.manchester.ac.uk/ws/files/174918681/DERBYwithfigures_2017_02_22_19_00_59_UTC_.pdf)
     - Introduction aux applications industrielles de l'impression jet d'encre.
 
 ---
 
 ## 7. Ressources en Ligne
 
-- [OpenFOAM Documentation](https://openfoam.org)
-- [FEniCS Project](https://fenicsproject.org)
-- [Palabos](https://palabos.unige.ch)
-- [PySPH Documentation](https://pysph.readthedocs.io)
-- [CFD Online Forums](https://www.cfd-online.com/Forums/)
+- [OpenFOAM Documentation](https://openfoam.org) — Solveurs VOF (interFoam, isoAdvector)
+- [FEniCS Project](https://fenicsproject.org) — Éléments finis Python/C++
+- [Palabos](https://palabos.unige.ch) — LBM open-source (C++)
+- [PySPH Documentation](https://pysph.readthedocs.io) — SPH en Python
+- [CFD Online Forums](https://www.cfd-online.com/Forums/) — Communauté CFD
+- [Basilisk](http://basilisk.fr) — VOF adaptatif (Popinet)
