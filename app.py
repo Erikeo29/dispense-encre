@@ -1166,19 +1166,7 @@ elif selected_page == model_pages[1]:  # VOF
         st.markdown(load_file_content("physics/physics_vof.md"))
 
     with tabs[1]:  # Code
-        st.subheader("Configuration OpenFOAM")
-        st.code("""// transportProperties
-transportModel Carreau;
-
-CarreauCoeffs {
-    nu0   1.667e-4;  // Viscosité au repos
-    nuInf 5.56e-5;   // Viscosité infinie
-    k     0.15;      // Temps de relaxation
-    n     0.7;       // Indice rhéofluidifiant
-}
-
-sigma 0.04;  // Tension de surface [N/m]
-rho   3000;  // Masse volumique [kg/m³]""", language='cpp')
+        display_smart_markdown(load_file_content("code/code_vof.md"))
 
     with tabs[2]:  # GIF
         c_title, c_pop = st.columns([0.7, 0.3])
