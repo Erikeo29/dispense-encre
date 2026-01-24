@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-AgCl Droplet Spreading Simulation using SPH with Solid Substrate
-=================================================================
+Ink Droplet Spreading Simulation using SPH
+===========================================
 
-Simulates the spreading of an AgCl ink droplet on a solid substrate using
+Simulates the spreading of an ink droplet on a solid substrate using
 Smoothed Particle Hydrodynamics (SPH) with surface tension and contact angle.
 
 Features:

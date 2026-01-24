@@ -1,12 +1,12 @@
 **Sommaire :**
-1. Intelligence Artificielle et Modélisation Hybride
-2. Calcul Quantique
-3. Impression 4D et Encres Intelligentes
-4. Opportunités de Recherche
+1. Intelligence artificielle et modélisation hybride
+2. Calcul quantique
+3. Impression 4D et encres intelligentes
+4. Opportunités de recherche
 
 ---
 
-## 1. Intelligence Artificielle et Modélisation Hybride
+## 1. Intelligence artificielle et modélisation hybride
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -23,47 +23,47 @@ Les **modèles de substitution** remplacent les simulations coûteuses par des r
 - **Exemple :** Un réseau peut prédire le volume des satellites en fonction de $We$, $Oh$, et $n$ sans résoudre Navier-Stokes.
 - **Avantage :** Optimisation en temps réel des paramètres d'éjection.
 
-### Apprentissage par Renforcement
+### Apprentissage par renforcement
 
 - **Application :** Un agent RL peut apprendre à ajuster $v_{max}$ et $\tau$ pour minimiser les satellites.
 - **Potentiel :** Contrôle adaptatif des têtes d'impression en temps réel.
 
 ---
 
-## 2. Calcul Quantique
+## 2. Calcul quantique
 
 Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
 
-### Algorithmes Quantiques pour SPH
+### Algorithmes quantiques pour SPH
 
 - Les ordinateurs quantiques pourraient simuler 10⁹ particules SPH en temps réel.
 - **Exemple :** IBM a démontré (2023) un algorithme quantique pour la dynamique moléculaire, applicable à SPH.
 
-### Optimisation des Maillages FEM
+### Optimisation des maillages FEM
 
 - Les algorithmes quantiques de partitionnement de graphes pourraient réduire le coût des maillages 3D adaptatifs.
 
 ---
 
-## 3. Impression 4D et Encres Intelligentes
+## 3. Impression 4D et encres intelligentes
 
 Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impression 4D** (matériaux qui changent de forme après impression) :
 
-### Encres à Mémoire de Forme
+### Encres à mémoire de forme
 
 - Polymères qui se déforment sous l'effet de la température ou de la lumière.
 - **Modélisation :** Couplage FEM avec des modèles thermomécaniques.
 
-### Encres Conductrices (Rhéofluidifiantes)
+### Encres conductrices (rhéofluidifiantes)
 
 - Nanoparticules d'argent ou de graphène pour l'électronique imprimée.
 - **Défis :** Rhéologie complexe (thixotropie, viscoélasticité) + sédimentation.
 
 ---
 
-## 4. Opportunités de Recherche
+## 4. Opportunités de recherche
 
-### Couplage Rhéologie-Interface
+### Couplage rhéologie-interface
 
 **Problématique :** Aucun modèle ne gère simultanément la rhéologie non-newtonienne complexe (thixotropie) et les interfaces libres avec une précision sub-micronique.
 
@@ -72,7 +72,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 - **LBM avec rhéologie avancée** : Implémenter des modèles de thixotropie et de viscoélasticité dans LBM.
 - **FEM adaptatif** : Maillages dynamiques qui s'adaptent aux zones de fort cisaillement.
 
-### Échelles Sub-Microniques
+### Échelles sub-microniques
 
 **Problématique :** Les gouttes < 5 µm sont difficiles à modéliser en raison des effets de tension superficielle dominants et des temps de calcul prohibitifs.
 
@@ -81,7 +81,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 - **Simulations atomistiques** : Utiliser la dynamique moléculaire (MD) pour les gouttes < 1 µm.
 - **Approches asymptotiques** : Développer des modèles réduits pour les gouttes sub-microniques (théorie des films minces).
 
-### Validation Expérimentale Avancée
+### Validation expérimentale avancée
 
 **Problématique :** Seulement 30 % des études incluent une validation expérimentale rigoureuse.
 

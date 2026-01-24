@@ -1,17 +1,17 @@
 **Sommaire :**
-1. Méthode des Éléments Finis (FEM) / Phase-Field
+1. Méthode des éléments finis (FEM) / Phase-Field
 2. Volume of Fluid (VOF)
 3. Lattice Boltzmann Method (LBM)
 4. Smoothed Particle Hydrodynamics (SPH)
-5. Rhéologie et Mouillage
-6. Ouvrages Généraux
-7. Ressources en Ligne
+5. Rhéologie et mouillage
+6. Ouvrages généraux
+7. Ressources en ligne
 
 Cette page regroupe les références bibliographiques utilisées dans ce projet. **Tous les liens pointent vers des ressources en accès libre vérifiées.**
 
 ---
 
-## 1. Méthode des Éléments Finis (FEM) / Phase-Field
+## 1. Méthode des éléments finis (FEM) / Phase-Field
 
 1. **Yue, P., Feng, J. J., Liu, C., & Shen, J.** (2004). *A diffuse-interface method for simulating two-phase flows of complex fluids*. Journal of Fluid Mechanics, 515, 293-317. [PDF gratuit (ResearchGate)](https://www.researchgate.net/publication/231965731_A_diffuse-interface_method_of_simulating_two-phase_flows_of_complex_fluids)
    - Extension du modèle de champ de phase aux fluides complexes.
@@ -57,21 +57,21 @@ Cette page regroupe les références bibliographiques utilisées dans ce projet.
 
 ---
 
-## 5. Rhéologie et Mouillage
+## 5. Rhéologie et mouillage
 
 11. **de Gennes, P. G.** (1985). *Wetting: statics and dynamics*. Reviews of Modern Physics, 57(3), 827-863. [PDF gratuit (UC Irvine)](https://www.physics.uci.edu/~taborek/publications/other/deGennesWettingReview.pdf)
     - Article fondateur sur la physique du mouillage (Prix Nobel 1991).
 
 ---
 
-## 6. Ouvrages Généraux
+## 6. Ouvrages généraux
 
 12. **Derby, B.** (2010). *Inkjet printing of functional and structural materials*. Annual Review of Materials Research, 40, 395-414. [PDF gratuit (U Manchester)](https://pure.manchester.ac.uk/ws/files/174918681/DERBYwithfigures_2017_02_22_19_00_59_UTC_.pdf)
     - Introduction aux applications industrielles de l'impression jet d'encre.
 
 ---
 
-## 7. Ressources en Ligne
+## 7. Ressources en ligne
 
 - [OpenFOAM Documentation](https://openfoam.org) — Solveurs VOF (interFoam, isoAdvector)
 - [FEniCS Project](https://fenicsproject.org) — Éléments finis Python/C++

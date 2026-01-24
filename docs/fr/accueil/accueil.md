@@ -1,11 +1,11 @@
 **Sommaire :**
-1. Objectif du Projet
-2. Application Cible
+1. Objectif du projet
+2. Application cible
 3. Navigation
 
 ---
 
-## 1. Objectif du Projet
+## 1. Objectif du projet
 
 Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-via. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
 
@@ -16,7 +16,7 @@ Ce projet propose une **étude comparative de quatre méthodes numériques** pou
 
 ---
 
-## 2. Application Cible
+## 2. Application cible
 
 Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-via.
 

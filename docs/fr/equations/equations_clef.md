@@ -1,11 +1,11 @@
 **Sommaire :**
 1. Équations de Navier-Stokes
-2. Modèles Rhéologiques
-3. Suivi d'Interface
-4. Tension Superficielle
-5. Conditions aux Limites
-6. Nombres Adimensionnels Fondamentaux
-7. Tableau Comparatif des Modèles
+2. Modèles rhéologiques
+3. Suivi d'interface
+4. Tension superficielle
+5. Conditions aux limites
+6. Nombres adimensionnels fondamentaux
+7. Tableau comparatif des modèles
 8. Synthèse
 
 Ce chapitre présente les équations fondamentales utilisées dans les quatre modèles numériques. L'objectif est de comprendre les points communs (équations de Navier-Stokes, rhéologie) et les différences (discrétisation, suivi d'interface).
@@ -14,7 +14,7 @@ Ce chapitre présente les équations fondamentales utilisées dans les quatre mo
 
 ## 1. Équations de Navier-Stokes
 
-### 1.1 Conservation de la Masse (Continuité)
+### 1.1 Conservation de la masse (continuité)
 
 $$\nabla \cdot \mathbf{v} = 0$$
 
@@ -30,7 +30,7 @@ $$\frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y} = 0$$
 
 ---
 
-### 1.2 Conservation de la Quantité de Mouvement
+### 1.2 Conservation de la quantité de mouvement
 
 $$\rho \left[ \frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla) \mathbf{v} \right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \rho \mathbf{g} + \mathbf{F}_\sigma$$
 
@@ -53,7 +53,7 @@ $$\rho \left[ \frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla)
 
 ---
 
-### 1.3 Tenseur des Contraintes Visqueuses
+### 1.3 Tenseur des contraintes visqueuses
 
 Pour un fluide newtonien incompressible :
 
@@ -73,9 +73,9 @@ $$\dot{\gamma} = \sqrt{2 \mathbf{D} : \mathbf{D}} = \sqrt{2 \sum_{i,j} D_{ij} D_
 
 ---
 
-## 2. Modèles Rhéologiques
+## 2. Modèles rhéologiques
 
-### 2.1 Loi de Newton (Fluide Newtonien)
+### 2.1 Loi de Newton (fluide newtonien)
 
 $$\boldsymbol{\tau} = 2 \eta \mathbf{D}$$
 
@@ -83,7 +83,7 @@ La viscosité $\eta$ est **constante**. Exemples : eau, air, huiles minérales.
 
 ---
 
-### 2.2 Loi de Puissance (Ostwald-de Waele)
+### 2.2 Loi de puissance (Ostwald-de Waele)
 
 $$\eta(\dot{\gamma}) = K \dot{\gamma}^{n-1}$$
 
@@ -130,7 +130,7 @@ $$\eta(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) \left[ 1 + (\lambda 
 
 ---
 
-### 2.4 Modèle de Herschel-Bulkley (Fluide à Seuil)
+### 2.4 Modèle de Herschel-Bulkley (fluide à seuil)
 
 | Condition | Comportement |
 |-----------|--------------|
@@ -147,9 +147,9 @@ $$\eta(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) \left[ 1 + (\lambda 
 
 ---
 
-## 3. Suivi d'Interface
+## 3. Suivi d'interface
 
-### 3.1 VOF : Transport de la Fraction Volumique
+### 3.1 VOF : transport de la fraction volumique
 
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\alpha \mathbf{v}) = 0$$
 
@@ -169,7 +169,7 @@ où $\mathbf{n} = \nabla \alpha / |\nabla \alpha|$ est la normale.
 
 ---
 
-### 3.2 Phase-Field : Équation de Cahn-Hilliard
+### 3.2 Phase-Field : équation de Cahn-Hilliard
 
 $$\frac{\partial \phi}{\partial t} + \mathbf{v} \cdot \nabla \phi = \gamma \nabla \cdot \left[ \varepsilon \nabla \phi - \phi (1 - \phi^2) \mathbf{n} \right]$$
 
@@ -186,7 +186,7 @@ $$\mathcal{F}[\phi] = \int_\Omega \left[ \frac{\varepsilon}{2} |\nabla \phi|^2 +
 
 ---
 
-### 3.3 LBM : Équation de Boltzmann Discrète
+### 3.3 LBM : équation de Boltzmann discrète
 
 $$f_i(\mathbf{x} + \mathbf{c}_i \Delta t, t + \Delta t) - f_i(\mathbf{x}, t) = \Omega_i$$
 
@@ -211,7 +211,7 @@ avec $c_s = 1/\sqrt{3}$ la vitesse du son sur réseau.
 
 ---
 
-### 3.4 SPH : Interpolation par Noyau
+### 3.4 SPH : interpolation par noyau
 
 $$A(\mathbf{r}) = \sum_b m_b \frac{A_b}{\rho_b} W(|\mathbf{r} - \mathbf{r}_b|, h)$$
 
@@ -234,7 +234,7 @@ $$\frac{d\mathbf{v}_a}{dt} = -\sum_b m_b \left( \frac{p_a}{\rho_a^2} + \frac{p_b
 
 ---
 
-## 4. Tension Superficielle
+## 4. Tension superficielle
 
 ### 4.1 Modèle CSF (Continuum Surface Force)
 
@@ -258,7 +258,7 @@ $$\mathbf{F}_\sigma = \sigma \kappa \mathbf{n} \delta_s$$
 
 ---
 
-### 4.2 Courbure de l'Interface
+### 4.2 Courbure de l'interface
 
 $$\kappa = -\nabla \cdot \mathbf{n} = -\nabla \cdot \left( \frac{\nabla \alpha}{|\nabla \alpha|} \right)$$
 
@@ -270,9 +270,9 @@ où $\alpha_x = \partial \alpha / \partial x$, etc.
 
 ---
 
-## 5. Conditions aux Limites
+## 5. Conditions aux limites
 
-### 5.1 Condition de Mouillage (Angle de Contact)
+### 5.1 Condition de mouillage (angle de contact)
 
 $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
@@ -289,7 +289,7 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 ---
 
-## 6. Nombres Adimensionnels Fondamentaux
+## 6. Nombres adimensionnels fondamentaux
 
 La modélisation de la dispense de fluides implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
 
@@ -309,9 +309,9 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
 
 ---
 
-## 7. Tableau Comparatif des Modèles
+## 7. Tableau comparatif des modèles
 
-### 7.1 Équations Résolues
+### 7.1 Équations résolues
 
 | Équation | FEM | VOF | LBM | SPH |
 |----------|:---:|:---:|:---:|:---:|
@@ -334,7 +334,7 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
 
 ---
 
-### 7.3 Avantages et Limitations
+### 7.3 Avantages et limitations
 
 | Critère | FEM | VOF | LBM | SPH |
 |---------|-----|-----|-----|-----|
@@ -346,7 +346,7 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
 
 ---
 
-### 7.4 Quand Utiliser Chaque Méthode
+### 7.4 Quand utiliser chaque méthode
 
 | Situation | Méthode Recommandée | Justification |
 |-----------|---------------------|---------------|
@@ -360,7 +360,7 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
 
 ---
 
-## 8. Synthèse : De Navier-Stokes aux Méthodes
+## 8. Synthèse : de Navier-Stokes aux méthodes
 
 ```
                     ÉQUATIONS PHYSIQUES

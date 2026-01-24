@@ -1,6 +1,6 @@
 ---
 
-## 3. Analyse Critique par Modèle
+## 3. Analyse critique par modèle
 
 ### 3.1 FEM (Finite Element Method / Phase-Field)
 
@@ -54,7 +54,7 @@ Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules do
 
 ---
 
-## 4. Besoins Hardware
+## 4. Besoins hardware
 
 ### 4.1 Ordres de grandeur
 
@@ -84,7 +84,7 @@ Les temps de calcul dépendent de la résolution et de la durée simulée. Pour 
 
 ---
 
-## 5. Tableau de Synthèse
+## 5. Tableau de synthèse
 
 | Critère | FEM | VOF | LBM | SPH |
 |---------|-----|-----|-----|-----|

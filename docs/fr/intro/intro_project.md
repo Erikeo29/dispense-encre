@@ -1,18 +1,18 @@
 **Sommaire :**
-1. Contexte Scientifique et Industriel
-2. Propriétés des Fluides Rhéofluidifiants
-3. Défis de la Modélisation Numérique
-4. Système Physique Étudié
-5. Approche Multi-Modèles
+1. Contexte scientifique et industriel
+2. Propriétés des fluides rhéofluidifiants
+3. Défis de la modélisation numérique
+4. Système physique étudié
+5. Approche multi-modèles
 6. Références
 
 ---
 
-# Modélisation de la Dispense de Fluides Rhéofluidifiants
+# Modélisation de la dispense de fluides rhéofluidifiants
 
-## 1. Contexte Scientifique et Industriel
+## 1. Contexte scientifique et industriel
 
-### 1.1 Technologies de Dispense Microfluidique
+### 1.1 Technologies de dispense microfluidique
 
 La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
 
@@ -23,7 +23,7 @@ La dispense de fluides en microfluidique englobe un ensemble de techniques perme
 - Revêtements fonctionnels et couches minces
 - Dosage pharmaceutique de précision
 
-### 1.2 Mécanismes Physiques
+### 1.2 Mécanismes physiques
 
 La dispense de fluides implique plusieurs phénomènes physiques couplés :
 - **Écoulement diphasique** : interaction fluide/air à l'interface
@@ -33,9 +33,9 @@ La dispense de fluides implique plusieurs phénomènes physiques couplés :
 
 ---
 
-## 2. Propriétés des Fluides Rhéofluidifiants
+## 2. Propriétés des fluides rhéofluidifiants
 
-### 2.1 Comportement Non-Newtonien
+### 2.1 Comportement non-newtonien
 
 Les fluides rhéofluidifiants sont des fluides **non-newtoniens** dont la viscosité apparente diminue sous l'effet d'un cisaillement. Ce comportement est essentiel pour la dispense : le fluide s'écoule facilement sous pression mais conserve sa forme au repos.
 
@@ -55,9 +55,9 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 ---
 
-## 3. Défis de la Modélisation Numérique
+## 3. Défis de la modélisation numérique
 
-### 3.1 Enjeux Techniques
+### 3.1 Enjeux techniques
 
 | Défi | Description | Approche |
 |------|-------------|----------|
@@ -69,9 +69,9 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 ---
 
-## 4. Système Physique Étudié
+## 4. Système physique étudié
 
-### 4.1 Configuration Géométrique
+### 4.1 Configuration géométrique
 
 Le système modélisé consiste en :
 - **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
@@ -79,7 +79,7 @@ Le système modélisé consiste en :
 - **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³)
 - **Environnement** : température ambiante (~20°C) et pression atmosphérique
 
-### 4.2 Paramètres de Simulation
+### 4.2 Paramètres de simulation
 
 | Paramètre | Plage | Unité |
 |-----------|-------|-------|
@@ -96,11 +96,11 @@ Le système modélisé consiste en :
 
 ---
 
-## 5. Approche Multi-Modèles
+## 5. Approche multi-modèles
 
 Ce projet compare quatre méthodes numériques complémentaires :
 
-| Modèle | Approche | Avantage Principal |
+| Modèle | Approche | Avantage principal |
 |--------|----------|-------------------|
 | **FEM / Phase-Field** | Eulérienne, éléments finis | Précision thermodynamique, couplages multiphysiques |
 | **VOF** | Eulérienne, volumes finis | Robustesse, standard industriel |
@@ -112,3 +112,4 @@ Ce projet compare quatre méthodes numériques complémentaires :
 ## 6. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+

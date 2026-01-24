@@ -1,19 +1,19 @@
 **Sommaire :**
-1. Principe de la Méthode
-2. Équations Fondamentales
-3. Formulation Mathématique
-4. Avantages et Limitations
-5. Coût Computationnel
-6. Bibliothèques Open-Source
+1. Principe de la méthode
+2. Équations fondamentales
+3. Formulation mathématique
+4. Avantages et limitations
+5. Coût computationnel
+6. Bibliothèques open-source
 7. Références
 
 ---
 
-## 1. Principe de la Méthode
+## 1. Principe de la méthode
 
 La méthode **SPH (Smoothed Particle Hydrodynamics)** est une approche **lagrangienne** et **sans maillage (meshless)** où le fluide est représenté par un ensemble de particules mobiles transportant les propriétés physiques.
 
-### Variable principale : Particules
+### Variable principale : particules
 
 Contrairement aux méthodes sur grille (VOF, FEM, LBM), il n'y a pas de connexions fixes entre les points. La valeur d'une propriété A en position **r** est calculée par **interpolation** :
 
@@ -25,7 +25,7 @@ où W est le **noyau de lissage** et h la **longueur de lissage**.
 
 ---
 
-## 2. Équations Fondamentales
+## 2. Équations fondamentales
 
 ### 2.1 Équation de quantité de mouvement
 
@@ -50,9 +50,9 @@ où **n** = ∇c est la normale calculée par le gradient du champ de couleur c.
 
 ---
 
-## 3. Formulation Mathématique
+## 3. Formulation mathématique
 
-### 3.1 Noyau de lissage Cubic Spline
+### 3.1 Noyau de lissage cubic spline
 
 | Domaine | Expression |
 |---------|------------|
@@ -78,7 +78,7 @@ Les parois sont constituées de couches de **particules fantômes** fixes qui :
 - Imposent la condition de non-glissement
 - Extrapolent les propriétés depuis le fluide
 
-### 3.4 Fluides non-Newtoniens
+### 3.4 Fluides non-newtoniens
 
 Le tenseur des contraintes dépend du taux de cisaillement :
 
@@ -88,7 +88,7 @@ $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 
 ---
 
-## 4. Avantages et Limitations
+## 4. Avantages et limitations
 
 | Avantages | Limitations |
 |-----------|-------------|
@@ -100,7 +100,7 @@ $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 
 ---
 
-## 5. Coût Computationnel
+## 5. Coût computationnel
 
 | Configuration | Particules | Temps | Hardware |
 |---------------|------------|-------|----------|
@@ -112,7 +112,7 @@ $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 
 ---
 
-## 6. Bibliothèques Open-Source
+## 6. Bibliothèques open-source
 
 | Bibliothèque | Langage | GPU | Focus |
 |--------------|---------|-----|-------|
@@ -126,3 +126,4 @@ $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 ## 7. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+

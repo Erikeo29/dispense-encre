@@ -1,17 +1,17 @@
 **Sommaire :**
-1. Pères de la Mécanique des Fluides
-2. Pionniers de la Rhéologie
-3. Fondateurs de la Mécanique Statistique
-4. Créateurs des Méthodes Numériques
-5. Inventeurs des Méthodes Modernes
-6. Tableau Chronologique
-7. Diagramme des Filiations Scientifiques
+1. Pères de la mécanique des fluides
+2. Pionniers de la rhéologie
+3. Fondateurs de la mécanique statistique
+4. Créateurs des méthodes numériques
+5. Inventeurs des méthodes modernes
+6. Tableau chronologique
+7. Diagramme des filiations scientifiques
 
 Ce projet de simulation de dispense de fluides repose sur des siècles de découvertes scientifiques. Cette page rend hommage aux savants dont les travaux fondamentaux ont rendu possible la modélisation numérique moderne des écoulements diphasiques.
 
 ---
 
-## 1. Pères de la Mécanique des Fluides
+## 1. Pères de la mécanique des fluides
 
 ### Claude-Louis Navier (1785-1836)
 
@@ -94,7 +94,7 @@ $$Oh = \frac{\mu}{\sqrt{\rho \sigma L}} = \frac{\sqrt{We}}{Re}$$
 
 ---
 
-## 2. Pionniers de la Rhéologie
+## 2. Pionniers de la rhéologie
 
 ### Isaac Newton (1642-1727)
 
@@ -151,7 +151,7 @@ Ce modèle combine une contrainte seuil (*yield stress*) avec un comportement no
 
 ---
 
-## 3. Fondateurs de la Mécanique Statistique
+## 3. Fondateurs de la mécanique statistique
 
 ### Ludwig Boltzmann (1844-1906)
 
@@ -197,7 +197,7 @@ Le temps de relaxation $\tau$ est directement lié à la viscosité cinématique
 
 ---
 
-## 4. Créateurs des Méthodes Numériques
+## 4. Créateurs des méthodes numériques
 
 ### Boris Galerkin (1871-1945)
 
@@ -249,7 +249,7 @@ Dans ce projet, cette énergie libre gouverne l'évolution de l'interface encre/
 
 ---
 
-## 5. Inventeurs des Méthodes Modernes
+## 5. Inventeurs des méthodes modernes
 
 ### Cyril W. Hirt & Billy D. Nichols
 
@@ -298,7 +298,7 @@ Monaghan a publié plus de 150 articles et deux revues majeures dans *Annual Rev
 
 ---
 
-## 6. Tableau Chronologique
+## 6. Tableau chronologique
 
 | Période | Scientifique | Contribution | Application dans ce projet |
 |---------|--------------|--------------|---------------------------|
@@ -319,7 +319,7 @@ Monaghan a publié plus de 150 articles et deux revues majeures dans *Annual Rev
 
 ---
 
-## 7. Diagramme des Filiations Scientifiques
+## 7. Diagramme des filiations scientifiques
 
 ```
 NEWTON (1687)
@@ -371,7 +371,7 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 ---
 
-## Références Biographiques
+## Références biographiques
 
 > **Note** : Pour la liste complète des références techniques, consultez la section **Bibliographie** dans le menu Annexes.
 

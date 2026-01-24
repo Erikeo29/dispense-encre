@@ -1,31 +1,31 @@
 **Sommaire :**
 
 **A. Physique**
-1. Unités SI et Préfixes
-2. Nombres Adimensionnels
-3. Symboles Physiques
-4. Termes de Rhéologie
-5. Termes de Mécanique des Fluides
+1. Unités SI et préfixes
+2. Nombres adimensionnels
+3. Symboles physiques
+4. Termes de rhéologie
+5. Termes de mécanique des fluides
 
-**B. Méthodes Numériques**
-6. Acronymes des Méthodes
-7. Acronymes des Schémas Numériques
-8. Termes Numériques
-9. Logiciels et Bibliothèques
+**B. Méthodes numériques**
+6. Acronymes des méthodes
+7. Acronymes des schémas numériques
+8. Termes numériques
+9. Logiciels et bibliothèques
 
 **C. Hardware**
-10. Acronymes Hardware
+10. Acronymes hardware
 
-**D. Techniques et Applications**
-11. Procédés de Dispense
-12. Caractérisation Expérimentale
-13. Couplages et Intelligence Artificielle
+**D. Techniques et applications**
+11. Procédés de dispense
+12. Caractérisation expérimentale
+13. Couplages et intelligence artificielle
 
 ---
 
 # A. Physique
 
-## 1. Unités SI et Préfixes
+## 1. Unités SI et préfixes
 
 | Grandeur | Unité | Symbole |
 |----------|-------|---------|
@@ -52,7 +52,7 @@
 
 ---
 
-## 2. Nombres Adimensionnels
+## 2. Nombres adimensionnels
 
 | Symbole | Nom | Expression | Signification physique |
 |---------|-----|------------|------------------------|
@@ -66,9 +66,9 @@
 
 ---
 
-## 3. Symboles Physiques
+## 3. Symboles physiques
 
-### Propriétés des Fluides
+### Propriétés des fluides
 
 | Symbole | Nom | Unité SI |
 |---------|-----|----------|
@@ -78,7 +78,7 @@
 | $\sigma$ | Tension superficielle | N/m |
 | $\theta$ | Angle de contact | ° ou rad |
 
-### Paramètres Rhéologiques
+### Paramètres rhéologiques
 
 | Symbole | Nom | Modèle | Unité |
 |---------|-----|--------|-------|
@@ -90,7 +90,7 @@
 | $\tau_0$ | Contrainte seuil | Herschel-Bulkley | Pa |
 | $\dot{\gamma}$ | Taux de cisaillement | Tous | s$^{-1}$ |
 
-### Variables d'Écoulement
+### Variables d'écoulement
 
 | Symbole | Nom | Unité |
 |---------|-----|-------|
@@ -102,7 +102,7 @@
 
 ---
 
-## 4. Termes de Rhéologie
+## 4. Termes de rhéologie
 
 | Terme | Définition |
 |-------|------------|
@@ -116,7 +116,7 @@
 
 ---
 
-## 5. Termes de Mécanique des Fluides
+## 5. Termes de mécanique des fluides
 
 | Terme | Définition |
 |-------|------------|
@@ -131,9 +131,9 @@
 
 ---
 
-# B. Méthodes Numériques
+# B. Méthodes numériques
 
-## 6. Acronymes des Méthodes
+## 6. Acronymes des méthodes
 
 | Acronyme | Signification | Description |
 |----------|---------------|-------------|
@@ -146,7 +146,7 @@
 
 ---
 
-## 7. Acronymes des Schémas Numériques
+## 7. Acronymes des schémas numériques
 
 | Acronyme | Signification | Contexte |
 |----------|---------------|----------|
@@ -163,7 +163,7 @@
 
 ---
 
-## 8. Termes Numériques
+## 8. Termes numériques
 
 | Terme | Définition |
 |-------|------------|
@@ -178,7 +178,7 @@
 
 ---
 
-## 9. Logiciels et Bibliothèques
+## 9. Logiciels et bibliothèques
 
 | Nom | Type | Langage | Méthode |
 |-----|------|---------|---------|
@@ -195,7 +195,7 @@
 
 # C. Hardware
 
-## 10. Acronymes Hardware
+## 10. Acronymes hardware
 
 | Acronyme | Signification | Description |
 |----------|---------------|-------------|
@@ -210,9 +210,9 @@
 
 ---
 
-# D. Techniques et Applications
+# D. Techniques et applications
 
-## 11. Procédés de Dispense
+## 11. Procédés de dispense
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|
@@ -221,7 +221,7 @@
 
 ---
 
-## 12. Caractérisation Expérimentale
+## 12. Caractérisation expérimentale
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|
@@ -230,7 +230,7 @@
 
 ---
 
-## 13. Couplages et Intelligence Artificielle
+## 13. Couplages et intelligence artificielle
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|

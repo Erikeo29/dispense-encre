@@ -34,10 +34,10 @@ Ce fichier définit les propriétés physiques des deux phases (encre et air) ai
 
 phases (water air);
 
-water  // Phase encre (rhéofluidifiante)
+water  // Phase encre
 {
     transportModel  Carreau;
-    rho             3000;          // kg/m³ - densité encre AgCl
+    rho             3000;          // kg/m³ - densité encre
 
     Carreau  // Modèle de Carreau pour la viscosité
     {

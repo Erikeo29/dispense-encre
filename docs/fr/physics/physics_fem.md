@@ -1,19 +1,19 @@
 **Sommaire :**
-1. Principe de la Méthode
-2. Équations Fondamentales
-3. Formulation Mathématique
-4. Avantages et Limitations
-5. Coût Computationnel
-6. Bibliothèques Open-Source
+1. Principe de la méthode
+2. Équations fondamentales
+3. Formulation mathématique
+4. Avantages et limitations
+5. Coût computationnel
+6. Bibliothèques open-source
 7. Références
 
 ---
 
-## 1. Principe de la Méthode
+## 1. Principe de la méthode
 
 La méthode **Phase-Field** couplée aux **Éléments Finis (FEM)** est une approche eulérienne pour la simulation d'écoulements diphasiques. L'interface entre les deux fluides est représentée comme une **zone de transition diffuse** d'épaisseur finie ε.
 
-### Variable principale : Fonction de phase φ
+### Variable principale : fonction de phase φ
 
 | Valeur | Signification |
 |--------|---------------|
@@ -25,7 +25,7 @@ La méthode **Phase-Field** couplée aux **Éléments Finis (FEM)** est une appr
 
 ---
 
-## 2. Équations Fondamentales
+## 2. Équations fondamentales
 
 ### 2.1 Équations de Navier-Stokes
 
@@ -51,7 +51,7 @@ où σ = tension de surface, κ = courbure, δ(φ) = fonction delta localisée �
 
 ---
 
-## 3. Formulation Mathématique
+## 3. Formulation mathématique
 
 ### 3.1 Modèle rhéologique de Carreau
 
@@ -94,7 +94,7 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ---
 
-## 4. Avantages et Limitations
+## 4. Avantages et limitations
 
 | Avantages | Limitations |
 |-----------|-------------|
@@ -106,7 +106,7 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ---
 
-## 5. Coût Computationnel
+## 5. Coût computationnel
 
 | Configuration | Éléments | Temps | Hardware |
 |---------------|----------|-------|----------|
@@ -118,7 +118,7 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ---
 
-## 6. Bibliothèques Open-Source
+## 6. Bibliothèques open-source
 
 | Bibliothèque | Langage | Focus | Parallélisation |
 |--------------|---------|-------|-----------------|
@@ -132,3 +132,4 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 ## 7. Références
 
 > **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+

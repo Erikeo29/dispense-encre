@@ -34,10 +34,10 @@ This file defines the physical properties of both phases (ink and air) and the s
 
 phases (water air);
 
-water  // Ink phase (shear-thinning)
+water  // Ink phase
 {
     transportModel  Carreau;
-    rho             3000;          // kg/m³ - AgCl ink density
+    rho             3000;          // kg/m³ - ink density
 
     Carreau  // Carreau model for viscosity
     {
