@@ -136,6 +136,10 @@ h1, h2, h3 {
 }
 
 /* --- Sidebar: Espacement radio buttons --- */
+[data-testid="stSidebar"] {
+    font-family: "Source Sans Pro", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 [data-testid="stSidebar"] .stRadio > div {
     gap: 6px;
 }
