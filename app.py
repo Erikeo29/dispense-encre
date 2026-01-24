@@ -720,12 +720,12 @@ if (st.session_state.nav_gen_idx is None and
 old_lang = st.session_state.get('lang', 'fr')
 lang_selection = st.sidebar.radio(
     "Language",
-    ["🇫🇷 FR", "🇬🇧 EN"],
+    ["Français", "English"],
     horizontal=True,
     label_visibility="collapsed",
     index=0 if old_lang == "fr" else 1
 )
-new_lang = "fr" if "FR" in lang_selection else "en"
+new_lang = "fr" if "Français" in lang_selection else "en"
 
 # Si la langue change, simplement rerun (les index sont indépendants de la langue)
 if new_lang != old_lang:
