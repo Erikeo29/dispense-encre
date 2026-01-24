@@ -108,11 +108,15 @@ This combination ensures inf-sup stability and avoids pressure oscillations.
 
 ## 5. Computational Cost
 
-| Configuration | Elements | Time | Hardware |
-|---------------|----------|------|----------|
-| 2D standard | 20k | 4–8 h | 8 CPU cores |
-| 2D high resolution | 100k | 15–30 h | 32 CPU cores |
-| 3D complete | 500k | 30–50 h | 64 cores + 128 GB RAM |
+**Reference domain:** 1.2 mm × 0.5 mm (micro-via dispensing)
+
+| Configuration | Elements | Mesh size | Time | Hardware |
+|---------------|----------|-----------|------|----------|
+| **This project** | ~20k | 5–10 µm | **1–2 h** | 8 cores |
+| High resolution | ~100k | 1–2 µm | 4–8 h | 16 cores |
+| 3D complete | ~500k | 5 µm | 30–50 h | Cluster |
+
+> **Interpretation:** 20k triangular elements on a 1.2×0.5 mm domain yield an average mesh size of 5–10 µm, sufficient to capture the diffuse interface (ε ~ 2–5 µm).
 
 **Note:** Classical FEM (matrix assembly) benefits little from GPU acceleration, unlike LBM.
 

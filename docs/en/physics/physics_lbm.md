@@ -102,15 +102,17 @@ Wetting is handled naturally without explicit boundary conditions.
 
 ## 5. Computational Cost
 
-| Configuration | Grid | Time | Hardware |
-|---------------|------|------|----------|
-| 2D standard (D2Q9) | 1000² | 1–2 h | 4 CPU cores |
-| 3D standard (D3Q19) | 300³ | 1–2 h | 1× A100 GPU |
-| 3D high resolution | 500³ | 0.5–1 h | 4× A100 GPU |
+**Reference domain:** 1.2 mm × 0.5 mm (micro-via dispensing)
 
-**GPU Scalability:** Near-linear up to 16 GPUs.
+| Configuration | Grid | Δx | Time | Hardware |
+|---------------|------|-----|------|----------|
+| **This project** | 240×100 | 5 µm | **~10 min** | 8 cores |
+| High resolution | 1200×500 | 1 µm | 1–2 h | GPU |
+| 3D (D3Q19) | 300³ | 4 µm | 1–2 h | 1× GPU |
 
-**GPU Memory:** ~16 GB for 300³ nodes in D3Q19.
+> **Interpretation:** A 240×100 grid with Δx = 5 µm exactly covers the 1.2×0.5 mm domain. LBM is particularly fast due to its regular structure optimized for parallelism.
+
+**GPU Scalability:** Near-linear up to 16 GPUs. ~16 GB for 300³ nodes in D3Q19.
 
 ---
 

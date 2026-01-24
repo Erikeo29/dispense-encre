@@ -108,11 +108,15 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ## 5. Coût computationnel
 
-| Configuration | Éléments | Temps | Hardware |
-|---------------|----------|-------|----------|
-| 2D standard | 20k | 4–8 h | 8 cœurs CPU |
-| 2D haute résolution | 100k | 15–30 h | 32 cœurs CPU |
-| 3D complet | 500k | 30–50 h | 64 cœurs + 128 GB RAM |
+**Domaine de référence :** 1.2 mm × 0.5 mm (dispense dans micro-via)
+
+| Configuration | Éléments | Taille maille | Temps | Hardware |
+|---------------|----------|---------------|-------|----------|
+| **Ce projet** | ~20k | 5–10 µm | **1–2 h** | 8 cœurs |
+| Haute résolution | ~100k | 1–2 µm | 4–8 h | 16 cœurs |
+| 3D complet | ~500k | 5 µm | 30–50 h | Cluster |
+
+> **Interprétation :** 20k éléments triangulaires sur un domaine 1.2×0.5 mm donnent une taille de maille moyenne de 5–10 µm, suffisante pour capturer l'interface diffuse (ε ~ 2–5 µm).
 
 **Note :** La FEM classique (assemblage matriciel) bénéficie peu de l'accélération GPU, contrairement à LBM.
 

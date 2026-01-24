@@ -56,16 +56,16 @@ Meshless Lagrangian method. The fluid is discretized into particles whose proper
 
 ## 4. Hardware Requirements
 
-### 4.1 Orders of magnitude
+### 4.1 Computation times (this project's simulations)
 
-Computation times depend on resolution and simulated duration. For a typical 2D dispensing simulation (20-40 ms physical time):
+Times below correspond to the reference case: droplet dispensing into a micro-via (1.2×0.5 mm domain, 20–40 ms physical time), standard 8-core PC.
 
-| Model | Processor | Graphics card | RAM | Time |
-|-------|-----------|---------------|-----|------|
-| **FEM** | 8-16 cores | Underutilized | 16-32 GB | 5-30 h |
-| **VOF** | 8-16 cores | Useful acceleration | 8-16 GB | 2-10 h |
-| **LBM** | 4-8 cores | Strongly recommended | 8-16 GB | 1-5 h |
-| **SPH** | 8-16 cores | Recommended | 16-32 GB | 2-10 h |
+| Model | Discretization | Resolution | Time | Notes |
+|-------|----------------|------------|------|-------|
+| **FEM** | ~20k elements | 5–10 µm | **1–2 h** | Adaptive mesh, FEniCS |
+| **VOF** | ~50k cells | ~5 µm | **30–60 min** | Optimized C++ OpenFOAM |
+| **LBM** | 240×100 nodes | 5 µm | **~10 min** | Efficient parallelization |
+| **SPH** | ~1k particles | 15–20 µm | **1–2 h** | PySPH, unoptimized code |
 
 ### 4.2 Indicative configurations
 
@@ -89,7 +89,7 @@ Computation times depend on resolution and simulated duration. For a typical 2D 
 | Criterion | FEM | VOF | LBM | SPH |
 |-----------|-----|-----|-----|-----|
 | **Interface precision** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **2D computation time** | 5–30 h | 2–10 h | 1–5 h | 2–10 h |
+| **Time (this project)** | 1–2 h | 30–60 min | ~10 min | 1–2 h |
 | **Mass conservation** | Numerical adjustment | Rigorous | Approximate | By summation |
 | **Carreau rheology** | Native | Native | Implementable | Implementable |
 | **GPU acceleration** | Limited | Good | Excellent (×10-20) | Good (×10-15) |

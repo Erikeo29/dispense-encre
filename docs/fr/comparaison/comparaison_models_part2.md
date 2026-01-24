@@ -56,16 +56,16 @@ Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules do
 
 ## 4. Besoins hardware
 
-### 4.1 Ordres de grandeur
+### 4.1 Temps de calcul (simulations de ce projet)
 
-Les temps de calcul dépendent de la résolution et de la durée simulée. Pour une simulation 2D typique de dispense (20-40 ms de temps physique) :
+Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte dans un micro-via (domaine 1.2×0.5 mm, 20–40 ms de temps physique), PC standard 8 cœurs.
 
-| Modèle | Processeur | Carte graphique | Mémoire vive | Temps |
-|--------|------------|-----------------|--------------|-------|
-| **FEM** | 8-16 cœurs | Peu exploitée | 16-32 Go | 5-30 h |
-| **VOF** | 8-16 cœurs | Accélération utile | 8-16 Go | 2-10 h |
-| **LBM** | 4-8 cœurs | Fortement recommandée | 8-16 Go | 1-5 h |
-| **SPH** | 8-16 cœurs | Recommandée | 16-32 Go | 2-10 h |
+| Modèle | Discrétisation | Résolution | Temps | Remarques |
+|--------|----------------|------------|-------|-----------|
+| **FEM** | ~20k éléments | 5–10 µm | **1–2 h** | Maillage adaptatif, FEniCS |
+| **VOF** | ~50k cellules | ~5 µm | **30–60 min** | OpenFOAM optimisé C++ |
+| **LBM** | 240×100 nœuds | 5 µm | **~10 min** | Parallélisation efficace |
+| **SPH** | ~1k particules | 15–20 µm | **1–2 h** | PySPH, code non optimisé |
 
 ### 4.2 Configurations indicatives
 
@@ -89,7 +89,7 @@ Les temps de calcul dépendent de la résolution et de la durée simulée. Pour 
 | Critère | FEM | VOF | LBM | SPH |
 |---------|-----|-----|-----|-----|
 | **Précision interface** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Temps de calcul 2D** | 5–30 h | 2–10 h | 1–5 h | 2–10 h |
+| **Temps (ce projet)** | 1–2 h | 30–60 min | ~10 min | 1–2 h |
 | **Conservation masse** | Ajustement numérique | Rigoureuse | Approximative | Par sommation |
 | **Rhéologie Carreau** | Natif | Natif | Implémentable | Implémentable |
 | **Accélération GPU** | Limitée | Bonne | Excellente (×10-20) | Bonne (×10-15) |

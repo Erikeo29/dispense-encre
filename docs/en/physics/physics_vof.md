@@ -107,11 +107,15 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 ## 5. Computational Cost
 
-| Configuration | Mesh | Time | Hardware |
-|---------------|------|------|----------|
-| 2D standard | 100k cells | 2–4 h | 8 CPU cores |
-| 2D high resolution | 500k cells | 8–12 h | 16 CPU cores |
-| 2D with AMR | 100k–1M (adaptive) | 4–8 h | 16 cores + GPU |
+**Reference domain:** 1.2 mm × 0.5 mm (micro-via dispensing)
+
+| Configuration | Cells | Resolution | Time | Hardware |
+|---------------|-------|------------|------|----------|
+| **This project** | ~50k | ~5 µm | **30–60 min** | 8 cores |
+| High resolution | ~500k | ~1.5 µm | 4–8 h | 16 cores |
+| With AMR | 50k–500k | 1–10 µm (adaptive) | 2–4 h | 16 cores |
+
+> **Interpretation:** 50k hexahedral cells on 1.2×0.5 mm correspond to ~5 µm resolution, compatible with PLIC interface reconstruction.
 
 **GPU Acceleration:** x5–x10 for matrix operations (OpenFOAM ≥ v10 with CUDA).
 

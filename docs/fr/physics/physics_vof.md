@@ -107,11 +107,15 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 ## 5. Coût computationnel
 
-| Configuration | Maillage | Temps | Hardware |
-|---------------|----------|-------|----------|
-| 2D standard | 100k cellules | 2–4 h | 8 cœurs CPU |
-| 2D haute résolution | 500k cellules | 8–12 h | 16 cœurs CPU |
-| 2D avec AMR | 100k–1M (adaptatif) | 4–8 h | 16 cœurs + GPU |
+**Domaine de référence :** 1.2 mm × 0.5 mm (dispense dans micro-via)
+
+| Configuration | Cellules | Résolution | Temps | Hardware |
+|---------------|----------|------------|-------|----------|
+| **Ce projet** | ~50k | ~5 µm | **30–60 min** | 8 cœurs |
+| Haute résolution | ~500k | ~1.5 µm | 4–8 h | 16 cœurs |
+| Avec AMR | 50k–500k | 1–10 µm (adaptatif) | 2–4 h | 16 cœurs |
+
+> **Interprétation :** 50k cellules hexaédriques sur 1.2×0.5 mm correspondent à une résolution de ~5 µm, compatible avec la reconstruction PLIC de l'interface.
 
 **Accélération GPU :** x5–x10 pour les opérations matricielles (OpenFOAM ≥ v10 avec CUDA).
 

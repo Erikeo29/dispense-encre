@@ -102,13 +102,17 @@ $$\boldsymbol{\tau}_a = K|\dot{\gamma}_a|^{n-1} \dot{\gamma}_a$$
 
 ## 5. Coût computationnel
 
-| Configuration | Particules | Temps | Hardware |
-|---------------|------------|-------|----------|
-| 2D standard | 100k | 2–4 h | 8 cœurs CPU |
-| 3D standard | 1M | 5–10 h | RTX 4090 (24 GB) |
-| 3D haute résolution | 5M | 4–8 h | 4× A100 (40 GB) |
+**Domaine de référence :** 1.2 mm × 0.5 mm (dispense dans micro-via)
 
-**Accélération GPU :** x10–x15 vs CPU pour simulations > 500k particules.
+| Configuration | Particules | Espacement | Temps | Hardware |
+|---------------|------------|------------|-------|----------|
+| **Ce projet** | ~1k | 15–20 µm | **1–2 h** | 8 cœurs |
+| Haute résolution | ~10k | 5–10 µm | 4–8 h | 8 cœurs |
+| 3D standard | ~1M | 5 µm | 5–10 h | GPU |
+
+> **Interprétation :** ~1000 particules sur 1.2×0.5 mm donnent un espacement moyen de 15–20 µm. La longueur de lissage $h$ est typiquement 1.3× cet espacement. Code PySPH non optimisé.
+
+**Accélération GPU :** x10–x15 vs CPU pour simulations > 100k particules.
 
 ---
 
