@@ -1291,8 +1291,7 @@ elif selected_page == model_pages[2]:  # LBM
         st.markdown(load_file_content("physics/physics_lbm.md"))
 
     with tabs[1]:
-        st.subheader("Code Source Palabos")
-        st.code(load_file_content("code/code_lbm.cpp"), language='cpp')
+        display_smart_markdown(load_file_content("code/code_lbm.md"))
 
     with tabs[2]:  # GIF
         c_title, c_pop = st.columns([0.7, 0.3])
@@ -1413,8 +1412,7 @@ elif selected_page == model_pages[3]:  # SPH
         st.markdown(load_file_content("physics/physics_sph.md"))
 
     with tabs[1]:
-        st.subheader("Code Source PySPH")
-        st.code(load_file_content("code/code_sph.py"), language='python')
+        display_smart_markdown(load_file_content("code/code_sph.md"))
 
     with tabs[2]:
         st.subheader("Exemple de Simulation SPH")
