@@ -2,6 +2,7 @@
 1. Project Objective
 2. Target Application
 3. Navigation
+4. Methodological Note
 
 ---
 
@@ -33,3 +34,11 @@ Use the sidebar menu to explore the different chapters:
 1. **Introduction**: Scientific context and dimensionless numbers
 2. **Model Comparison**: Detailed comparison tables
 3. **Model Pages**: Physics, source code, and simulation examples: flow animations during dispensing (GIF files) and final state images (PNG files).
+
+---
+
+## 4. Methodological Note
+
+The animations and images presented in this application come from **pre-calculated** simulations. The FEM, VOF, LBM and SPH codes were developed and executed on a standard PC with various parameter combinations (geometry, viscosity, contact angles), then the results were exported as GIF files (animations) and PNG files (final images).
+
+This application is a **results viewer**, not a real-time simulator.
