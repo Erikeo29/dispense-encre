@@ -54,9 +54,9 @@ Ce fichier définit les paramètres numériques et physiques. Il est lu par le s
 ```
 
 **Points clés :**
-- **G_fluid** : paramètre critique du modèle Shan-Chen qui contrôle la tension de surface et la séparation de phase
-- **tau** : lié à la viscosité cinématique par $\nu = c_s^2 (\tau - 0.5)$
-- **contact_angles** : définit la mouillabilité de chaque surface de la cavité
+- **G_fluid** : paramètre critique du modèle Shan-Chen qui contrôle la tension de surface et la séparation de phase.
+- **tau** : lié à la viscosité cinématique par $\nu = c_s^2 (\tau - 0.5)$.
+- **contact_angles** : définit la mouillabilité de chaque surface de la cavité.
 
 ---
 
@@ -92,8 +92,8 @@ WallRegion getWallRegion(plint iX, plint iY) {
 ```
 
 **Points clés :**
-- **Géométrie explicite** : permet une définition précise des arêtes vives de la cavité
-- **Régions distinctes** : chaque zone peut avoir un angle de contact différent
+- **Géométrie explicite** : permet une définition précise des arêtes vives de la cavité.
+- **Régions distinctes** : chaque zone peut avoir un angle de contact différent.
 
 ---
 
@@ -127,8 +127,8 @@ if (liquidNearby) {
 ```
 
 **Points clés :**
-- **Densité virtuelle** : modifie le potentiel d'interaction près des murs
-- **Activation dynamique** : les propriétés de mouillage ne sont activées qu'au contact du fluide pour éviter la condensation parasite sur les surfaces hydrophiles
+- **Densité virtuelle** : modifie le potentiel d'interaction près des murs.
+- **Activation dynamique** : les propriétés de mouillage ne sont activées qu'au contact du fluide pour éviter la condensation parasite sur les surfaces hydrophiles.
 
 ---
 
@@ -157,8 +157,8 @@ T omegaLocal = 1.0 / (3.0 * nuLocal + 0.5);
 ```
 
 **Points clés :**
-- **Calcul local** : la viscosité est recalculée en chaque point et à chaque pas de temps
-- **Stabilité** : des bornes (`tauMin`, `tauMax`) sont appliquées pour assurer la stabilité numérique
+- **Calcul local** : la viscosité est recalculée en chaque point et à chaque pas de temps.
+- **Stabilité** : des bornes (`tauMin`, `tauMax`) sont appliquées pour assurer la stabilité numérique.
 
 ---
 
@@ -174,7 +174,60 @@ T rho = rhoOut + phi * (rhoIn - rhoOut);
 ```
 
 **Points clés :**
-- **Interface diffuse** : caractéristique intrinsèque du modèle Shan-Chen (3-4 cellules d'épaisseur)
-- **Équilibre** : une phase de "warmup" sans gravité permet à la goutte de prendre sa forme sphérique et ses densités d'équilibre avant l'impact
+- **Interface diffuse** : caractéristique intrinsèque du modèle Shan-Chen (3-4 cellules d'épaisseur).
+- **Équilibre** : une phase de "warmup" sans gravité permet à la goutte de prendre sa forme sphérique et ses densités d'équilibre avant l'impact.
+
+---
+
+## 7. Boucle principale et Sorties
+
+Le programme principal gère l'itération temporelle et l'écriture des fichiers VTK pour la visualisation.
+
+```cpp
+// src/lbm_solver/dropletCavity2D.cpp - main
+
+// Boucle principale
+for (int iT = 1; iT <= maxIter; ++iT) {
+    lattice.collideAndStream();
+
+    // Application progressive des angles de contact
+    if (iT % 10 == 0) {
+        // ... détection du contact liquide/mur ...
+    }
+
+    // Écriture des résultats (fichiers .vti lisibles par ParaView)
+    if (iT % saveIter == 0) {
+        std::unique_ptr<MultiScalarField2D<T>> rho(computeDensity(lattice));
+        
+        // Masquage des zones solides internes pour une visualisation propre
+        maskInternalSolids(*rho, rhoGas);
+        
+        string filename = "droplet_" + util::val2str(iT);
+        VtkImageOutput2D<T> vtkOut(filename, 1.0);
+        vtkOut.writeData<float>(*rho, "density", 1.0);
+    }
+}
+```
+
+**Points clés :**
+- **VTK/VTI** : format standard pour les données volumétriques (images 2D/3D).
+- **Post-traitement** : le masquage des solides est purement visuel pour faciliter l'analyse des résultats.
+
+---
+
+## 8. Résumé des paramètres physiques
+
+Le code convertit les unités physiques (SI) en unités de réseau (Lattice Units - l.u.).
+
+| Paramètre Physique | Valeur Typique | Conversion LBM |
+|-------------------|----------------|----------------|
+| Diamètre goutte | 300 µm | 60 l.u. (dx = 5 µm) |
+| Profondeur puits | 130 µm | 26 l.u. |
+| Largeur puits | 800 µm | 160 l.u. |
+| Densité encre | 3000 kg/m³ | $\rho_{liq} \approx 458$ (Shan-Chen) |
+| Tension surface | 0.040 N/m | Contrôlé par $G = -112$ |
+| Gravité | 9.81 m/s² | $g_{lb} \approx 5 \times 10^{-5}$ |
+
+**Note :** Le choix de $G$ est crucial. Il doit être calibré pour obtenir le bon rapport de densité et une tension de surface stable sans provoquer d'instabilités numériques (courants parasites).
 
 ```

@@ -46,9 +46,9 @@ contact_angles:
 ```
 
 **Points clés :**
-- **dx** : définit la résolution spatiale (taille caractéristique des particules)
-- **c0** : vitesse du son numérique pour le schéma WCSPH (faiblement compressible)
-- **sigma** : tension de surface physique
+- **dx** : définit la résolution spatiale (taille caractéristique des particules).
+- **c0** : vitesse du son numérique pour le schéma WCSPH (faiblement compressible).
+- **sigma** : tension de surface physique.
 
 ---
 
@@ -78,8 +78,8 @@ class DropletSpreading(Application):
 ```
 
 **Points clés :**
-- **Application** : gère le cycle de vie de la simulation PySPH
-- **Schéma Morris** : utilisé pour la tension de surface (robuste pour les forts ratios de densité)
+- **Application** : gère le cycle de vie de la simulation PySPH.
+- **Schéma Morris** : utilisé pour la tension de surface (robuste pour les forts ratios de densité).
 
 ---
 
@@ -109,9 +109,9 @@ class CavityAdhesionForce(Equation):
 ```
 
 **Points clés :**
-- **Force d'adhésion** : simule la tension de ligne triple
-- **Géométrie complexe** : gère distinctement le fond, les murs verticaux et les plateaux
-- **cos_theta** : détermine si la force favorise l'étalement (>0) ou le retrait (<0)
+- **Force d'adhésion** : simule la tension de ligne triple.
+- **Géométrie complexe** : gère distinctement le fond, les murs verticaux et les plateaux.
+- **cos_theta** : détermine si la force favorise l'étalement (>0) ou le retrait (<0).
 
 ---
 
@@ -136,8 +136,8 @@ class CarreauViscosity(Equation):
 ```
 
 **Points clés :**
-- **Calcul particulaire** : chaque particule transporte sa propre viscosité
-- **ComputeStrainRate** : équation préalable qui estime le tenseur de déformation $\dot{\gamma}$ via les gradients SPH
+- **Calcul particulaire** : chaque particule transporte sa propre viscosité.
+- **ComputeStrainRate** : équation préalable qui estime le tenseur de déformation $\dot{\gamma}$ via les gradients SPH.
 
 ---
 
@@ -174,5 +174,72 @@ def create_equations(self):
 ```
 
 **Points clés :**
-- **Groupes** : définissent l'ordre d'exécution des forces
-- **Modularité** : permet d'activer/désactiver la rhéologie ou la géométrie de cavité
+- **Groupes** : définissent l'ordre d'exécution des forces.
+- **Modularité** : permet d'activer/désactiver la rhéologie ou la géométrie de cavité.
+
+---
+
+## 7. Configuration du Solveur et Pas de Temps
+
+Le solveur est configuré pour utiliser un pas de temps adaptatif ou fixe basé sur les critères CFL, visqueux et capillaire.
+
+```python
+# templates/pysph/droplet_spreading.py
+
+def consume_user_options(self):
+    # Calcul des critères de pas de temps
+    dt_cfl = 0.25 * self.h0 / (1.1 * self.c0)
+    dt_viscous = 0.125 * self.h0**2 / max(self.nu, 1e-10)
+    dt_surface = np.sqrt(self.rho0 * self.h0**3 / (2 * np.pi * max(self.sigma, 1e-10)))
+    
+    # Choix du pas le plus restrictif
+    self.dt = 0.5 * min(dt_cfl, dt_viscous, dt_surface)
+
+def create_solver(self):
+    # Intégrateur prédicteur-correcteur
+    integrator = PECIntegrator(fluid=TransportVelocityStep())
+
+    solver = Solver(
+        kernel=QuinticSpline(dim=2),
+        integrator=integrator,
+        dt=self.dt,
+        tf=self.tf,
+        pfreq=100  # Fréquence de sauvegarde
+    )
+    return solver
+```
+
+**Points clés :**
+- **Stabilité** : le pas de temps doit satisfaire plusieurs conditions physiques simultanément.
+- **Intégrateur** : utilisation d'un schéma explicite performant (PEC).
+
+---
+
+## 8. Post-traitement et Métriques
+
+Le script inclut une étape automatique de post-traitement pour calculer le diamètre d'étalement au cours du temps.
+
+```python
+# Calcul des métriques d'étalement
+def _compute_spreading_metrics(self):
+    times = []
+    spreading_diameters = []
+
+    for sd, arrays in iter_output(self.output_files, 'fluid'):
+        # Filtrer les particules de la goutte (color > 0.5)
+        mask = pa.color > 0.5
+        x_drop = pa.x[mask]
+        
+        # Diamètre = Xmax - Xmin
+        spread = x_drop.max() - x_drop.min()
+        
+        times.append(t)
+        spreading_diameters.append(spread)
+
+    # Sauvegarde des résultats
+    np.savez('spreading_metrics.npz', time=times, spreading=spreading_diameters)
+```
+
+**Points clés :**
+- **Métriques automatiques** : facilite la comparaison quantitative avec les autres modèles (VOF, FEM).
+- **Masquage** : permet de distinguer la goutte de l'air environnant.

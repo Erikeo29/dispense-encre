@@ -54,9 +54,9 @@ This file defines numerical and physical parameters. It is read by the solver at
 ```
 
 **Key points:**
-- **G_fluid**: Critical parameter of the Shan-Chen model controlling surface tension and phase separation
-- **tau**: Linked to kinematic viscosity by $\nu = c_s^2 (\tau - 0.5)$
-- **contact_angles**: Defines the wettability of each surface in the cavity
+- **G_fluid**: Critical parameter of the Shan-Chen model controlling surface tension and phase separation.
+- **tau**: Linked to kinematic viscosity by $\nu = c_s^2 (\tau - 0.5)$.
+- **contact_angles**: Defines the wettability of each surface in the cavity.
 
 ---
 
@@ -92,8 +92,8 @@ WallRegion getWallRegion(plint iX, plint iY) {
 ```
 
 **Key points:**
-- **Explicit Geometry**: Allows precise definition of sharp cavity edges
-- **Distinct Regions**: Each zone can have a different contact angle
+- **Explicit Geometry**: Allows precise definition of sharp cavity edges.
+- **Distinct Regions**: Each zone can have a different contact angle.
 
 ---
 
@@ -127,8 +127,8 @@ if (liquidNearby) {
 ```
 
 **Key points:**
-- **Virtual Density**: Modifies the interaction potential near walls
-- **Dynamic Activation**: Wetting properties are only activated upon fluid contact to prevent parasitic condensation on hydrophilic surfaces
+- **Virtual Density**: Modifies the interaction potential near walls.
+- **Dynamic Activation**: Wetting properties are only activated upon fluid contact to prevent parasitic condensation on hydrophilic surfaces.
 
 ---
 
@@ -157,8 +157,8 @@ T omegaLocal = 1.0 / (3.0 * nuLocal + 0.5);
 ```
 
 **Key points:**
-- **Local Calculation**: Viscosity is recomputed at every point and every time step
-- **Stability**: Bounds (`tauMin`, `tauMax`) are applied to ensure numerical stability
+- **Local Calculation**: Viscosity is recomputed at every point and every time step.
+- **Stability**: Bounds (`tauMin`, `tauMax`) are applied to ensure numerical stability.
 
 ---
 
@@ -174,7 +174,60 @@ T rho = rhoOut + phi * (rhoIn - rhoOut);
 ```
 
 **Key points:**
-- **Diffuse Interface**: Intrinsic characteristic of the Shan-Chen model (3-4 cells thick)
-- **Equilibration**: A "warmup" phase without gravity allows the droplet to assume its spherical shape and equilibrium densities before impact
+- **Diffuse Interface**: Intrinsic characteristic of the Shan-Chen model (3-4 cells thick).
+- **Equilibration**: A "warmup" phase without gravity allows the droplet to assume its spherical shape and equilibrium densities before impact.
+
+---
+
+## 7. Main Loop and Outputs
+
+The main program handles time iteration and VTK file writing for visualization.
+
+```cpp
+// src/lbm_solver/dropletCavity2D.cpp - main
+
+// Main loop
+for (int iT = 1; iT <= maxIter; ++iT) {
+    lattice.collideAndStream();
+
+    // Progressive contact angle application
+    if (iT % 10 == 0) {
+        // ... liquid/wall contact detection ...
+    }
+
+    // Write results (.vti files readable by ParaView)
+    if (iT % saveIter == 0) {
+        std::unique_ptr<MultiScalarField2D<T>> rho(computeDensity(lattice));
+        
+        // Mask internal solid zones for clean visualization
+        maskInternalSolids(*rho, rhoGas);
+        
+        string filename = "droplet_" + util::val2str(iT);
+        VtkImageOutput2D<T> vtkOut(filename, 1.0);
+        vtkOut.writeData<float>(*rho, "density", 1.0);
+    }
+}
+```
+
+**Key points:**
+- **VTK/VTI**: Standard format for volumetric data (2D/3D images).
+- **Post-processing**: Masking solids is purely visual to facilitate results analysis.
+
+---
+
+## 8. Physical Parameter Summary
+
+The code converts physical units (SI) into Lattice Units (l.u.).
+
+| Physical Parameter | Typical Value | LBM Conversion |
+|-------------------|----------------|----------------|
+| Droplet Diameter | 300 µm | 60 l.u. (dx = 5 µm) |
+| Well Depth | 130 µm | 26 l.u. |
+| Well Width | 800 µm | 160 l.u. |
+| Ink Density | 3000 kg/m³ | $\rho_{liq} \approx 458$ (Shan-Chen) |
+| Surface Tension | 0.040 N/m | Controlled by $G = -112$ |
+| Gravity | 9.81 m/s² | $g_{lb} \approx 5 \times 10^{-5}$ |
+
+**Note:** The choice of $G$ is crucial. It must be calibrated to obtain the correct density ratio and stable surface tension without causing numerical instabilities (parasitic currents).
 
 ```

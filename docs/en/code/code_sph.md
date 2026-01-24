@@ -46,9 +46,9 @@ contact_angles:
 ```
 
 **Key points:**
-- **dx**: Defines spatial resolution (characteristic particle size)
-- **c0**: Numerical speed of sound for the WCSPH (Weakly Compressible SPH) scheme
-- **sigma**: Physical surface tension
+- **dx**: Defines spatial resolution (characteristic particle size).
+- **c0**: Numerical speed of sound for the WCSPH (Weakly Compressible SPH) scheme.
+- **sigma**: Physical surface tension.
 
 ---
 
@@ -78,8 +78,8 @@ class DropletSpreading(Application):
 ```
 
 **Key points:**
-- **Application**: Manages the PySPH simulation lifecycle
-- **Morris Scheme**: Used for surface tension (robust for high density ratios)
+- **Application**: Manages the PySPH simulation lifecycle.
+- **Morris Scheme**: Used for surface tension (robust for high density ratios).
 
 ---
 
@@ -109,9 +109,9 @@ class CavityAdhesionForce(Equation):
 ```
 
 **Key points:**
-- **Adhesion Force**: Simulates the triple line tension
-- **Complex Geometry**: Handles bottom, vertical walls, and platforms distinctly
-- **cos_theta**: Determines if the force favors spreading (>0) or retraction (<0)
+- **Adhesion Force**: Simulates the triple line tension.
+- **Complex Geometry**: Handles bottom, vertical walls, and platforms distinctly.
+- **cos_theta**: Determines if the force favors spreading (>0) or retraction (<0).
 
 ---
 
@@ -136,8 +136,8 @@ class CarreauViscosity(Equation):
 ```
 
 **Key points:**
-- **Particle-based**: Each particle carries its own viscosity
-- **ComputeStrainRate**: Prerequisite equation that estimates the strain tensor $\dot{\gamma}$ via SPH gradients
+- **Particle-based**: Each particle carries its own viscosity.
+- **ComputeStrainRate**: Prerequisite equation that estimates the strain tensor $\dot{\gamma}$ via SPH gradients.
 
 ---
 
@@ -174,5 +174,72 @@ def create_equations(self):
 ```
 
 **Key points:**
-- **Groups**: Define the execution order of forces
-- **Modularity**: Allows toggling rheology or cavity geometry on/off
+- **Groups**: Define the execution order of forces.
+- **Modularity**: Allows toggling rheology or cavity geometry on/off.
+
+---
+
+## 7. Solver Configuration and Time Step
+
+The solver is configured to use an adaptive or fixed time step based on CFL, viscous, and capillary criteria.
+
+```python
+# templates/pysph/droplet_spreading.py
+
+def consume_user_options(self):
+    # Time step criteria calculation
+    dt_cfl = 0.25 * self.h0 / (1.1 * self.c0)
+    dt_viscous = 0.125 * self.h0**2 / max(self.nu, 1e-10)
+    dt_surface = np.sqrt(self.rho0 * self.h0**3 / (2 * np.pi * max(self.sigma, 1e-10)))
+    
+    # Choose most restrictive step
+    self.dt = 0.5 * min(dt_cfl, dt_viscous, dt_surface)
+
+def create_solver(self):
+    # Predictor-corrector integrator
+    integrator = PECIntegrator(fluid=TransportVelocityStep())
+
+    solver = Solver(
+        kernel=QuinticSpline(dim=2),
+        integrator=integrator,
+        dt=self.dt,
+        tf=self.tf,
+        pfreq=100  # Save frequency
+    )
+    return solver
+```
+
+**Key points:**
+- **Stability**: The time step must satisfy multiple physical conditions simultaneously.
+- **Integrator**: Uses an efficient explicit scheme (PEC).
+
+---
+
+## 8. Post-processing and Metrics
+
+The script includes an automatic post-processing step to calculate the spreading diameter over time.
+
+```python
+# Spreading metrics calculation
+def _compute_spreading_metrics(self):
+    times = []
+    spreading_diameters = []
+
+    for sd, arrays in iter_output(self.output_files, 'fluid'):
+        # Filter droplet particles (color > 0.5)
+        mask = pa.color > 0.5
+        x_drop = pa.x[mask]
+        
+        # Diameter = Xmax - Xmin
+        spread = x_drop.max() - x_drop.min()
+        
+        times.append(t)
+        spreading_diameters.append(spread)
+
+    # Save results
+    np.savez('spreading_metrics.npz', time=times, spreading=spreading_diameters)
+```
+
+**Key points:**
+- **Automatic Metrics**: Facilitates quantitative comparison with other models (VOF, FEM).
+- **Masking**: Distinguishes the droplet from the surrounding air.
