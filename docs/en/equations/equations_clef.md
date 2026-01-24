@@ -5,6 +5,12 @@
 4. Surface Tension
 5. Boundary Conditions
 6. Fundamental Dimensionless Numbers
+   - 6.1 Reynolds — Flow Regimes
+   - 6.2 Weber — Droplet Stability
+   - 6.3 Ohnesorge — Ejection and Filaments
+   - 6.4 Deborah — Viscoelastic Effects
+   - 6.5 Capillary — Spreading and Wetting
+   - 6.6 Bond — Gravity vs Capillarity
 7. Model Comparison Table
 8. Summary
 
@@ -293,19 +299,90 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 Fluid dispensing modeling involves several interdependent physical phenomena, characterized by the following dimensionless numbers:
 
-| Number | Expression | Meaning | Typical Value |
-|--------|------------|---------|---------------|
-| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Inertial vs viscous effects | 10 – 100 |
-| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Inertial forces vs surface tension | $We < 10$ |
-| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosity, surface tension, and size | $Oh < 0.5$ |
-| **Deborah** | $De = \lambda \dot{\gamma}$ | Viscoelastic effects (relaxation time $\lambda$) | Variable |
-| **Capillary** | $Ca = \frac{\eta v}{\sigma}$ | Viscosity vs capillarity | $Ca \ll 1$ |
-| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravity vs surface tension | $Bo \ll 1$ |
+| Number | Expression | Meaning | Typical Value | Physical Interpretation |
+|--------|------------|---------|---------------|-------------------------|
+| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Inertial vs viscous effects | 10 – 100 | Ratio of inertial to viscous forces. Determines flow regime. |
+| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Inertial forces vs surface tension | $We < 10$ | Ratio of kinetic energy to surface energy. Controls droplet deformation. |
+| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosity, surface tension, and size | $Oh < 0.5$ | Combines viscosity, capillarity, and inertia. Predicts jet and filament stability. |
+| **Deborah** | $De = \lambda \dot{\gamma}$ | Viscoelastic effects | Variable | Ratio of fluid relaxation time to characteristic flow time. |
+| **Capillary** | $Ca = \frac{\eta v}{\sigma}$ | Viscosity vs capillarity | $Ca \ll 1$ | Ratio of viscous forces to surface tension. Controls spreading. |
+| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravity vs surface tension | $Bo \ll 1$ | Ratio of gravitational to capillary forces. Determines droplet shape. |
 
-**Physical interpretation:**
-- $Re$ between 10 and 100: laminar regime with inertial effects
-- $Oh < 0.5$: stable droplet/filament formation
-- $Bo \ll 1$: gravity negligible (dominant capillary regime)
+---
+
+### 6.1 Reynolds Number ($Re$) — Flow Regimes
+
+| $Re$ Range | Regime | Physical Description |
+|------------|--------|----------------------|
+| $Re < 1$ | **Stokes (creeping)** | Viscous forces dominate, very slow flow, reversible. Typical of microchannels. |
+| $1 < Re < 10$ | **Viscous laminar** | Ordered flow, inertial effects begin to appear but remain weak. |
+| $10 < Re < 100$ | **Inertial laminar** | Typical regime for ink dispensing. Stable flow with significant inertial effects. |
+| $100 < Re < 2000$ | **Transitional laminar** | Laminar flow but sensitive to perturbations. Possible onset of instabilities. |
+| $Re > 2000$ | **Turbulent** | Chaotic flow with vortices. Rare in microfluidics (diameters too small). |
+
+**Dispensing application:** With $\rho \approx 1000$ kg/m³, $v \approx 0.1$ m/s, $D \approx 300$ µm, $\eta \approx 0.5$ Pa·s → $Re \approx 60$ (inertial laminar).
+
+---
+
+### 6.2 Weber Number ($We$) — Droplet Stability
+
+| $We$ Range | Behavior | Physical Description |
+|------------|----------|----------------------|
+| $We < 1$ | **Capillary dominant** | Surface tension maintains spherical droplets. No significant deformation. |
+| $1 < We < 10$ | **Inertia-capillarity balance** | Moderate droplet deformation. Optimal regime for controlled dispensing. |
+| $10 < We < 50$ | **Significant deformation** | Highly deformed droplets, risk of satellite droplet breakup. |
+| $We > 50$ | **Atomization** | Fragmentation into fine droplets. Splash phenomenon upon impact. |
+
+**Dispensing application:** $We < 10$ ensures clean dispensing without excessive satellites.
+
+---
+
+### 6.3 Ohnesorge Number ($Oh$) — Ejection and Filament Formation
+
+| $Oh$ Range | Behavior | Physical Description |
+|------------|----------|----------------------|
+| $Oh < 0.1$ | **Inertio-capillary** | Low viscous damping. Droplet oscillations, frequent satellites, thin filaments that break up. |
+| $0.1 < Oh < 0.5$ | **Optimal regime** | Viscosity/capillarity balance. Stable droplet formation, controlled filaments. Optimal zone for inkjet. |
+| $0.5 < Oh < 1$ | **Moderate viscous** | Oscillation damping. Thicker filaments, fewer satellites but slower ejection. |
+| $Oh > 1$ | **Viscous dominant** | Difficult to eject droplets. Stretching of long viscous filaments ("stringing"). |
+
+**Fromm criterion:** Inkjet printability zone: $0.1 < Oh < 1$ and $We > 4$.
+
+---
+
+### 6.4 Deborah Number ($De$) — Viscoelastic Effects
+
+| $De$ Range | Behavior | Physical Description |
+|------------|----------|----------------------|
+| $De \ll 1$ | **Equivalent Newtonian fluid** | Fluid has time to relax. Quasi-viscous behavior, no elastic memory. |
+| $De \approx 1$ | **Viscoelastic** | Coupling between relaxation and flow. Significant elastic effects (die swell, normal stresses). |
+| $De \gg 1$ | **Elastic dominant** | Fluid behaves like an elastic solid. Energy storage, delayed response. |
+
+**Ink application:** Shear-thinning inks often have $\lambda \approx 0.1$ s and $\dot{\gamma} \approx 100$ s⁻¹ → $De \approx 10$ (notable elastic effects).
+
+---
+
+### 6.5 Capillary Number ($Ca$) — Spreading and Wetting
+
+| $Ca$ Range | Behavior | Physical Description |
+|------------|----------|----------------------|
+| $Ca \ll 0.01$ | **Pure capillary** | Interface deforms only under surface tension. Rapid equilibrium shape. |
+| $0.01 < Ca < 0.1$ | **Visco-capillary** | Competition between viscous spreading and surface tension. Controlled wetting dynamics. |
+| $Ca > 0.1$ | **Viscous dominant** | Viscous flow deforms the interface. Film entrainment, significant contact line deformation. |
+
+**Dispensing application:** $Ca \approx 0.01$ — spreading is controlled by capillarity with moderate viscous influence.
+
+---
+
+### 6.6 Bond Number ($Bo$) — Gravity vs Capillarity
+
+| $Bo$ Range | Behavior | Physical Description |
+|------------|----------|----------------------|
+| $Bo \ll 0.1$ | **Capillary dominant** | Gravity is negligible. Quasi-spherical droplets, capillary rise possible. |
+| $0.1 < Bo < 1$ | **Transition** | Gravity and capillarity comparable. Slightly flattened droplets, intermediate shape. |
+| $Bo > 1$ | **Gravity dominant** | Droplets flatten under their weight. "Puddle" shape, gravitational drainage. |
+
+**Micro-via application:** With $L \approx 500$ µm → $Bo \approx 0.01$ — gravity is negligible, filling is dominated by capillarity and wetting.
 
 ---
 

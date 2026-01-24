@@ -17,7 +17,7 @@
 La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
 
 **Applications industrielles :**
-- Fabrication de capteurs électrochimiques (dépôt d'encres conductrices)
+- Fabrication de capteurs électrochimiques (dépôt d'encre pour électrode de référence, pour électrode conductrice, pour fonctionnalisation chimique, biochimique...)
 - Électronique imprimée (circuits conducteurs, antennes RFID)
 - Bioprinting et dépôt de biomatériaux
 - Revêtements fonctionnels et couches minces

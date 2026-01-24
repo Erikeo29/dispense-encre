@@ -1,12 +1,28 @@
 **Contents:**
-1. Artificial Intelligence and Hybrid Modeling
-2. Quantum Computing
-3. 4D Printing and Smart Inks
-4. Research Opportunities
+1. Conclusion
+2. Perspectives
+   - 2.1 Artificial Intelligence and Hybrid Modeling
+   - 2.2 Quantum Computing
+   - 2.3 4D Printing and Smart Inks
+   - 2.4 Research Opportunities
 
 ---
 
-## 1. Artificial Intelligence and Hybrid Modeling
+## 1. Conclusion
+
+This study enabled the modeling of shear-thinning ink dispensing into micro-via using four distinct numerical methods: FEM/Phase-Field, VOF, LBM, and SPH.
+
+The results obtained show trends comparable to experimental observations. Notably, the impact of nozzle position along the X-axis on overflow phenomena and filling uniformity was demonstrated. Similarly, expected physicochemical phenomena were reproduced: the influence of viscosity and contact angles (surface energy) on ink spreading corresponds to anticipated physical behaviors.
+
+Differences in results appear depending on the models used, which is consistent given their very different numerical formulations (Eulerian vs Lagrangian, mesh-based vs meshless, macroscopic vs mesoscopic). However, overall trends remain comparable across all four approaches, reinforcing confidence in the validity of the simulations.
+
+To go further, it would be necessary to continue improving the codes, refine the physicochemical models (particularly rheology and dynamic wetting), and optimize numerical parameters to improve result accuracy compared to experimental observations.
+
+---
+
+## 2. Perspectives
+
+### 2.1 Artificial Intelligence and Hybrid Modeling
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -30,7 +46,7 @@
 
 ---
 
-## 2. Quantum Computing
+### 2.2 Quantum Computing
 
 Quantum computing could revolutionize complex flow modeling:
 
@@ -45,7 +61,7 @@ Quantum computing could revolutionize complex flow modeling:
 
 ---
 
-## 3. 4D Printing and Smart Inks
+### 2.3 4D Printing and Smart Inks
 
 Shear-thinning inks are increasingly used for **4D printing** (materials that change shape after printing):
 
@@ -61,7 +77,7 @@ Shear-thinning inks are increasingly used for **4D printing** (materials that ch
 
 ---
 
-## 4. Research Opportunities
+### 2.4 Research Opportunities
 
 ### Rheology-Interface Coupling
 

@@ -5,6 +5,12 @@
 4. Tension superficielle
 5. Conditions aux limites
 6. Nombres adimensionnels fondamentaux
+   - 6.1 Reynolds — Régimes d'écoulement
+   - 6.2 Weber — Stabilité des gouttes
+   - 6.3 Ohnesorge — Éjection et filaments
+   - 6.4 Deborah — Effets viscoélastiques
+   - 6.5 Capillaire — Étalement et mouillage
+   - 6.6 Bond — Gravité vs Capillarité
 7. Tableau comparatif des modèles
 8. Synthèse
 
@@ -293,19 +299,90 @@ $$\mathbf{n} \cdot \mathbf{n}_w = \cos \theta$$
 
 La modélisation de la dispense de fluides implique plusieurs phénomènes physiques interdépendants, caractérisés par les nombres adimensionnels suivants :
 
-| Nombre | Expression | Signification | Valeur typique |
-|--------|------------|---------------|----------------|
-| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Effets inertiels vs visqueux | 10 – 100 |
-| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We < 10$ |
-| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.5$ |
-| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques (temps de relaxation $\lambda$) | Variable |
-| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ |
-| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ |
+| Nombre | Expression | Signification | Valeur typique | Interprétation physique |
+|--------|------------|---------------|----------------|-------------------------|
+| **Reynolds** | $Re = \frac{\rho v D}{\eta}$ | Effets inertiels vs visqueux | 10 – 100 | Rapport entre forces d'inertie et forces visqueuses. Détermine le régime d'écoulement. |
+| **Weber** | $We = \frac{\rho v^2 L}{\sigma}$ | Forces inertielles vs tension superficielle | $We < 10$ | Rapport entre énergie cinétique et énergie de surface. Contrôle la déformation des gouttes. |
+| **Ohnesorge** | $Oh = \frac{\eta}{\sqrt{\rho \sigma D}}$ | Viscosité, tension superficielle et taille | $Oh < 0.5$ | Combine viscosité, capillarité et inertie. Prédit la stabilité des jets et filaments. |
+| **Deborah** | $De = \lambda \dot{\gamma}$ | Effets viscoélastiques | Variable | Rapport entre temps de relaxation du fluide et temps caractéristique de l'écoulement. |
+| **Capillaire** | $Ca = \frac{\eta v}{\sigma}$ | Viscosité vs capillarité | $Ca \ll 1$ | Rapport entre forces visqueuses et tension superficielle. Contrôle l'étalement. |
+| **Bond** | $Bo = \frac{\rho g L^2}{\sigma}$ | Gravité vs tension superficielle | $Bo \ll 1$ | Rapport entre forces gravitationnelles et capillaires. Détermine la forme des gouttes. |
 
-**Interprétation physique :**
-- $Re$ entre 10 et 100 : régime laminaire avec effets inertiels
-- $Oh < 0.5$ : formation de gouttes/filaments stables
-- $Bo \ll 1$ : gravité négligeable (régime capillaire dominant)
+---
+
+### 6.1 Nombre de Reynolds ($Re$) — Régimes d'écoulement
+
+| Plage de $Re$ | Régime | Description physique |
+|---------------|--------|----------------------|
+| $Re < 1$ | **Stokes (rampant)** | Forces visqueuses dominantes, écoulement très lent, réversible. Typique des microcanaux. |
+| $1 < Re < 10$ | **Laminaire visqueux** | Écoulement ordonné, les effets inertiels commencent à apparaître mais restent faibles. |
+| $10 < Re < 100$ | **Laminaire inertiel** | Régime typique de la dispense d'encre. Écoulement stable mais avec effets inertiels significatifs. |
+| $100 < Re < 2000$ | **Laminaire transitionnel** | Écoulement laminaire mais sensible aux perturbations. Début d'instabilités possibles. |
+| $Re > 2000$ | **Turbulent** | Écoulement chaotique avec tourbillons. Rare en microfluidique (diamètres trop petits). |
+
+**Application dispense :** Avec $\rho \approx 1000$ kg/m³, $v \approx 0.1$ m/s, $D \approx 300$ µm, $\eta \approx 0.5$ Pa·s → $Re \approx 60$ (laminaire inertiel).
+
+---
+
+### 6.2 Nombre de Weber ($We$) — Stabilité des gouttes
+
+| Plage de $We$ | Comportement | Description physique |
+|---------------|--------------|----------------------|
+| $We < 1$ | **Capillaire dominant** | La tension superficielle maintient les gouttes sphériques. Pas de déformation significative. |
+| $1 < We < 10$ | **Équilibre inertie-capillarité** | Déformation modérée des gouttes. Régime optimal pour la dispense contrôlée. |
+| $10 < We < 50$ | **Déformation importante** | Gouttes fortement déformées, risque de rupture en gouttelettes satellites. |
+| $We > 50$ | **Atomisation** | Fragmentation en fines gouttelettes. Phénomène de splash à l'impact. |
+
+**Application dispense :** $We < 10$ garantit une dispense propre sans satellites excessifs.
+
+---
+
+### 6.3 Nombre d'Ohnesorge ($Oh$) — Éjection et formation de filaments
+
+| Plage de $Oh$ | Comportement | Description physique |
+|---------------|--------------|----------------------|
+| $Oh < 0.1$ | **Inertio-capillaire** | Faible amortissement visqueux. Oscillations de gouttes, satellites fréquents, filaments fins qui se brisent. |
+| $0.1 < Oh < 0.5$ | **Régime optimal** | Équilibre viscosité/capillarité. Formation de gouttes stables, filaments contrôlés. Zone optimale pour l'inkjet. |
+| $0.5 < Oh < 1$ | **Visqueux modéré** | Amortissement des oscillations. Filaments plus épais, moins de satellites mais éjection plus lente. |
+| $Oh > 1$ | **Visqueux dominant** | Difficile d'éjecter des gouttes. Étirement de longs filaments visqueux ("stringing"). |
+
+**Critère de Fromm :** Zone d'imprimabilité inkjet : $0.1 < Oh < 1$ et $We > 4$.
+
+---
+
+### 6.4 Nombre de Deborah ($De$) — Effets viscoélastiques
+
+| Plage de $De$ | Comportement | Description physique |
+|---------------|--------------|----------------------|
+| $De \ll 1$ | **Fluide newtonien équivalent** | Le fluide a le temps de relaxer. Comportement quasi-visqueux, pas de mémoire élastique. |
+| $De \approx 1$ | **Viscoélastique** | Couplage entre relaxation et écoulement. Effets élastiques significatifs (die swell, normal stresses). |
+| $De \gg 1$ | **Élastique dominant** | Le fluide se comporte comme un solide élastique. Stockage d'énergie, réponse différée. |
+
+**Application encres :** Les encres rhéofluidifiantes ont souvent $\lambda \approx 0.1$ s et $\dot{\gamma} \approx 100$ s⁻¹ → $De \approx 10$ (effets élastiques notables).
+
+---
+
+### 6.5 Nombre Capillaire ($Ca$) — Étalement et mouillage
+
+| Plage de $Ca$ | Comportement | Description physique |
+|---------------|--------------|----------------------|
+| $Ca \ll 0.01$ | **Capillaire pur** | L'interface se déforme uniquement sous l'effet de la tension superficielle. Forme d'équilibre rapide. |
+| $0.01 < Ca < 0.1$ | **Visco-capillaire** | Compétition entre étalement visqueux et tension superficielle. Dynamique de mouillage contrôlée. |
+| $Ca > 0.1$ | **Visqueux dominant** | L'écoulement visqueux déforme l'interface. Entraînement de film, déformation importante de la ligne de contact. |
+
+**Application dispense :** $Ca \approx 0.01$ — l'étalement est contrôlé par la capillarité avec influence visqueuse modérée.
+
+---
+
+### 6.6 Nombre de Bond ($Bo$) — Gravité vs Capillarité
+
+| Plage de $Bo$ | Comportement | Description physique |
+|---------------|--------------|----------------------|
+| $Bo \ll 0.1$ | **Capillaire dominant** | La gravité est négligeable. Gouttes quasi-sphériques, montée capillaire possible. |
+| $0.1 < Bo < 1$ | **Transition** | Gravité et capillarité comparables. Gouttes légèrement aplaties, forme intermédiaire. |
+| $Bo > 1$ | **Gravité dominante** | Les gouttes s'aplatissent sous leur poids. Forme de "flaque", drainage gravitaire. |
+
+**Application micro-via :** Avec $L \approx 500$ µm → $Bo \approx 0.01$ — la gravité est négligeable, le remplissage est dominé par la capillarité et le mouillage.
 
 ---
 

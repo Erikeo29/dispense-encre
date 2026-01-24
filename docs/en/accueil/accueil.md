@@ -39,6 +39,6 @@ Use the sidebar menu to explore the different chapters:
 
 ## 4. Methodological Note
 
-The animations and images presented in this application come from **pre-calculated** simulations. The FEM, VOF, LBM and SPH codes were developed and executed on a standard PC with various parameter combinations (geometry, viscosity, contact angles), then the results were exported as GIF files (animations) and PNG files (final images).
+The animations and images presented in this application come from **pre-calculated** simulations. The FEM, VOF, LBM and SPH codes were developed by the author of this site with the use of AI tools for program development and debugging on a standard PC. The simulations were performed with various parameter combinations (geometry, viscosity, contact angles, dispensing time...) as a parametric study. The results were then exported as GIF files (animations) and PNG files (final images) to populate this application.
 
-This application is a **results viewer**, not a real-time simulator.
+This application is a **results viewer**, not a real-time simulator. Indeed, running these simulations requires substantial Python or OpenFOAM package configurations; the modeling time is also significant, ranging from 10 minutes to 2 hours per unit simulation depending on the numerical model type and parameters studied. The codes are provided in the "Code" tabs of the 4 models to enable reproduction of these simulations on other machines.

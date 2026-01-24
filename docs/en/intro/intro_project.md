@@ -17,7 +17,7 @@
 Microfluidic dispensing encompasses a set of techniques for controlled deposition of volumes ranging from nanoliters to microliters. These processes find applications in numerous fields:
 
 **Industrial applications:**
-- Electrochemical sensor fabrication (conductive ink deposition)
+- Electrochemical sensor fabrication (ink deposition for reference electrode, conductive electrode, chemical and biochemical functionalization...)
 - Printed electronics (conductive circuits, RFID antennas)
 - Bioprinting and biomaterial deposition
 - Functional coatings and thin films

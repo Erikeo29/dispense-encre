@@ -1,12 +1,28 @@
 **Sommaire :**
-1. Intelligence artificielle et modélisation hybride
-2. Calcul quantique
-3. Impression 4D et encres intelligentes
-4. Opportunités de recherche
+1. Conclusion
+2. Perspectives
+   - 2.1 Intelligence artificielle et modélisation hybride
+   - 2.2 Calcul quantique
+   - 2.3 Impression 4D et encres intelligentes
+   - 2.4 Opportunités de recherche
 
 ---
 
-## 1. Intelligence artificielle et modélisation hybride
+## 1. Conclusion
+
+Cette étude a permis de modéliser la dispense d'une encre rhéofluidifiante dans des micro-via en utilisant quatre méthodes numériques distinctes : FEM/Phase-Field, VOF, LBM et SPH.
+
+Les résultats obtenus montrent des tendances comparables à ce qui est observé expérimentalement. Notamment, l'impact de la position de la buse en X sur le phénomène d'overflow et sur l'uniformité du remplissage a pu être mis en évidence. De même, les phénomènes physicochimiques attendus ont été reproduits : l'influence de la viscosité et des angles de contact (énergie de surface) sur l'étalement de l'encre correspond aux comportements physiques anticipés.
+
+Des différences de résultats apparaissent selon les modèles utilisés, ce qui est cohérent compte tenu de leurs formulations numériques très différentes (eulérien vs lagrangien, maillé vs sans maillage, macroscopique vs mésoscopique). Cependant, les tendances globales restent comparables entre les quatre approches, ce qui renforce la confiance dans la validité des simulations.
+
+Pour aller plus loin, il serait nécessaire de poursuivre l'amélioration des codes, d'affiner les modèles physicochimiques (notamment la rhéologie et le mouillage dynamique), et d'optimiser les paramètres numériques pour améliorer la justesse des résultats par rapport aux observations expérimentales.
+
+---
+
+## 2. Perspectives
+
+### 2.1 Intelligence artificielle et modélisation hybride
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -30,7 +46,7 @@ Les **modèles de substitution** remplacent les simulations coûteuses par des r
 
 ---
 
-## 2. Calcul quantique
+### 2.2 Calcul quantique
 
 Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
 
@@ -45,7 +61,7 @@ Le calcul quantique pourrait révolutionner la modélisation des écoulements co
 
 ---
 
-## 3. Impression 4D et encres intelligentes
+### 2.3 Impression 4D et encres intelligentes
 
 Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impression 4D** (matériaux qui changent de forme après impression) :
 
@@ -61,7 +77,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 
 ---
 
-## 4. Opportunités de recherche
+### 2.4 Opportunités de recherche
 
 ### Couplage rhéologie-interface
 
