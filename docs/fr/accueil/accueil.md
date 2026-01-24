@@ -2,6 +2,7 @@
 1. Objectif du projet
 2. Application cible
 3. Navigation
+4. Note méthodologique
 
 ---
 
@@ -33,3 +34,11 @@ Utilisez le menu latéral pour explorer les différents chapitres du projet:
 1. **Introduction** : Contexte scientifique et nombres adimensionnels
 2. **Comparaison des modèles** : Tableaux comparatifs détaillés
 3. **Pages par modèle** : Physique, code source et exemples de simulation: animation de l'écoulement pendant la dispense(fichiers GIF) et images de l'état final (fichiers PNG).
+
+---
+
+## 4. Note méthodologique
+
+Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Les codes FEM, VOF, LBM et SPH ont été développés et exécutés sur un PC standard avec différentes combinaisons de paramètres (géométrie, viscosité, angles de contact), puis les résultats ont été exportés sous forme de fichiers GIF (animations) et PNG (images finales).
+
+Cette application est un **visualiseur de résultats**, non un simulateur en temps réel.
