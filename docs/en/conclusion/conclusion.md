@@ -1,10 +1,11 @@
 **Contents:**
 1. Conclusion
 2. Perspectives
-   - 2.1 Artificial Intelligence and Hybrid Modeling
-   - 2.2 Quantum Computing
-   - 2.3 4D Printing and Smart Inks
-   - 2.4 Research Opportunities
+   - 2.1 Open Source Python Alternatives
+   - 2.2 Artificial Intelligence and Hybrid Modeling
+   - 2.3 Quantum Computing
+   - 2.4 4D Printing and Smart Inks
+   - 2.5 Research Opportunities
 
 ---
 
@@ -22,7 +23,15 @@ To go further, it would be necessary to continue improving the codes, refine the
 
 ## 2. Perspectives
 
-### 2.1 Artificial Intelligence and Hybrid Modeling
+### 2.1 Open Source Python Alternatives
+
+The failure of the initial FEM/Phase-Field implementation (based on an attempt to reproduce commercial models) highlighted the need for robust, truly open-source Python tools for advanced fluid mechanics:
+
+- **Firedrake**: An automated system for solving partial differential equations using the finite element method. High performance for computational fluid dynamics (CFD), it offers a syntax close to mathematics (UFL) while generating optimized C code.
+- **SfePy (Simple Finite Elements in Python)**: A flexible library for solving coupled partial differential equation systems (mechanical, thermal, fluids) using finite elements. Ideal for complex multiphysics problems.
+- **Hybrid FEM/SPH Systems**: A promising approach consists of coupling the precision of finite elements (FEM) near solid walls with the flexibility of SPH (Smoothed Particle Hydrodynamics) for free surfaces and large deformations, leveraging the best of both worlds.
+
+### 2.2 Artificial Intelligence and Hybrid Modeling
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -46,7 +55,7 @@ To go further, it would be necessary to continue improving the codes, refine the
 
 ---
 
-### 2.2 Quantum Computing
+### 2.3 Quantum Computing
 
 Quantum computing could revolutionize complex flow modeling:
 
@@ -61,7 +70,7 @@ Quantum computing could revolutionize complex flow modeling:
 
 ---
 
-### 2.3 4D Printing and Smart Inks
+### 2.4 4D Printing and Smart Inks
 
 Shear-thinning inks are increasingly used for **4D printing** (materials that change shape after printing):
 
@@ -77,7 +86,7 @@ Shear-thinning inks are increasingly used for **4D printing** (materials that ch
 
 ---
 
-### 2.4 Research Opportunities
+### 2.5 Research Opportunities
 
 ### Rheology-Interface Coupling
 

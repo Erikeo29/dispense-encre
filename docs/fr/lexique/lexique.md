@@ -183,6 +183,10 @@
 | Nom | Type | Langage | Méthode |
 |-----|------|---------|---------|
 | **FEniCS** | Open-source | Python/C++ | FEM |
+| **Firedrake** | Open-source | Python/C++ | FEM automatisé |
+| **SfePy** | Open-source | Python | FEM multiphysique |
+| **FiPy** | Open-source | Python | FVM, Phase-Field |
+| **Dedalus** | Open-source | Python | Méthodes spectrales |
 | **OpenFOAM** | Open-source | C++ | VOF, FVM |
 | **Palabos** | Open-source | C++ | LBM |
 | **PySPH** | Open-source | Python | SPH |

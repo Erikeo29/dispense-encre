@@ -31,6 +31,8 @@ L'échec de l'implémentation initiale FEM/Phase-Field (basée sur une tentative
 - **SfePy (Simple Finite Elements in Python)** : Une bibliothèque flexible pour résoudre des systèmes d'équations aux dérivées partielles couplées (mécanique, thermiques, fluides) par éléments finis. Idéal pour des problèmes multiphysiques complexes.
 - **Systèmes Hybrides FEM/SPH** : Une voie prometteuse consiste à coupler la précision des éléments finis (FEM) près des parois solides avec la flexibilité du SPH (Smoothed Particle Hydrodynamics) pour l'interface libre et les grandes déformations, tirant parti du meilleur des deux mondes.
 
+---
+
 ### 2.2 Intelligence artificielle et modélisation hybride
 
 ### PINN (Physics-Informed Neural Networks)
