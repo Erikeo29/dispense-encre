@@ -89,20 +89,19 @@ The modeled system consists of:
 | Vertical offset (nozzle vs well top) | -30, 0, 30, 60 | µm |
 | Zero-shear viscosity $\eta_0$ | 0.5, 1.5, 5 | Pa·s |
 | Viscosity $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
-| Wall contact angle | 35 – 90 | ° |
-| Well bottom contact angle | 35 – 75 | ° |
-| Substrate contact angle (plateau) | 15, 35, 90 | ° |
+| Wall contact angle | 15 – 120 | ° |
+| Well bottom contact angle | 15 – 65 | ° |
+| Substrate contact angle (plateau) | 15 – 120 | ° |
 | Dispensing time | 20 – 40 | ms |
 
 ---
 
 ## 5. Multi-Model Approach
 
-This project compares four complementary numerical methods:
+This project compares three complementary numerical methods:
 
 | Model | Approach | Main Advantage |
 |-------|----------|----------------|
-| **FEM / Phase-Field** | Eulerian, finite elements | Thermodynamic accuracy, multiphysics coupling |
 | **VOF** | Eulerian, finite volumes | Robustness, industrial standard |
 | **LBM** | Mesoscopic, lattice | GPU performance, complex geometries |
 | **SPH** | Lagrangian, meshless | Free surfaces, large deformations |

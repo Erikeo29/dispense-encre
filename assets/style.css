@@ -119,7 +119,7 @@ h1, h2, h3 {
 
 /* --- Style du popover chatbot --- */
 [data-testid="stPopover"] {
-    max-width: 500px !important;
+    max-width: 750px !important;
 }
 [data-testid="stPopover"] > div {
     padding: 0 !important;

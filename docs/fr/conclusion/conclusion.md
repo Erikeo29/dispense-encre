@@ -3,19 +3,19 @@
 2. Perspectives
    - 2.1 Alternatives Open Source en Python
    - 2.2 Intelligence artificielle et modélisation hybride
-   - 2.3 Calcul quantique
-   - 2.4 Impression 4D et encres intelligentes
-   - 2.5 Opportunités de recherche
+   - 2.3 Impression 4D et encres intelligentes
+   - 2.4 Opportunités de recherche
+   - 2.5 Calcul quantique
 
 ---
 
 ## 1. Conclusion
 
-Cette étude a permis de modéliser la dispense d'une encre rhéofluidifiante dans des micro-via en utilisant quatre méthodes numériques distinctes : FEM/Phase-Field, VOF, LBM et SPH.
+Cette étude a permis de modéliser la dispense d'une encre rhéofluidifiante dans des micro-via en utilisant trois méthodes numériques distinctes : VOF, LBM et SPH.
 
 Les résultats obtenus montrent des tendances comparables à ce qui est observé expérimentalement. Notamment, l'impact de la position de la buse en X sur le phénomène d'overflow et sur l'uniformité du remplissage a pu être mis en évidence. De même, les phénomènes physicochimiques attendus ont été reproduits : l'influence de la viscosité et des angles de contact (énergie de surface) sur l'étalement de l'encre correspond aux comportements physiques anticipés.
 
-Des différences de résultats apparaissent selon les modèles utilisés, ce qui est cohérent compte tenu de leurs formulations numériques très différentes (eulérien vs lagrangien, maillé vs sans maillage, macroscopique vs mésoscopique). Cependant, les tendances globales restent comparables entre les quatre approches, ce qui renforce la confiance dans la validité des simulations.
+Des différences de résultats apparaissent selon les modèles utilisés, ce qui est cohérent compte tenu de leurs formulations numériques très différentes (eulérien vs lagrangien, maillé vs sans maillage, macroscopique vs mésoscopique). Cependant, les tendances globales restent comparables entre les trois approches, ce qui renforce la confiance dans la validité des simulations.
 
 Pour aller plus loin, il serait nécessaire de poursuivre l'amélioration des codes, d'affiner les modèles physicochimiques (notamment la rhéologie et le mouillage dynamique), et d'optimiser les paramètres numériques pour améliorer la justesse des résultats par rapport aux observations expérimentales.
 
@@ -43,12 +43,13 @@ Les **PINN** combinent les équations physiques avec des réseaux de neurones po
 - **Application inkjet :** Raissi et al. (2020) ont utilisé des PINN pour résoudre Navier-Stokes avec une précision comparable à FEM mais 100× plus rapidement.
 - **Limitation actuelle :** Généralisation limitée hors du domaine d'entraînement.
 
-### Surrogate Models
+### Modèles de substitution (Surrogate Models)
 
-Les **modèles de substitution** remplacent les simulations coûteuses par des réseaux de neurones entraînés :
+Les **modèles de substitution** consistent à entraîner une "IA simplifiée" (comme un réseau de neurones) pour prédire instantanément le résultat d'une simulation complexe :
 
-- **Exemple :** Un réseau peut prédire le volume des satellites en fonction de $We$, $Oh$, et $n$ sans résoudre Navier-Stokes.
-- **Avantage :** Optimisation en temps réel des paramètres d'éjection.
+- **Principe :** On réalise quelques centaines de simulations réelles (VOF, LBM...) pour "montrer" au modèle comment le fluide réagit.
+- **Avantage :** Une fois entraîné, le modèle peut prédire si une dispense va déborder en quelques millisecondes, sans avoir à relancer un calcul OpenFOAM de plusieurs heures.
+- **Potentiel :** Optimisation en temps réel des paramètres sur une ligne de production.
 
 ### Apprentissage par renforcement
 
@@ -57,22 +58,7 @@ Les **modèles de substitution** remplacent les simulations coûteuses par des r
 
 ---
 
-### 2.3 Calcul quantique
-
-Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
-
-### Algorithmes quantiques pour SPH
-
-- Les ordinateurs quantiques pourraient simuler 10⁹ particules SPH en temps réel.
-- **Exemple :** IBM a démontré (2023) un algorithme quantique pour la dynamique moléculaire, applicable à SPH.
-
-### Optimisation des maillages FEM
-
-- Les algorithmes quantiques de partitionnement de graphes pourraient réduire le coût des maillages 3D adaptatifs.
-
----
-
-### 2.4 Impression 4D et encres intelligentes
+### 2.3 Impression 4D et encres intelligentes
 
 Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impression 4D** (matériaux qui changent de forme après impression) :
 
@@ -88,7 +74,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 
 ---
 
-### 2.5 Opportunités de recherche
+### 2.4 Opportunités de recherche
 
 ### Couplage rhéologie-interface
 
@@ -108,14 +94,20 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 - **Simulations atomistiques** : Utiliser la dynamique moléculaire (MD) pour les gouttes < 1 µm.
 - **Approches asymptotiques** : Développer des modèles réduits pour les gouttes sub-microniques (théorie des films minces).
 
-### Validation expérimentale avancée
+---
 
-**Problématique :** Seulement 30 % des études incluent une validation expérimentale rigoureuse.
+### 2.5 Calcul quantique
 
-**Pistes de recherche :**
-- **Micro-PIV** : Mesure des champs de vitesse dans les gouttes < 10 µm.
-- **Tomographie par cohérence optique (OCT)** : Imagerie 3D des interfaces avec une résolution de 1 µm.
-- **Rhéométrie in situ** : Mesure de la viscosité dans le filament pendant l'éjection.
+Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
+
+### Algorithmes quantiques pour SPH
+
+- Les ordinateurs quantiques pourraient simuler 10⁹ particules SPH en temps réel.
+- **Exemple :** IBM a démontré (2023) un algorithme quantique pour la dynamique moléculaire, applicable à SPH.
+
+### Optimisation des maillages
+
+- Les algorithmes quantiques de partitionnement de graphes pourraient réduire le coût des maillages 3D adaptatifs.
 
 ---
 

@@ -89,20 +89,19 @@ Le système modélisé consiste en :
 | Décalage vertical (buse vs haut du puit) | -30, 0, 30, 60 | µm |
 | Viscosité zéro cisaillement $\eta_0$ | 0.5, 1.5, 5 | Pa·s |
 | Viscosité $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
-| Angle de contact paroi | 35 – 90 | ° |
-| Angle de contact fond du puit | 35 – 75 | ° |
-| Angle de contact substrat (plateau) | 15, 35, 90 | ° |
+| Angle de contact paroi | 15 – 120 | ° |
+| Angle de contact fond du puit | 15 – 65 | ° |
+| Angle de contact substrat (plateau) | 15 – 120 | ° |
 | Temps de dispense | 20 – 40 | ms |
 
 ---
 
 ## 5. Approche multi-modèles
 
-Ce projet compare quatre méthodes numériques complémentaires :
+Ce projet compare trois méthodes numériques complémentaires :
 
 | Modèle | Approche | Avantage principal |
 |--------|----------|-------------------|
-| **FEM / Phase-Field** | Eulérienne, éléments finis | Précision thermodynamique, couplages multiphysiques |
 | **VOF** | Eulérienne, volumes finis | Robustesse, standard industriel |
 | **LBM** | Mésoscopique, réseau | Performance GPU, géométries complexes |
 | **SPH** | Lagrangienne, sans maillage | Surfaces libres, grandes déformations |
