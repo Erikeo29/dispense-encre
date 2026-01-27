@@ -36,8 +36,9 @@ L'application est structurée autour de plusieurs outils pour faciliter l'explor
     *   **Introduction** : Contexte scientifique, propriétés des fluides rhéofluidifiants et présentation du système physique étudié.
     *   **Comparaison des modèles** : Tableaux synthétiques pour comparer les approches.
     *   **Pages par modèle** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé, et les résultats des simulations (animations GIF et images PNG).
+    *   **Annexes** : Conclusion, perspectives, lexique technique, équations clés et bibliographie thématique.
 
-2.  **Boutons de navigation flottants (à droite)** : Deux flèches permettent de se déplacer rapidement en haut ou en bas des pages longues.
+2.  **Boutons de navigation flottants (à droite)** : Deux flèches permettent de se déplacer rapidement en haut ou en bas des pages.
 
 3.  **Assistant IA (dans le menu latéral)** : Un pop-up s'ouvre pour répondre à vos questions sur la physique, les méthodes numériques ou le projet en général.
 

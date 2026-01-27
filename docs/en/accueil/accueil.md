@@ -36,8 +36,9 @@ The application is structured around several tools to facilitate exploration:
     *   **Introduction**: Scientific context, properties of shear-thinning fluids, and presentation of the studied physical system.
     *   **Model Comparison**: Summary tables to compare the different approaches.
     *   **Model Pages**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
+    *   **Appendices**: Conclusion, perspectives, technical glossary, key equations, and thematic bibliography.
 
-2.  **Floating Navigation Buttons (on the right)**: Two arrows allow you to quickly scroll to the top or bottom of long pages.
+2.  **Floating Navigation Buttons (on the right)**: Two arrows allow you to quickly scroll to the top or bottom of pages.
 
 3.  **AI Assistant (in the sidebar)**: A pop-up opens to answer your questions about the physics, numerical methods, or the project in general.
 
