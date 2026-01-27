@@ -33,7 +33,7 @@ Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans d
 L'application est structurée autour de plusieurs outils pour faciliter l'exploration :
 
 1.  **Menu latéral (à gauche)** : C'est le principal outil de navigation. Il permet de se déplacer entre les grandes sections du projet :
-    *   **Introduction** : Contexte scientifique et présentation des **nombres adimensionnels** (des valeurs sans unité, comme le nombre de Reynolds ou de Weber, qui permettent de caractériser un écoulement et de comparer différents régimes).
+    *   **Introduction** : Contexte scientifique, propriétés des fluides rhéofluidifiants et présentation du système physique étudié.
     *   **Comparaison des modèles** : Tableaux synthétiques pour comparer les approches.
     *   **Pages par modèle** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé, et les résultats des simulations (animations GIF et images PNG).
 

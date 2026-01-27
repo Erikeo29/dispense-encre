@@ -33,7 +33,7 @@ The simulations model **shear-thinning ink dispensing** into micro-via.
 The application is structured around several tools to facilitate exploration:
 
 1.  **Sidebar (on the left)**: This is the main navigation tool. It allows you to move between the major sections of the project:
-    *   **Introduction**: Scientific context and presentation of **dimensionless numbers** (unitless values, like the Reynolds or Weber numbers, which help characterize a flow and compare different regimes).
+    *   **Introduction**: Scientific context, properties of shear-thinning fluids, and presentation of the studied physical system.
     *   **Model Comparison**: Summary tables to compare the different approaches.
     *   **Model Pages**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
 
