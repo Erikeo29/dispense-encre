@@ -559,10 +559,12 @@ postprocessing:
 
 | Paramètre | Valeurs testées | Unité |
 |-----------|-----------------|-------|
-| Ratio surface goutte/puit | 0.8, 1.0, 1.2 | - |
-| Viscosité η₀ | 0.5, 1.5 | Pa·s |
-| CA substrat | 15, 60 | ° |
-| CA mur gauche | 15, 60 | ° |
-| CA mur droit | 60, 90 | ° |
+| Gap buse | 30, 120 | µm |
+| Shift buse | −150, −75, 0 | µm |
+| Viscosité η₀ | 0.5, 1.5, 5.0 | Pa·s |
+| Ratio surface goutte/puit | 0.8, 1.2 | - |
+| CA substrat | 15, 35 | ° |
+| CA mur droit | 15, 120 | ° |
+| CA mur gauche | 15 | ° |
 
-**Total : 40 simulations** (combinaisons uniques après filtrage)
+**Total : 144 simulations** (2 × 3 × 3 × 2 × 2 × 2 × 1 combinaisons)

@@ -559,10 +559,12 @@ postprocessing:
 
 | Parameter | Tested values | Unit |
 |-----------|---------------|------|
-| Drop/well surface ratio | 0.8, 1.0, 1.2 | - |
-| Viscosity η₀ | 0.5, 1.5 | Pa·s |
-| CA substrate | 15, 60 | ° |
-| CA left wall | 15, 60 | ° |
-| CA right wall | 60, 90 | ° |
+| Nozzle gap | 30, 120 | µm |
+| Nozzle shift | −150, −75, 0 | µm |
+| Viscosity η₀ | 0.5, 1.5, 5.0 | Pa·s |
+| Drop/well surface ratio | 0.8, 1.2 | - |
+| CA substrate | 15, 35 | ° |
+| CA right wall | 15, 120 | ° |
+| CA left wall | 15 | ° |
 
-**Total: 40 simulations** (unique combinations after filtering)
+**Total: 144 simulations** (2 × 3 × 3 × 2 × 2 × 2 × 1 combinations)

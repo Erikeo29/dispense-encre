@@ -215,7 +215,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 
 # Chemins vers les exemples visuels
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
-VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/vof_007.gif")
+VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/run_039_y_gap_buse0.03_x_gap_buse0_eta01.5_ratio_surface0.8.gif")
 LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_029.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
 
