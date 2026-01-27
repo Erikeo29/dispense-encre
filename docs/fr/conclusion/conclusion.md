@@ -121,4 +121,4 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 
 ## Références
 
-> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour des références qui traitent des ressources utilisées dans ce projet, consultez la section **Bibliographie** dans le menu Annexes.

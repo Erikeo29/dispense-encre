@@ -11,7 +11,7 @@
 
 ## 1. Conclusion
 
-This study enabled the modeling of shear-thinning ink dispensing into micro-via using four distinct numerical methods: FEM/Phase-Field, VOF, LBM, and SPH.
+This study enabled the modeling of shear-thinning ink dispensing into micro-via using three distinct numerical methods: VOF, LBM, and SPH.
 
 The results obtained show trends comparable to experimental observations. Notably, the impact of nozzle position along the X-axis on overflow phenomena and filling uniformity was demonstrated. Similarly, expected physicochemical phenomena were reproduced: the influence of viscosity and contact angles (surface energy) on ink spreading corresponds to anticipated physical behaviors.
 
@@ -119,4 +119,4 @@ Shear-thinning inks are increasingly used for **4D printing** (materials that ch
 
 ## References
 
-> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
+> **Note**: For references discussing the resources used in this project, see the **Bibliography** section in the Appendices menu.
