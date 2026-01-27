@@ -1,4 +1,6 @@
-> **Note de l'auteur** — Ce projet a été conçu intégralement par l'auteur, depuis la feuille blanche initiale jusqu'à la mise en ligne, en s'appuyant sur des outils d'intelligence artificielle comme accélérateurs d'apprentissage. Il est mis à disposition en open-source pour l'apprentissage et l'exploitation scientifique.
+> **Note de l'auteur** — *Ce projet a été conçu intégralement par l'auteur, depuis la feuille blanche initiale jusqu'à la mise en ligne, en s'appuyant sur des outils d'intelligence artificielle comme accélérateurs d'apprentissage. Il est mis à disposition en open-source pour l'apprentissage et l'exploitation scientifique.*
+
+&nbsp;
 
 **Sommaire :**
 1. Objectif du projet
