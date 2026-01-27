@@ -53,8 +53,8 @@ Les **modèles de substitution** consistent à entraîner une "IA simplifiée" (
 
 ### Apprentissage par renforcement
 
-- **Application :** Un agent RL peut apprendre à ajuster $v_{max}$ et $\tau$ pour minimiser les satellites.
-- **Potentiel :** Contrôle adaptatif des têtes d'impression en temps réel.
+- **Application :** Un "agent intelligent" peut apprendre par essais-erreurs à ajuster les paramètres de dispense (vitesse, pression) pour éviter les défauts de fabrication.
+- **Potentiel :** Permettre aux machines de s'auto-corriger en temps réel face à des variations de l'encre ou de l'environnement.
 
 ---
 

@@ -7,7 +7,7 @@
 6. Ouvrages généraux
 7. Ressources en ligne
 
-Cette page regroupe les références bibliographiques utilisées dans ce projet. **Tous les liens pointent vers des ressources en accès libre vérifiées.**
+Cette page regroupe des références qui décrivent les principes utilisés dans ce projet. **Tous les liens pointent vers des ressources en accès libre vérifiées.**
 
 ---
 

@@ -7,7 +7,7 @@
 6. General Works
 7. Online Resources
 
-This page gathers all bibliographic references used in this project. **All links point to verified open-access resources.**
+This page gathers references describing the principles used in this project. **All links point to verified open-access resources.**
 
 ---
 

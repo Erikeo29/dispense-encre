@@ -51,8 +51,8 @@ The failure of the initial FEM/Phase-Field implementation (based on an attempt t
 
 ### Reinforcement Learning
 
-- **Application:** An RL agent can learn to adjust $v_{max}$ and $\tau$ to minimize satellites.
-- **Potential:** Real-time adaptive control of print heads.
+- **Application:** An "intelligent agent" can learn through trial and error to adjust dispensing parameters (speed, pressure) to avoid manufacturing defects.
+- **Potential:** Enable machines to self-correct in real-time when faced with ink or environmental variations.
 
 ---
 
