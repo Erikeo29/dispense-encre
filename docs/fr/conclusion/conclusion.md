@@ -1,10 +1,11 @@
 **Sommaire :**
 1. Conclusion
 2. Perspectives
-   - 2.1 Intelligence artificielle et modélisation hybride
-   - 2.2 Calcul quantique
-   - 2.3 Impression 4D et encres intelligentes
-   - 2.4 Opportunités de recherche
+   - 2.1 Alternatives Open Source en Python
+   - 2.2 Intelligence artificielle et modélisation hybride
+   - 2.3 Calcul quantique
+   - 2.4 Impression 4D et encres intelligentes
+   - 2.5 Opportunités de recherche
 
 ---
 
@@ -22,7 +23,15 @@ Pour aller plus loin, il serait nécessaire de poursuivre l'amélioration des co
 
 ## 2. Perspectives
 
-### 2.1 Intelligence artificielle et modélisation hybride
+### 2.1 Alternatives Open Source en Python
+
+L'échec de l'implémentation initiale FEM/Phase-Field (basée sur une tentative de reproduction de modèles commerciaux) a mis en lumière la nécessité d'outils Python robustes et véritablement open-source pour la mécanique des fluides avancée :
+
+- **Firedrake** : Un système automatisé pour la résolution d'équations aux dérivées partielles par la méthode des éléments finis. Très performant pour la mécanique des fluides computationnelle (CFD), il offre une syntaxe proche des mathématiques (UFL) tout en générant du code C optimisé.
+- **SfePy (Simple Finite Elements in Python)** : Une bibliothèque flexible pour résoudre des systèmes d'équations aux dérivées partielles couplées (mécanique, thermiques, fluides) par éléments finis. Idéal pour des problèmes multiphysiques complexes.
+- **Systèmes Hybrides FEM/SPH** : Une voie prometteuse consiste à coupler la précision des éléments finis (FEM) près des parois solides avec la flexibilité du SPH (Smoothed Particle Hydrodynamics) pour l'interface libre et les grandes déformations, tirant parti du meilleur des deux mondes.
+
+### 2.2 Intelligence artificielle et modélisation hybride
 
 ### PINN (Physics-Informed Neural Networks)
 
@@ -46,7 +55,7 @@ Les **modèles de substitution** remplacent les simulations coûteuses par des r
 
 ---
 
-### 2.2 Calcul quantique
+### 2.3 Calcul quantique
 
 Le calcul quantique pourrait révolutionner la modélisation des écoulements complexes :
 
@@ -61,7 +70,7 @@ Le calcul quantique pourrait révolutionner la modélisation des écoulements co
 
 ---
 
-### 2.3 Impression 4D et encres intelligentes
+### 2.4 Impression 4D et encres intelligentes
 
 Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impression 4D** (matériaux qui changent de forme après impression) :
 
@@ -77,7 +86,7 @@ Les encres rhéofluidifiantes sont de plus en plus utilisées pour l'**impressio
 
 ---
 
-### 2.4 Opportunités de recherche
+### 2.5 Opportunités de recherche
 
 ### Couplage rhéologie-interface
 
