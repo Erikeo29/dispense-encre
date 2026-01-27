@@ -53,8 +53,10 @@ Les **modèles de substitution** consistent à entraîner une "IA simplifiée" (
 
 ### Apprentissage par renforcement
 
-- **Application :** Un "agent intelligent" peut apprendre par essais-erreurs à ajuster les paramètres de dispense (vitesse, pression) pour éviter les défauts de fabrication.
-- **Potentiel :** Permettre aux machines de s'auto-corriger en temps réel face à des variations de l'encre ou de l'environnement.
+- **Principe :** Il s'agit d'entraîner un programme informatique, appelé **"agent"**, à prendre les meilleures décisions possibles pour atteindre un objectif. L'agent apprend par essais-erreurs, en étant "récompensé" pour les bonnes actions (par exemple, une dispense réussie) et "puni" pour les mauvaises (un débordement).
+- **Application :** Un agent pourrait apprendre à ajuster dynamiquement la pression ou la vitesse de la buse pour garantir un remplissage parfait, même si les propriétés de l'encre changent légèrement.
+- **Outils :** Des bibliothèques open-source comme `Stable-Baselines3` (basée sur PyTorch) ou `Ray RLlib` (pour les systèmes à grande échelle) permettent de mettre en œuvre ces algorithmes.
+- **Potentiel :** Permettre aux machines d'impression de s'auto-corriger en temps réel et de s'adapter aux variations de l'encre ou de l'environnement, sans intervention humaine.
 
 ---
 

@@ -30,10 +30,16 @@ Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans d
 
 ## 3. Navigation
 
-Utilisez le menu latéral pour explorer les différents chapitres du projet:
-1. **Introduction** : Contexte scientifique et nombres adimensionnels
-2. **Comparaison des modèles** : Tableaux comparatifs détaillés
-3. **Pages par modèle** : Physique, code source et exemples de simulation: animation de l'écoulement pendant la dispense(fichiers GIF) et images de l'état final (fichiers PNG).
+L'application est structurée autour de plusieurs outils pour faciliter l'exploration :
+
+1.  **Menu latéral (à gauche)** : C'est le principal outil de navigation. Il permet de se déplacer entre les grandes sections du projet :
+    *   **Introduction** : Contexte scientifique et présentation des **nombres adimensionnels** (des valeurs sans unité, comme le nombre de Reynolds ou de Weber, qui permettent de caractériser un écoulement et de comparer différents régimes).
+    *   **Comparaison des modèles** : Tableaux synthétiques pour comparer les approches.
+    *   **Pages par modèle** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé, et les résultats des simulations (animations GIF et images PNG).
+
+2.  **Boutons de navigation flottants (à droite)** : Deux flèches permettent de se déplacer rapidement en haut ou en bas des pages longues.
+
+3.  **Assistant IA (dans le menu latéral)** : Un pop-up s'ouvre pour répondre à vos questions sur la physique, les méthodes numériques ou le projet en général.
 
 ---
 

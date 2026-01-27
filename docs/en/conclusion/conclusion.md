@@ -51,8 +51,10 @@ The failure of the initial FEM/Phase-Field implementation (based on an attempt t
 
 ### Reinforcement Learning
 
-- **Application:** An "intelligent agent" can learn through trial and error to adjust dispensing parameters (speed, pressure) to avoid manufacturing defects.
-- **Potential:** Enable machines to self-correct in real-time when faced with ink or environmental variations.
+- **Principle:** This involves training a computer program, called an **"agent"**, to make the best possible decisions to achieve a goal. The agent learns through trial and error, being "rewarded" for good actions (e.g., a successful dispense) and "punished" for bad ones (an overflow).
+- **Application:** An agent could learn to dynamically adjust the nozzle's pressure or speed to ensure a perfect fill, even if the ink's properties change slightly.
+- **Tools:** Open-source libraries like `Stable-Baselines3` (based on PyTorch) or `Ray RLlib` (for large-scale systems) are used to implement these algorithms.
+- **Potential:** To enable printing machines to self-correct in real-time and adapt to variations in ink or the environment without human intervention.
 
 ---
 

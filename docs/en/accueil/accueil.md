@@ -30,10 +30,16 @@ The simulations model **shear-thinning ink dispensing** into micro-via.
 
 ## 3. Navigation
 
-Use the sidebar menu to explore the different chapters:
-1. **Introduction**: Scientific context and dimensionless numbers
-2. **Model Comparison**: Detailed comparison tables
-3. **Model Pages**: Physics, source code, and simulation examples: flow animations during dispensing (GIF files) and final state images (PNG files).
+The application is structured around several tools to facilitate exploration:
+
+1.  **Sidebar (on the left)**: This is the main navigation tool. It allows you to move between the major sections of the project:
+    *   **Introduction**: Scientific context and presentation of **dimensionless numbers** (unitless values, like the Reynolds or Weber numbers, which help characterize a flow and compare different regimes).
+    *   **Model Comparison**: Summary tables to compare the different approaches.
+    *   **Model Pages**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
+
+2.  **Floating Navigation Buttons (on the right)**: Two arrows allow you to quickly scroll to the top or bottom of long pages.
+
+3.  **AI Assistant (in the sidebar)**: A pop-up opens to answer your questions about the physics, numerical methods, or the project in general.
 
 ---
 
