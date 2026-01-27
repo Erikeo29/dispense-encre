@@ -19,7 +19,7 @@ TRANSLATIONS = {
         "gen_pages": ["Accueil", "Introduction", "Comparaison des modèles"],
         "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
         "annex_pages": ["Conclusion et perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
-        "tabs_fem": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
+        "tabs_dual": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "▸ Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 3 modèles Open Source",
         "sim_1": "Simulation 1",
@@ -54,7 +54,7 @@ TRANSLATIONS = {
         "lbl_ca_plateau": "CA Plateau (°)",
         "lbl_gap": "Gap Buse (µm)",
         "lbl_ratio_drop": "Ratio goutte/puit",
-        "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
+        "version_info": """**Version 3.5.0** — Jan 2026 - *EQU*
 
 **Nouveautés :**
 - Support bilingue FR/EN
@@ -74,6 +74,15 @@ TRANSLATIONS = {
         "chat_clear": "Effacer",
         "chat_api_missing": "⚠️ Clé API manquante. Configurez GROQ_API_KEY.",
         "chat_toggle": "Assistant IA",
+        # Comparison page
+        "lbl_empty_mesh": "Maillage vide",
+        "lbl_with_droplet": "Avec goutte (état final)",
+        # SPH
+        "sph_example_title": "Exemple de Simulation SPH",
+        "sph_preliminary": "⚠️ Résultats préliminaires — étude paramétrique en cours.",
+        # Errors
+        "mapping_missing": "Données de mapping manquantes.",
+        "data_not_found": "Données non trouvées",
     },
     "en": {
         "title": "Shear-Thinning Ink Dispensing Simulation",
@@ -85,7 +94,7 @@ TRANSLATIONS = {
         "gen_pages": ["Home", "Introduction", "Model Comparison"],
         "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
-        "tabs_fem": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
+        "tabs_dual": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "▸ Modeling Results"],
         "overview_title": "Overview of 3 Open Source Simulation Models",
         "sim_1": "Simulation 1",
@@ -120,7 +129,7 @@ TRANSLATIONS = {
         "lbl_ca_plateau": "CA Plateau (°)",
         "lbl_gap": "Nozzle Gap (µm)",
         "lbl_ratio_drop": "Drop/Well Ratio",
-        "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
+        "version_info": """**Version 3.5.0** — Jan 2026 - *EQU*
 
 **New Features:**
 - Bilingual support FR/EN
@@ -140,6 +149,15 @@ TRANSLATIONS = {
         "chat_clear": "Clear",
         "chat_api_missing": "⚠️ API key missing. Configure GROQ_API_KEY.",
         "chat_toggle": "AI Assistant",
+        # Comparison page
+        "lbl_empty_mesh": "Empty Mesh",
+        "lbl_with_droplet": "With Droplet (final state)",
+        # SPH
+        "sph_example_title": "SPH Simulation Example",
+        "sph_preliminary": "⚠️ Preliminary results — parametric study in progress.",
+        # Errors
+        "mapping_missing": "Mapping data missing.",
+        "data_not_found": "Data not found",
     }
 }
 
@@ -965,7 +983,7 @@ if selected_page == gen_pages[0]:  # Accueil / Home
 
 # ===== PAGE INTRODUCTION =====
 elif selected_page == gen_pages[1]:  # Introduction
-    st.title(f"Introduction")
+    st.title("Introduction")
     st.markdown("---")
     st.markdown(load_file_content("intro/intro_project.md"))
 
@@ -1028,7 +1046,7 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
             col_mesh, col_droplet = st.columns(2)
 
             with col_mesh:
-                st.markdown(f"**{'Maillage vide' if current_lang == 'fr' else 'Empty Mesh'}**")
+                st.markdown(f"**{t('lbl_empty_mesh')}**")
                 img_path = mesh_images[method]
                 if os.path.exists(img_path):
                     st.image(img_path, caption=mesh_captions[current_lang][method], use_container_width=True)
@@ -1036,7 +1054,7 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
                     st.warning(f"Image non disponible: {img_path}")
 
             with col_droplet:
-                st.markdown(f"**{'Avec goutte (état final)' if current_lang == 'fr' else 'With Droplet (final state)'}**")
+                st.markdown(f"**{t('lbl_with_droplet')}**")
                 droplet_path = droplet_images[method]
                 if os.path.exists(droplet_path):
                     st.image(droplet_path, caption=droplet_captions[current_lang][method], use_container_width=True)
@@ -1049,7 +1067,7 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
 # ===== PAGE VOF =====
 elif selected_page == model_pages[0]:  # VOF
     st.title(t("title_model_1"))
-    tabs = st.tabs(t("tabs_fem"))
+    tabs = st.tabs(t("tabs_dual"))
 
     with tabs[0]:  # Physique
         st.markdown(load_file_content("physics/physics_vof.md"))
@@ -1069,7 +1087,7 @@ elif selected_page == model_pages[0]:  # VOF
                 if not df_vof_gif.empty:
                     st.dataframe(df_vof_gif, use_container_width=True, hide_index=True)
                 else:
-                    st.error("Data not found")
+                    st.error(t("data_not_found"))
 
         if not df_vof_gif.empty:
             with st.container(border=True):
@@ -1111,7 +1129,7 @@ elif selected_page == model_pages[0]:  # VOF
                         else:
                             st.warning(t("image_unavailable"))
         else:
-            st.warning("Mapping data missing for VOF GIF.")
+            st.warning(t("mapping_missing"))
 
     with tabs[3]:  # PNG
         c_title, c_pop = st.columns([0.7, 0.3])
@@ -1125,7 +1143,7 @@ elif selected_page == model_pages[0]:  # VOF
                 if not df_vof_png.empty:
                     st.dataframe(df_vof_png, use_container_width=True, hide_index=True)
                 else:
-                    st.error("Data not found")
+                    st.error(t("data_not_found"))
 
         if not df_vof_png.empty:
             with st.container(border=True):
@@ -1165,12 +1183,12 @@ elif selected_page == model_pages[0]:  # VOF
                         else:
                             st.warning(t("image_unavailable"))
         else:
-            st.warning("Mapping data missing for VOF PNG.")
+            st.warning(t("mapping_missing"))
 
 # ===== PAGE LBM =====
 elif selected_page == model_pages[1]:  # LBM
     st.title(t("title_model_2"))
-    tabs = st.tabs(t("tabs_fem"))
+    tabs = st.tabs(t("tabs_dual"))
 
     with tabs[0]:
         st.markdown(load_file_content("physics/physics_lbm.md"))
@@ -1190,7 +1208,7 @@ elif selected_page == model_pages[1]:  # LBM
                 if not df_g_origin.empty:
                     st.dataframe(df_g_origin, use_container_width=True, hide_index=True)
                 else:
-                    st.error("Data not found")
+                    st.error(t("data_not_found"))
 
         if not df_g_origin.empty:
             with st.container(border=True):
@@ -1232,7 +1250,7 @@ elif selected_page == model_pages[1]:  # LBM
                         else:
                             st.warning(t("image_unavailable"))
         else:
-            st.warning("Mapping data missing for LBM GIF.")
+            st.warning(t("mapping_missing"))
 
     with tabs[3]:  # PNG
         c_title, c_pop = st.columns([0.7, 0.3])
@@ -1246,7 +1264,7 @@ elif selected_page == model_pages[1]:  # LBM
                 if not df_p_origin.empty:
                     st.dataframe(df_p_origin, use_container_width=True, hide_index=True)
                 else:
-                    st.error("Data not found")
+                    st.error(t("data_not_found"))
 
         if not df_p_origin.empty:
             with st.container(border=True):
@@ -1286,7 +1304,7 @@ elif selected_page == model_pages[1]:  # LBM
                         else:
                             st.warning(t("image_unavailable"))
         else:
-            st.warning("Mapping data missing for LBM PNG.")
+            st.warning(t("mapping_missing"))
 
 # ===== PAGE SPH =====
 elif selected_page == model_pages[2]:  # SPH
@@ -1300,7 +1318,8 @@ elif selected_page == model_pages[2]:  # SPH
         display_smart_markdown(load_file_content("code/code_sph.md"))
 
     with tabs[2]:
-        st.subheader("Exemple de Simulation SPH")
+        st.subheader(t("sph_example_title"))
+        st.info(t("sph_preliminary"))
         if os.path.exists(SPH_GIF_EX):
             st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03", use_container_width=True)
 
