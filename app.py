@@ -17,11 +17,11 @@ TRANSLATIONS = {
         "models_header": "Résultats de modélisation",
         "annex_header": "Annexes",
         "gen_pages": ["Accueil", "Introduction", "Comparaison des modèles"],
-        "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
+        "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
         "annex_pages": ["Conclusion et perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
         "tabs_fem": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "▸ Résultats de modélisation"],
-        "overview_title": "Aperçu des résultats des 4 modèles de Simulation",
+        "overview_title": "Aperçu des résultats des 3 modèles Open Source",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LANCER LES SIMULATIONS",
@@ -33,10 +33,9 @@ TRANSLATIONS = {
         "png_viewer": "Visualisation état final (PNG)",
         "lbl_avail_sims": "📋 Simulations disponibles",
         # Titres Modèles
-        "title_model_1": "Modèle 1 : Méthode des Éléments Finis / Phase-Field (Python)",
-        "title_model_2": "Modèle 2 : Méthode Volume of Fluid (OpenFOAM)",
-        "title_model_3": "Modèle 3 : Méthode Lattice Boltzmann (Palabos C++)",
-        "title_model_4": "Modèle 4 : Méthode Smoothed Particle Hydrodynamics (PySPH)",
+        "title_model_1": "Modèle 1 : Méthode Volume of Fluid (OpenFOAM)",
+        "title_model_2": "Modèle 2 : Méthode Lattice Boltzmann (Palabos C++)",
+        "title_model_3": "Modèle 3 : Méthode Smoothed Particle Hydrodynamics (PySPH)",
         # Labels GIF
         "lbl_well": "Ø Puit (µm)",
         "lbl_nozzle": "Ø Buse (µm)",
@@ -53,6 +52,7 @@ TRANSLATIONS = {
         "lbl_ca_wall_l": "CA Mur Gauche (°)",
         "lbl_ca_wall_r": "CA Mur Droit (°)",
         "lbl_ca_plateau": "CA Plateau (°)",
+        "lbl_gap": "Gap Buse (µm)",
         "lbl_ratio_drop": "Ratio goutte/puit",
         "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
 
@@ -83,11 +83,11 @@ TRANSLATIONS = {
         "models_header": "Modeling Results",
         "annex_header": "Appendices",
         "gen_pages": ["Home", "Introduction", "Model Comparison"],
-        "model_pages": ["1. FEM / Phase-Field", "2. VOF (OpenFOAM)", "3. LBM (Palabos)", "4. SPH (PySPH)"],
+        "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
         "tabs_fem": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "▸ Modeling Results"],
-        "overview_title": "Overview of 4 Simulation Models Results",
+        "overview_title": "Overview of 3 Open Source Simulation Models",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LAUNCH SIMULATIONS",
@@ -99,10 +99,9 @@ TRANSLATIONS = {
         "png_viewer": "Final State Visualization (PNG)",
         "lbl_avail_sims": "📋 Available Simulations",
         # Model Titles
-        "title_model_1": "Model 1 : Finite Element Method / Phase-Field (Python)",
-        "title_model_2": "Model 2 : Volume of Fluid Method (OpenFOAM)",
-        "title_model_3": "Model 3 : Lattice Boltzmann Method (Palabos C++)",
-        "title_model_4": "Model 4 : Smoothed Particle Hydrodynamics (PySPH)",
+        "title_model_1": "Model 1 : Volume of Fluid Method (OpenFOAM)",
+        "title_model_2": "Model 2 : Lattice Boltzmann Method (Palabos C++)",
+        "title_model_3": "Model 3 : Smoothed Particle Hydrodynamics (PySPH)",
         # Labels GIF
         "lbl_well": "Ø Well (µm)",
         "lbl_nozzle": "Ø Nozzle (µm)",
@@ -119,6 +118,7 @@ TRANSLATIONS = {
         "lbl_ca_wall_l": "CA Wall Left (°)",
         "lbl_ca_wall_r": "CA Wall Right (°)",
         "lbl_ca_plateau": "CA Plateau (°)",
+        "lbl_gap": "Nozzle Gap (µm)",
         "lbl_ratio_drop": "Drop/Well Ratio",
         "version_info": """**Version 1.1.2** — Jan 2025 - *EQU*
 
@@ -251,10 +251,15 @@ def load_vof_gif_mapping():
         # Convertir les virgules en points pour les floats
         df['ratio'] = df['ratio surface goutte/puit'].apply(lambda x: float(str(x).replace(',', '.')))
         df['viscosity'] = df['Viscosite eta0 (Pa.s)'].apply(lambda x: float(str(x).replace(',', '.')))
+        # Assurer que les entiers sont bien des entiers
+        df['gap'] = df['gap buse (µm)'].astype(int)
+        df['shift'] = df['shift buse (µm)'].astype(int)
+        
         mapping = {}
         for _, row in df.iterrows():
             key = (
                 row['ratio'], row['viscosity'],
+                row['gap'], row['shift'],
                 int(row['CA substrat (deg)']), int(row['CA mur gauche (deg)']),
                 int(row['CA mur droit (deg)'])
             )
@@ -270,10 +275,14 @@ def load_vof_png_mapping():
         df = pd.read_csv(os.path.join(DATA_PATH, 'vof_png_mapping.csv'), sep=';', encoding='utf-8')
         df['ratio'] = df['ratio surface goutte/puit'].apply(lambda x: float(str(x).replace(',', '.')))
         df['viscosity'] = df['Viscosite eta0 (Pa.s)'].apply(lambda x: float(str(x).replace(',', '.')))
+        df['gap'] = df['gap buse (µm)'].astype(int)
+        df['shift'] = df['shift buse (µm)'].astype(int)
+        
         mapping = {}
         for _, row in df.iterrows():
             key = (
                 row['ratio'], row['viscosity'],
+                row['gap'], row['shift'],
                 int(row['CA substrat (deg)']), int(row['CA mur gauche (deg)']),
                 int(row['CA mur droit (deg)'])
             )
@@ -514,7 +523,7 @@ def render_fem_gif_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
 def render_vof_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
                                   sim_num: int, file_type: str = "gif") -> str | None:
     """
-    Génère les filtres en cascade pour VOF (5 paramètres sur une ligne).
+    Génère les filtres en cascade pour VOF (7 paramètres sur une ligne).
 
     Args:
         df_origin: DataFrame source avec toutes les combinaisons
@@ -531,6 +540,8 @@ def render_vof_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
     # Colonnes pour les filtres
     col_ratio = 'ratio'
     col_visc = 'viscosity'
+    col_gap = 'gap'
+    col_shift = 'shift'
     col_ca_sub = 'CA substrat (deg)'
     col_ca_wl = 'CA mur gauche (deg)'
     col_ca_wr = 'CA mur droit (deg)'
@@ -538,8 +549,8 @@ def render_vof_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
 
     st.markdown(f"**{t('sim_1') if sim_num == 1 else t('sim_2')}**")
 
-    # 5 paramètres sur une seule ligne (avec espaceurs)
-    _, c1, c2, c3, c4, c5, _ = st.columns([0.5, 1, 1, 1, 1, 1, 0.5])
+    # 7 paramètres sur une seule ligne
+    c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
 
     with c1:
         opts = sorted(df[col_ratio].unique())
@@ -553,16 +564,26 @@ def render_vof_cascading_filters(df_origin: pd.DataFrame, key_prefix: str,
         df = df[df[col_visc] == val_visc]
 
     with c3:
+        opts = sorted(df[col_gap].unique())
+        val_gap = st.selectbox(t("lbl_gap"), opts, key=f"{key_prefix}_g{sim_num}")
+        df = df[df[col_gap] == val_gap]
+
+    with c4:
+        opts = sorted(df[col_shift].unique())
+        val_shift = st.selectbox(t("lbl_shift_x"), opts, key=f"{key_prefix}_s{sim_num}")
+        df = df[df[col_shift] == val_shift]
+
+    with c5:
         opts = sorted(df[col_ca_sub].unique())
         val_ca_sub = st.selectbox(t("lbl_ca_gold"), opts, key=f"{key_prefix}_cs{sim_num}")
         df = df[df[col_ca_sub] == val_ca_sub]
 
-    with c4:
+    with c6:
         opts = sorted(df[col_ca_wl].unique())
         val_wl = st.selectbox(t("lbl_ca_wall_l"), opts, key=f"{key_prefix}_wl{sim_num}")
         df = df[df[col_ca_wl] == val_wl]
 
-    with c5:
+    with c7:
         opts = sorted(df[col_ca_wr].unique())
         val_wr = st.selectbox(t("lbl_ca_wall_r"), opts, key=f"{key_prefix}_wr{sim_num}")
         df = df[df[col_ca_wr] == val_wr]
@@ -922,29 +943,22 @@ if selected_page == gen_pages[0]:  # Accueil / Home
     st.markdown("---")
     st.subheader(t("overview_title"))
 
-    col1, col2 = st.columns(2)
-    col3, col4 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("#### 1. FEM / Phase-Field")
-        if os.path.exists(FEM_GIF_EX):
-            st.image(FEM_GIF_EX, use_container_width=True)
-        st.caption(t("caption_fem"))
-
-    with col2:
-        st.markdown("#### 2. VOF (OpenFOAM)")
+        st.markdown("#### 1. VOF (OpenFOAM)")
         if os.path.exists(VOF_GIF_EX):
             st.image(VOF_GIF_EX, use_container_width=True)
         st.caption(t("caption_vof"))
 
-    with col3:
-        st.markdown("#### 3. LBM (Palabos)")
+    with col2:
+        st.markdown("#### 2. LBM (Palabos)")
         if os.path.exists(LBM_GIF_EX):
             st.image(LBM_GIF_EX, use_container_width=True)
         st.caption(t("caption_lbm"))
 
-    with col4:
-        st.markdown("#### 4. SPH (PySPH)")
+    with col3:
+        st.markdown("#### 3. SPH (PySPH)")
         if os.path.exists(SPH_GIF_EX):
             st.image(SPH_GIF_EX, use_container_width=True)
         st.caption(t("caption_sph"))
@@ -968,18 +982,16 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
 
     current_lang = st.session_state.get('lang', 'fr')
 
-    # Onglets pour les 4 méthodes (ordre cohérent: FEM, VOF, LBM, SPH)
-    mesh_tabs = st.tabs(["FEM", "VOF", "LBM", "SPH"])
+    # Onglets pour les 3 méthodes (ordre cohérent: VOF, LBM, SPH)
+    mesh_tabs = st.tabs(["VOF", "LBM", "SPH"])
 
     mesh_images = {
-        "FEM": os.path.join(ASSETS_PATH, "comparaison", "mesh_fem.png"),
         "VOF": os.path.join(ASSETS_PATH, "comparaison", "mesh_vof.png"),
         "LBM": os.path.join(ASSETS_PATH, "comparaison", "mesh_lbm.png"),
         "SPH": os.path.join(ASSETS_PATH, "comparaison", "mesh_sph.png"),
     }
 
     droplet_images = {
-        "FEM": os.path.join(ASSETS_PATH, "comparaison", "droplet_fem.png"),
         "VOF": os.path.join(ASSETS_PATH, "comparaison", "droplet_vof.png"),
         "LBM": os.path.join(ASSETS_PATH, "comparaison", "droplet_lbm.png"),
         "SPH": os.path.join(ASSETS_PATH, "comparaison", "droplet_sph.png"),
@@ -987,13 +999,11 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
 
     mesh_captions = {
         "fr": {
-            "FEM": "Maillage triangulaire adaptatif (Eulérien)",
             "VOF": "Maillage hexaédrique avec raffinement AMR (Eulérien)",
             "LBM": "Grille uniforme 5 µm = 1 l.u. (Eulérien)",
             "SPH": "Particules discrètes avec rayon d'influence h (Lagrangien)",
         },
         "en": {
-            "FEM": "Adaptive triangular mesh (Eulerian)",
             "VOF": "Hexahedral mesh with AMR refinement (Eulerian)",
             "LBM": "Uniform grid 5 µm = 1 l.u. (Eulerian)",
             "SPH": "Discrete particles with influence radius h (Lagrangian)",
@@ -1002,20 +1012,18 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
 
     droplet_captions = {
         "fr": {
-            "FEM": "Champ de phase φ : encre (+1) / air (-1)",
             "VOF": "Fraction volumique α : encre (1) / air (0)",
             "LBM": "Densité ρ : liquide (~458 l.u.) / air (~90 l.u.)",
             "SPH": "Particules d'encre étalées dans le puits",
         },
         "en": {
-            "FEM": "Phase field φ: ink (+1) / air (-1)",
             "VOF": "Volume fraction α: ink (1) / air (0)",
             "LBM": "Density ρ: liquid (~458 l.u.) / air (~90 l.u.)",
             "SPH": "Ink particles spread in the well",
         }
     }
 
-    for i, method in enumerate(["FEM", "VOF", "LBM", "SPH"]):
+    for i, method in enumerate(["VOF", "LBM", "SPH"]):
         with mesh_tabs[i]:
             col_mesh, col_droplet = st.columns(2)
 
@@ -1038,132 +1046,9 @@ elif selected_page == gen_pages[2]:  # Comparaison des modèles
     # Partie 2: Sections 4-9 (après les images)
     st.markdown(load_file_content("comparaison/comparaison_models_part2.md"))
 
-# ===== PAGE FEM =====
-elif selected_page == model_pages[0]:  # FEM
-    st.title(t("title_model_1"))
-    tabs = st.tabs(t("tabs_fem"))
-
-    with tabs[0]:  # Physique
-        display_smart_markdown(load_file_content("physics/physics_fem.md"))
-
-    with tabs[1]:  # Code
-        display_smart_markdown(load_file_content("code/code_fem.md"))
-
-    with tabs[2]:  # GIF
-        # Layout Titre + Popover
-        c_title, c_pop = st.columns([0.7, 0.3])
-        with c_title:
-            st.subheader(t("gif_viewer"))
-
-        _, df_fem_gif = load_fem_gif_mapping()
-
-        with c_pop:
-            with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                if not df_fem_gif.empty:
-                    st.dataframe(df_fem_gif, use_container_width=True, hide_index=True)
-                else:
-                    st.error("Données non trouvées")
-
-        if not df_fem_gif.empty:
-            with st.container(border=True):
-                # Simulation 1 - Filtres en cascade
-                file_g1 = render_fem_gif_cascading_filters(df_fem_gif, "fg", 1)
-                st.divider()
-                # Simulation 2 - Filtres en cascade
-                file_g2 = render_fem_gif_cascading_filters(df_fem_gif, "fg", 2)
-
-                # Boutons
-                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
-                with btn_col1:
-                    if st.button(t("btn_launch"), type="primary", use_container_width=True, key="btn_gif_launch"):
-                        st.session_state.run_g = True
-                        st.session_state.files_fem_g = (file_g1, file_g2)
-                with btn_col2:
-                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_gif_reset"):
-                        st.session_state.run_g = False
-                        st.rerun()
-
-            # Zone d'affichage des résultats
-            if st.session_state.get('run_g', False):
-                with st.container(border=True):
-                    gif_cols = st.columns(2)
-                    files = st.session_state.get('files_fem_g', (None, None))
-
-                    with gif_cols[0]:
-                        st.subheader(t("sim_1"))
-                        if files[0] and os.path.exists(files[0]):
-                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
-                        else:
-                            st.warning(t("image_unavailable"))
-
-                    with gif_cols[1]:
-                        st.subheader(t("sim_2"))
-                        if files[1] and os.path.exists(files[1]):
-                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
-                        else:
-                            st.warning(t("image_unavailable"))
-        else:
-            st.warning("Mapping data missing for FEM GIF.")
-
-    with tabs[3]:  # PNG
-        # Layout Titre + Popover
-        c_title, c_pop = st.columns([0.7, 0.3])
-        with c_title:
-            st.subheader(t("png_viewer"))
-
-        _, df_fem_png = load_fem_png_mapping()
-
-        with c_pop:
-            with st.popover(t("lbl_avail_sims"), use_container_width=True):
-                if not df_fem_png.empty:
-                    st.dataframe(df_fem_png, use_container_width=True, hide_index=True)
-                else:
-                    st.error("Données non trouvées")
-
-        if not df_fem_png.empty:
-            with st.container(border=True):
-                # Simulation 1 - Filtres en cascade
-                file_p1 = render_fem_png_cascading_filters(df_fem_png, "fp", 1)
-                st.divider()
-                # Simulation 2 - Filtres en cascade
-                file_p2 = render_fem_png_cascading_filters(df_fem_png, "fp", 2)
-
-                # Boutons
-                _, btn_col1, btn_col2, _ = st.columns([1, 1, 1, 1])
-                with btn_col1:
-                    if st.button(t("btn_show"), type="primary", use_container_width=True, key="btn_png_launch"):
-                        st.session_state.run_p = True
-                        st.session_state.files_fem_p = (file_p1, file_p2)
-                with btn_col2:
-                    if st.button(t("btn_reset"), type="secondary", use_container_width=True, key="btn_png_reset"):
-                        st.session_state.run_p = False
-                        st.rerun()
-
-            # Zone d'affichage des résultats
-            if st.session_state.get('run_p', False):
-                with st.container(border=True):
-                    png_cols = st.columns(2)
-                    files = st.session_state.get('files_fem_p', (None, None))
-
-                    with png_cols[0]:
-                        st.subheader(t("sim_1"))
-                        if files[0] and os.path.exists(files[0]):
-                            st.markdown(load_media_as_base64(files[0]), unsafe_allow_html=True)
-                        else:
-                            st.warning(t("image_unavailable"))
-
-                    with png_cols[1]:
-                        st.subheader(t("sim_2"))
-                        if files[1] and os.path.exists(files[1]):
-                            st.markdown(load_media_as_base64(files[1]), unsafe_allow_html=True)
-                        else:
-                            st.warning(t("image_unavailable"))
-        else:
-            st.warning("Mapping data missing for FEM PNG.")
-
 # ===== PAGE VOF =====
-elif selected_page == model_pages[1]:  # VOF
-    st.title(t("title_model_2"))
+elif selected_page == model_pages[0]:  # VOF
+    st.title(t("title_model_1"))
     tabs = st.tabs(t("tabs_fem"))
 
     with tabs[0]:  # Physique
@@ -1283,8 +1168,8 @@ elif selected_page == model_pages[1]:  # VOF
             st.warning("Mapping data missing for VOF PNG.")
 
 # ===== PAGE LBM =====
-elif selected_page == model_pages[2]:  # LBM
-    st.title(t("title_model_3"))
+elif selected_page == model_pages[1]:  # LBM
+    st.title(t("title_model_2"))
     tabs = st.tabs(t("tabs_fem"))
 
     with tabs[0]:
@@ -1404,8 +1289,8 @@ elif selected_page == model_pages[2]:  # LBM
             st.warning("Mapping data missing for LBM PNG.")
 
 # ===== PAGE SPH =====
-elif selected_page == model_pages[3]:  # SPH
-    st.title(t("title_model_4"))
+elif selected_page == model_pages[2]:  # SPH
+    st.title(t("title_model_3"))
     tabs = st.tabs(t("tabs_other"))
 
     with tabs[0]:

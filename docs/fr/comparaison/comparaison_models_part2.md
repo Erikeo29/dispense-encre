@@ -2,20 +2,7 @@
 
 ## 3. Analyse critique par modèle
 
-### 3.1 FEM (Finite Element Method / Phase-Field)
-
-Méthode des éléments finis avec formulation faible des équations de Navier-Stokes. L'interface encre/air est représentée par un champ de phase $\phi$ variant de -1 (air) à +1 (encre) sur une épaisseur caractéristique $\varepsilon$.
-
-| Avantages | Limitations |
-|-----------|-------------|
-| Précision interfaciale : 0.05–0.5 µm | Temps de calcul plus long que VOF/LBM |
-| Maillage adaptatif selon le gradient de $\phi$ | Consommation mémoire importante en 3D |
-| Couplage multiphysique natif | Sensibilité aux paramètres de stabilisation |
-| Logiciels : COMSOL (commercial), FEniCS (open-source) | |
-
----
-
-### 3.2 VOF (Volume of Fluid)
+### 3.1 VOF (Volume of Fluid)
 
 Méthode eulérienne où chaque cellule contient une fraction volumique $\alpha \in [0,1]$. L'interface est reconstruite géométriquement via l'algorithme PLIC (Piecewise Linear Interface Construction).
 
@@ -28,7 +15,7 @@ Méthode eulérienne où chaque cellule contient une fraction volumique $\alpha 
 
 ---
 
-### 3.3 LBM (Lattice Boltzmann Method)
+### 3.2 LBM (Lattice Boltzmann Method)
 
 Méthode mésoscopique résolvant l'équation de Boltzmann discrétisée sur grille régulière (D2Q9, D3Q19). Les grandeurs macroscopiques (vitesse, pression) sont obtenues par calcul des moments statistiques.
 
@@ -41,7 +28,7 @@ Méthode mésoscopique résolvant l'équation de Boltzmann discrétisée sur gri
 
 ---
 
-### 3.4 SPH (Smoothed Particle Hydrodynamics)
+### 3.3 SPH (Smoothed Particle Hydrodynamics)
 
 Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules dont les propriétés sont interpolées via des noyaux de lissage (cubic spline, Wendland).
 
@@ -62,7 +49,6 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 
 | Modèle | Discrétisation | Résolution | Temps | Remarques |
 |--------|----------------|------------|-------|-----------|
-| **FEM** | ~20k éléments | 5–10 µm | **1–2 h** | Maillage adaptatif, FEniCS |
 | **VOF** | ~50k cellules | ~5 µm | **30–60 min** | OpenFOAM optimisé C++ |
 | **LBM** | 240×100 nœuds | 5 µm | **~10 min** | Parallélisation efficace |
 | **SPH** | ~1k particules | 15–20 µm | **1–2 h** | PySPH, code non optimisé |
@@ -72,37 +58,36 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 | Gamme | Configuration type | Budget indicatif | Utilisation |
 |-------|-------------------|------------------|-------------|
 | **PC standard** | 8-12 cœurs, 16-32 Go RAM | 800–1 500 € | VOF/LBM simples, SPH 2D |
-| **PC dopé** | 12-16 cœurs, 32-64 Go RAM, GPU 8 Go | 1 500–3 000 € | FEM 2D, études paramétriques |
-| **Serveur** | 32+ cœurs, 128+ Go RAM | 5 000–15 000 € | FEM/VOF 3D, grandes séries |
+| **PC dopé** | 12-16 cœurs, 32-64 Go RAM, GPU 8 Go | 1 500–3 000 € | VOF 2D, études paramétriques |
+| **Serveur** | 32+ cœurs, 128+ Go RAM | 5 000–15 000 € | VOF 3D, grandes séries |
 | **Cloud** | AWS, Google Cloud, Azure | 1-5 €/h | Calculs ponctuels intensifs |
 
 ### 4.3 Remarques pratiques
 
 - **LBM** exploite efficacement les GPU : une carte graphique grand public accélère significativement les calculs
-- **FEM** et **VOF** tournent sur des PC standards pour des cas 2D
+- **VOF** tourne sur des PC standards pour des cas 2D
 - Le cloud est utile pour les études 3D ou les grandes séries paramétriques
 
 ---
 
 ## 5. Tableau de synthèse
 
-| Critère | FEM | VOF | LBM | SPH |
-|---------|-----|-----|-----|-----|
-| **Précision interface** | 0.05–0.5 µm | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Temps (ce projet)** | 1–2 h | 30–60 min | ~10 min | 1–2 h |
-| **Conservation masse** | Ajustement numérique | Rigoureuse | Approximative | Par sommation |
-| **Rhéologie Carreau** | Natif | Natif | Implémentable | Implémentable |
-| **Accélération GPU** | Limitée | Bonne | Excellente (×10-20) | Bonne (×10-15) |
-| **Courbe d'apprentissage** | Moyenne (GUI disponible) | Élevée (C++, CLI) | Élevée (physique spécifique) | Moyenne (Python) |
-| **Maturité industrielle** | Haute | Très haute | Moyenne | En développement |
-| **Coût logiciel** | COMSOL ~10k€/an, FEniCS gratuit | OpenFOAM gratuit | Palabos gratuit | PySPH gratuit |
+| Critère | VOF | LBM | SPH |
+|---------|-----|-----|-----|
+| **Précision interface** | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
+| **Temps (ce projet)** | 30–60 min | ~10 min | 1–2 h |
+| **Conservation masse** | Rigoureuse | Approximative | Par sommation |
+| **Rhéologie Carreau** | Natif | Implémentable | Implémentable |
+| **Accélération GPU** | Bonne | Excellente (×10-20) | Bonne (×10-15) |
+| **Courbe d'apprentissage** | Élevée (C++, CLI) | Élevée (physique spécifique) | Moyenne (Python) |
+| **Maturité industrielle** | Très haute | Moyenne | En développement |
+| **Coût logiciel** | OpenFOAM gratuit | Palabos gratuit | PySPH gratuit |
 
 ### Recommandations selon le contexte applicatif
 
 | Contexte | Méthode recommandée | Justification |
 |----------|---------------------|---------------|
 | Production industrielle | VOF (OpenFOAM) | Robustesse éprouvée, large communauté |
-| Couplage multiphysique | FEM (COMSOL, FEniCS) | Architecture native pour le couplage |
 | Études paramétriques intensives | LBM (Palabos) | Performance GPU optimale |
 | Recherche fondamentale | SPH (PySPH) | Flexibilité pour nouvelles physiques |
 

@@ -8,9 +8,8 @@
 
 ## 1. Objectif du projet
 
-Ce projet propose une **étude comparative de quatre méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-via. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
+Ce projet propose une **étude comparative de trois méthodes numériques** pour la simulation de la dispense de fluides rhéofluidifiants dans des micro-via. L'application permet de visualiser et comparer les résultats de simulations diphasiques réalisées avec différentes approches :
 
-- **FEM / Phase-Field** : Méthode des éléments finis avec suivi d'interface par champ de phase
 - **VOF (Volume of Fluid)** : Méthode eulérienne standard industriel (OpenFOAM)
 - **LBM (Lattice Boltzmann)** : Approche mésoscopique optimisée GPU (Palabos)
 - **SPH (Smoothed Particle Hydrodynamics)** : Méthode lagrangienne sans maillage (PySPH)
@@ -39,6 +38,6 @@ Utilisez le menu latéral pour explorer les différents chapitres du projet:
 
 ## 4. Note méthodologique
 
-Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Les codes FEM, VOF, LBM et SPH ont été développés par l'auteur de ce site avec l'utilisation d'outils d'IA pour la réalisation et la correction des programmes sur un PC standard. Les modélisations ont été réalisées avec différentes combinaisons de paramètres (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous forme de fichiers GIF (animations) et PNG (images finales) pour alimenter cette application.
+Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Les codes VOF, LBM et SPH ont été développés par l'auteur de ce site avec l'utilisation d'outils d'IA pour la réalisation et la correction des programmes sur un PC standard. Les modélisations ont été réalisées avec différentes combinaisons de paramètres (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous forme de fichiers GIF (animations) et PNG (images finales) pour alimenter cette application.
 
-Cette application est un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations conséquentes de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et des paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 4 modèles afin de pouvoir reproduire ces modélisations sur d'autres machines.
+Cette application est un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations conséquentes de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et des paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 3 modèles afin de pouvoir reproduire ces modélisations sur d'autres machines.
