@@ -78,8 +78,35 @@ TRANSLATIONS = {
         "lbl_empty_mesh": "Maillage vide",
         "lbl_with_droplet": "Avec goutte (état final)",
         # SPH
-        "sph_example_title": "Exemple de Simulation SPH",
-        "sph_preliminary": "⚠️ Résultats préliminaires — étude paramétrique en cours.",
+        "sph_example_title": "Résultats de Simulation SPH",
+        "sph_preliminary": "🔴 **Résultats non concluants à ce jour** — La méthode SPH s'est avérée inadaptée pour ce problème.",
+        "sph_failure_title": "Pourquoi SPH ne fonctionne pas ici ?",
+        "sph_failure_details": """
+La méthode SPH a été testée de manière exhaustive (~115 runs) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre AgCl en micro-cavité. Les principales raisons sont :
+
+**1. Tension de surface mal prise en compte**
+- Le modèle CSF (*Continuum Surface Force*) utilisé dans PySPH crée des **artefacts de splitting** : la goutte se scinde artificiellement au milieu pendant l'étalement, ce qui est non physique.
+- La contrainte CFL capillaire impose un pas de temps extrêmement petit : $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s à la résolution de 10 µm, rendant les calculs prohibitifs (~2h pour 30 ms de temps physique).
+
+**2. Résolution insuffisante**
+- Avec 700 à 1200 particules (résolution typique de 10–20 µm), les dynamiques fines d'étalement et de mouillage ne sont pas capturées correctement.
+- Augmenter la résolution aggrave encore le problème du pas de temps.
+
+**3. Modèles d'adhésion limités**
+- Les angles de contact sont imposés via des forces d'adhésion explicites, une approche moins robuste que les conditions aux limites de mouillabilité utilisées en VOF ou Phase Field.
+- La calibration du paramètre d'adhésion α reste empirique et sensible à la résolution.
+
+**4. Solveur alternatif (SPlisHSPlasH)**
+- Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~10 000×) mais ne fonctionne qu'à **échelle macroscopique** (simulation ×1000).
+- Pas de contrôle des angles de contact par paroi.
+- Résultats visuellement spectaculaires mais **pas physiquement pertinents** pour le dépôt d'encre à l'échelle µm.
+
+**Conclusion** : Pour ce type de problème (goutte µm, tension de surface élevée, angles de contact variables), les méthodes **VOF** (OpenFOAM) et **Phase Field** (FEM) sont nettement plus adaptées.
+""",
+        "sph_nok_caption_1": "PySPH — Splitting de la goutte (artefact CSF)",
+        "sph_nok_caption_2": "PySPH — Étalement asymétrique non convergé",
+        "sph_nok_caption_3": "PySPH — Particules s'échappant de la cavité",
+        "sph_geyser_caption": "SPlisHSPlasH — Geyser (échelle ×1000, non physique)",
         # Errors
         "mapping_missing": "Données de mapping manquantes.",
         "data_not_found": "Données non trouvées",
@@ -153,8 +180,35 @@ TRANSLATIONS = {
         "lbl_empty_mesh": "Empty Mesh",
         "lbl_with_droplet": "With Droplet (final state)",
         # SPH
-        "sph_example_title": "SPH Simulation Example",
-        "sph_preliminary": "⚠️ Preliminary results — parametric study in progress.",
+        "sph_example_title": "SPH Simulation Results",
+        "sph_preliminary": "🔴 **Inconclusive results to date** — The SPH method proved unsuitable for this problem.",
+        "sph_failure_title": "Why SPH does not work here?",
+        "sph_failure_details": """
+The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** and **SPlisHSPlasH**) and proved **unsuitable** for simulating AgCl ink deposition in micro-cavities. The main reasons are:
+
+**1. Poor surface tension handling**
+- The CSF (*Continuum Surface Force*) model used in PySPH creates **splitting artifacts**: the droplet artificially splits in the middle during spreading, which is non-physical.
+- The capillary CFL constraint imposes an extremely small time step: $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s at 10 µm resolution, making computations prohibitive (~2h for 30 ms of physical time).
+
+**2. Insufficient resolution**
+- With 700 to 1,200 particles (typical 10–20 µm resolution), the fine dynamics of spreading and wetting are not captured correctly.
+- Increasing resolution further worsens the time step problem.
+
+**3. Limited adhesion models**
+- Contact angles are imposed via explicit adhesion forces, a less robust approach than the wettability boundary conditions used in VOF or Phase Field methods.
+- Calibration of the adhesion parameter α remains empirical and resolution-dependent.
+
+**4. Alternative solver (SPlisHSPlasH)**
+- The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~10,000×) but only works at **macroscopic scale** (×1000 simulation).
+- No per-wall contact angle control.
+- Visually spectacular results but **not physically relevant** for µm-scale ink deposition.
+
+**Conclusion**: For this type of problem (µm droplet, high surface tension, variable contact angles), **VOF** (OpenFOAM) and **Phase Field** (FEM) methods are significantly more suitable.
+""",
+        "sph_nok_caption_1": "PySPH — Droplet splitting (CSF artifact)",
+        "sph_nok_caption_2": "PySPH — Unconverged asymmetric spreading",
+        "sph_nok_caption_3": "PySPH — Particles escaping the cavity",
+        "sph_geyser_caption": "SPlisHSPlasH — Geyser (×1000 scale, non-physical)",
         # Errors
         "mapping_missing": "Mapping data missing.",
         "data_not_found": "Data not found",
@@ -1319,9 +1373,50 @@ elif selected_page == model_pages[2]:  # SPH
 
     with tabs[2]:
         st.subheader(t("sph_example_title"))
-        st.info(t("sph_preliminary"))
-        if os.path.exists(SPH_GIF_EX):
-            st.image(SPH_GIF_EX, caption="Simulation SPH - Cas 03", use_container_width=True)
+        st.error(t("sph_preliminary"))
+
+        # GIFs with red border (NOK results)
+        sph_gifs = {
+            "NOK_1": os.path.join(ASSETS_PATH, "sph/gif/NOK_1.gif"),
+            "NOK_2": os.path.join(ASSETS_PATH, "sph/gif/NOK_2.gif"),
+            "NOK_3": os.path.join(ASSETS_PATH, "sph/gif/NOK_3.gif"),
+            "geyser": os.path.join(ASSETS_PATH, "sph/gif/geyser.gif"),
+        }
+        sph_captions = {
+            "NOK_1": t("sph_nok_caption_1"),
+            "NOK_2": t("sph_nok_caption_2"),
+            "NOK_3": t("sph_nok_caption_3"),
+            "geyser": t("sph_geyser_caption"),
+        }
+
+        col1, col2 = st.columns(2)
+        with col1:
+            for key in ["NOK_1", "NOK_2"]:
+                path = sph_gifs[key]
+                if os.path.exists(path):
+                    gif_html = load_media_as_base64(path)
+                    if gif_html:
+                        # Replace style to add red border
+                        gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
+                        st.markdown(gif_html, unsafe_allow_html=True)
+                        st.caption(sph_captions[key])
+                        st.markdown("")
+
+        with col2:
+            for key in ["NOK_3", "geyser"]:
+                path = sph_gifs[key]
+                if os.path.exists(path):
+                    gif_html = load_media_as_base64(path)
+                    if gif_html:
+                        gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
+                        st.markdown(gif_html, unsafe_allow_html=True)
+                        st.caption(sph_captions[key])
+                        st.markdown("")
+
+        # Detailed explanation
+        st.markdown("---")
+        with st.expander(f"📖 {t('sph_failure_title')}", expanded=True):
+            st.markdown(t("sph_failure_details"))
 
 # ===== PAGE CONCLUSION ET PERSPECTIVES =====
 elif selected_page == annex_pages[0]:  # Conclusion et perspectives
