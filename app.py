@@ -1375,7 +1375,12 @@ elif selected_page == model_pages[2]:  # SPH
         st.subheader(t("sph_example_title"))
         st.error(t("sph_preliminary"))
 
-        # GIFs with red border (NOK results)
+        # Detailed explanation first
+        with st.expander(f"📖 {t('sph_failure_title')}", expanded=True):
+            st.markdown(t("sph_failure_details"))
+
+        # GIFs with red border (NOK results) — below explanation
+        st.markdown("---")
         sph_gifs = {
             "NOK_1": os.path.join(ASSETS_PATH, "sph/gif/NOK_1.gif"),
             "NOK_2": os.path.join(ASSETS_PATH, "sph/gif/NOK_2.gif"),
@@ -1396,7 +1401,6 @@ elif selected_page == model_pages[2]:  # SPH
                 if os.path.exists(path):
                     gif_html = load_media_as_base64(path)
                     if gif_html:
-                        # Replace style to add red border
                         gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
                         st.markdown(gif_html, unsafe_allow_html=True)
                         st.caption(sph_captions[key])
@@ -1412,11 +1416,6 @@ elif selected_page == model_pages[2]:  # SPH
                         st.markdown(gif_html, unsafe_allow_html=True)
                         st.caption(sph_captions[key])
                         st.markdown("")
-
-        # Detailed explanation
-        st.markdown("---")
-        with st.expander(f"📖 {t('sph_failure_title')}", expanded=True):
-            st.markdown(t("sph_failure_details"))
 
 # ===== PAGE CONCLUSION ET PERSPECTIVES =====
 elif selected_page == annex_pages[0]:  # Conclusion et perspectives
