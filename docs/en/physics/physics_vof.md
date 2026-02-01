@@ -11,7 +11,7 @@
 
 ## 1. Method Principle
 
-The **VOF (Volume of Fluid)** method is an Eulerian approach for interface tracking in two-phase flows. It represents the **industrial standard** for free surface simulations, particularly with OpenFOAM's `interFoam` solver.
+The **VOF (Volume of Fluid)** method is an Eulerian approach for interface tracking in two-phase flows. It represents the industrial standard for free surface simulations, particularly with OpenFOAM's `interFoam` solver.
 
 ### Main Variable: Volume Fraction α
 
@@ -71,7 +71,7 @@ $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda 
 |-----------|--------|-------|------|
 | Density | ρ | 3000 | kg/m³ |
 | Zero-shear viscosity | η₀ | 0.5 – 5 | Pa·s |
-| Infinite-shear viscosity | η∞ | 0.05 – 0.167 | Pa·s |
+| Infinite-shear viscosity | η∞ | 0.05 – 0.15 | Pa·s |
 | Relaxation time | λ | 0.15 | s |
 | Power-law index | n | 0.7 | - |
 | Surface tension | σ | 0.04 | N/m |
@@ -83,7 +83,7 @@ transportModel Carreau;
 
 CarreauCoeffs {
     nu0   nu0 [0 2 -1 0 0 0 0] 1.667e-4;  // η₀/ρ
-    nuInf nuInf [0 2 -1 0 0 0 0] 5.56e-5; // η∞/ρ
+    nuInf nuInf [0 2 -1 0 0 0 0] 1.667e-5; // η∞/ρ
     k     k [0 0 1 0 0 0 0] 0.15;          // λ
     n     n [0 0 0 0 0 0 0] 0.7;           // n
 }
@@ -101,7 +101,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 | Perfect mass conservation | Fine meshes required near interface |
 | Industrial standard (OpenFOAM) | Multiple coalescences difficult |
 | Interface precision 0.1–1 µm (with PLIC) | Complex rheology (thixotropy) difficult |
-| GPU support since OpenFOAM 10 | Memory cost for AMR |
+| GPU support since OpenFOAM 10 (not achieved in this project)| Memory cost for AMR |
 
 ---
 
