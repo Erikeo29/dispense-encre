@@ -14,22 +14,20 @@
 
 ### 1.1 Technologies de dispense microfluidique
 
-La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines :
+La dispense de fluides en microfluidique englobe un ensemble de techniques permettant le dépôt contrôlé de volumes de l'ordre du nanolitre au microlitre. Ces procédés trouvent des applications dans de nombreux domaines industriels :
 
-**Applications industrielles :**
-- Fabrication de capteurs électrochimiques (dépôt d'encre pour électrode de référence, pour électrode conductrice, pour fonctionnalisation chimique, biochimique...)
-- Électronique imprimée (circuits conducteurs, antennes RFID)
-- Bioprinting et dépôt de biomatériaux
-- Revêtements fonctionnels et couches minces
-- Dosage pharmaceutique de précision
+- Fabrication de capteurs électrochimiques: dépôt d'encre pour électrode de référence, pour électrode conductrice, pour fonctionnalisation chimique ou biochimique...
+- Électronique imprimée: circuits conducteurs, antennes RFID, module packaging...
+- Revêtements fonctionnels et couches minces.
+- Dosage pharmaceutique de précision.
 
 ### 1.2 Mécanismes physiques
 
 La dispense de fluides implique plusieurs phénomènes physiques couplés :
-- **Écoulement diphasique** : interaction fluide/air à l'interface
-- **Capillarité** : tension superficielle et mouillage sur les parois
-- **Rhéologie** : comportement non-newtonien des fluides complexes
-- **Dynamique interfaciale** : déformation, pincement et stabilité
+- **Écoulement diphasique** : interaction fluide/air à l'interface.
+- **Capillarité** : tension superficielle et mouillage sur les parois.
+- **Rhéologie** : comportement non-newtonien des fluides complexes.
+- **Dynamique interfaciale** : déformation, étalement, pincement.
 
 ---
 
@@ -51,7 +49,7 @@ $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\ga
 
 où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini, et $k$, $a$ des paramètres d'ajustement.
 
-**Exemple :** Une encre rhéofluidifiante typique présente $\eta_0 = 0.5$–$5$ Pa·s (au repos) et $\eta_\infty = 0.05$ Pa·s sous fort cisaillement.
+**Exemple :** Une encre rhéofluidifiante peut présenter un  $\eta_0 = 0.5$–$15$ Pa·s (au repos) et $\eta_\infty = 0.05$ Pa·s sous fort cisaillement.
 
 ---
 
@@ -65,7 +63,7 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 | **Rhéologie complexe** | Modéliser le comportement non-newtonien | Lois constitutives (Carreau, Herschel-Bulkley) |
 | **Mouillage** | Gérer les angles de contact dynamiques | Conditions aux limites spécifiques |
 | **Multi-échelles** | Du micron (interface) au millimètre (puit) | Maillages adaptatifs, méthodes sans maillage |
-| **Coût calcul** | Simulations 3D transitoires coûteuses | GPU, parallélisation, méthodes hybrides |
+| **Coût calcul** | Simulations 2D ou 3D transitoires coûteuses | GPU, parallélisation, méthodes hybrides |
 
 ---
 
@@ -74,10 +72,10 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 ### 4.1 Configuration géométrique
 
 Le système modélisé consiste en :
-- **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du puit
-- **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm
-- **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³)
-- **Environnement** : température ambiante (~20°C) et pression atmosphérique
+- **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du micro-via.
+- **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm.
+- **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³).
+- **Environnement** : température ambiante (~20°C) et pression atmosphérique.
 
 ### 4.2 Paramètres de simulation
 
@@ -102,7 +100,7 @@ Ce projet compare trois méthodes numériques complémentaires :
 
 | Modèle | Approche | Avantage principal |
 |--------|----------|-------------------|
-| **VOF** | Eulérienne, volumes finis | Robustesse, standard industriel |
+| **VOF** | Eulérienne, volumes finis | Robustesse, référence industrielle (utilisé par Airbus, Danone, Volkswagen, Siemens...) |
 | **LBM** | Mésoscopique, réseau | Performance GPU, géométries complexes |
 | **SPH** | Lagrangienne, sans maillage | Surfaces libres, grandes déformations |
 

@@ -14,22 +14,20 @@
 
 ### 1.1 Microfluidic Dispensing Technologies
 
-Microfluidic dispensing encompasses a set of techniques for controlled deposition of volumes ranging from nanoliters to microliters. These processes find applications in numerous fields:
+Microfluidic dispensing encompasses a set of techniques for controlled deposition of volumes ranging from nanoliters to microliters. These processes find applications in numerous industrial fields:
 
-**Industrial applications:**
-- Electrochemical sensor fabrication (ink deposition for reference electrode, conductive electrode, chemical and biochemical functionalization...)
-- Printed electronics (conductive circuits, RFID antennas)
-- Bioprinting and biomaterial deposition
-- Functional coatings and thin films
-- Precision pharmaceutical dosing
+- Electrochemical sensor fabrication: ink deposition for reference electrode, conductive electrode, chemical or biochemical functionalization...
+- Printed electronics: conductive circuits, RFID antennas, module packaging...
+- Functional coatings and thin films.
+- Precision pharmaceutical dosing.
 
 ### 1.2 Physical Mechanisms
 
 Fluid dispensing involves several coupled physical phenomena:
-- **Two-phase flow**: fluid/air interaction at the interface
-- **Capillarity**: surface tension and wall wetting
-- **Rheology**: non-Newtonian behavior of complex fluids
-- **Interface dynamics**: deformation, pinch-off, and stability
+- **Two-phase flow**: fluid/air interaction at the interface.
+- **Capillarity**: surface tension and wall wetting.
+- **Rheology**: non-Newtonian behavior of complex fluids.
+- **Interface dynamics**: deformation, spreading, pinch-off.
 
 ---
 
@@ -51,7 +49,7 @@ $$\eta(\dot{\gamma}) = \eta_\infty + \frac{\eta_0 - \eta_\infty}{[1 + (k\dot{\ga
 
 where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscosities, and $k$, $a$ are fitting parameters.
 
-**Example:** A typical shear-thinning ink exhibits $\eta_0 = 0.5$–$5$ Pa·s (at rest) and $\eta_\infty = 0.05$ Pa·s under high shear.
+**Example:** A shear-thinning ink can exhibit $\eta_0 = 0.5$–$15$ Pa·s (at rest) and $\eta_\infty = 0.05$ Pa·s under high shear.
 
 ---
 
@@ -65,7 +63,7 @@ where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscositi
 | **Complex rheology** | Model non-Newtonian behavior | Constitutive laws (Carreau, Herschel-Bulkley) |
 | **Wetting** | Handle dynamic contact angles | Specific boundary conditions |
 | **Multi-scale** | From micron (interface) to millimeter (well) | Adaptive meshes, meshless methods |
-| **Computational cost** | Expensive 3D transient simulations | GPU, parallelization, hybrid methods |
+| **Computational cost** | Expensive 2D or 3D transient simulations | GPU, parallelization, hybrid methods |
 
 ---
 
@@ -74,10 +72,10 @@ where $\eta_0$ and $\eta_\infty$ are the zero-shear and infinite-shear viscositi
 ### 4.1 Geometric Configuration
 
 The modeled system consists of:
-- **Dispensing nozzle**: diameter 200–350 µm, positioned above the well
-- **Micro-well**: diameter 800–1500 µm, depth ~130 µm
-- **Fluid**: shear-thinning ink ($\rho$ = 3000 kg/m³)
-- **Environment**: ambient temperature (~20°C) and atmospheric pressure
+- **Dispensing nozzle**: diameter 200–350 µm, positioned above the micro-via.
+- **Micro-well**: diameter 800–1500 µm, depth ~130 µm.
+- **Fluid**: shear-thinning ink ($\rho$ = 3000 kg/m³).
+- **Environment**: ambient temperature (~20°C) and atmospheric pressure.
 
 ### 4.2 Simulation Parameters
 
@@ -102,7 +100,7 @@ This project compares three complementary numerical methods:
 
 | Model | Approach | Main Advantage |
 |-------|----------|----------------|
-| **VOF** | Eulerian, finite volumes | Robustness, industrial standard |
+| **VOF** | Eulerian, finite volumes | Robustness, industrial reference (used by Airbus, Danone, Volkswagen, Siemens...) |
 | **LBM** | Mesoscopic, lattice | GPU performance, complex geometries |
 | **SPH** | Lagrangian, meshless | Free surfaces, large deformations |
 
