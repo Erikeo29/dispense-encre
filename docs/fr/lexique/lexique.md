@@ -186,6 +186,7 @@
 |-----|------|---------|---------|
 | **FEniCS** | Open-source | Python/C++ | FEM |
 | **Firedrake** | Open-source | Python/C++ | FEM automatisé |
+| **UFL** | Open-source | Python | Unified Form Language (syntaxe variationnelle FEniCS/Firedrake) |
 | **SfePy** | Open-source | Python | FEM multiphysique |
 | **FiPy** | Open-source | Python | FVM, Phase-Field |
 | **Dedalus** | Open-source | Python | Méthodes spectrales |
