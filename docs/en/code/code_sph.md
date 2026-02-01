@@ -1,6 +1,6 @@
 # PySPH Code - Smoothed Particle Hydrodynamics (SPH)
 
-This page presents the SPH implementation using the **PySPH** library. The code is written in Python and simulates ink dispensing with precise contact angle management.
+This page presents the SPH implementation using the **PySPH** library (code written in Python).
 
 ---
 
