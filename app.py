@@ -87,7 +87,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
 
 **1. Tension de surface mal prise en compte**
 - Le modèle CSF (*Continuum Surface Force*) utilisé dans PySPH crée des **artefacts de splitting** : la goutte se scinde artificiellement au milieu pendant l'étalement, ce qui est non physique.
-- La contrainte CFL capillaire impose un pas de temps extrêmement petit : $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s à la résolution de 10 µm, rendant les calculs prohibitifs (~2h pour 30 ms de temps physique).
+- La contrainte CFL (Courant–Friedrichs–Lewy) capillaire impose un pas de temps extrêmement petit : $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s à la résolution de 10 µm, rendant les calculs prohibitifs (~2h pour 30 ms de temps physique).
 
 **2. Résolution insuffisante**
 - Avec 700 à 1200 particules (résolution typique de 10–20 µm), les dynamiques fines d'étalement et de mouillage ne sont pas capturées correctement.
@@ -100,7 +100,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
 **4. Solveur alternatif (SPlisHSPlasH)**
 - Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~1000× avec la GPU) mais ne fonctionne qu'à **échelle macroscopique** (échelle ×1000).
 - Pas de contrôle des angles de contact par paroi.
-- Résultats visuellement "spectaculaires" (éclaboussures et vagues réalistes) mais **physiquement faux** pour le dépôt d'une encre visqueuse à l'échelle du µm.
+- Résultats visuellement "spectaculaires" (éclaboussures et vagues réalistes : voir dernière image ci-dessous) mais **physiquement faux** pour le dépôt d'une encre visqueuse à l'échelle du µm.
 
 **Conclusion** : Pour ce type de problème (goutte µm, tension de surface élevée, angles de contact variables), les méthodes **VOF** (OpenFOAM) et **Phase Field** (FEM) sont plus adaptées.
 """,
@@ -190,7 +190,7 @@ The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** an
 
 **1. Poor surface tension handling**
 - The CSF (*Continuum Surface Force*) model used in PySPH creates **splitting artifacts**: the droplet artificially splits in the middle during spreading, which is non-physical.
-- The capillary CFL constraint imposes an extremely small time step: $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s at 10 µm resolution, making computations prohibitive (~2h for 30 ms of physical time).
+- The capillary CFL (Courant–Friedrichs–Lewy) constraint imposes an extremely small time step: $\\Delta t \\propto \\sqrt{\\rho h^3 / \\sigma} \\approx 10^{-8}$ s at 10 µm resolution, making computations prohibitive (~2h for 30 ms of physical time).
 
 **2. Insufficient resolution**
 - With 700 to 1,200 particles (typical 10–20 µm resolution), the fine dynamics of spreading and wetting are not captured correctly.
@@ -203,7 +203,7 @@ The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** an
 **4. Alternative solver (SPlisHSPlasH)**
 - The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~1,000× with the GPU) but only works at **macroscopic scale** (×1000 simulation).
 - No per-wall contact angle control.
-- Visually "spectacular" results (realistic splashing and waves) but **physically wrong** for viscous ink deposition at the µm scale.
+- Visually "spectacular" results (realistic splashing and waves: see last image below) but **physically wrong** for viscous ink deposition at the µm scale.
 
 **Conclusion**: For this type of problem (µm droplet, high surface tension, variable contact angles), **VOF** (OpenFOAM) and **Phase Field** (FEM) methods are more suitable.
 """,

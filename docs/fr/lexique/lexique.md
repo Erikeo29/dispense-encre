@@ -200,6 +200,7 @@
 | **COMSOL** | Commercial | GUI/MATLAB | FEM multiphysique |
 | **Ansys Fluent** | Commercial | GUI | VOF, FVM |
 | **DualSPHysics** | Open-source | C++/CUDA | SPH GPU |
+| **SPlisHSPlasH** | Open-source | C++/CUDA | SPH GPU (DFSPH, Akinci 2013) |
 | **waLBerla** | Open-source | C++ | LBM HPC |
 
 ---
