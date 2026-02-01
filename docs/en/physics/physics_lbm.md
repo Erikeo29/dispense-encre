@@ -54,13 +54,15 @@ This relationship allows modeling fluids of different viscosities by adjusting �
 
 ### 3.1 Discretization Grids (DdQq)
 
+The **DdQq** notation denotes a grid with **d** spatial dimensions and **q** discrete propagation velocities. These velocities define the directions in which particle populations move at each time step.
+
 | Grid | Dimensions | Velocities | Application |
 |------|------------|------------|-------------|
 | **D2Q9** | 2D | 9 | 2D standard |
 | **D3Q19** | 3D | 19 | 3D standard (good compromise) |
 | **D3Q27** | 3D | 27 | High precision |
 
-**Typical choice:** D3Q19 with Δx = 0.3–5 µm
+**This project's choice:** D2Q9 with Δx = 5 µm
 
 ### 3.2 Shan-Chen Multiphase Model
 
@@ -96,7 +98,7 @@ Wetting is handled naturally without explicit boundary conditions.
 | Intrinsic parallelization | Spurious currents at interfaces |
 | Natural wetting (complex geometries) | Delicate rheological calibration |
 | Automatic coalescence/breakup | GPU memory limiting in 3D |
-| Interface precision ~1 µm | Limited density ratio (~1000) |
+| Interface precision ~1 µm | Limited density ratio (~1000, actual ink/air = 2500) |
 
 ---
 
@@ -106,7 +108,7 @@ Wetting is handled naturally without explicit boundary conditions.
 
 | Configuration | Grid | Δx | Time | Hardware |
 |---------------|------|-----|------|----------|
-| **This project** | 240×100 | 5 µm | **~10 min** | 8 cores |
+| **This project** | 240×100 | 5 µm | **~10 min** | 6 cores |
 | High resolution | 1200×500 | 1 µm | 1–2 h | GPU |
 | 3D (D3Q19) | 300³ | 4 µm | 1–2 h | 1× GPU |
 

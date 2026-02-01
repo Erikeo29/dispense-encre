@@ -13,13 +13,14 @@
 8. Termes numériques
 9. Logiciels et bibliothèques
 
-**C. Hardware**
+**C. Hardware et formats**
 10. Acronymes hardware
+11. Formats de fichiers et données
 
 **D. Techniques et applications**
-11. Procédés de dispense
-12. Caractérisation expérimentale
-13. Couplages et intelligence artificielle
+12. Procédés de dispense
+13. Caractérisation expérimentale
+14. Couplages et intelligence artificielle
 
 ---
 
@@ -197,7 +198,7 @@
 
 ---
 
-# C. Hardware
+# C. Hardware et formats
 
 ## 10. Acronymes hardware
 
@@ -212,11 +213,34 @@
 | **TFLOPS** | Tera Floating-Point Operations Per Second | Unité de puissance de calcul |
 | **RAM** | Random Access Memory | Mémoire vive |
 
+## 11. Formats de fichiers et données
+
+| Extension | Signification | Description |
+|-----------|---------------|-------------|
+| **XML** | eXtensible Markup Language | Fichier de configuration structuré (paramètres Palabos) |
+| **CSV** | Comma-Separated Values | Fichier tabulaire texte (mappings paramètres → résultats) |
+| **JSON** | JavaScript Object Notation | Format d'échange de données structurées (configurations) |
+| **GIF** | Graphics Interchange Format | Image animée (animations de simulation) |
+| **PNG** | Portable Network Graphics | Image sans perte (états finaux) |
+| **JPG/JPEG** | Joint Photographic Experts Group | Image compressée avec perte |
+| **SVG** | Scalable Vector Graphics | Image vectorielle |
+| **STL** | STereoLithography | Maillage surfacique 3D (triangles) |
+| **MSH** | GMSH Mesh | Maillage volumique généré par GMSH |
+| **GEO** | GMSH Geometry | Script de géométrie GMSH (définition du domaine et du maillage) |
+| **VTK/VTI/VTU/VTP** | Visualization Toolkit | Formats ParaView pour post-traitement (grilles, données) |
+| **XDMF** | eXtensible Data Model and Format | Métadonnées pour visualisation de résultats FEM (FEniCSx) |
+| **HDF5** (.h5) | Hierarchical Data Format | Stockage de données numériques volumineuses |
+| **NPY/NPZ** | NumPy Array | Données numériques Python sérialisées |
+| **PKL** | Pickle | Sérialisation d'objets Python |
+| **PY** | Python Script | Code source Python (PySPH, FEniCSx, post-traitement) |
+| **CPP** | C++ Source | Code source C++ (OpenFOAM, Palabos) |
+| **YAML/YML** | YAML Ain't Markup Language | Configuration lisible (CI/CD, Docker) |
+
 ---
 
 # D. Techniques et applications
 
-## 11. Procédés de dispense
+## 12. Procédés de dispense
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|
@@ -225,7 +249,7 @@
 
 ---
 
-## 12. Caractérisation expérimentale
+## 13. Caractérisation expérimentale
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|
@@ -234,7 +258,7 @@
 
 ---
 
-## 13. Couplages et intelligence artificielle
+## 14. Couplages et intelligence artificielle
 
 | Abréviation | Signification | Description |
 |-------------|---------------|-------------|

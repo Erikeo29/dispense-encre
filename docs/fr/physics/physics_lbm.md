@@ -54,13 +54,15 @@ Cette relation permet de modéliser des fluides de viscosités différentes en a
 
 ### 3.1 Grilles de discrétisation (DdQq)
 
+La notation **DdQq** désigne une grille à **d** dimensions spatiales avec **q** vitesses discrètes de propagation. Ces vitesses définissent les directions dans lesquelles les populations de particules se déplacent à chaque pas de temps.
+
 | Grille | Dimensions | Vitesses | Application |
 |--------|------------|----------|-------------|
 | **D2Q9** | 2D | 9 | Standard 2D |
 | **D3Q19** | 3D | 19 | Standard 3D (bon compromis) |
 | **D3Q27** | 3D | 27 | Haute précision |
 
-**Choix typique :** D3Q19 avec Δx = 0.3–5 µm
+**Choix de ce projet :** D2Q9 avec Δx = 5 µm
 
 ### 3.2 Modèle multiphasique Shan-Chen
 
@@ -96,7 +98,7 @@ Le mouillage est géré naturellement sans conditions aux limites explicites.
 | Parallélisation intrinsèque | Courants parasites aux interfaces |
 | Mouillage naturel (géométries complexes) | Calibration rhéologique délicate |
 | Coalescence/rupture automatiques | Mémoire GPU limitante en 3D |
-| Précision interfaciale ~1 µm | Rapport de densité limité (~1000) |
+| Précision interfaciale ~1 µm | Rapport de densité limité (~1000, encre/air réel = 2500) |
 
 ---
 
@@ -106,7 +108,7 @@ Le mouillage est géré naturellement sans conditions aux limites explicites.
 
 | Configuration | Grille | Δx | Temps | Hardware |
 |---------------|--------|-----|-------|----------|
-| **Ce projet** | 240×100 | 5 µm | **~10 min** | 8 cœurs |
+| **Ce projet** | 240×100 | 5 µm | **~10 min** | 6 cœurs |
 | Haute résolution | 1200×500 | 1 µm | 1–2 h | GPU |
 | 3D (D3Q19) | 300³ | 4 µm | 1–2 h | 1× GPU |
 
