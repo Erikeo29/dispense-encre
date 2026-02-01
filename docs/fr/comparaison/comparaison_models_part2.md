@@ -24,20 +24,20 @@ Méthode mésoscopique résolvant l'équation de Boltzmann discrétisée sur gri
 | Parallélisation GPU exceptionnelle (facteur ×10-20) | Compressibilité artificielle (contrainte Ma < 0.1) |
 | Algorithme local (chaque nœud indépendant) | Précision sub-micronique difficile |
 | Pas de maillage complexe à générer | Calibration rhéologique délicate |
-| Logiciels : Palabos (open-source), waLBerla | Documentation moins fournie que VOF |
+| Logiciels : Palabos, waLBerla (open-source) | Documentation moins fournie que VOF |
 
 ---
 
 ### 3.3 SPH (Smoothed Particle Hydrodynamics)
 
-Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules dont les propriétés sont interpolées via des noyaux de lissage (cubic spline, Wendland).
+Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules dont les propriétés sont interpolées via des noyaux de lissage (cubic spline, Wendland). Il est optimisé pour le calcul GPU et principalement conçu pour les écoulements à surface libre (interactions fluide-structure, ingénierie côtière, vagues).
 
 | Avantages | Limitations |
 |-----------|-------------|
 | Pas de maillage : pas de problème de distorsion | Bruit numérique dans les champs de pression |
 | Coalescence et fragmentation naturelles | Instabilités tensorielles à haute vitesse |
 | Adapté aux grandes déformations | Maturité industrielle moindre |
-| Logiciels : PySPH (Python), DualSPHysics | Coût mémoire élevé en 3D |
+| Logiciels : PySPH (Python), DualSPHysics (C++/CUDA)| Coût mémoire élevé en 3D |
 
 ---
 
@@ -45,28 +45,28 @@ Méthode lagrangienne sans maillage. Le fluide est discrétisé en particules do
 
 ### 4.1 Temps de calcul (simulations de ce projet)
 
-Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte dans un micro-via (domaine 1.2×0.5 mm, 20–40 ms de temps physique), PC standard 8 cœurs.
+Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte dans un micro-via (domaine 1.2×0.5 mm, 100-200 ms de temps physique), PC standard 8 cœurs.
 
 | Modèle | Discrétisation | Résolution | Temps | Remarques |
 |--------|----------------|------------|-------|-----------|
 | **VOF** | ~50k cellules | ~5 µm | **30–60 min** | OpenFOAM optimisé C++ |
-| **LBM** | 240×100 nœuds | 5 µm | **~10 min** | Parallélisation efficace |
-| **SPH** | ~1k particules | 15–20 µm | **1–2 h** | PySPH, code non optimisé |
+| **LBM** | 240×100 nœuds | 5 µm | **~10 min** | Parallélisation efficace (GPU) |
+| **SPH** | ~1k particules | 15–20 µm | **1–2 h** | PySPH |
 
 ### 4.2 Configurations indicatives
 
 | Gamme | Configuration type | Budget indicatif | Utilisation |
 |-------|-------------------|------------------|-------------|
-| **PC standard** | 8-12 cœurs, 16-32 Go RAM | 800–1 500 € | VOF/LBM simples, SPH 2D |
-| **PC dopé** | 12-16 cœurs, 32-64 Go RAM, GPU 8 Go | 1 500–3 000 € | VOF 2D, études paramétriques |
-| **Serveur** | 32+ cœurs, 128+ Go RAM | 5 000–15 000 € | VOF 3D, grandes séries |
-| **Cloud** | AWS, Google Cloud, Azure | 1-5 €/h | Calculs ponctuels intensifs |
+| **PC standard** | 8-12 cœurs, 16-32 Go RAM | 800–1 500 € | VOF/LBM simples, SPH 2D, FEM 2D|
+| **PC dopé** | 12-16 cœurs, 32-64 Go RAM, GPU 8 Go | 1 500–3 000 € | VOF 3D, études paramétriques |
+| **Serveur** | 32+ cœurs, 128+ Go RAM | 5 000–15 000 € | grandes séries d'études |
+| **Cloud** | AWS, Google Cloud, Azure | 1-5 €/h | Pour calculs ponctuels intensifs |
 
 ### 4.3 Remarques pratiques
 
-- **LBM** exploite efficacement les GPU : une carte graphique grand public accélère significativement les calculs
+- **LBM** exploite efficacement les GPU : une carte graphique grand public accélère significativement les calculs.
 - **VOF** tourne sur des PC standards pour des cas 2D
-- Le cloud est utile pour les études 3D ou les grandes séries paramétriques
+- Le cloud peut être utile pour des études 3D ou des grandes séries paramétriques.
 
 ---
 
@@ -75,10 +75,9 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 | Critère | VOF | LBM | SPH |
 |---------|-----|-----|-----|
 | **Précision interface** | 0.1–1 µm | 0.2–2 µm | 0.5–5 µm |
-| **Temps (ce projet)** | 30–60 min | ~10 min | 1–2 h |
+| **Temps par simulation unitaire (ce projet)** | 0.5-2 h | ~10 min | 1–2 h |
 | **Conservation masse** | Rigoureuse | Approximative | Par sommation |
 | **Rhéologie Carreau** | Natif | Implémentable | Implémentable |
-| **Accélération GPU** | Bonne | Excellente (×10-20) | Bonne (×10-15) |
 | **Courbe d'apprentissage** | Élevée (C++, CLI) | Élevée (physique spécifique) | Moyenne (Python) |
 | **Maturité industrielle** | Très haute | Moyenne | En développement |
 | **Coût logiciel** | OpenFOAM gratuit | Palabos gratuit | PySPH gratuit |
@@ -87,7 +86,7 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 
 | Contexte | Méthode recommandée | Justification |
 |----------|---------------------|---------------|
-| Production industrielle | VOF (OpenFOAM) | Robustesse éprouvée, large communauté |
+| Industrie | VOF (OpenFOAM) | Robustesse éprouvée, large communauté |
 | Études paramétriques intensives | LBM (Palabos) | Performance GPU optimale |
 | Recherche fondamentale | SPH (PySPH) | Flexibilité pour nouvelles physiques |
 

@@ -73,7 +73,7 @@ où $\eta_0$ et $\eta_\infty$ sont les viscosités à cisaillement nul et infini
 
 Le système modélisé consiste en :
 - **Buse de dispense** : diamètre 200–350 µm, positionnée au-dessus du micro-via.
-- **Micro-puit** : diamètre 800–1500 µm, profondeur ~130 µm.
+- **Micro-via** : diamètre 800–1500 µm, profondeur ~130 µm.
 - **Fluide** : encre rhéofluidifiante ($\rho$ = 3000 kg/m³).
 - **Environnement** : température ambiante (~20°C) et pression atmosphérique.
 
@@ -81,14 +81,14 @@ Le système modélisé consiste en :
 
 | Paramètre | Plage | Unité |
 |-----------|-------|-------|
-| Diamètre puit | 800 – 1500 | µm |
+| Diamètre micro-via | 800 – 1500 | µm |
 | Diamètre buse | 200 – 350 | µm |
 | Décalage horizontal (buse vs centre puit) | 0, -75, -150 | µm |
 | Décalage vertical (buse vs haut du puit) | -30, 0, 30, 60 | µm |
 | Viscosité zéro cisaillement $\eta_0$ | 0.5, 1.5, 5 | Pa·s |
 | Viscosité $\eta_\infty$ | 0.05 – 0.5 | Pa·s |
 | Angle de contact paroi | 15 – 120 | ° |
-| Angle de contact fond du puit | 15 – 65 | ° |
+| Angle de contact fond du micro-via | 15 – 65 | ° |
 | Angle de contact substrat (plateau) | 15 – 120 | ° |
 | Temps de dispense | 20 – 40 | ms |
 
