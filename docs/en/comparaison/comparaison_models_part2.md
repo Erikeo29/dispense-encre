@@ -57,7 +57,7 @@ Times below correspond to the reference case: droplet dispensing into a micro-vi
 
 | Range | Typical configuration | Indicative budget | Usage |
 |-------|----------------------|-------------------|-------|
-| **Standard PC** | 8-12 cores, 16-32 GB RAM | €800–1,500 | Simple VOF/LBM, 2D SPH, 2D FEM |
+| **Standard PC** | 6-12 cores, 16-32 GB RAM | €800–1,500 | Simple VOF/LBM, 2D SPH, 2D FEM |
 | **Upgraded PC** | 12-16 cores, 32-64 GB RAM, GPU 8 GB | €1,500–3,000 | 3D VOF, parametric studies |
 | **Server** | 32+ cores, 128+ GB RAM | €5,000–15,000 | Large study series |
 | **Cloud** | AWS, Google Cloud, Azure | €1-5/h | Intensive one-off calculations |
