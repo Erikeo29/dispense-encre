@@ -83,7 +83,7 @@ TRANSLATIONS = {
         "sph_preliminary": "🔴 **Résultats non concluants à ce jour** — La méthode SPH s'est avérée inadaptée pour ce problème.",
         "sph_failure_title": "Pourquoi SPH ne fonctionne pas ici ?",
         "sph_failure_details": """
-La méthode SPH a été testée de manière exhaustive (~115 versions de codes différents) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre AgCl en micro-cavité. Les principales raisons sont :
+La méthode SPH a été testée de manière exhaustive (~115 versions de codes différents) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre rhéofluidifiante en micro-cavité. Les principales raisons sont :
 
 **1. Tension de surface mal prise en compte**
 - Le modèle CSF (*Continuum Surface Force*) utilisé dans PySPH crée des **artefacts de splitting** : la goutte se scinde artificiellement au milieu pendant l'étalement, ce qui est non physique.
@@ -100,14 +100,14 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
 **4. Solveur alternatif (SPlisHSPlasH)**
 - Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~1000× avec la GPU) mais ne fonctionne qu'à **échelle macroscopique** (échelle ×1000).
 - Pas de contrôle des angles de contact par paroi.
-- Résultats visuellement "spectaculaires" mais **pas physiquement réaliste** pour le dépôt d'encre à l'échelle µm.
+- Résultats visuellement "spectaculaires" (éclaboussures et vagues réalistes) mais **physiquement faux** pour le dépôt d'une encre visqueuse à l'échelle du µm.
 
-**Conclusion** : Pour ce type de problème (goutte µm, tension de surface élevée, angles de contact variables), les méthodes **VOF** (OpenFOAM) et **Phase Field** (FEM) sont nettement plus adaptées.
+**Conclusion** : Pour ce type de problème (goutte µm, tension de surface élevée, angles de contact variables), les méthodes **VOF** (OpenFOAM) et **Phase Field** (FEM) sont plus adaptées.
 """,
         "sph_nok_caption_1": "PySPH — Splitting de la goutte (artefact CSF)",
-        "sph_nok_caption_2": "PySPH — Étalement asymétrique non convergé",
-        "sph_nok_caption_3": "PySPH — Particules s'échappant de la cavité",
-        "sph_geyser_caption": "SPlisHSPlasH — Geyser (échelle ×1000, non physique)",
+        "sph_nok_caption_2": "PySPH — Splitting de la goutte (artefact CSF)",
+        "sph_nok_caption_3": "PySPH — Angle contact 60°: OK. Particules s'échappant de la cavité",
+        "sph_geyser_caption": "SPlisHSPlasH (échelle ×1000, non réaliste pour une encre visqueuse ! )",
         # Errors
         "mapping_missing": "Données de mapping manquantes.",
         "data_not_found": "Données non trouvées",
@@ -186,7 +186,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
         "sph_preliminary": "🔴 **Inconclusive results to date** — The SPH method proved unsuitable for this problem.",
         "sph_failure_title": "Why SPH does not work here?",
         "sph_failure_details": """
-The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** and **SPlisHSPlasH**) and proved **unsuitable** for simulating AgCl ink deposition in micro-cavities. The main reasons are:
+The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** and **SPlisHSPlasH**) and proved **unsuitable** for simulating shear-thinning ink deposition in micro-cavities. The main reasons are:
 
 **1. Poor surface tension handling**
 - The CSF (*Continuum Surface Force*) model used in PySPH creates **splitting artifacts**: the droplet artificially splits in the middle during spreading, which is non-physical.
@@ -203,14 +203,14 @@ The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** an
 **4. Alternative solver (SPlisHSPlasH)**
 - The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~1,000× with the GPU) but only works at **macroscopic scale** (×1000 simulation).
 - No per-wall contact angle control.
-- Visually "spectacular" results but **not physically relevant** for µm-scale ink deposition.
+- Visually "spectacular" results (realistic splashing and waves) but **physically wrong** for viscous ink deposition at the µm scale.
 
-**Conclusion**: For this type of problem (µm droplet, high surface tension, variable contact angles), **VOF** (OpenFOAM) and **Phase Field** (FEM) methods are significantly more suitable.
+**Conclusion**: For this type of problem (µm droplet, high surface tension, variable contact angles), **VOF** (OpenFOAM) and **Phase Field** (FEM) methods are more suitable.
 """,
         "sph_nok_caption_1": "PySPH — Droplet splitting (CSF artifact)",
-        "sph_nok_caption_2": "PySPH — Unconverged asymmetric spreading",
-        "sph_nok_caption_3": "PySPH — Particles escaping the cavity",
-        "sph_geyser_caption": "SPlisHSPlasH — Geyser (×1000 scale, non-physical)",
+        "sph_nok_caption_2": "PySPH — Droplet splitting (CSF artifact)",
+        "sph_nok_caption_3": "PySPH — Contact angle 60°: OK. Particles escaping the cavity",
+        "sph_geyser_caption": "SPlisHSPlasH (×1000 scale, not realistic for a viscous ink!)",
         # Errors
         "mapping_missing": "Mapping data missing.",
         "data_not_found": "Data not found",
@@ -1379,7 +1379,7 @@ elif selected_page == model_pages[2]:  # SPH
         st.error(t("sph_preliminary"))
 
         # Detailed explanation first
-        with st.expander(f"📖 {t('sph_failure_title')}", expanded=True):
+        with st.expander(t('sph_failure_title'), expanded=True):
             st.markdown(t("sph_failure_details"))
 
         # GIFs with red border (NOK results) — below explanation
@@ -1415,7 +1415,8 @@ elif selected_page == model_pages[2]:  # SPH
                 if os.path.exists(path):
                     gif_html = load_media_as_base64(path)
                     if gif_html:
-                        gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
+                        border_color = "dodgerblue" if key == "geyser" else "red"
+                        gif_html = gif_html.replace('style="', f'style="border: 3px solid {border_color}; border-radius: 8px; ')
                         st.markdown(gif_html, unsafe_allow_html=True)
                         st.caption(sph_captions[key])
                         st.markdown("")
