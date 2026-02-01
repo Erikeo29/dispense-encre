@@ -5,7 +5,8 @@
 4. Smoothed Particle Hydrodynamics (SPH)
 5. Rheology and Wetting
 6. General Works
-7. Online Resources
+7. PINNs and Artificial Intelligence
+8. Online Resources
 
 This page gathers references describing the principles used in this project. **All links point to verified open-access resources.**
 
@@ -71,7 +72,20 @@ This page gathers references describing the principles used in this project. **A
 
 ---
 
-## 7. Online Resources
+## 7. PINNs and Artificial Intelligence
+
+13. **Raissi, M., Perdikaris, P., & Karniadakis, G. E.** (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations*. Journal of Computational Physics, 378, 686-707. [Free PDF (arXiv)](https://arxiv.org/pdf/1711.10561)
+    - Foundational PINN paper: solving PDEs using neural networks constrained by physics.
+
+14. **Raissi, M., Yazdani, A., & Karniadakis, G. E.** (2020). *Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations*. Science, 367(6481), 1026-1030. [Free PDF (arXiv)](https://arxiv.org/pdf/1808.04327)
+    - Application of PINNs to fluid mechanics: reconstructing velocity and pressure fields from flow visualizations.
+
+15. **Cai, S., Mao, Z., Wang, Z., Yin, M., & Karniadakis, G. E.** (2021). *Physics-informed neural networks (PINNs) for fluid mechanics: A review*. Acta Mechanica Sinica, 37, 1727-1738. [Free PDF (arXiv)](https://arxiv.org/pdf/2105.09506)
+    - Review of PINN applications in fluid mechanics: 3D wake flows, supersonic flows, biomedical flows.
+
+---
+
+## 8. Online Resources
 
 - [OpenFOAM Documentation](https://openfoam.org) — VOF solvers (interFoam, isoAdvector)
 - [FEniCS Project](https://fenicsproject.org) — Python/C++ finite elements

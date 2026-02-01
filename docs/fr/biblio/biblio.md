@@ -5,7 +5,8 @@
 4. Smoothed Particle Hydrodynamics (SPH)
 5. Rhéologie et mouillage
 6. Ouvrages généraux
-7. Ressources en ligne
+7. PINN et intelligence artificielle
+8. Ressources en ligne
 
 Cette page regroupe des références qui décrivent les principes utilisés dans ce projet. **Tous les liens pointent vers des ressources en accès libre vérifiées.**
 
@@ -71,7 +72,20 @@ Cette page regroupe des références qui décrivent les principes utilisés dans
 
 ---
 
-## 7. Ressources en ligne
+## 7. PINN et intelligence artificielle
+
+13. **Raissi, M., Perdikaris, P., & Karniadakis, G. E.** (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations*. Journal of Computational Physics, 378, 686-707. [PDF gratuit (arXiv)](https://arxiv.org/pdf/1711.10561)
+    - Article fondateur des PINN : résolution d'EDP par réseaux de neurones contraints par la physique.
+
+14. **Raissi, M., Yazdani, A., & Karniadakis, G. E.** (2020). *Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations*. Science, 367(6481), 1026-1030. [PDF gratuit (arXiv)](https://arxiv.org/pdf/1808.04327)
+    - Application des PINN à la mécanique des fluides : reconstruction de champs de vitesse et pression à partir de visualisations d'écoulements.
+
+15. **Cai, S., Mao, Z., Wang, Z., Yin, M., & Karniadakis, G. E.** (2021). *Physics-informed neural networks (PINNs) for fluid mechanics: A review*. Acta Mechanica Sinica, 37, 1727-1738. [PDF gratuit (arXiv)](https://arxiv.org/pdf/2105.09506)
+    - Revue des applications des PINN en mécanique des fluides : écoulements 3D, supersoniques, biomédicaux.
+
+---
+
+## 8. Ressources en ligne
 
 - [OpenFOAM Documentation](https://openfoam.org) — Solveurs VOF (interFoam, isoAdvector)
 - [FEniCS Project](https://fenicsproject.org) — Éléments finis Python/C++
