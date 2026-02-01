@@ -31,9 +31,9 @@ Le but de cette application est de modéliser, visualiser et comparer les résul
 Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-via.
 
 **Paramètres clés étudiés :**
-- Géométrie : diamètre micro-via, diamètre buse,
-- Position de la buse : décalage en X et Y (décalage vertical et horizontal par rapport au via)
-- Rhéologie : viscosité (modèle de Carreau)
+- Géométrie : diamètre micro-via, diamètre buse.
+- Position de la buse : décalage en X et Y (décalage vertical et horizontal par rapport au via).
+- Rhéologie : viscosité (modèle de Carreau).
 - Mouillage : angles de contact sur le fond du micro-via, sur les parois verticales du puit, sur la surface horizontale du substrat.
 
 ---

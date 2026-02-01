@@ -31,9 +31,9 @@ The purpose of this application is to model, visualize and compare the results o
 The simulations model **shear-thinning ink dispensing** into micro-via.
 
 **Key parameters studied:**
-- Geometry: micro-via diameter, nozzle diameter,
-- Nozzle position: X and Y offset (vertical and horizontal offset relative to the via)
-- Rheology: viscosity (Carreau model)
+- Geometry: micro-via diameter, nozzle diameter.
+- Nozzle position: X and Y offset (vertical and horizontal offset relative to the via).
+- Rheology: viscosity (Carreau model).
 - Wetting: contact angles on the micro-via bottom, on the vertical walls of the well, on the horizontal substrate surface.
 
 ---
