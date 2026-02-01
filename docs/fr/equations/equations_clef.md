@@ -14,7 +14,7 @@
 7. Tableau comparatif des modèles
 8. Synthèse
 
-Ce chapitre présente les équations fondamentales utilisées dans les quatre modèles numériques. L'objectif est de comprendre les points communs (équations de Navier-Stokes, rhéologie) et les différences (discrétisation, suivi d'interface).
+Ce chapitre présente les équations fondamentales utilisées dans les modèles numériques. L'objectif est de comparer les points communs (équations de Navier-Stokes, rhéologie) et les différences (discrétisation, suivi d'interface).
 
 ---
 
@@ -466,8 +466,3 @@ La modélisation de la dispense de fluides implique plusieurs phénomènes physi
                     SIMULATION NUMÉRIQUE
 ```
 
----
-
-## Références
-
-> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.

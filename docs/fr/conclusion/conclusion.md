@@ -6,6 +6,7 @@
    - 2.3 Impression 4D et encres intelligentes
    - 2.4 Opportunités de recherche
    - 2.5 Calcul quantique
+3. Références
 
 ---
 
@@ -109,6 +110,6 @@ Le calcul quantique pourrait révolutionner la modélisation des écoulements co
 
 ---
 
-## Références
+## 3. Références
 
 > **Note** : Pour des références qui traitent des ressources utilisées dans ce projet, consultez la section **Bibliographie** dans le menu Annexes.

@@ -6,6 +6,7 @@
 5. Inventeurs des méthodes modernes
 6. Tableau chronologique
 7. Diagramme des filiations scientifiques
+8. Références biographiques
 
 Ce projet de simulation de dispense de fluides repose sur des siècles de découvertes scientifiques. Cette page rend hommage aux savants dont les travaux fondamentaux ont rendu possible la modélisation numérique moderne des écoulements diphasiques.
 
@@ -371,7 +372,7 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 ---
 
-## Références biographiques
+## 8. Références biographiques
 
 > **Note** : Pour la liste complète des références techniques, consultez la section **Bibliographie** dans le menu Annexes.
 

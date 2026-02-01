@@ -14,7 +14,7 @@
 7. Model Comparison Table
 8. Summary
 
-This chapter presents the fundamental equations used in the four numerical models. The goal is to understand the commonalities (Navier-Stokes equations, rheology) and differences (discretization, interface tracking).
+This chapter presents the fundamental equations used in the numerical models. The goal is to understand the commonalities (Navier-Stokes equations, rheology) and differences (discretization, interface tracking).
 
 ---
 
@@ -466,8 +466,3 @@ Fluid dispensing modeling involves several interdependent physical phenomena, ch
                     NUMERICAL SIMULATION
 ```
 
----
-
-## References
-
-> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
