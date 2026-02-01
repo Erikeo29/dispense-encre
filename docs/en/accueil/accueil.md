@@ -23,7 +23,7 @@ The purpose of this application is to model, visualize and compare the results o
 - **VOF (Volume of Fluid)**: Eulerian method (OpenFOAM)
 - **LBM (Lattice Boltzmann)**: GPU-optimized mesoscopic approach (Palabos)
 - **SPH (Smoothed Particle Hydrodynamics)**: Meshless Lagrangian method (PySPH)
-
+- The **FEM (Finite Element Method)** under Python with FEniCSx and Firedrake environments is under development and is not presented in this version.
 ---
 
 ## 2. Target Application
