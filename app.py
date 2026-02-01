@@ -270,7 +270,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 # Chemins vers les exemples visuels
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
 VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/run_039_y_gap_buse0.03_x_gap_buse0_eta01.5_ratio_surface0.8.gif")
-LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_029.gif")
+LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_020.gif")
 SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/NOK_2.gif")
 
 # --- Fonctions Utilitaires ---
@@ -1020,19 +1020,19 @@ if selected_page == gen_pages[0]:  # Accueil / Home
     with col1:
         st.markdown("#### 1. VOF (OpenFOAM)")
         if os.path.exists(VOF_GIF_EX):
-            st.image(VOF_GIF_EX, use_container_width=True)
+            st.markdown(load_media_as_base64(VOF_GIF_EX), unsafe_allow_html=True)
         st.caption(t("caption_vof"))
 
     with col2:
         st.markdown("#### 2. LBM (Palabos)")
         if os.path.exists(LBM_GIF_EX):
-            st.image(LBM_GIF_EX, use_container_width=True)
+            st.markdown(load_media_as_base64(LBM_GIF_EX), unsafe_allow_html=True)
         st.caption(t("caption_lbm"))
 
     with col3:
         st.markdown("#### 3. SPH (PySPH)")
         if os.path.exists(SPH_GIF_EX):
-            st.image(SPH_GIF_EX, use_container_width=True)
+            st.markdown(load_media_as_base64(SPH_GIF_EX), unsafe_allow_html=True)
         st.caption(t("caption_sph"))
 
 # ===== PAGE INTRODUCTION =====
