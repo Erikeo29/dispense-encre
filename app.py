@@ -22,6 +22,7 @@ TRANSLATIONS = {
         "tabs_dual": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "▸ Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 3 modèles",
+        "overview_subtitle": "voir les pages 'Résultats de modélisation' pour l'ensemble des modélisations",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LANCER LES SIMULATIONS",
@@ -124,6 +125,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
         "tabs_dual": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "▸ Modeling Results"],
         "overview_title": "Overview of the 3 Simulation Models",
+        "overview_subtitle": "see the 'Modeling Results' pages for all simulations",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LAUNCH SIMULATIONS",
@@ -1014,6 +1016,7 @@ if selected_page == gen_pages[0]:  # Accueil / Home
 
     st.markdown("---")
     st.subheader(t("overview_title"))
+    st.markdown(f'<p style="font-size:14px; color:#1E90FF; margin-top:-10px;"><em>({t("overview_subtitle")})</em></p>', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
 
