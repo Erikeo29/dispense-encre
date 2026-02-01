@@ -11,7 +11,7 @@
 
 ## 1. Principe de la méthode
 
-La méthode **VOF (Volume of Fluid)** est une approche eulérienne pour le suivi d'interfaces dans les écoulements diphasiques. Elle représente le **standard industriel** pour les simulations à surface libre, notamment avec le solveur `interFoam` d'OpenFOAM.
+La méthode **VOF (Volume of Fluid)** est une approche eulérienne pour le suivi d'interfaces dans les écoulements diphasiques. Elle représente le standard industriel pour les simulations à surface libre, notamment avec le solveur `interFoam` d'OpenFOAM.
 
 ### Variable principale : fraction volumique α
 
@@ -71,7 +71,7 @@ $$\eta_{eff}(\dot{\gamma}) = \eta_\infty + (\eta_0 - \eta_\infty) [1 + (\lambda 
 |-----------|---------|--------|-------|
 | Masse volumique | ρ | 3000 | kg/m³ |
 | Viscosité au repos | η₀ | 0.5 – 5 | Pa·s |
-| Viscosité à cisaillement infini | η∞ | 0.05 – 0.167 | Pa·s |
+| Viscosité à cisaillement infini | η∞ | 0.05 – 0.15 | Pa·s |
 | Temps de relaxation | λ | 0.15 | s |
 | Indice de pseudoplasticité | n | 0.7 | - |
 | Tension de surface | σ | 0.04 | N/m |
@@ -83,7 +83,7 @@ transportModel Carreau;
 
 CarreauCoeffs {
     nu0   nu0 [0 2 -1 0 0 0 0] 1.667e-4;  // η₀/ρ
-    nuInf nuInf [0 2 -1 0 0 0 0] 5.56e-5; // η∞/ρ
+    nuInf nuInf [0 2 -1 0 0 0 0] 1.667e-5; // η∞/ρ
     k     k [0 0 1 0 0 0 0] 0.15;          // λ
     n     n [0 0 0 0 0 0 0] 0.7;           // n
 }
@@ -101,7 +101,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 | Conservation de masse parfaite | Maillages fins requis près de l'interface |
 | Standard industriel (OpenFOAM) | Coalescences multiples difficiles |
 | Précision interfaciale 0.1–1 µm (avec PLIC) | Rhéologie complexe (thixotropie) difficile |
-| Support GPU depuis OpenFOAM 10 | Coût mémoire pour AMR |
+| Support GPU depuis OpenFOAM 10 (non réussi dans ce projet)| Coût mémoire pour AMR |
 
 ---
 
@@ -111,7 +111,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 | Configuration | Cellules | Résolution | Temps | Hardware |
 |---------------|----------|------------|-------|----------|
-| **Ce projet** | ~50k | ~5 µm | **30–60 min** | 8 cœurs |
+| **Ce projet** | ~50k | ~5 µm | **0.5–2 h** | 8 cœurs |
 | Haute résolution | ~500k | ~1.5 µm | 4–8 h | 16 cœurs |
 | Avec AMR | 50k–500k | 1–10 µm (adaptatif) | 2–4 h | 16 cœurs |
 

@@ -49,7 +49,7 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 
 | Modèle | Discrétisation | Résolution | Temps | Remarques |
 |--------|----------------|------------|-------|-----------|
-| **VOF** | ~50k cellules | ~5 µm | **30–60 min** | OpenFOAM optimisé C++ |
+| **VOF** | ~50k cellules | ~5 µm | **0.5-2 h** | OpenFOAM optimisé C++ |
 | **LBM** | 240×100 nœuds | 5 µm | **~10 min** | Parallélisation efficace (GPU) |
 | **SPH** | ~1k particules | 15–20 µm | **1–2 h** | PySPH |
 
@@ -57,7 +57,7 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 
 | Gamme | Configuration type | Budget indicatif | Utilisation |
 |-------|-------------------|------------------|-------------|
-| **PC standard** | 8-12 cœurs, 16-32 Go RAM | 800–1 500 € | VOF/LBM simples, SPH 2D, FEM 2D|
+| **PC standard** | 6-12 cœurs, 16-32 Go RAM | 800–1 500 € | VOF/LBM simples, SPH 2D, FEM 2D|
 | **PC dopé** | 12-16 cœurs, 32-64 Go RAM, GPU 8 Go | 1 500–3 000 € | VOF 3D, études paramétriques |
 | **Serveur** | 32+ cœurs, 128+ Go RAM | 5 000–15 000 € | grandes séries d'études |
 | **Cloud** | AWS, Google Cloud, Azure | 1-5 €/h | Pour calculs ponctuels intensifs |
