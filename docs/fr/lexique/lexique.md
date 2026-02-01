@@ -1,6 +1,7 @@
 **Sommaire :**
 
 **A. Physique**
+
 1. Unités SI et préfixes
 2. Nombres adimensionnels
 3. Symboles physiques
@@ -8,16 +9,19 @@
 5. Termes de mécanique des fluides
 
 **B. Méthodes numériques**
+
 6. Acronymes des méthodes
 7. Acronymes des schémas numériques
 8. Termes numériques
 9. Logiciels et bibliothèques
 
 **C. Hardware et formats**
+
 10. Acronymes hardware
 11. Formats de fichiers et données
 
 **D. Techniques et applications**
+
 12. Procédés de dispense
 13. Caractérisation expérimentale
 14. Couplages et intelligence artificielle

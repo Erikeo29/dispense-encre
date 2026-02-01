@@ -1,6 +1,7 @@
 **Contents:**
 
 **A. Physics**
+
 1. SI Units and Prefixes
 2. Dimensionless Numbers
 3. Physical Symbols
@@ -8,16 +9,19 @@
 5. Fluid Mechanics Terms
 
 **B. Numerical Methods**
+
 6. Method Acronyms
 7. Numerical Scheme Acronyms
 8. Numerical Terms
 9. Software and Libraries
 
 **C. Hardware and Formats**
+
 10. Hardware Acronyms
 11. File Formats and Data
 
 **D. Techniques and Applications**
+
 12. Dispensing Processes
 13. Experimental Characterization
 14. Couplings and Artificial Intelligence
