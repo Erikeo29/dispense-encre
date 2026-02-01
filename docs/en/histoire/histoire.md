@@ -6,7 +6,7 @@
 5. Inventors of Modern Methods
 6. Chronological Table
 7. Scientific Lineage Diagram
-8. Biographical References
+8. Bibliographical References
 
 This fluid dispensing simulation project builds upon centuries of scientific discoveries. This page pays tribute to the scientists whose foundational work made modern numerical modeling of two-phase flows possible.
 
@@ -372,6 +372,6 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 ---
 
-## 8. Biographical References
+## 8. Bibliographical References
 
 > **Note**: For the complete list of technical references, see the **Bibliographical References** section in the Appendices menu.
