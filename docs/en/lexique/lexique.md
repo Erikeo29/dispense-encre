@@ -166,6 +166,7 @@
 | **AMR** | Adaptive Mesh Refinement | Adaptive meshing |
 | **CFL** | Courant–Friedrichs–Lewy | Time stability condition (Co = vΔt/Δx ≤ 1) |
 | **MULES** | Multidimensional Universal Limiter | OpenFOAM limiter for VOF |
+| **DFSPH** | Divergence-Free Smoothed Particle Hydrodynamics | Incompressible SPH solver (Bender & Koschier 2015) |
 
 ---
 
@@ -200,7 +201,7 @@
 | **COMSOL** | Commercial | GUI/MATLAB | Multiphysics FEM |
 | **Ansys Fluent** | Commercial | GUI | VOF, FVM |
 | **DualSPHysics** | Open-source | C++/CUDA | SPH GPU |
-| **SPlisHSPlasH** | Open-source | C++/CUDA | SPH GPU (DFSPH, Akinci 2013) |
+| **SPlisHSPlasH** | Open-source | C++/CUDA | SPH GPU (DFSPH solver, Akinci 2013 surface tension) |
 | **waLBerla** | Open-source | C++ | LBM HPC |
 
 ---
