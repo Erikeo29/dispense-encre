@@ -14,7 +14,7 @@
 
 Cette étude a permis de modéliser la dispense d'une encre rhéofluidifiante dans des micro-via en utilisant trois méthodes numériques distinctes : VOF, LBM et SPH.
 
-Les résultats les plus réalistes ont été obtenus par la méthode VOF (Openfoam) et proches de ce qui peut être attendu d'après la physique et de ce que des outils commerciaux de modélisation peuvent produire. Notamment, l'impact de la position de la buse en X sur le phénomène d'overflow et sur l'uniformité du remplissage a pu être mis en évidence. De même, les phénomènes physicochimiques attendus ont été reproduits : l'influence de la viscosité et des angles de contact (énergie de surface) sur l'étalement de l'encre correspond aux comportements physiques anticipés.
+Les résultats les plus réalistes ont été obtenus par la méthode VOF (OpenFOAM) et proches de ce qui peut être attendu d'après la physique et de ce que des outils commerciaux de modélisation peuvent produire. Notamment, l'impact de la position de la buse en X sur le phénomène d'overflow et sur l'uniformité du remplissage a pu être mis en évidence. De même, les phénomènes physicochimiques attendus ont été reproduits : l'influence de la viscosité et des angles de contact (énergie de surface) sur l'étalement de l'encre correspond aux comportements physiques anticipés.
 
 Des différences de résultats apparaissent néanmoins selon les modèles utilisés, ce qui est cohérent compte tenu de leurs formulations numériques très différentes (eulérien vs lagrangien, maillé vs sans maillage, macroscopique vs mésoscopique). 
 

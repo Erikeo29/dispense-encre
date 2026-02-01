@@ -83,7 +83,7 @@ TRANSLATIONS = {
         "sph_preliminary": "🔴 **Résultats non concluants à ce jour** — La méthode SPH s'est avérée inadaptée pour ce problème.",
         "sph_failure_title": "Pourquoi SPH ne fonctionne pas ici ?",
         "sph_failure_details": """
-La méthode SPH a été testée de manière exhaustive (~115 versions de codes différents) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre rhéofluidifiante en micro-cavité. Les principales raisons sont :
+La méthode SPH a été testée de manière exhaustive (~115 versions de codes différentes) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre rhéofluidifiante en micro-cavité. Les principales raisons sont :
 
 **1. Tension de surface mal prise en compte**
 - Le modèle CSF (*Continuum Surface Force*) utilisé dans PySPH crée des **artefacts de splitting** : la goutte se scinde artificiellement au milieu pendant l'étalement, ce qui est non physique.
@@ -98,7 +98,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
 - La calibration du paramètre d'adhésion α reste empirique et sensible à la résolution.
 
 **4. Solveur alternatif (SPlisHSPlasH)**
-- Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~1000× avec la GPU) mais ne fonctionne qu'à **échelle macroscopique** (échelle ×1000).
+- Le solveur SPlisHSPlasH (DFSPH — Divergence-Free SPH + Akinci 2013) est beaucoup plus rapide (~1000× avec la GPU) mais ne fonctionne qu'à **échelle macroscopique** (échelle ×1000).
 - Pas de contrôle des angles de contact par paroi.
 - Résultats visuellement "spectaculaires" (éclaboussures et vagues réalistes : voir dernière image ci-dessous) mais **physiquement faux** pour le dépôt d'une encre visqueuse à l'échelle du µm.
 
@@ -186,7 +186,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
         "sph_preliminary": "🔴 **Inconclusive results to date** — The SPH method proved unsuitable for this problem.",
         "sph_failure_title": "Why SPH does not work here?",
         "sph_failure_details": """
-The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** and **SPlisHSPlasH**) and proved **unsuitable** for simulating shear-thinning ink deposition in micro-cavities. The main reasons are:
+The SPH method was extensively tested (~115 different code versions) with two solvers (**PySPH** and **SPlisHSPlasH**) and proved **unsuitable** for simulating shear-thinning ink deposition in micro-cavities. The main reasons are:
 
 **1. Poor surface tension handling**
 - The CSF (*Continuum Surface Force*) model used in PySPH creates **splitting artifacts**: the droplet artificially splits in the middle during spreading, which is non-physical.
@@ -201,7 +201,7 @@ The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** an
 - Calibration of the adhesion parameter α remains empirical and resolution-dependent.
 
 **4. Alternative solver (SPlisHSPlasH)**
-- The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~1,000× with the GPU) but only works at **macroscopic scale** (×1000 simulation).
+- The SPlisHSPlasH solver (DFSPH — Divergence-Free SPH + Akinci 2013) is much faster (~1,000× with the GPU) but only works at **macroscopic scale** (×1000 simulation).
 - No per-wall contact angle control.
 - Visually "spectacular" results (realistic splashing and waves: see last image below) but **physically wrong** for viscous ink deposition at the µm scale.
 

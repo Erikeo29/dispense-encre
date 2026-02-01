@@ -24,7 +24,7 @@ Le but de cette application est de modéliser, visualiser et comparer les résul
 - **VOF (Volume of Fluid)** : Méthode eulérienne (OpenFOAM)
 - **LBM (Lattice Boltzmann)** : Approche mésoscopique optimisée GPU (Palabos)
 - **SPH (Smoothed Particle Hydrodynamics)** : Méthode lagrangienne sans maillage (PySPH)
-- La méthode **FEM (Méthode des éléments finis)** sous Python avec environnements Fenicsx et Firedrake est en cours de développement et n'est pas présentée dans cette version.
+- La méthode **FEM (Méthode des éléments finis)** sous Python avec environnements FEniCSx et Firedrake est en cours de développement et n'est pas présentée dans cette version.
 ---
 
 ## 2. Application cible
@@ -58,6 +58,6 @@ L'application est structurée sur la forme avec les outils suivants :
 
 ## 4. Note méthodologique
 
-Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard: envrionnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations en 2D ont été réalisées avec différentes combinaisons de facteurs (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous format GIF (animations) et PNG (images état final) pour alimenter cette application.
+Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard: environnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations en 2D ont été réalisées avec différentes combinaisons de facteurs (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous format GIF (animations) et PNG (images état final) pour alimenter cette application.
 
 Cette application est donc un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations spécifiques d'environnements et de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et de paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 3 modèles afin d'être copiés et pouvoir reproduire ces modélisations sur d'autres machines.
