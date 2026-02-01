@@ -23,7 +23,7 @@ Le but de cette application est de modéliser, visualiser et comparer les résul
 - **VOF (Volume of Fluid)** : Méthode eulérienne (OpenFOAM)
 - **LBM (Lattice Boltzmann)** : Approche mésoscopique optimisée GPU (Palabos)
 - **SPH (Smoothed Particle Hydrodynamics)** : Méthode lagrangienne sans maillage (PySPH)
-
+- La méthode **FEM (Méthode des éléments finis)** sous Python avec environnements Fenicsx et Firedrake est en cours de développement et n'est pas présentée dans cette version.
 ---
 
 ## 2. Application cible
