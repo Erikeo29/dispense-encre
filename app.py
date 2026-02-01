@@ -1397,12 +1397,13 @@ elif selected_page == model_pages[2]:  # SPH
             "geyser": t("sph_geyser_caption"),
         }
 
-        # All GIFs full width
+        # All GIFs full width (override 600px max-width)
         for key in ["NOK_1", "NOK_3"]:
             path = sph_gifs[key]
             if os.path.exists(path):
                 gif_html = load_media_as_base64(path)
                 if gif_html:
+                    gif_html = gif_html.replace('max-width:600px;', 'max-width:1200px;')
                     gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
                     st.markdown(gif_html, unsafe_allow_html=True)
                     st.caption(sph_captions[key])
@@ -1412,6 +1413,7 @@ elif selected_page == model_pages[2]:  # SPH
         if os.path.exists(path):
             gif_html = load_media_as_base64(path)
             if gif_html:
+                gif_html = gif_html.replace('max-width:600px;', 'max-width:1200px;')
                 gif_html = gif_html.replace('style="', 'style="border: 3px solid dodgerblue; border-radius: 8px; ')
                 st.markdown(gif_html, unsafe_allow_html=True)
                 st.caption(sph_captions["geyser"])
