@@ -1,5 +1,6 @@
-**Note de l'auteur** — *Ce projet a été conçu intégralement par l'auteur, depuis une page blanche jusqu'à sa mise en ligne. La création du contenu a été réalisée avec l'utilisation d'outils d'intelligence artificielle en particulier pour la rédaction et correction des codes, des recherches internet, de la mise en forme du contenu. 
-Tous les résultats sont issus de modèles analytiques et déterministes. 
+
+**Note de l'auteur** — *Ce projet a été conçu intégralement par l'auteur, depuis une page blanche jusqu'à sa mise en ligne. La création du contenu a été réalisée avec l'le support d'outils d'intelligence artificielle en particulier pour la rédaction et la correction des codes, les recherches internet et la mise en forme du contenu. 
+Tous les résultats montrés sont issus de modèles analytiques et déterministes. 
 Ce travail est mis à disposition en open-source : il peut être librement copié, dupliqué et adapté à des fins d'apprentissage ou d'exploitation des modèles physiques et numériques présentés.*
 
 &nbsp;
@@ -27,20 +28,20 @@ Le but de cette application est de modéliser, visualiser et comparer les résul
 Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans des micro-via.
 
 **Paramètres clés étudiés :**
-- Géométrie : diamètre micro-via (800–1500 µm), diamètre buse (200–350 µm)
+- Géométrie : diamètre micro-via, diamètre buse,
 - Position de la buse : décalage en X et Y (décalage vertical et horizontal par rapport au via)
-- Rhéologie : viscosité variable (modèle de Carreau)
-- Mouillage : angles de contact sur le fond du micro-via, sur les parois verticales du micro-via, sur la surface horizontale du substrat.
+- Rhéologie : viscosité (modèle de Carreau)
+- Mouillage : angles de contact sur le fond du micro-via, sur les parois verticales du puit, sur la surface horizontale du substrat.
 
 ---
 
 ## 3. Navigation
 
-L'application est structurée autour de plusieurs outils pour faciliter l'exploration :
+L'application est structurée sur la forme avec les outils suivants :
 
-1.  **Menu latéral (à gauche)** : C'est le principal outil de navigation. Il permet de se déplacer entre les grandes sections du projet :
+1.  **Menu latéral (à gauche)** : outil de navigation entre les différentes sections du projet :
     *   **Introduction** : Contexte scientifique, propriétés des fluides rhéofluidifiants et présentation du système physique étudié.
-    *   **Comparaison des modèles** : Tableaux synthétiques pour comparer les approches.
+    *   **Comparaison des modèles** : analyses synthétiques pour comparaison des différentes approches.
     *   **Pages par modèle** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé, et les résultats des simulations (animations GIF et images PNG).
     *   **Annexes** : Conclusion, perspectives, lexique technique, équations clés et bibliographie thématique.
 
@@ -52,6 +53,6 @@ L'application est structurée autour de plusieurs outils pour faciliter l'explor
 
 ## 4. Note méthodologique
 
-Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Les codes VOF, LBM et SPH ont été développés par l'auteur de ce site avec l'utilisation d'outils d'IA pour la réalisation et la correction des programmes sur un PC portable standard (base Linux, 1.5-3.5 GHz, 6 CPU / 12 threads), 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations ont été réalisées avec différentes combinaisons de paramètres (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous forme de fichiers GIF (animations) et PNG (images finales) pour alimenter cette application.
+Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard: envrionnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations ont été réalisées avec différentes combinaisons de facteurs (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous format GIF (animations) et PNG (images état final) pour alimenter cette application.
 
-Cette application est un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations spécifiques d'environnements, de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et des paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 3 modèles afin de pouvoir les copier et reproduire ces modélisations sur d'autres machines.
+Cette application est donc un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations spécifiques d'environnements et de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et de paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 3 modèles afin d'être copiés et pouvoir reproduire ces modélisations sur d'autres machines.

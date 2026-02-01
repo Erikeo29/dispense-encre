@@ -1,4 +1,7 @@
-**Author's note** — *This project was designed entirely by the author, from a blank slate through to publication, using artificial intelligence tools as learning accelerators. It is released as open-source for educational and scientific use.*
+
+**Author's note** — *This project was designed entirely by the author, from a blank slate through to publication. Content creation was carried out with the support of artificial intelligence tools, particularly for writing and debugging code, internet research, and content formatting.
+All results shown are derived from analytical and deterministic models.
+This work is released as open-source: it may be freely copied, duplicated, and adapted for learning purposes or for the use of the physical and numerical models presented here.*
 
 &nbsp;
 
@@ -12,9 +15,9 @@
 
 ## 1. Project Objective
 
-The purpose of this application is to enable visualization and comparison of the results of **three numerical methods** for simulating shear-thinning fluid dispensing into micro-via. The application allows exploring results from two-phase flow simulations performed with different approaches:
+The purpose of this application is to model, visualize and compare the results of **three numerical methods** for simulating shear-thinning fluid dispensing into micro-via. The application allows exploring results from two-phase flow simulations performed with different approaches:
 
-- **VOF (Volume of Fluid)**: Industrial standard Eulerian method (OpenFOAM)
+- **VOF (Volume of Fluid)**: Eulerian method (OpenFOAM)
 - **LBM (Lattice Boltzmann)**: GPU-optimized mesoscopic approach (Palabos)
 - **SPH (Smoothed Particle Hydrodynamics)**: Meshless Lagrangian method (PySPH)
 
@@ -25,20 +28,20 @@ The purpose of this application is to enable visualization and comparison of the
 The simulations model **shear-thinning ink dispensing** into micro-via.
 
 **Key parameters studied:**
-- Geometry: micro-via diameter (800–1500 µm), nozzle diameter (200–350 µm)
+- Geometry: micro-via diameter, nozzle diameter,
 - Nozzle position: X and Y offset (vertical and horizontal offset relative to the via)
-- Rheology: variable viscosity (Carreau model)
-- Wetting: contact angles on micro-via bottom, vertical walls, and substrate surface.
+- Rheology: viscosity (Carreau model)
+- Wetting: contact angles on the micro-via bottom, on the vertical walls of the well, on the horizontal substrate surface.
 
 ---
 
 ## 3. Navigation
 
-The application is structured around several tools to facilitate exploration:
+The application is structured with the following tools:
 
-1.  **Sidebar (on the left)**: This is the main navigation tool. It allows you to move between the major sections of the project:
+1.  **Sidebar (on the left)**: navigation tool between the different sections of the project:
     *   **Introduction**: Scientific context, properties of shear-thinning fluids, and presentation of the studied physical system.
-    *   **Model Comparison**: Summary tables to compare the different approaches.
+    *   **Model Comparison**: synthetic analyses for comparison of the different approaches.
     *   **Model Pages**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
     *   **Appendices**: Conclusion, perspectives, technical glossary, key equations, and thematic bibliography.
 
@@ -50,8 +53,6 @@ The application is structured around several tools to facilitate exploration:
 
 ## 4. Methodological Note
 
-The animations and images presented in this application come from **pre-calculated** simulations. The VOF, LBM and SPH codes were developed by the author of this site with the use of AI tools for program development and debugging on a standard laptop (Linux base, 1.5-3.5 GHz, 6 CPU / 12 threads), 32GB RAM, 8GB GPU (when usable: LBM, SPH DualSPHysics). The simulations were performed with various parameter combinations (geometry, viscosity, contact angles, dispensing time...) as a parametric study. The results were then exported as GIF files (animations) and PNG files (final images) to populate this application.
+The animations and images presented in this application come from **pre-calculated** simulations. The project was carried out on a standard laptop: Linux environment via WSL2, 1.5-3.5 GHz processor, 6 CPU / 12 threads, 32 GB RAM, 8 GB GPU (when usable: LBM, SPH DualSPHysics). The simulations were performed with various combinations of factors (geometry, viscosity, contact angles, dispensing time...) as a parametric study. The results were then exported as GIF files (animations) and PNG files (final state images) to populate this application.
 
-This application is a **results viewer**, not a real-time simulator. Indeed, running these simulations requires substantial Python or OpenFOAM package configurations; the modeling time is also significant, ranging from 10 minutes to 2 hours per unit simulation depending on the numerical model type and parameters studied. The codes are provided in the "Code" tabs of the 3 models to enable users to copy and reproduce these simulations on other machines.
-
-The author certifies that this project was developed from a "blank slate", without copying from any existing sources or websites. The code implementation, application structure, and technical research were conducted exclusively using AI tools and Web-based documentation. This work is released as open-source: it may be freely copied, duplicated, and adapted for learning purposes or for the use of the physical and numerical models presented here.
+This application is therefore a **results viewer**, not a real-time simulator. Indeed, running these simulations requires specific environment configurations and Python or OpenFOAM packages; the modeling time is also significant, ranging from 10 minutes to 2 hours per unit simulation depending on the numerical model type and parameters studied. The codes are provided in the "Code" tabs of the 3 models so they can be copied and used to reproduce these simulations on other machines.

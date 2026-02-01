@@ -21,7 +21,7 @@ TRANSLATIONS = {
         "annex_pages": ["Conclusion et perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
         "tabs_dual": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "▸ Résultats de modélisation"],
-        "overview_title": "Aperçu des résultats des 3 modèles Open Source",
+        "overview_title": "Aperçu des résultats des 3 modèles",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LANCER LES SIMULATIONS",
@@ -123,7 +123,7 @@ La méthode SPH a été testée de manière exhaustive (~115 runs) avec deux sol
         "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
         "tabs_dual": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "▸ Modeling Results"],
-        "overview_title": "Overview of 3 Open Source Simulation Models",
+        "overview_title": "Overview of the 3 Simulation Models",
         "sim_1": "Simulation 1",
         "sim_2": "Simulation 2",
         "btn_launch": "LAUNCH SIMULATIONS",
@@ -271,7 +271,7 @@ SPH_SRC = os.path.join(DOC_PATH, "fr/code/code_sph.py")
 FEM_GIF_EX = os.path.join(ASSETS_PATH, "fem/gif/gif_a01.gif")
 VOF_GIF_EX = os.path.join(ASSETS_PATH, "vof/gif/run_039_y_gap_buse0.03_x_gap_buse0_eta01.5_ratio_surface0.8.gif")
 LBM_GIF_EX = os.path.join(ASSETS_PATH, "lbm/gif/lbm_029.gif")
-SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/animation_sph_03.gif")
+SPH_GIF_EX = os.path.join(ASSETS_PATH, "sph/gif/NOK_2.gif")
 
 # --- Fonctions Utilitaires ---
 
