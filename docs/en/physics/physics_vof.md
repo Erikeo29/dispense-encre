@@ -111,7 +111,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 | Configuration | Cells | Resolution | Time | Hardware |
 |---------------|-------|------------|------|----------|
-| **This project** | ~50k | ~5 µm | **30–60 min** | 8 cores |
+| **This project** | ~50k | ~5 µm | **0.5–2 h** | 8 cores |
 | High resolution | ~500k | ~1.5 µm | 4–8 h | 16 cores |
 | With AMR | 50k–500k | 1–10 µm (adaptive) | 2–4 h | 16 cores |
 

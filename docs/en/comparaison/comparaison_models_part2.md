@@ -49,7 +49,7 @@ Times below correspond to the reference case: droplet dispensing into a micro-vi
 
 | Model | Discretization | Resolution | Time | Notes |
 |-------|----------------|------------|------|-------|
-| **VOF** | ~50k cells | ~5 µm | **30–60 min** | Optimized C++ OpenFOAM |
+| **VOF** | ~50k cells | ~5 µm | **0.5–2 h** | Optimized C++ OpenFOAM |
 | **LBM** | 240×100 nodes | 5 µm | **~10 min** | Efficient parallelization (GPU) |
 | **SPH** | ~1k particles | 15–20 µm | **1–2 h** | PySPH |
 
