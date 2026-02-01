@@ -1015,8 +1015,9 @@ if selected_page == gen_pages[0]:  # Accueil / Home
     st.markdown(load_file_content("accueil/accueil.md"))
 
     st.markdown("---")
-    st.subheader(t("overview_title"))
+    st.header(t("overview_title"))
     st.markdown(f'<p style="font-size:18px; color:#1E90FF; font-weight:bold; margin-top:-10px;"><em>({t("overview_subtitle")})</em></p>', unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
 
