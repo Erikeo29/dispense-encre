@@ -1399,7 +1399,7 @@ elif selected_page == model_pages[2]:  # SPH
 
         col1, col2 = st.columns(2)
         with col1:
-            for key in ["NOK_1", "NOK_2"]:
+            for key in ["NOK_1"]:
                 path = sph_gifs[key]
                 if os.path.exists(path):
                     gif_html = load_media_as_base64(path)
@@ -1407,19 +1407,25 @@ elif selected_page == model_pages[2]:  # SPH
                         gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
                         st.markdown(gif_html, unsafe_allow_html=True)
                         st.caption(sph_captions[key])
-                        st.markdown("")
 
         with col2:
-            for key in ["NOK_3", "geyser"]:
+            for key in ["NOK_3"]:
                 path = sph_gifs[key]
                 if os.path.exists(path):
                     gif_html = load_media_as_base64(path)
                     if gif_html:
-                        border_color = "dodgerblue" if key == "geyser" else "red"
-                        gif_html = gif_html.replace('style="', f'style="border: 3px solid {border_color}; border-radius: 8px; ')
+                        gif_html = gif_html.replace('style="', 'style="border: 3px solid red; border-radius: 8px; ')
                         st.markdown(gif_html, unsafe_allow_html=True)
                         st.caption(sph_captions[key])
-                        st.markdown("")
+
+        # SPlisHSPlasH — full width
+        path = sph_gifs["geyser"]
+        if os.path.exists(path):
+            gif_html = load_media_as_base64(path)
+            if gif_html:
+                gif_html = gif_html.replace('style="', 'style="border: 3px solid dodgerblue; border-radius: 8px; ')
+                st.markdown(gif_html, unsafe_allow_html=True)
+                st.caption(sph_captions["geyser"])
 
 # ===== PAGE CONCLUSION ET PERSPECTIVES =====
 elif selected_page == annex_pages[0]:  # Conclusion et perspectives
