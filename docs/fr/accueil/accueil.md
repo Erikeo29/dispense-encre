@@ -1,6 +1,7 @@
 
-**Note de l'auteur** — *Ce projet a été conçu intégralement par l'auteur, depuis une page blanche jusqu'à sa mise en ligne. La création du contenu a été réalisée avec l'le support d'outils d'intelligence artificielle en particulier pour la rédaction et la correction des codes, les recherches internet et la mise en forme du contenu. 
-Tous les résultats montrés sont issus de modèles analytiques et déterministes. 
+
+**Note de l'auteur** — *Ce projet a été conçu intégralement par l'auteur, depuis une page blanche jusqu'à sa mise en ligne. La création du contenu a été réalisée avec le support d'outils d'intelligence artificielle en particulier pour la rédaction et la correction des codes, les recherches internet et la mise en forme du contenu. 
+Tous les résultats montrés dans ce projet sont issus de modèles physiques analytiques et déterministes résolus par des solveurs numériques validés. 
 Ce travail est mis à disposition en open-source : il peut être librement copié, dupliqué et adapté à des fins d'apprentissage ou d'exploitation des modèles physiques et numériques présentés.*
 
 &nbsp;
