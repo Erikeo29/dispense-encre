@@ -92,6 +92,6 @@ Times below correspond to the reference case: droplet dispensing into a micro-vi
 
 ---
 
-## 6. References
+## 6. Bibliographical References
 
 > For the complete list of scientific references, see the **Bibliographical References** section in the Appendices menu.

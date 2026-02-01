@@ -4,7 +4,7 @@
 3. Numerical Modeling Challenges
 4. Physical System Studied
 5. Multi-Model Approach
-6. References
+6. Bibliographical References
 
 ---
 
@@ -106,6 +106,6 @@ This project compares three complementary numerical methods:
 
 ---
 
-## 6. References
+## 6. Bibliographical References
 
 > **Note**: For the complete list of references, see the **Bibliographical References** section in the Appendices menu.

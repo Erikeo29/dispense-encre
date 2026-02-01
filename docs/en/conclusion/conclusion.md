@@ -6,7 +6,7 @@
    - 2.3 4D Printing and Smart Inks
    - 2.4 Research Opportunities
    - 2.5 Quantum Computing
-3. References
+3. Bibliographical References
 
 ---
 
@@ -107,6 +107,6 @@ Quantum computing could revolutionize complex flow modeling:
 
 ---
 
-## 3. References
+## 3. Bibliographical References
 
 > **Note**: For references discussing the resources used in this project, see the **Bibliographical References** section in the Appendices menu.

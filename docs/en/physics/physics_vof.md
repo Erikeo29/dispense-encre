@@ -5,7 +5,7 @@
 4. Advantages and Limitations
 5. Computational Cost
 6. Open-Source Libraries
-7. References
+7. Bibliographical References
 
 ---
 
@@ -155,6 +155,6 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 ---
 
-## 7. References
+## 7. Bibliographical References
 
 > **Note**: For the complete list of references, see the **Bibliographical References** section in the Appendices menu.

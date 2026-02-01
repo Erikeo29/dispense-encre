@@ -4,7 +4,7 @@
 3. Défis de la modélisation numérique
 4. Système physique étudié
 5. Approche multi-modèles
-6. Références
+6. Références bibliographiques
 
 ---
 
@@ -106,7 +106,7 @@ Ce projet compare trois méthodes numériques complémentaires :
 
 ---
 
-## 6. Références
+## 6. Références bibliographiques
 
 > **Note** : Pour la liste complète des références, consultez la section **Références bibliographiques** dans le menu Annexes.
 

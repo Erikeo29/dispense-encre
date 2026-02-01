@@ -4,7 +4,7 @@
 3. Analyse critique par modèle
 4. Besoins hardware
 5. Tableau de synthèse
-6. Références
+6. Références bibliographiques
 
 ---
 

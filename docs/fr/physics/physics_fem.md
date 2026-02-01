@@ -5,7 +5,7 @@
 4. Avantages et limitations
 5. Coût computationnel
 6. Bibliothèques open-source
-7. Références
+7. Références bibliographiques
 
 ---
 
@@ -133,7 +133,7 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ---
 
-## 7. Références
+## 7. Références bibliographiques
 
 > **Note** : Pour la liste complète des références, consultez la section **Références bibliographiques** dans le menu Annexes.
 

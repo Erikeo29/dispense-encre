@@ -5,7 +5,7 @@
 4. Advantages and Limitations
 5. Computational Cost
 6. Open-Source Libraries
-7. References
+7. Bibliographical References
 
 ---
 
@@ -164,6 +164,6 @@ where:
 
 ---
 
-## 7. References
+## 7. Bibliographical References
 
 > **Note**: For the complete list of references, see the **Bibliographical References** section in the Appendices menu.
