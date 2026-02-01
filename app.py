@@ -82,7 +82,7 @@ TRANSLATIONS = {
         "sph_preliminary": "🔴 **Résultats non concluants à ce jour** — La méthode SPH s'est avérée inadaptée pour ce problème.",
         "sph_failure_title": "Pourquoi SPH ne fonctionne pas ici ?",
         "sph_failure_details": """
-La méthode SPH a été testée de manière exhaustive (~115 runs) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre AgCl en micro-cavité. Les principales raisons sont :
+La méthode SPH a été testée de manière exhaustive (~115 versions de codes différents) avec deux solveurs (**PySPH** et **SPlisHSPlasH**) et s'est avérée **inadaptée** pour la simulation de dépôt d'encre AgCl en micro-cavité. Les principales raisons sont :
 
 **1. Tension de surface mal prise en compte**
 - Le modèle CSF (*Continuum Surface Force*) utilisé dans PySPH crée des **artefacts de splitting** : la goutte se scinde artificiellement au milieu pendant l'étalement, ce qui est non physique.
@@ -97,9 +97,9 @@ La méthode SPH a été testée de manière exhaustive (~115 runs) avec deux sol
 - La calibration du paramètre d'adhésion α reste empirique et sensible à la résolution.
 
 **4. Solveur alternatif (SPlisHSPlasH)**
-- Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~10 000×) mais ne fonctionne qu'à **échelle macroscopique** (simulation ×1000).
+- Le solveur SPlisHSPlasH (DFSPH + Akinci 2013) est beaucoup plus rapide (~1000× avec la GPU) mais ne fonctionne qu'à **échelle macroscopique** (échelle ×1000).
 - Pas de contrôle des angles de contact par paroi.
-- Résultats visuellement spectaculaires mais **pas physiquement pertinents** pour le dépôt d'encre à l'échelle µm.
+- Résultats visuellement "spectaculaires" mais **pas physiquement réaliste** pour le dépôt d'encre à l'échelle µm.
 
 **Conclusion** : Pour ce type de problème (goutte µm, tension de surface élevée, angles de contact variables), les méthodes **VOF** (OpenFOAM) et **Phase Field** (FEM) sont nettement plus adaptées.
 """,
@@ -199,9 +199,9 @@ The SPH method was extensively tested (~115 runs) with two solvers (**PySPH** an
 - Calibration of the adhesion parameter α remains empirical and resolution-dependent.
 
 **4. Alternative solver (SPlisHSPlasH)**
-- The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~10,000×) but only works at **macroscopic scale** (×1000 simulation).
+- The SPlisHSPlasH solver (DFSPH + Akinci 2013) is much faster (~1,000× with the GPU) but only works at **macroscopic scale** (×1000 simulation).
 - No per-wall contact angle control.
-- Visually spectacular results but **not physically relevant** for µm-scale ink deposition.
+- Visually "spectacular" results but **not physically relevant** for µm-scale ink deposition.
 
 **Conclusion**: For this type of problem (µm droplet, high surface tension, variable contact angles), **VOF** (OpenFOAM) and **Phase Field** (FEM) methods are significantly more suitable.
 """,

@@ -42,8 +42,9 @@ The application is structured with the following tools:
 1.  **Sidebar (on the left)**: navigation tool between the different sections of the project:
     *   **Introduction**: Scientific context, properties of shear-thinning fluids, and presentation of the studied physical system.
     *   **Model Comparison**: synthetic analyses for comparison of the different approaches.
-    *   **Model Pages**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
+    *   **Modeling Results**: Each model's page (VOF, LBM, SPH) contains tabs to explore the underlying physics, the source code used, and the simulation results (GIF animations and PNG images).
     *   **Appendices**: Conclusion, perspectives, technical glossary, key equations, and thematic bibliography.
+
 
 2.  **Floating Navigation Buttons (on the right)**: Two arrows allow you to quickly scroll to the top or bottom of pages.
 
@@ -53,6 +54,6 @@ The application is structured with the following tools:
 
 ## 4. Methodological Note
 
-The animations and images presented in this application come from **pre-calculated** simulations. The project was carried out on a standard laptop: Linux environment via WSL2, 1.5-3.5 GHz processor, 6 CPU / 12 threads, 32 GB RAM, 8 GB GPU (when usable: LBM, SPH DualSPHysics). The simulations were performed with various combinations of factors (geometry, viscosity, contact angles, dispensing time...) as a parametric study. The results were then exported as GIF files (animations) and PNG files (final state images) to populate this application.
+The animations and images presented in this application come from **pre-calculated** simulations. The project was carried out on a standard laptop: Linux environment via WSL2, 1.5-3.5 GHz processor, 6 CPU / 12 threads, 32 GB RAM, 8 GB GPU (when usable: LBM, SPH DualSPHysics). The 2D simulations were performed with various combinations of factors (geometry, viscosity, contact angles, dispensing time...) as a parametric study. The results were then exported as GIF files (animations) and PNG files (final state images) to populate this application.
 
 This application is therefore a **results viewer**, not a real-time simulator. Indeed, running these simulations requires specific environment configurations and Python or OpenFOAM packages; the modeling time is also significant, ranging from 10 minutes to 2 hours per unit simulation depending on the numerical model type and parameters studied. The codes are provided in the "Code" tabs of the 3 models so they can be copied and used to reproduce these simulations on other machines.

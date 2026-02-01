@@ -42,8 +42,9 @@ L'application est structurée sur la forme avec les outils suivants :
 1.  **Menu latéral (à gauche)** : outil de navigation entre les différentes sections du projet :
     *   **Introduction** : Contexte scientifique, propriétés des fluides rhéofluidifiants et présentation du système physique étudié.
     *   **Comparaison des modèles** : analyses synthétiques pour comparaison des différentes approches.
-    *   **Pages par modèle** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé, et les résultats des simulations (animations GIF et images PNG).
+    *   **Résultats de modélisation** : Chaque page de modèle (VOF, LBM, SPH) contient des onglets pour explorer la physique sous-jacente, le code source utilisé et les **résultats des simulations** (animations GIF et images PNG).
     *   **Annexes** : Conclusion, perspectives, lexique technique, équations clés et bibliographie thématique.
+
 
 2.  **Boutons de navigation flottants (à droite)** : Deux flèches permettent de se déplacer rapidement en haut ou en bas des pages.
 
@@ -53,6 +54,6 @@ L'application est structurée sur la forme avec les outils suivants :
 
 ## 4. Note méthodologique
 
-Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard: envrionnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations ont été réalisées avec différentes combinaisons de facteurs (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous format GIF (animations) et PNG (images état final) pour alimenter cette application.
+Les animations et images présentées dans cette application proviennent de simulations **pré-calculées**. Le projet a été réalisé sur un PC portable standard: envrionnement Linux via WSL2, processeur 1.5-3.5 GHz, 6 CPU / 12 threads, 32 Go de RAM, 8 Go de GPU (quand utilisable : LBM, SPH DualSPHysics). Les modélisations en 2D ont été réalisées avec différentes combinaisons de facteurs (géométrie, viscosité, angles de contact, temps de dispense...) sous forme d'étude paramétrique. Les résultats ont ensuite été exportés sous format GIF (animations) et PNG (images état final) pour alimenter cette application.
 
 Cette application est donc un **visualiseur de résultats**, non un simulateur en temps réel. En effet, la réalisation de ces simulations nécessite des configurations spécifiques d'environnements et de packages Python ou OpenFOAM ; le temps de modélisation est également conséquent, de 10 minutes à 2 heures par simulation unitaire suivant le type de modèle numérique et de paramètres étudiés. Les codes sont fournis dans les onglets "Code" des 3 modèles afin d'être copiés et pouvoir reproduire ces modélisations sur d'autres machines.
