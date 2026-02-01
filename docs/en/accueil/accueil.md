@@ -6,6 +6,8 @@ This work is released as open-source: it may be freely copied, duplicated, and a
 
 &nbsp;
 
+---
+
 **Contents:**
 1. Project Objective
 2. Target Application

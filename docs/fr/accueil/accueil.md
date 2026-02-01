@@ -6,6 +6,8 @@ Ce travail est mis à disposition en open-source : il peut être librement copi�
 
 &nbsp;
 
+---
+
 **Sommaire :**
 1. Objectif du projet
 2. Application cible
