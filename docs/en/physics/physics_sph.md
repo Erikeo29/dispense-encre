@@ -19,8 +19,8 @@ Unlike grid-based methods (VOF, FEM, LBM), there are no fixed connections betwee
 
 $$A(\mathbf{r}) = \sum_b m_b \frac{A_b}{\rho_b} W(|\mathbf{r} - \mathbf{r}_b|, h)$$
 
-where:
-- $m_b$ = mass of particle b
+where b denotes each **neighbor** particle within the influence radius:
+- $m_b$ = mass of neighbor particle b
 - $A_b$ = value of property A carried by particle b
 - $\rho_b$ = density of particle b
 - $\mathbf{r}_b$ = position of particle b
@@ -37,8 +37,8 @@ where:
 
 $$m_a \frac{d\mathbf{v}_a}{dt} = -\sum_b m_b \left(\frac{p_a}{\rho_a^2} + \frac{p_b}{\rho_b^2} + \Pi_{ab}\right) \nabla_a W_{ab} + \mathbf{f}_\sigma$$
 
-where:
-- $m_a$, $m_b$ = masses of particles a and b
+where a is the **target** particle and b its **neighbor** particles:
+- $m_a$, $m_b$ = masses of target particle a and neighbor particle b
 - $\mathbf{v}_a$ = velocity of particle a
 - $p_a$, $p_b$ = pressures of particles a and b
 - $\rho_a$, $\rho_b$ = densities of particles a and b

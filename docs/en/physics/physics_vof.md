@@ -35,14 +35,30 @@ $$\nabla \cdot \mathbf{v} = 0$$
 **Momentum conservation:**
 $$\rho\left[\frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla)\mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \rho\mathbf{g} + \mathbf{f}_\sigma$$
 
+where:
+- $\mathbf{v}$ = velocity vector (m/s)
+- $\rho$ = mixture density (kg/m³)
+- $p$ = pressure (Pa)
+- $\boldsymbol{\tau}$ = viscous stress tensor (Pa)
+- $\mathbf{g}$ = gravitational acceleration (m/s²)
+- $\mathbf{f}_\sigma$ = volumetric surface tension force (N/m³)
+
 ### 2.2 α Transport Equation
 
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\alpha \mathbf{v}) = 0$$
 
+where:
+- $\alpha$ = volume fraction (0 = air, 1 = ink)
+- $\mathbf{v}$ = velocity vector
+
 **With artificial compression (MULES - OpenFOAM):**
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\mathbf{v} \alpha) + \nabla \cdot [\mathbf{v}_r \alpha (1-\alpha)] = 0$$
 
-where **v**_r = c_α |**v**| **n** is a compression velocity acting only at the interface to counter numerical diffusion.
+where:
+- $\mathbf{v}_r$ = $c_\alpha |\mathbf{v}| \mathbf{n}$, artificial compression velocity
+- $c_\alpha$ = compression coefficient (typically 1 in OpenFOAM)
+- $\mathbf{n}$ = interface normal ($\nabla \alpha / |\nabla \alpha|$)
+- The $\alpha(1-\alpha)$ term ensures compression acts only at the interface
 
 ### 2.3 Surface Tension Force (CSF)
 
@@ -50,7 +66,10 @@ The **Continuum Surface Force** model by Brackbill:
 
 $$\mathbf{f}_\sigma = \sigma \kappa \nabla \alpha$$
 
-where κ = -∇·(∇α/|∇α|) is the interface curvature.
+where:
+- $\sigma$ = surface tension coefficient (N/m)
+- $\kappa$ = $-\nabla \cdot (\nabla \alpha / |\nabla \alpha|)$, interface curvature (m$^{-1}$)
+- $\nabla \alpha$ = volume fraction gradient (localizes the interface)
 
 ---
 
@@ -62,6 +81,11 @@ Physical properties are linearly interpolated:
 
 $$\rho = \alpha \rho_1 + (1-\alpha) \rho_2$$
 $$\eta = \alpha \eta_1 + (1-\alpha) \eta_2$$
+
+where:
+- $\alpha$ = volume fraction (0 = air, 1 = ink)
+- $\rho_1$, $\rho_2$ = densities of ink and air (kg/m³)
+- $\eta_1$, $\eta_2$ = dynamic viscosities of ink and air (Pa·s)
 
 ### 3.2 Carreau Model (Non-Newtonian Fluids)
 
@@ -111,7 +135,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 | Configuration | Cells | Resolution | Time | Hardware |
 |---------------|-------|------------|------|----------|
-| **This project** | ~50k | ~5 µm | **0.5–2 h** | 8 cores |
+| **This project** | ~50k | ~5 µm | **0.5–2 h** | 6 cores |
 | High resolution | ~500k | ~1.5 µm | 4–8 h | 16 cores |
 | With AMR | 50k–500k | 1–10 µm (adaptive) | 2–4 h | 16 cores |
 

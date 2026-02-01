@@ -19,8 +19,8 @@ Contrairement aux méthodes sur grille (VOF, FEM, LBM), il n'y a pas de connexio
 
 $$A(\mathbf{r}) = \sum_b m_b \frac{A_b}{\rho_b} W(|\mathbf{r} - \mathbf{r}_b|, h)$$
 
-où :
-- $m_b$ = masse de la particule b
+où b désigne chaque particule **voisine** dans le rayon d'influence :
+- $m_b$ = masse de la particule voisine b
 - $A_b$ = valeur de la propriété A portée par la particule b
 - $\rho_b$ = masse volumique de la particule b
 - $\mathbf{r}_b$ = position de la particule b
@@ -37,8 +37,8 @@ où :
 
 $$m_a \frac{d\mathbf{v}_a}{dt} = -\sum_b m_b \left(\frac{p_a}{\rho_a^2} + \frac{p_b}{\rho_b^2} + \Pi_{ab}\right) \nabla_a W_{ab} + \mathbf{f}_\sigma$$
 
-où :
-- $m_a$, $m_b$ = masses des particules a et b
+où a est la particule **cible** et b ses particules **voisines** :
+- $m_a$, $m_b$ = masses des particules cible a et voisine b
 - $\mathbf{v}_a$ = vitesse de la particule a
 - $p_a$, $p_b$ = pressions des particules a et b
 - $\rho_a$, $\rho_b$ = masses volumiques des particules a et b

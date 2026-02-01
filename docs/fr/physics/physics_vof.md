@@ -35,14 +35,30 @@ $$\nabla \cdot \mathbf{v} = 0$$
 **Conservation de la quantité de mouvement :**
 $$\rho\left[\frac{\partial \mathbf{v}}{\partial t} + (\mathbf{v} \cdot \nabla)\mathbf{v}\right] = -\nabla p + \nabla \cdot \boldsymbol{\tau} + \rho\mathbf{g} + \mathbf{f}_\sigma$$
 
+où :
+- $\mathbf{v}$ = vecteur vitesse (m/s)
+- $\rho$ = masse volumique du mélange (kg/m³)
+- $p$ = pression (Pa)
+- $\boldsymbol{\tau}$ = tenseur des contraintes visqueuses (Pa)
+- $\mathbf{g}$ = accélération gravitationnelle (m/s²)
+- $\mathbf{f}_\sigma$ = force de tension superficielle volumique (N/m³)
+
 ### 2.2 Équation de transport de α
 
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\alpha \mathbf{v}) = 0$$
 
+où :
+- $\alpha$ = fraction volumique (0 = air, 1 = encre)
+- $\mathbf{v}$ = vecteur vitesse
+
 **Avec compression artificielle (MULES - OpenFOAM) :**
 $$\frac{\partial \alpha}{\partial t} + \nabla \cdot (\mathbf{v} \alpha) + \nabla \cdot [\mathbf{v}_r \alpha (1-\alpha)] = 0$$
 
-où **v**_r = c_α |**v**| **n** est une vitesse de compression qui agit uniquement à l'interface pour contrer la diffusion numérique.
+où :
+- $\mathbf{v}_r$ = $c_\alpha |\mathbf{v}| \mathbf{n}$, vitesse de compression artificielle
+- $c_\alpha$ = coefficient de compression (typiquement 1 dans OpenFOAM)
+- $\mathbf{n}$ = normale à l'interface ($\nabla \alpha / |\nabla \alpha|$)
+- Le terme $\alpha(1-\alpha)$ garantit que la compression n'agit qu'à l'interface
 
 ### 2.3 Force de tension de surface (CSF)
 
@@ -50,7 +66,10 @@ Le modèle **Continuum Surface Force** de Brackbill :
 
 $$\mathbf{f}_\sigma = \sigma \kappa \nabla \alpha$$
 
-où κ = -∇·(∇α/|∇α|) est la courbure de l'interface.
+où :
+- $\sigma$ = coefficient de tension superficielle (N/m)
+- $\kappa$ = $-\nabla \cdot (\nabla \alpha / |\nabla \alpha|)$, courbure de l'interface (m$^{-1}$)
+- $\nabla \alpha$ = gradient de la fraction volumique (localise l'interface)
 
 ---
 
@@ -62,6 +81,11 @@ Les propriétés physiques sont interpolées linéairement :
 
 $$\rho = \alpha \rho_1 + (1-\alpha) \rho_2$$
 $$\eta = \alpha \eta_1 + (1-\alpha) \eta_2$$
+
+où :
+- $\alpha$ = fraction volumique (0 = air, 1 = encre)
+- $\rho_1$, $\rho_2$ = masses volumiques de l'encre et de l'air (kg/m³)
+- $\eta_1$, $\eta_2$ = viscosités dynamiques de l'encre et de l'air (Pa·s)
 
 ### 3.2 Modèle de Carreau (fluides non-newtoniens)
 
@@ -111,7 +135,7 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 | Configuration | Cellules | Résolution | Temps | Hardware |
 |---------------|----------|------------|-------|----------|
-| **Ce projet** | ~50k | ~5 µm | **0.5–2 h** | 8 cœurs |
+| **Ce projet** | ~50k | ~5 µm | **0.5–2 h** | 6 cœurs |
 | Haute résolution | ~500k | ~1.5 µm | 4–8 h | 16 cœurs |
 | Avec AMR | 50k–500k | 1–10 µm (adaptatif) | 2–4 h | 16 cœurs |
 

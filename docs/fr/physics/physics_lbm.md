@@ -21,6 +21,12 @@ Les grandeurs macroscopiques sont obtenues par **moments statistiques** :
 
 $$\rho = \sum_i f_i \quad \text{et} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c}_i$$
 
+où :
+- $f_i$ = fonction de distribution dans la direction $i$
+- $\rho$ = masse volumique macroscopique (kg/m³)
+- $\mathbf{u}$ = vitesse macroscopique (m/s)
+- $\mathbf{c}_i$ = vecteur vitesse discrète de la direction $i$
+
 **Avantage clé :** Parallélisation massive sur GPU (chaque nœud est indépendant).
 
 ---
@@ -32,19 +38,33 @@ $$\rho = \sum_i f_i \quad \text{et} \quad \rho \mathbf{u} = \sum_i f_i \mathbf{c
 $$f_i(\mathbf{x} + \mathbf{c}_i \Delta t, t + \Delta t) - f_i(\mathbf{x}, t) = -\frac{1}{\tau}(f_i - f_i^{eq}) + F_i$$
 
 où :
-- τ = temps de relaxation
-- f_i^eq = distribution d'équilibre de Maxwell-Boltzmann
-- F_i = terme de force externe
+- $f_i(\mathbf{x}, t)$ = fonction de distribution au nœud $\mathbf{x}$, direction $i$, temps $t$
+- $\mathbf{c}_i$ = vecteur vitesse discrète de la direction $i$
+- $\Delta t$ = pas de temps
+- $\tau$ = temps de relaxation (contrôle la viscosité)
+- $f_i^{eq}$ = distribution d'équilibre de Maxwell-Boltzmann
+- $F_i$ = terme de force externe (gravité, Shan-Chen)
 
 ### 2.2 Distribution d'équilibre
 
 $$f_i^{eq} = w_i \rho \left[1 + \frac{\mathbf{c}_i \cdot \mathbf{u}}{c_s^2} + \frac{(\mathbf{c}_i \cdot \mathbf{u})^2}{2c_s^4} - \frac{\mathbf{u}^2}{2c_s^2}\right]$$
 
-avec c_s = 1/√3 la vitesse du son sur le réseau et w_i les poids de quadrature.
+où :
+- $w_i$ = poids de quadrature de la direction $i$
+- $\rho$ = masse volumique
+- $\mathbf{c}_i$ = vecteur vitesse discrète
+- $\mathbf{u}$ = vitesse macroscopique
+- $c_s$ = $1/\sqrt{3}$, vitesse du son sur le réseau (en unités lattice)
 
 ### 2.3 Lien viscosité - temps de relaxation
 
 $$\nu = c_s^2 \left(\tau - \frac{1}{2}\right) \Delta t$$
+
+où :
+- $\nu$ = viscosité cinématique (m²/s)
+- $c_s$ = vitesse du son sur le réseau
+- $\tau$ = temps de relaxation (doit être > 0.5 pour la stabilité)
+- $\Delta t$ = pas de temps
 
 Cette relation permet de modéliser des fluides de viscosités différentes en ajustant τ.
 
@@ -70,7 +90,11 @@ La force interparticulaire modélise les interactions entre fluides :
 
 $$\mathbf{F}_{int}(\mathbf{x}) = -G\psi(\mathbf{x}) \sum_i w_i \psi(\mathbf{x} + \mathbf{c}_i \Delta t) \mathbf{c}_i$$
 
-où G contrôle la tension superficielle et ψ est le pseudopotentiel.
+où :
+- $G$ = constante de couplage (contrôle la tension superficielle)
+- $\psi(\mathbf{x})$ = pseudopotentiel (fonction de la densité locale)
+- $w_i$ = poids de quadrature
+- $\mathbf{c}_i$ = vecteur vitesse discrète
 
 **Tension superficielle :** σ ∝ G(ψ_max - ψ_min)²
 
@@ -80,11 +104,22 @@ Pour les fluides rhéofluidifiants, τ dépend localement du taux de cisaillemen
 
 $$\tau(\dot{\gamma}) = \frac{1}{2} + \frac{\nu(\dot{\gamma})}{c_s^2 \Delta t}$$
 
+où :
+- $\tau$ = temps de relaxation local (variable spatialement)
+- $\dot{\gamma}$ = taux de cisaillement local (s$^{-1}$)
+- $\nu(\dot{\gamma})$ = viscosité cinématique dépendante du cisaillement (modèle Carreau)
+
 ### 3.4 Gestion du mouillage
 
 Les angles de contact sont gérés par une **densité fictive** aux nœuds solides :
 
 $$\rho_{solid} = \rho_0 + \Delta \rho \cdot \cos(\theta_{eq})$$
+
+où :
+- $\rho_{solid}$ = densité fictive assignée aux nœuds solides
+- $\rho_0$ = densité de référence du fluide
+- $\Delta \rho$ = amplitude de modulation
+- $\theta_{eq}$ = angle de contact d'équilibre souhaité
 
 Le mouillage est géré naturellement sans conditions aux limites explicites.
 
