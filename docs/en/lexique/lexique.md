@@ -160,6 +160,7 @@
 | **GLS** | Galerkin Least-Squares | Combined FEM stabilization |
 | **ALE** | Arbitrary Lagrangian-Eulerian | Moving mesh |
 | **AMR** | Adaptive Mesh Refinement | Adaptive meshing |
+| **CFL** | Courant–Friedrichs–Lewy | Time stability condition (Co = vΔt/Δx ≤ 1) |
 | **MULES** | Multidimensional Universal Limiter | OpenFOAM limiter for VOF |
 
 ---

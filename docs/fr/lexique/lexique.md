@@ -160,6 +160,7 @@
 | **GLS** | Galerkin Least-Squares | Stabilisation FEM combinée |
 | **ALE** | Arbitrary Lagrangian-Eulerian | Maillage mobile |
 | **AMR** | Adaptive Mesh Refinement | Maillage adaptatif |
+| **CFL** | Courant–Friedrichs–Lewy | Condition de stabilité temporelle (Co = vΔt/Δx ≤ 1) |
 | **MULES** | Multidimensional Universal Limiter | Limiteur OpenFOAM pour VOF |
 
 ---

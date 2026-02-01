@@ -1,6 +1,6 @@
 # Code PySPH - Smoothed Particle Hydrodynamics (SPH)
 
-Cette page présente l'implémentation SPH utilisant la bibliothèque **PySPH**. Le code est écrit en Python et permet de simuler la dispense d'encre avec une gestion précise des angles de contact.
+Cette page présente l'implémentation SPH utilisant la bibliothèque **PySPH** (code écrit en Python).
 
 ---
 
@@ -78,7 +78,7 @@ class DropletSpreading(Application):
 ```
 
 **Points clés :**
-- **Application** : gère le cycle de vie de la simulation PySPH.
+- **Application** : gère le cycle de vie de la simulation PySPH (création des particules, configuration des équations, exécution du solveur, sauvegarde des résultats).
 - **Schéma Morris** : utilisé pour la tension de surface (robuste pour les forts ratios de densité).
 
 ---
@@ -181,7 +181,7 @@ def create_equations(self):
 
 ## 7. Configuration du Solveur et Pas de Temps
 
-Le solveur est configuré pour utiliser un pas de temps adaptatif ou fixe basé sur les critères CFL, visqueux et capillaire.
+Le solveur est configuré pour utiliser un pas de temps adaptatif ou fixe basé sur les critères CFL (Courant–Friedrichs–Lewy), visqueux et capillaire.
 
 ```python
 # templates/pysph/droplet_spreading.py
