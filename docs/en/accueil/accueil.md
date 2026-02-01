@@ -1,4 +1,4 @@
-> **Author's note** — *This project was designed entirely by the author, from a blank slate through to publication, using artificial intelligence tools as learning accelerators. It is released as open-source for educational and scientific use.*
+**Author's note** — *This project was designed entirely by the author, from a blank slate through to publication, using artificial intelligence tools as learning accelerators. It is released as open-source for educational and scientific use.*
 
 &nbsp;
 
