@@ -135,5 +135,5 @@ Cette combinaison garantit la stabilité inf-sup et évite les oscillations de p
 
 ## 7. Références
 
-> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour la liste complète des références, consultez la section **Références bibliographiques** dans le menu Annexes.
 

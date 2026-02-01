@@ -374,5 +374,5 @@ REYNOLDS  GALERKIN          MAXWELL-BOLTZMANN        WEBER-OHNESORGE
 
 ## 8. Références biographiques
 
-> **Note** : Pour la liste complète des références techniques, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour la liste complète des références techniques, consultez la section **Références bibliographiques** dans le menu Annexes.
 

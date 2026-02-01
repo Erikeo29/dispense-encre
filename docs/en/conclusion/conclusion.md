@@ -109,4 +109,4 @@ Quantum computing could revolutionize complex flow modeling:
 
 ## 3. References
 
-> **Note**: For references discussing the resources used in this project, see the **Bibliography** section in the Appendices menu.
+> **Note**: For references discussing the resources used in this project, see the **Bibliographical References** section in the Appendices menu.

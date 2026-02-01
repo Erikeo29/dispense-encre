@@ -108,4 +108,4 @@ This project compares three complementary numerical methods:
 
 ## 6. References
 
-> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
+> **Note**: For the complete list of references, see the **Bibliographical References** section in the Appendices menu.

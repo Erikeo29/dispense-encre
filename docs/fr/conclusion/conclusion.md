@@ -112,4 +112,4 @@ Le calcul quantique pourrait révolutionner la modélisation des écoulements co
 
 ## 3. Références
 
-> **Note** : Pour des références qui traitent des ressources utilisées dans ce projet, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour des références qui traitent des ressources utilisées dans ce projet, consultez la section **Références bibliographiques** dans le menu Annexes.

@@ -157,5 +157,5 @@ sigma sigma [1 0 -2 0 0 0 0] 0.04;
 
 ## 7. Références
 
-> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour la liste complète des références, consultez la section **Références bibliographiques** dans le menu Annexes.
 

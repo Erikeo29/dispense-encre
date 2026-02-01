@@ -94,4 +94,4 @@ Les temps ci-dessous correspondent au cas de référence : dispense d'une goutte
 
 ## 6. Références
 
-> Pour la liste complète des références scientifiques, consulter la section **Bibliographie** dans le menu Annexes.
+> Pour la liste complète des références scientifiques, consulter la section **Références bibliographiques** dans le menu Annexes.

@@ -166,4 +166,4 @@ Wetting is handled naturally without explicit boundary conditions.
 
 ## 7. References
 
-> **Note**: For the complete list of references, see the **Bibliography** section in the Appendices menu.
+> **Note**: For the complete list of references, see the **Bibliographical References** section in the Appendices menu.

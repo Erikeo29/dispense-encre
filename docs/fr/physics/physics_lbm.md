@@ -166,5 +166,5 @@ Le mouillage est géré naturellement sans conditions aux limites explicites.
 
 ## 7. Références
 
-> **Note** : Pour la liste complète des références, consultez la section **Bibliographie** dans le menu Annexes.
+> **Note** : Pour la liste complète des références, consultez la section **Références bibliographiques** dans le menu Annexes.
 

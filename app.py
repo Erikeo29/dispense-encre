@@ -18,7 +18,7 @@ TRANSLATIONS = {
         "annex_header": "Annexes",
         "gen_pages": ["Accueil", "Introduction", "Comparaison des modèles"],
         "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
-        "annex_pages": ["Conclusion et perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Bibliographie"],
+        "annex_pages": ["Conclusion et perspectives", "Lexique", "Équations clés", "Un peu d'histoire", "Références bibliographiques"],
         "tabs_dual": ["Physique", "Code", "▸ Résultats de modélisation (GIF)", "▸ Résultats de modélisation (PNG)"],
         "tabs_other": ["Physique", "Code", "▸ Résultats de modélisation"],
         "overview_title": "Aperçu des résultats des 3 modèles",
@@ -59,7 +59,7 @@ TRANSLATIONS = {
 
 **Nouveautés :**
 - Support bilingue FR/EN
-- Bibliographie
+- Références bibliographiques
 - Assistant IA
 - Navigation améliorée""",
         "caption_fem": "Méthode des éléments finis - Python/FEniCS",
@@ -121,7 +121,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
         "annex_header": "Appendices",
         "gen_pages": ["Home", "Introduction", "Model Comparison"],
         "model_pages": ["1. VOF (OpenFOAM)", "2. LBM (Palabos)", "3. SPH (PySPH)"],
-        "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliography"],
+        "annex_pages": ["Conclusion and Perspectives", "Glossary", "Key Equations", "A Bit of History", "Bibliographical References"],
         "tabs_dual": ["Physics", "Code", "▸ Modeling Results (GIF)", "▸ Modeling Results (PNG)"],
         "tabs_other": ["Physics", "Code", "▸ Modeling Results"],
         "overview_title": "Overview of the 3 Simulation Models",
@@ -162,7 +162,7 @@ La méthode SPH a été testée de manière exhaustive (~115 versions de codes d
 
 **New Features:**
 - Bilingual support FR/EN
-- Bibliography
+- Bibliographical References
 - AI Assistant
 - Improved navigation""",
         "caption_fem": "Finite Element Method - Python/FEniCS",
@@ -1444,8 +1444,8 @@ elif selected_page == annex_pages[3]:  # Un peu d'histoire / A Bit of History
     st.markdown("---")
     st.markdown(load_file_content("histoire/histoire.md"))
 
-# ===== PAGE BIBLIOGRAPHIE =====
-elif selected_page == annex_pages[4]:  # Bibliographie / Bibliography
+# ===== PAGE RÉFÉRENCES BIBLIOGRAPHIQUES =====
+elif selected_page == annex_pages[4]:  # Références bibliographiques / Bibliographical References
     st.title(selected_page)
     st.markdown("---")
     st.markdown(load_file_content("biblio/biblio.md"))
