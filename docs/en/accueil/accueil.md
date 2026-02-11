@@ -2,7 +2,7 @@
 
 **Author's note** — *This project was designed entirely by the author, from a blank slate through to publication. Content creation was carried out with the support of artificial intelligence tools, particularly for writing and debugging code and for internet research.
 All results shown in this project are derived from analytical and deterministic physical models solved by validated numerical solvers.
-This work is released as open-source: it may be freely copied, duplicated, and adapted for learning purposes or for the use of the physical and numerical models presented here.*
+This work is made available to be freely copied, duplicated, and adapted for learning purposes or for the use of the physical and numerical models presented here.*
 
 &nbsp;
 
