@@ -1,8 +1,6 @@
 &nbsp;
 
-**Author's note** — *This project was designed entirely by the author, from a blank slate through to publication. Content creation was carried out with the support of artificial intelligence tools, particularly for writing and debugging code and for internet research.
-All results shown in this project are derived from analytical and deterministic physical models solved by validated numerical solvers.
-This work is made available to be freely copied, duplicated, and adapted for learning purposes or for the use of the physical and numerical models presented here.*
+**Author's note** — *This project was designed entirely by the author, from a blank page through to its deployment online. The content was developed based on the author's own knowledge, supplemented by online research for the documentary part, definition of physical concepts, implementation of relevant numerical tools... For the (very many!) topics beyond the author's initial area of expertise, artificial intelligence and automation tools were used to conduct in-depth internet research (parameterization of physical model equations, selection and use of numerical libraries), writing, testing and debugging code (Python, C++), creating this application's interface, automatic French/English translation... Nonetheless, all results presented in this project are derived from analytical and deterministic physical models solved by recognized and validated numerical solvers. The objective is to enable advanced multiphysics modeling using free and open-source tools. The data used is public and freely available on the internet. This work is made available to be freely used, reproduced and improved for learning purposes or for the use of the physical and numerical models presented here.*
 
 &nbsp;
 
