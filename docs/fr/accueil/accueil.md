@@ -39,7 +39,7 @@ Les simulations modélisent la **dispense d'une encre rhéofluidifiante** dans d
 
 ## 3. Navigation
 
-L'application est structurée sur la forme avec les outils suivants :
+La navigation dans les différentes pages de cette application est structurée avec les outils suivants :
 
 1.  **Menu latéral (à gauche)** : outil de navigation entre les différentes sections du projet :
     *   **Introduction** : Contexte scientifique, propriétés des fluides rhéofluidifiants et présentation du système physique étudié.

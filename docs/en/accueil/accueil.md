@@ -39,7 +39,7 @@ The simulations model **shear-thinning ink dispensing** into micro-via.
 
 ## 3. Navigation
 
-The application is structured with the following tools:
+Navigation through the different pages of this application is structured with the following tools:
 
 1.  **Sidebar (on the left)**: navigation tool between the different sections of the project:
     *   **Introduction**: Scientific context, properties of shear-thinning fluids, and presentation of the studied physical system.
