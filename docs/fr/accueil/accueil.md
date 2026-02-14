@@ -6,7 +6,7 @@
 
 *Il n'en demeure pas moins que tous les résultats présentés dans ce projet sont issus de modèles physiques analytiques et déterministes résolus par des solveurs numériques reconnus et validés. L'objectif est de permettre la réalisation de modélisations multiphysiques avancées au moyen d'outils open-source et gratuits.*
 
-*Les données utilisées sont publiques et disponibles en accès libres sur internet. Ce travail est mis à disposition pour être librement utilisé, reproduit et amélioré à des fins d'apprentissage ou d'exploitation des modèles physiques et numériques présentés.*
+*Les données d'entrées utilisées (équations, valeurs...) sont publiques et disponibles en accès libres sur internet même si très éparpillées. Les codes sont originaux même si non innovants. De fait, ce travail est mis à disposition pour être librement utilisé, reproduit et amélioré à des fins d'apprentissage ou d'exploitation des modèles physiques et numériques présentés.*
 
 &nbsp;
 

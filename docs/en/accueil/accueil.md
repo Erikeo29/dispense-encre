@@ -6,7 +6,7 @@
 
 *Nonetheless, all results presented in this project are derived from analytical and deterministic physical models solved by recognized and validated numerical solvers. The objective is to enable advanced multiphysics modeling using free and open-source tools.*
 
-*The data used is public and freely available on the internet. This work is made available to be freely used, reproduced and improved for learning purposes or for the use of the physical and numerical models presented here.*
+*The input data used (equations, values...) is public and freely available on the internet, although widely scattered. The codes are original even if not innovative. As such, this work is made available to be freely used, reproduced and improved for learning purposes or for the use of the physical and numerical models presented here.*
 
 &nbsp;
 
